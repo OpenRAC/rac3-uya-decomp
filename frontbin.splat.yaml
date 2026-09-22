@@ -1,0 +1,89 @@
+name: frontbin
+sha1: 3BC94EE895E4B4AF9B5602A229AF599C1103B542
+options:
+  basename: frontbin
+  target_path: frontbin.elf
+  base_path: .
+  build_path: build
+  asm_path: asm
+  src_path: src
+  data_path: data
+  ld_script_path: linker_scripts/frontbin.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+
+  # --- gp handling ---
+  # gp_value: the literal runtime _gp register value. PCSX2 live-debug observed 0x001DC8B0
+  # earlier in this project. SN's usual convention is small-data-start + 0x7FF0/0x8000-ish,
+  # but there is no _gp symbol in this stripped ELF's symtab to confirm it directly, so the
+  # empirically-observed value is the best source until cross-checked.
+  gp_value: 0x001DC8B0
+
+  # ld_gp_expression: symbolic form used by the linker script when relinking, expressed
+  # relative to a segment label splat will generate (e.g. lit_ROM_START or a SBSS start
+  # label). Placeholder pattern below follows splat's own doc example structure --
+  # replace lit_ROM_START/offset once splat generates real segment labels on first split.
+  ld_gp_expression: lit_ROM_START + 0x7FF0
+
+  symbol_addrs_path:
+    - symbol_addrs.txt
+  reloc_addrs_path:
+    - reloc_addrs.txt
+
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+
+# Segments in ascending vram order. bss is expressed as bss_size on the segment that
+# owns it (per splat's documented example), not as its own separate top-level segment.
+segments:
+  - name: header
+    type: header
+    vram: 0x0
+
+  - name: lit
+    type: data
+    start: 0x1000
+    vram: 0x1d5680
+    bss_size: 0x13e578
+    # .lit = SN's gp-relative small-data/literal section (file offset 0x1000, size 0x4230
+    # per section table). bss_size here accounts for the .bss region (vram 0x1d9900,
+    # size 0x13e578) that immediately follows in vram space with no file contents.
+    # D_001d5b90 / D_001d5b94 / D_001da050 / D_001d4cec (RequestScreenTransition's globals)
+    # should all resolve inside this segment or its bss tail.
+
+  - name: data
+    type: data
+    start: 0x143800
+    vram: 0x317e80
+    # size 0x0650d0 per section table -> ends ~0x37cf50
+
+  - name: lvl_vtbl
+    type: data
+    start: 0x1a8900
+    vram: 0x37cf80
+
+  - name: lvl_camvtbl
+    type: data
+    start: 0x1a8980
+    vram: 0x37d000
+
+  - name: lvl_sndvtbl
+    type: data
+    start: 0x1a8a00
+    vram: 0x37d080
+
+  - name: text
+    type: code
+    start: 0x1a8a80
+    vram: 0x37d100
+    # entry point 0x37d200 is inside here; FUN_0037d100 (already 100%-matched on decomp.me)
+    # is the very first function
+    subsegments:
+      - [0x1a8a80, c, text]
+      # single blob covering the whole .text region for the first pass. Splat's
+      # instruction-boundary analysis will locate individual functions inside it once
+      # this first split succeeds; can be broken into more/named subsegments later.
+
+  - [0x218924]

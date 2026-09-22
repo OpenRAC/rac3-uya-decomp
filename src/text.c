@@ -114,7 +114,7 @@ s32* func_0037DC68(void) {
 /* localdecomp:end func_0037DC68 */
 
 /* localdecomp:start func_0037DCB0 */
-extern void func_0037DC68(void);
+extern s32* func_0037DC68(void);
 void func_0037DCB0(void) {
     func_0037DC68();
 }

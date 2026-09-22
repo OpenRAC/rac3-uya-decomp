@@ -1725,11 +1725,11 @@ typedef struct {
     s32 f24;
     s32 f28;
     u8 pad1[0x24];
-    s32 f50;
-    u8 pad2[0x24];
-    s32 f78;
-    u8 pad3[0x4c];
-    s32 fc8;
+    u16 f50;
+    u8 pad2[0x78 - 0x52];
+    u16 f78;
+    u8 pad3[0xc8 - 0x7a];
+    u16 fc8;
 } S_1CCFD0;
 extern S_1CCFD0 D_001CCFD0;
 extern s32 D_001D6DE8;

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>localdecomp</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <button id="sidebar-toggle-btn" title="Toggle function list">&#9776;</button>
+    <h1>localdecomp</h1>
+    <button id="build-btn">Build &amp; Diff (Ctrl+Enter)</button>
+    <button id="save-btn">Save to project</button>
+    <button id="export-diff-btn" disabled>Export diff</button>
+    <span id="status"></span>
+  </header>
+
+  <div id="progress-bar">
+    <div id="progress-fill"></div>
+    <div id="progress-label"></div>
+  </div>
+
+  <main>
+    <aside id="func-sidebar">
+      <div class="pane-title">All functions</div>
+      <input id="sidebar-filter" type="text" placeholder="Filter..." autocomplete="off">
+      <div id="sidebar-list"></div>
+    </aside>
+
+    <section id="editor-pane">
+      <div class="pane-title">C source</div>
+      <div id="editor-wrap">
+        <pre id="c-highlight" aria-hidden="true"><code id="c-highlight-code"></code></pre>
+        <textarea id="c-editor" spellcheck="false"></textarea>
+      </div>
+    </section>
+
+    <section id="diff-pane">
+      <div class="pane-title diff-pane-title">
+        <span>Diff (target vs current)</span>
+        <span id="score-badge" class="score-badge">no build yet</span>
+      </div>
+      <div id="diff-view"><div class="empty-hint">Pick a function and click Build.</div></div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

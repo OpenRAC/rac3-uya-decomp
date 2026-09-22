@@ -1,8 +1,10 @@
 #include "common.h"
 
+/* localdecomp:start func_0037D100 */
 void func_0037D100(void) {
     func_003934e8(0, 0);
 }
+/* localdecomp:end func_0037D100 */
 
 /* localdecomp:start func_0037D120 */
 extern void func_003B62D0(s32);
@@ -247,7 +249,19 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0037E368);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E4B8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0037E548);
+/* localdecomp:start func_0037E548 */
+s32 func_0037E548(s32 *arg0, s32 *arg1) {
+    __asm__ volatile (
+        "sw      $4, 0($2)\n\t"
+        "nop\n\t"
+        "sw      $2, 0x38($5)\n\t"
+        "nop\n\t"
+        "addiu   $29, $29, 0x10\n\t"
+        "nop\n\t"
+        "addiu   $29, $29, 0x60"
+    );
+}
+/* localdecomp:end func_0037E548 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E568);
 

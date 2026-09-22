@@ -3145,11 +3145,11 @@ s32 func_003B0D70(void) {
 /* localdecomp:end func_003B0D70 */
 
 /* localdecomp:start func_003B0D88 */
-extern s32 D_00143950[];
+extern s32 D_00143950_b[];
 
 s32 func_003B0D88(void) {
-    s32 inverted_val = !D_00143950[2];
-    D_00143950[2] = inverted_val;
+    s32 inverted_val = !D_00143950_b[2];
+    D_00143950_b[2] = inverted_val;
     return inverted_val;
 }
 /* localdecomp:end func_003B0D88 */

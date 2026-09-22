@@ -1666,7 +1666,17 @@ void func_0039CC70(void) {
 /* localdecomp:end func_0039CC70 */
 
 /* localdecomp:start func_0039CC78 */
-typedef struct { u8 pad[0x50]; u16 f50; u8 pad2[0x78-0x52]; u16 f78; u8 pad3[0xc8-0x7a]; u16 fc8; } S_1CCFD0;
+typedef struct {
+    u8 pad0[0x24];
+    s32 f24;
+    s32 f28;
+    u8 pad1[0x24];
+    u16 f50;
+    u8 pad2[0x78 - 0x52];
+    u16 f78;
+    u8 pad3[0xc8 - 0x7a];
+    u16 fc8;
+} S_1CCFD0;
 extern S_1CCFD0 D_001CCFD0;
 void func_0039CC78(void) {
     D_001CCFD0.f50 = 4;

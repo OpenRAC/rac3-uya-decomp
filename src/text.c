@@ -1,5 +1,16 @@
 #include "common.h"
 
+typedef struct {
+    u8 pad0[0x10];
+    s32 f10;
+    u8 pad1[0x150];
+    s32 f164;
+    s32 f168;
+    u8 pad2[0x10];
+    s32 f17c;
+} S_142430;
+extern S_142430 D_00142430;
+
 /* localdecomp:start func_0037D100 */
 void func_0037D100(void) {
     func_003934e8(0, 0);
@@ -43,7 +54,7 @@ s32 func_0037D1A0(void) {
 /* localdecomp:start func_0037D1A8 */
 extern s32 func_0011A264(s32, s32, s32);
 extern s32 func_003ECDC0(s32, s32);
-extern s32 func_003A9B10(s32, s32);
+extern void *func_003A9B10(void *, s32);
 extern s32 D_001D5C78;
 
 typedef struct {
@@ -1073,7 +1084,16 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00395FE0);
 INCLUDE_ASM("asm/nonmatchings/text", func_00395FF0);
 
 /* localdecomp:start func_00396100 */
-extern s32 D_00142430;
+typedef struct {
+    u8 pad0[0x10];
+    s32 f10;
+    u8 pad1[0x150];
+    s32 f164;
+    s32 f168;
+    u8 pad2[0x10];
+    s32 f17c;
+} S_142430;
+extern S_142430 D_00142430;
 extern s32 D_001D4CE8;
 void func_00396100(void) {
     D_001D4CE8 = 4;
@@ -1089,7 +1109,15 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00396248);
 INCLUDE_ASM("asm/nonmatchings/text", func_00396298);
 
 /* localdecomp:start func_003962C0 */
-typedef struct { u8 pad[0x164]; s32 f164; s32 f168; } S_142430;
+typedef struct {
+    u8 pad0[0x10];
+    s32 f10;
+    u8 pad1[0x150];
+    s32 f164;
+    s32 f168;
+    u8 pad2[0x10];
+    s32 f17c;
+} S_142430;
 extern S_142430 D_00142430;
 extern s32 D_001D4CE8;
 void func_003962C0(void) {
@@ -1100,7 +1128,15 @@ void func_003962C0(void) {
 /* localdecomp:end func_003962C0 */
 
 /* localdecomp:start func_003962E8 */
-typedef struct { u8 pad[0x164]; s32 f164; s32 f168; } S_142430;
+typedef struct {
+    u8 pad0[0x10];
+    s32 f10;
+    u8 pad1[0x150];
+    s32 f164;
+    s32 f168;
+    u8 pad2[0x10];
+    s32 f17c;
+} S_142430;
 extern S_142430 D_00142430;
 extern s32 D_001D4CE8;
 void func_003962E8(void) {
@@ -1684,8 +1720,18 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039DA60);
 INCLUDE_ASM("asm/nonmatchings/text", func_0039DAD0);
 
 /* localdecomp:start func_0039DAE0 */
-typedef struct { u8 pad[0x24]; s32 f24; s32 f28; } S_1CCFD0b;
-extern S_1CCFD0b D_001CCFD0;
+typedef struct {
+    u8 pad0[0x24];
+    s32 f24;
+    s32 f28;
+    u8 pad1[0x24];
+    s32 f50;
+    u8 pad2[0x24];
+    s32 f78;
+    u8 pad3[0x4c];
+    s32 fc8;
+} S_1CCFD0;
+extern S_1CCFD0 D_001CCFD0;
 extern s32 D_001D6DE8;
 void func_0039DAE0(s32 a0, s32 a1) {
     if (D_001D6DE8 == 0) {
@@ -2527,7 +2573,7 @@ extern void func_003A9768(void *);
 extern void func_00121760(void *, void *);
 extern void func_0039D668(void *, s32, s32);
 extern void func_003A6888(void *, s32, void *, s32);
-extern void func_0011A264(void *, s32, s32);
+extern void func_0011A264_2(void *, s32, s32);
 extern void func_0011F0A0(s32);
 extern void func_0039D6C8(s32);
 extern void func_003A6790(void *);

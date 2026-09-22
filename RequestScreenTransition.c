@@ -1,7 +1,5 @@
 #include "test_common.h"
 
-/* These 6 are accessed via absolute (non-gp-relative) addressing in the real
- * binary -- plain externs already reproduce this correctly under -G0. */
 extern s32 D_001D5B90;
 extern s32 D_001D5B94;
 extern s32 D_001D4CEC;
@@ -9,13 +7,6 @@ extern u8  D_001D5B78[];
 extern s32 D_001DA050[];
 extern s32 D_001A7430;
 
-/* These 4 ARE gp-relative in the real binary. GAS docs (MIPS Small Data):
- * ".extern sym,size" tells the assembler the object's size so it can be
- * classified as small-data (gp-relative) even though it's defined elsewhere.
- * Emitting this directive lets GCC's own emitted .lw/.sw for these symbols
- * get assembled as gp-relative without needing -G high enough to also catch
- * the 6 symbols above (which must stay absolute since that's what the real
- * binary does for them). */
 __asm__(".extern D_001D6DA4, 4");
 __asm__(".extern D_001D6D9C, 4");
 __asm__(".extern D_001D6DA0, 4");

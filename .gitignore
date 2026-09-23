@@ -1,19 +1,16 @@
-# --- NEVER commit the retail binary (copyrighted Sony/Insomniac code) ---
-# The project verifies it by sha1 in frontbin.splat.yaml instead -- that is
-# the standard decomp-community pattern. Contributors supply their own
-# legally-obtained copy locally. Do not override this line.
 frontbin.elf
-
-# --- build / scratch output ---
 __pycache__/
 build/
 .localdecomp_work/
 .test_flags_work/
 *.o
 *.pyc
-
-# --- ad-hoc experiment/scratch files from local debugging sessions ---
-# (small single-function test harnesses, not part of the real project source)
+localdecomp/
+build_log.txt
+reloc_addrs.txt
+symbol_addrs_resolved.txt
+undefined_funcs_auto.txt
+undefined_syms_auto.txt
 tmp.c
 flagtest.c
 test_common.h
@@ -27,11 +24,7 @@ target.bin
 diff_settings.py
 func_*_candidate*.c
 New folder/
-
-# --- internal AI-assistant session notes (not project documentation) ---
-handoff_*.md
-
-# --- editor/OS cruft ---
+RequestScreenTransition.c
 .vscode/
 Thumbs.db
 .DS_Store

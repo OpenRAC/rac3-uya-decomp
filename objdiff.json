@@ -1,0 +1,574 @@
+{
+  "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
+  "min_version": "2.0.0",
+  "target_dir": ".",
+  "base_dir": "build",
+  "build_target": false,
+  "progress_categories": [
+    { "id": "frontend", "name": "Frontend / Menu" },
+    { "id": "boot", "name": "Boot" },
+    { "id": "demo", "name": "Demo" },
+    { "id": "level", "name": "Level" },
+    { "id": "singleplayer", "name": "Singleplayer" },
+    { "id": "multiplayer", "name": "Multiplayer" }
+  ],
+  "units": [
+    {
+      "name": "Frontend / Menu Binary (frontbin.elf)",
+      "target_path": "frontbin.elf",
+      "base_path": "build/frontbin.elf",
+      "metadata": {
+        "source_path": "src/text.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "Boot ELF (boot_elf.elf)",
+      "target_path": "boot_elf.elf",
+      "metadata": {
+        "progress_categories": [
+          "boot"
+        ]
+      }
+    },
+    {
+      "name": "IOP/Sound Boot (i5bootn.elf)",
+      "target_path": "i5bootn.elf",
+      "metadata": {
+        "progress_categories": [
+          "boot"
+        ]
+      }
+    },
+    {
+      "name": "Network/GUI Binary (ntgui.elf)",
+      "target_path": "ntgui.elf",
+      "metadata": {
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "Sly 2 Demo Binary (sly2.elf)",
+      "target_path": "sly2.elf",
+      "metadata": {
+        "progress_categories": [
+          "demo"
+        ]
+      }
+    },
+    {
+      "name": "Veldin (Singleplayer Level)",
+      "target_path": "levels/singleplayer/1_veldin/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Florana (Singleplayer Level)",
+      "target_path": "levels/singleplayer/2_florana/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Starship Phoenix (Singleplayer Level)",
+      "target_path": "levels/singleplayer/3_starship_phoenix/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Marcadia (Singleplayer Level)",
+      "target_path": "levels/singleplayer/4_marcadia/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Daxx (Singleplayer Level)",
+      "target_path": "levels/singleplayer/5_daxx/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Starship Phoenix Under Attack (Singleplayer Level)",
+      "target_path": "levels/singleplayer/6_starship_phoenix_under_attack/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Annihilation Nation (Singleplayer Level)",
+      "target_path": "levels/singleplayer/7_annihilation_nation/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Aquatos (Singleplayer Level)",
+      "target_path": "levels/singleplayer/8_aquatos/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Tyhrranosis (Singleplayer Level)",
+      "target_path": "levels/singleplayer/9_tyhrranosis/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Zeldrin Starport (Singleplayer Level)",
+      "target_path": "levels/singleplayer/10_zeldrin_starport/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Obani Moons (Singleplayer Level)",
+      "target_path": "levels/singleplayer/11_obani_moons/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Rilgar (Singleplayer Level)",
+      "target_path": "levels/singleplayer/12_rilgar/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Holostar Studios Ratchet (Singleplayer Level)",
+      "target_path": "levels/singleplayer/13_holostar_studios_ratchet/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Koros (Singleplayer Level)",
+      "target_path": "levels/singleplayer/14_koros/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Kerwan (Singleplayer Level)",
+      "target_path": "levels/singleplayer/16_kerwan/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Crash Site (Singleplayer Level)",
+      "target_path": "levels/singleplayer/17_crash_site/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Aridia (Singleplayer Level)",
+      "target_path": "levels/singleplayer/18_aridia/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Thran Asteroid Belt (Singleplayer Level)",
+      "target_path": "levels/singleplayer/19_thran_asteroid_belt/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Final Boss (Singleplayer Level)",
+      "target_path": "levels/singleplayer/20_final_boss/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Obani Draco (Singleplayer Level)",
+      "target_path": "levels/singleplayer/21_obani_draco/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Mylon (Singleplayer Level)",
+      "target_path": "levels/singleplayer/22_mylon/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Holostar Studios Clank (Singleplayer Level)",
+      "target_path": "levels/singleplayer/23_holostar_studios_clank/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Insomniac Museum (Singleplayer Level)",
+      "target_path": "levels/singleplayer/24_insomniac_museum/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Kerwan Ranger Missions (Singleplayer Level)",
+      "target_path": "levels/singleplayer/26_kerwan_ranger_missions/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Aquatos Base (Singleplayer Level)",
+      "target_path": "levels/singleplayer/27_aquatos_base/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Aquatos Sewers (Singleplayer Level)",
+      "target_path": "levels/singleplayer/28_aquatos_sewers/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Tyhrranosis Ranger Missions (Singleplayer Level)",
+      "target_path": "levels/singleplayer/29_tyhrranosis_ranger_missions/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Vidcomic Unnamed (Singleplayer Level)",
+      "target_path": "levels/singleplayer/30_vidcomic_unnamed/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Vidcomic 1 (Singleplayer Level)",
+      "target_path": "levels/singleplayer/31_vidcomic_1/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Vidcomic 4 (Singleplayer Level)",
+      "target_path": "levels/singleplayer/32_vidcomic_4/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Vidcomic 2 (Singleplayer Level)",
+      "target_path": "levels/singleplayer/33_vidcomic_2/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Vidcomic 3 (Singleplayer Level)",
+      "target_path": "levels/singleplayer/34_vidcomic_3/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Vidcomic 5 (Singleplayer Level)",
+      "target_path": "levels/singleplayer/35_vidcomic_5/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Vidcomic 1 Special Edition (Singleplayer Level)",
+      "target_path": "levels/singleplayer/36_vidcomic_1_special_edition/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "singleplayer"
+        ]
+      }
+    },
+    {
+      "name": "Multiplayer Menu (Multiplayer Level)",
+      "target_path": "levels/multiplayer/39_multiplayer_menu/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Bakisi Isles (Multiplayer Level)",
+      "target_path": "levels/multiplayer/40_bakisi_isles/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Hoven Gorge (Multiplayer Level)",
+      "target_path": "levels/multiplayer/41_hoven_gorge/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Outpost X12 (Multiplayer Level)",
+      "target_path": "levels/multiplayer/42_outpost_x12/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Korgon Outpost (Multiplayer Level)",
+      "target_path": "levels/multiplayer/43_korgon_outpost/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Metropolis (Multiplayer Level)",
+      "target_path": "levels/multiplayer/44_metropolis/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Blackwater City (Multiplayer Level)",
+      "target_path": "levels/multiplayer/45_blackwater_city/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Command Center (Multiplayer Level)",
+      "target_path": "levels/multiplayer/46_command_center/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Blackwater Docks (Multiplayer Level)",
+      "target_path": "levels/multiplayer/47_blackwater_docks/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Aquatos Sewers (Multiplayer Level)",
+      "target_path": "levels/multiplayer/48_aquatos_sewers/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Marcadia Palace (Multiplayer Level)",
+      "target_path": "levels/multiplayer/49_marcadia_palace/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Bakisi Isles Splitscreen (Multiplayer Level)",
+      "target_path": "levels/multiplayer/50_bakisi_isles_splitscreen/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Hoven Gorge Splitscreen (Multiplayer Level)",
+      "target_path": "levels/multiplayer/51_hoven_gorge_splitscreen/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Outpost X12 Splitscreen (Multiplayer Level)",
+      "target_path": "levels/multiplayer/52_outpost_x12_splitscreen/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Korgon Outpost Splitscreen (Multiplayer Level)",
+      "target_path": "levels/multiplayer/53_korgon_outpost_splitscreen/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Metropolis Splitscreen (Multiplayer Level)",
+      "target_path": "levels/multiplayer/54_metropolis_splitscreen/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "Blackwater City Splitscreen (Multiplayer Level)",
+      "target_path": "levels/multiplayer/55_blackwater_city_splitscreen/update/overlay.elf",
+      "metadata": {
+        "progress_categories": [
+          "level",
+          "multiplayer"
+        ]
+      }
+    }
+  ]
+}

@@ -8,7 +8,12 @@ options:
   asm_path: asm
   src_path: src
   data_path: data
-  ld_script_path: linker_scripts/frontbin.ld
+  # splat regenerates its linker script on every split using modern-ld syntax
+  # (HIDDEN, SUBALIGN, 2-arg ALIGN) that SN ee-ld rejects. The Makefile links
+  # with the hand-maintained linker_scripts/frontbin.ld instead, so splat's copy
+  # goes to a separate file and can't overwrite it. Diff the two after a split
+  # if segments change, and carry real layout changes over by hand.
+  ld_script_path: linker_scripts/frontbin.splat.ld
   compiler: EEGCC
   platform: ps2
   find_file_boundaries: True
@@ -34,6 +39,12 @@ options:
   asm_function_macro: glabel
   asm_data_macro: dlabel
   migrate_rodata_to_functions: True
+
+  # include/macro.inc is hand-patched for SN ee-as (no .internal, no quoted
+  # "\label" substitution). splat's default is to regenerate it (and
+  # include_asm.h / labels.inc) on every split, which silently replaced the
+  # patched copy with the modern-gas version and broke every .s file.
+  generate_asm_macros_files: False
 
 # Segments in ascending vram order. bss is expressed as bss_size on the segment that
 # owns it (per splat's documented example), not as its own separate top-level segment.

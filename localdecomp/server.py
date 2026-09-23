@@ -36,12 +36,121 @@ DEFAULT_GP_VALUE = 0x001DC8B0  # confirmed via PCSX2 live-debug for frontbin.elf
 DEFAULT_PORT = 8477
 
 # ---------------------------------------------------------------------------
+# Git sync: auto-commit + push a function to GitHub the moment it reaches a
+# perfect match (current_score == 0), so finished functions land on the repo
+# without a manual git session. Off entirely if --no-git-sync is passed, or
+# if the project root isn't inside a git work tree.
+# ---------------------------------------------------------------------------
+
+
+class GitSyncResult:
+    def __init__(self, attempted, ok, message):
+        self.attempted = attempted
+        self.ok = ok
+        self.message = message
+
+    def to_json(self):
+        return {"attempted": self.attempted, "ok": self.ok, "message": self.message}
+
+
+def _run_git(root: Path, args, timeout=30):
+    return subprocess.run(
+        ["git", *args],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+    )
+
+
+def is_git_repo(root: Path) -> bool:
+    try:
+        proc = _run_git(root, ["rev-parse", "--is-inside-work-tree"], timeout=10)
+        return proc.returncode == 0 and proc.stdout.strip() == "true"
+    except Exception:
+        return False
+
+
+def git_commit_and_push(root: Path, func_name: str, paths) -> GitSyncResult:
+    """
+    Stage exactly the files this function's save touched -- never a blanket
+    `git add -A`, which could sweep up unrelated in-progress work -- commit,
+    and push. Never raises -- any failure is reported back in the result so
+    a git problem shows up as a status message in the UI instead of a 500 on
+    the save request.
+
+    Only paths actually tracked (or trackable) by git are staged: anything
+    under a gitignored path (e.g. .localdecomp_work/, this tool's own scratch
+    state) is silently skipped rather than passed to `git add`, since a
+    single ignored path in the list makes the whole `git add` call fail --
+    which previously blocked committing src/text.c too, even though that
+    file was never ignored.
+    """
+    try:
+        # git (including check-ignore's own output) always speaks
+        # forward-slash paths internally, even on Windows -- so every
+        # relative path here is normalized to forward slashes for both the
+        # check-ignore call and the comparison against its output. Comparing
+        # a Windows backslash path against check-ignore's forward-slash
+        # output would never match, silently treating an ignored path (e.g.
+        # .localdecomp_work/...) as NOT ignored and letting it back into the
+        # `git add` call that then fails on it.
+        candidates = [p for p in paths if p.exists()]
+        rel_of = {
+            p: str(p.relative_to(root)).replace("\\", "/") for p in candidates
+        }
+
+        ignored = set()
+        if candidates:
+            check = _run_git(
+                root,
+                ["check-ignore", "--no-index", *rel_of.values()],
+            )
+            # check-ignore prints the paths that ARE ignored, one per line,
+            # and exits 0 if it found at least one -- exit 1 (no matches) is
+            # not an error here, just "nothing ignored".
+            if check.returncode in (0, 1):
+                ignored = set(check.stdout.splitlines())
+
+        rel_paths = [rel_of[p] for p in candidates if rel_of[p] not in ignored]
+        if not rel_paths:
+            return GitSyncResult(True, False, "nothing to stage")
+
+        add = _run_git(root, ["add", "--", *rel_paths])
+        if add.returncode != 0:
+            return GitSyncResult(True, False, f"git add failed: {add.stderr.strip()}")
+
+        diff = _run_git(root, ["diff", "--cached", "--quiet"])
+        if diff.returncode == 0:
+            # Nothing actually changed (e.g. re-saving an already-committed
+            # perfect match) -- not an error, just nothing to do.
+            return GitSyncResult(True, True, "no changes to commit")
+
+        commit = _run_git(
+            root, ["commit", "-m", f"localdecomp: match {func_name}"]
+        )
+        if commit.returncode != 0:
+            return GitSyncResult(
+                True, False, f"git commit failed: {commit.stderr.strip()}"
+            )
+
+        push = _run_git(root, ["push"], timeout=60)
+        if push.returncode != 0:
+            return GitSyncResult(
+                True, False, f"committed locally but push failed: {push.stderr.strip()}"
+            )
+
+        return GitSyncResult(True, True, f"committed and pushed {func_name}")
+    except Exception as e:
+        return GitSyncResult(True, False, f"git sync error: {e}")
+
+# ---------------------------------------------------------------------------
 # Project model: discover functions from splat's asm/nonmatchings output.
 # ---------------------------------------------------------------------------
 
 
 class Project:
-    def __init__(self, root: Path, toolbin: Path, gp_value: int):
+    def __init__(self, root: Path, toolbin: Path, gp_value: int, git_sync: bool = True):
         self.root = root
         self.toolbin = toolbin
         self.gp_value = gp_value
@@ -51,6 +160,12 @@ class Project:
         self.work_dir = root / ".localdecomp_work"
         self.work_dir.mkdir(exist_ok=True)
         self.symbol_addrs_path = root / "symbol_addrs.txt"
+        self.git_sync = git_sync and is_git_repo(root)
+        if git_sync and not self.git_sync:
+            sys.stderr.write(
+                f"[localdecomp] --git-sync requested but {root} is not a git "
+                f"work tree -- auto-commit/push disabled.\n"
+            )
         # Canonical per-function source of truth: the FULL editor contents
         # (externs, helper decls, and the function body together) for each
         # function this tool has touched, plus its last known score. Never
@@ -164,16 +279,53 @@ class Project:
     def _func_store_path(self, name: str) -> Path:
         return self.funcs_dir / f"{name}.c"
 
+    def _extract_marked_block(self, name: str):
+        """
+        Pull a function's body straight out of src/text.c by its
+        localdecomp:start/end markers, if present. Returns None if there's
+        no marker pair for this function (still an INCLUDE_ASM stub, or was
+        never saved through this tool). This is the recovery path for when
+        funcs/<name>.c is missing but the real code already lives in
+        src/text.c -- e.g. the .localdecomp_work cache was deleted, never
+        existed for an older save, or drifted from src/text.c some other
+        way. Without this, get_function_c would silently hand back a blank
+        `// TODO` template for a function that's actually already written.
+        """
+        if not self.src_file.exists():
+            return None
+        text_c = self.src_file.read_text()
+        start_marker = f"/* localdecomp:start {name} */"
+        end_marker = f"/* localdecomp:end {name} */"
+        if start_marker not in text_c or end_marker not in text_c:
+            return None
+        start = text_c.index(start_marker) + len(start_marker)
+        end = text_c.index(end_marker)
+        if end < start:
+            return None
+        return text_c[start:end].strip("\n") + "\n"
+
     def get_function_c(self, name: str) -> str:
         """
         Return the FULL editor content (externs + body together) last saved
-        for this function, if any; otherwise a starter template. This is the
-        tool's own canonical store -- never regex-sliced back out of
-        src/text.c, which would silently drop externs/helpers on reload.
+        for this function, if any; otherwise a starter template.
+
+        Preferred source is this tool's own store (funcs/<name>.c), since
+        that's the one place externs/helpers are guaranteed intact. But if
+        that cache entry is missing -- lost, cleared, or never written by an
+        older version of this tool -- and src/text.c already has a marked
+        block for this function (proof real work was saved at some point),
+        recover the body from there instead of showing a blank template,
+        and re-populate the cache so this recovery only has to happen once.
         """
         store_path = self._func_store_path(name)
         if store_path.exists():
             return store_path.read_text()
+
+        recovered = self._extract_marked_block(name)
+        if recovered is not None:
+            store_path.write_text(recovered)
+            return recovered
+
         return f"s32 {name}(void) {{\n    // TODO\n}}\n"
 
     def save_function_c(self, name: str, c_source: str):
@@ -248,6 +400,23 @@ class Project:
             f"save-marker, or an existing function body for {name} in "
             f"{self.src_file} -- nothing to replace.",
         )
+
+    def sync_function_to_git(self, name: str) -> "GitSyncResult":
+        """
+        Auto-commit + push this function's change, gated on git_sync being
+        enabled and the last known score for `name` being a perfect match
+        (current_score == 0). Called after save_function_c, never before --
+        it stages whatever save_function_c just wrote.
+        """
+        if not self.git_sync:
+            return GitSyncResult(False, True, "git sync disabled")
+
+        entry = self.load_status().get(name)
+        if not entry or entry.get("current_score") != 0:
+            return GitSyncResult(False, True, "not a perfect match yet")
+
+        paths = [self.src_file, self._func_store_path(name)]
+        return git_commit_and_push(self.root, name, paths)
 
     def find_referenced_symbols(self, asm_text: str, c_source: str):
         """
@@ -758,7 +927,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             c_source = body.get("c", "")
             try:
                 self.project.save_function_c(name, c_source)
-                self._send_json({"ok": True})
+                git_result = self.project.sync_function_to_git(name)
+                self._send_json({"ok": True, "git": git_result.to_json()})
             except BuildError as e:
                 self._send_json({"ok": False, "stage": e.stage, "message": e.message})
             except Exception as e:
@@ -787,13 +957,21 @@ def main():
     ap.add_argument("--toolbin", default=DEFAULT_TOOLBIN, help="ee-gcc2953 etc bin folder")
     ap.add_argument("--gp", default=hex(DEFAULT_GP_VALUE), help="real _gp value, e.g. 0x1DC8B0")
     ap.add_argument("--port", type=int, default=DEFAULT_PORT)
+    ap.add_argument(
+        "--no-git-sync",
+        action="store_false",
+        dest="git_sync",
+        default=True,
+        help="disable auto-commit+push of perfect-match functions to git "
+        "(on by default; auto-disables anyway if --project isn't a git repo)",
+    )
     args = ap.parse_args()
 
     root = Path(args.project).resolve()
     toolbin = Path(args.toolbin)
     gp_value = int(args.gp, 16)
 
-    project = Project(root, toolbin, gp_value)
+    project = Project(root, toolbin, gp_value, git_sync=args.git_sync)
     Handler.project = project
 
     server = http.server.ThreadingHTTPServer(("127.0.0.1", args.port), Handler)

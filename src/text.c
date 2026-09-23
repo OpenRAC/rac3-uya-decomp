@@ -1,19 +1,8 @@
 #include "common.h"
 
-typedef struct {
-    u8 pad0[0x10];
-    s32 f10;
-    u8 pad1[0x150];
-    s32 f164;
-    s32 f168;
-    u8 pad2[0x10];
-    s32 f17c;
-} S_142430;
-extern S_142430 D_00142430;
-
 /* localdecomp:start func_0037D100 */
 void func_0037D100(void) {
-    func_003934e8(0, 0);
+    func_003934E8(0, 0);
 }
 /* localdecomp:end func_0037D100 */
 
@@ -45,13 +34,8 @@ s32 func_0037D198(void) {
 }
 /* localdecomp:end func_0037D198 */
 
-/* localdecomp:start func_0037D1A0 */
-s32 func_0037D1A0(void) {
-   asm volatile("addiu $sp, $sp, 0x50");
-}
-/* localdecomp:end func_0037D1A0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0037D1A0);
 
-/* localdecomp:start func_0037D1A8 */
 extern s32 func_0011A264(s32, s32, s32);
 extern s32 func_003ECDC0(s32, s32);
 extern void *func_003A9B10(void *, s32);
@@ -62,17 +46,7 @@ typedef struct {
     s32 f84;
 } Struct227600;
 extern Struct227600 D_00227600;
-
-s32 func_0037D1A8(void) {
-    s32 t;
-    s32 result;
-    func_0011A264(D_00227600.f84, 0xcd, 0x40000);
-    t = func_003ECDC0(0x24f10, D_00227600.f84);
-    result = func_003A9B10(t, 0x40000);
-    D_001D5C78 = result;
-    return result;
-}
-/* localdecomp:end func_0037D1A8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0037D1A8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037D200);
 
@@ -109,20 +83,8 @@ u8 func_0037DC58(void) {
 }
 /* localdecomp:end func_0037DC58 */
 
-/* localdecomp:start func_0037DC68 */
 extern s32 func_003E1A50(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
-
-s32* func_0037DC68(void) {
-    register u8 *gp __asm__("$28");
-
-    if (*((volatile s32 *)(gp - 0x2f98)) == 0) {
-        func_003E1A50((s32 *)(gp - 0x2fb0), 0, 0, 0, 0, 0);
-        *((volatile s32 *)(gp - 0x2f98)) = 1;
-    }
-
-    return (s32 *)(gp - 0x2fb0);
-}
-/* localdecomp:end func_0037DC68 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0037DC68);
 
 /* localdecomp:start func_0037DCB0 */
 extern s32* func_0037DC68(void);
@@ -131,11 +93,7 @@ void func_0037DCB0(void) {
 }
 /* localdecomp:end func_0037DCB0 */
 
-/* localdecomp:start func_0037DCD0 */
-s32 func_0037DCD0(void) {
-       asm volatile("addiu $sp, $sp, 0x10");
-}
-/* localdecomp:end func_0037DCD0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0037DCD0);
 
 /* localdecomp:start func_0037DCD8 */
 s32 func_0037DCD8(void) {
@@ -194,11 +152,7 @@ s32 func_0037DD28(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037DD30);
 
-/* localdecomp:start func_0037DF20 */
-void func_0037DF20(void) {
-    asm volatile("addiu $sp, $sp, 0x10");
-}
-/* localdecomp:end func_0037DF20 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0037DF20);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037DF28);
 
@@ -214,29 +168,10 @@ void func_0037E030(void) {
 }
 /* localdecomp:end func_0037E030 */
 
-/* localdecomp:start func_0037E058 */
-s32 func_0037E858(void) {
-#if defined(__mips__)
-    __asm__ volatile (
-        ".set noreorder\n\t"
-        "jr   $31\n\t"
-        "sw   $0, -0x7228($28)\n\t"
-        ".set reorder"
-    );
-#else
-    extern s32 D_001D13FC;
-    D_001D13FC = 0;
-#endif
-}
-/* localdecomp:end func_0037E058 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0037E058);
 
-/* localdecomp:start func_0037E060 */
 extern s32 D_001D5680;
-s32 func_0037E060(void) {
-    D_001D5680 = 0xa;
-    return D_001D5680;
-}
-/* localdecomp:end func_0037E060 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0037E060);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E070);
 
@@ -260,19 +195,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0037E368);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E4B8);
 
-/* localdecomp:start func_0037E548 */
-s32 func_0037E548(s32 *arg0, s32 *arg1) {
-    __asm__ volatile (
-        "sw      $4, 0($2)\n\t"
-        "nop\n\t"
-        "sw      $2, 0x38($5)\n\t"
-        "nop\n\t"
-        "addiu   $29, $29, 0x10\n\t"
-        "nop\n\t"
-        "addiu   $29, $29, 0x60"
-    );
-}
-/* localdecomp:end func_0037E548 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0037E548);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E568);
 
@@ -352,11 +275,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00381D90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00381DD0);
 
-/* localdecomp:start func_00381F10 */
-void func_00381F10(void) {
-    asm volatile("addiu $sp, $sp, 0x80");
-}
-/* localdecomp:end func_00381F10 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00381F10);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00381F18);
 
@@ -374,11 +293,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00382F90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003830E8);
 
-/* localdecomp:start func_00383840 */
-void func_00383840(void) {
-    asm volatile ("addiu $sp, $sp, 0xB0");
-}
-/* localdecomp:end func_00383840 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00383840);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00383848);
 
@@ -399,11 +314,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00383BB0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00383FD8);
 
-/* localdecomp:start func_00384418 */
-void func_00384418(void) {
-    asm volatile("addiu $sp, $sp, 0x30");
-}
-/* localdecomp:end func_00384418 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00384418);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00384420);
 
@@ -457,13 +368,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003866E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003867F8);
 
-/* localdecomp:start func_003869E0 */
-void func_0038E2C0(u32 v0) {
-    __asm__ volatile (
-        "sw $2, 0($28)\n"
-    );
-}
-/* localdecomp:end func_003869E0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003869E0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003869E8);
 
@@ -683,11 +588,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003894A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003894E8);
 
-/* localdecomp:start func_003895E0 */
-void func_003895E0(void) {
-    asm volatile("sw $0, 0($24)" : : : "memory");
-}
-/* localdecomp:end func_003895E0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003895E0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003895E8);
 
@@ -695,21 +596,12 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003896E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003898C0);
 
-/* localdecomp:start func_00389900 */
-void func_00389900(void) {
-    asm volatile ("addiu $sp, $sp, 0x10");
-}
-/* localdecomp:end func_00389900 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00389900);
 
-/* localdecomp:start func_00389908 */
 extern s32 D_001D9C48;
 register char *_gpreg __asm__("$28");
 #define D_001D5B34 (*(s32 *)(_gpreg + -0x6d7c))
-s32 func_00389908(void) {
-    D_001D5B34 = D_001D9C48 - 1;
-    return D_001D5B34;
-}
-/* localdecomp:end func_00389908 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00389908);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00389920);
 
@@ -977,13 +869,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00393420);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00393428);
 
-/* localdecomp:start func_00393430 */
-register char *_gpreg __asm__("$28");
-#define D_001D5EE0 (*(s32 *)(_gpreg + -0x69d0))
-void func_00393430(void) {
-    if (D_001D5EE0 == 0) D_001D5EE0 = 1;
-}
-/* localdecomp:end func_00393430 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00393430);
 
 /* localdecomp:start func_00393448 */
 register char *_gpreg __asm__("$28");
@@ -1083,7 +969,6 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00395FE0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00395FF0);
 
-/* localdecomp:start func_00396100 */
 typedef struct {
     u8 pad0[0x10];
     s32 f10;
@@ -1094,13 +979,9 @@ typedef struct {
     s32 f17c;
 } S_142430;
 extern S_142430 D_00142430;
+
 extern s32 D_001D4CE8;
-void func_00396100(void) {
-    D_001D4CE8 = 4;
-    *(s32 *)((u8 *)&D_00142430 + 0x10) = 0;
-    *(s32 *)((u8 *)&D_00142430 + 0x17c) = 0;
-}
-/* localdecomp:end func_00396100 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00396100);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00396120);
 
@@ -1108,43 +989,11 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00396248);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00396298);
 
-/* localdecomp:start func_003962C0 */
-typedef struct {
-    u8 pad0[0x10];
-    s32 f10;
-    u8 pad1[0x150];
-    s32 f164;
-    s32 f168;
-    u8 pad2[0x10];
-    s32 f17c;
-} S_142430;
-extern S_142430 D_00142430;
 extern s32 D_001D4CE8;
-void func_003962C0(void) {
-    D_00142430.f164 = -1;
-    D_001D4CE8 = 6;
-    D_00142430.f168 = -1;
-}
-/* localdecomp:end func_003962C0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003962C0);
 
-/* localdecomp:start func_003962E8 */
-typedef struct {
-    u8 pad0[0x10];
-    s32 f10;
-    u8 pad1[0x150];
-    s32 f164;
-    s32 f168;
-    u8 pad2[0x10];
-    s32 f17c;
-} S_142430;
-extern S_142430 D_00142430;
 extern s32 D_001D4CE8;
-void func_003962E8(void) {
-    D_00142430.f164 = -1;
-    D_001D4CE8 = 6;
-    D_00142430.f168 = -1;
-}
-/* localdecomp:end func_003962E8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003962E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00396310);
 
@@ -1180,41 +1029,23 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003969B8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00396A28);
 
-/* localdecomp:start func_00396AE0 */
 extern s32 D_001D4CEC;
 extern s32 D_001D4CE8;
-void func_00396AE0(void) {
-    if ((D_001D4CEC & 0x40) == 0) {
-        D_001D4CE8 = 4;
-    }
-}
-/* localdecomp:end func_00396AE0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00396AE0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00396B08);
 
-/* localdecomp:start func_00396B50 */
 extern s32 D_00142438;
 extern s32 D_001D4CE8;
-void func_00396B50(void) {
-    if (D_00142438 != 2) {
-        D_001D4CE8 = 4;
-    }
-}
-/* localdecomp:end func_00396B50 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00396B50);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00396B78);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00396BC0);
 
-/* localdecomp:start func_00396C20 */
 extern s32 D_001D4CEC;
 extern s32 D_001D4CE8;
-void func_00396C20(void) {
-    if ((D_001D4CEC & 0x40) == 0) {
-        D_001D4CE8 = 4;
-    }
-}
-/* localdecomp:end func_00396C20 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00396C20);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00396C48);
 
@@ -1236,27 +1067,16 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00396FD0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00397058);
 
-/* localdecomp:start func_00397080 */
 extern s32 D_001D4CEC;
 extern s32 D_00142578;
 register char *_gpreg __asm__("$28");
 #define D_001D4CEC_gp (*(s32 *)(_gpreg + -0x7bc4))
-void func_00397080(void) {
-    s32 v = D_001D4CEC;
-    D_00142578 = 0;
-    D_001D4CEC_gp = v | 0x800;
-}
-/* localdecomp:end func_00397080 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00397080);
 
-/* localdecomp:start func_003970A0 */
 extern s32 D_001D4CEC;
 register char *_gpreg __asm__("$28");
 #define D_001D4CEC_gp (*(s32 *)(_gpreg + -0x7bc4))
-s32 func_003970A0(void) {
-    D_001D4CEC_gp = D_001D4CEC | 0x2000;
-    return D_001D4CEC_gp;
-}
-/* localdecomp:end func_003970A0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003970A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003970B8);
 
@@ -1266,45 +1086,25 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003970D0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00397100);
 
-/* localdecomp:start func_003971E8 */
 extern s32 D_001D4CEC;
 register char *_gpreg __asm__("$28");
 #define D_001D4CEC_gp (*(s32 *)(_gpreg + -0x7bc4))
-s32 func_003971E8(void) {
-    D_001D4CEC_gp = D_001D4CEC | 0x20;
-    return D_001D4CEC_gp;
-}
-/* localdecomp:end func_003971E8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003971E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00397200);
 
-/* localdecomp:start func_00397238 */
 extern s32 D_001D4CEC;
 register char *_gpreg __asm__("$28");
 #define D_001D4CEC_gp (*(s32 *)(_gpreg + -0x7bc4))
-void func_00397238(void) {
-    s32 v = D_001D4CEC;
-    v = v & ~0x20;
-    v = v & ~0x2000;
-    D_001D4CEC_gp = v;
-}
-/* localdecomp:end func_00397238 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00397238);
 
-/* localdecomp:start func_00397258 */
 extern s32 D_001D4CEC;
-s32 func_00397258(void) {
-    return (D_001D4CEC >> 6) & 1;
-}
-/* localdecomp:end func_00397258 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00397258);
 
-/* localdecomp:start func_00397270 */
 extern s32 D_001D4CEC;
 register char *_gpreg __asm__("$28");
 #define D_001D4CEC_gp (*(s32 *)(_gpreg + -0x7bc4))
-void func_00397270(void) {
-    D_001D4CEC_gp = D_001D4CEC & ~0x40;
-}
-/* localdecomp:end func_00397270 */
+INCLUDE_ASM("asm/nonmatchings/text", func_00397270);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00397288);
 
@@ -1422,13 +1222,7 @@ s32 func_0039A780(void) {
 }
 /* localdecomp:end func_0039A780 */
 
-/* localdecomp:start func_0039A7A8 */
-u16 func_0039A7A8(void *v1) {
-    asm volatile(
-        "lh $2, 0x2c($3)\n"
-    );
-}
-/* localdecomp:end func_0039A7A8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0039A7A8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039A7B0);
 
@@ -1510,19 +1304,7 @@ void func_0039BCA0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039BCC8);
 
-/* localdecomp:start func_0039BD08 */
-void func_0039BD08(void) {
-    __asm__ volatile (
-        "sync.p\n"
-        "mfc0 $8, $24\n"
-        "lui $9, 0x8fff\n"
-        "ori $9, $9, 0xffff\n"
-        "and $8, $8, $9\n"
-        "mtc0 $8, $24\n"
-        "sync.p\n"
-    );
-}
-/* localdecomp:end func_0039BD08 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0039BD08);
 
 /* localdecomp:start func_0039BD40 */
 s32 func_0039BD40(void) {
@@ -1535,12 +1317,8 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039BE90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039BEA0);
 
-/* localdecomp:start func_0039BEA8 */
 extern s32 D_001D5B90;
-s32 func_0039BEA8(s32 a0) {
-    return D_001D5B90 == a0;
-}
-/* localdecomp:end func_0039BEA8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0039BEA8);
 
 extern s32 D_001D5B90;
 extern s32 D_001D5B94;
@@ -1553,7 +1331,6 @@ extern s32 D_001D6D9C;
 extern s32 D_001D6DA0;
 extern s32 D_001D6DA8;
 
-/* localdecomp:start func_0039BEC0 */
 extern s32 D_001D5B90;
 extern s32 D_001D5B94;
 extern s32 D_001D4CEC;
@@ -1564,47 +1341,7 @@ extern s32 D_001D6DA4;
 extern s32 D_001D6D9C;
 extern s32 D_001D6DA0;
 extern s32 D_001D6DA8;
-
-s32 func_0039BEC0(s32 screenId, s32 mode, s32 arg2, s32 arg3, u8 *outPtr) {
-    s32 result;
-    u8 flag;
-
-    if (outPtr != 0) {
-        *outPtr = 0;
-    }
-
-    result = (D_001D5B90 == -2) ? 0 : -1;
-
-    if (mode == 1) {
-        result = (D_001D6DA4 < 8) ? result : -2;
-    }
-
-    flag = 0;
-    if (screenId >= 0) {
-        flag = D_001D5B78[screenId];
-    }
-    if (flag != 0) {
-        result = -3;
-    }
-
-    if (D_001A7430 == 0) {
-        if ((D_001D5B94 != 0) || ((D_001D4CEC & 1) == 0)) {
-            result = -1;
-        }
-    }
-
-    if (result == 0) {
-        D_001D5B90 = screenId;
-        D_001D6D9C = arg2;
-        D_001D6DA0 = arg3;
-        if (mode == 1) {
-            D_001DA050[D_001D6DA4++] = D_001D5B94;
-        }
-        D_001D6DA8 = (s32)outPtr;
-    }
-    return result;
-}
-/* localdecomp:end func_0039BEC0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0039BEC0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039BF98);
 
@@ -1612,13 +1349,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039C020);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039C028);
 
-/* localdecomp:start func_0039C158 */
-void func_0039C158(s32 a0, s32 *a1) {
-    if (a1) {
-        *a1 = a0;
-    }
-}
-/* localdecomp:end func_0039C158 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0039C158);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039C170);
 
@@ -1626,12 +1357,8 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039C1C8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039C210);
 
-/* localdecomp:start func_0039C2A8 */
 extern void func_0013CF40(s32);
-void func_0039C2A8(void) {
-    func_0013CF40(0x39D770);
-}
-/* localdecomp:end func_0039C2A8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0039C2A8);
 
 /* localdecomp:start func_0039C2C8 */
 void func_0039C2C8(s32 a0, s32 *a1) {
@@ -1659,13 +1386,8 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039CAB8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039CBA0);
 
-/* localdecomp:start func_0039CC70 */
-void func_0039CC70(void) {
-    asm volatile("sh $0, 0x52($2)");
-}
-/* localdecomp:end func_0039CC70 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0039CC70);
 
-/* localdecomp:start func_0039CC78 */
 typedef struct {
     u8 pad0[0x24];
     s32 f24;
@@ -1678,6 +1400,8 @@ typedef struct {
     u16 fc8;
 } S_1CCFD0;
 extern S_1CCFD0 D_001CCFD0;
+
+/* localdecomp:start func_0039CC78 */
 void func_0039CC78(void) {
     D_001CCFD0.f50 = 4;
     D_001CCFD0.fc8 = 4;
@@ -1717,39 +1441,14 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039D9C8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039DA08);
 
-/* localdecomp:start func_0039DA48 */
-void func_0039DA48(s32 a0, s32 a1) {
-    if (a1 != 0) {
-        *(s32 *)(a1 + 0x14) = a0;
-    }
-}
-/* localdecomp:end func_0039DA48 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0039DA48);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039DA60);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039DAD0);
 
-/* localdecomp:start func_0039DAE0 */
-typedef struct {
-    u8 pad0[0x24];
-    s32 f24;
-    s32 f28;
-    u8 pad1[0x24];
-    u16 f50;
-    u8 pad2[0x78 - 0x52];
-    u16 f78;
-    u8 pad3[0xc8 - 0x7a];
-    u16 fc8;
-} S_1CCFD0;
-extern S_1CCFD0 D_001CCFD0;
 extern s32 D_001D6DE8;
-void func_0039DAE0(s32 a0, s32 a1) {
-    if (D_001D6DE8 == 0) {
-        D_001CCFD0.f24 = a0;
-        D_001CCFD0.f28 = a1;
-    }
-}
-/* localdecomp:end func_0039DAE0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_0039DAE0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039DB00);
 
@@ -1814,13 +1513,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039FFF0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A0010);
 
-/* localdecomp:start func_003A00D0 */
-void func_003A00D0(s32 a0, s32 a1) {
-    if (a1 != 0) {
-        *(s32 *)(a1 + 0) = a0;
-    }
-}
-/* localdecomp:end func_003A00D0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A00D0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A00E8);
 
@@ -1882,11 +1575,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A2EE0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A3028);
 
-/* localdecomp:start func_003A30D8 */
-void func_003A30D8(void) {
-    asm volatile("addiu $29, $29, 0x30");
-}
-/* localdecomp:end func_003A30D8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A30D8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A30E0);
 
@@ -1969,142 +1658,12 @@ void func_003A4758(char a0) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A4760);
 
-/* localdecomp:start func_003A4768 */
-typedef struct {
-    s32 f0;
-    s32 f4;
-    s32 f8;
-    s32 fC;
-} LoopElement;
-
-typedef struct {
-    char pad0[12];
-    f32 float_0C;
-    s32 offset_10;
-    s32 offset_14;
-    s32 offset_18;
-    s32 offset_1C;
-    s32 offset_20;
-} ObjContext;
-
-s32 func_003A4768(ObjContext *a0) {
-    register ObjContext *t0 __asm__("t0");
-    s32 off10, off14, off18, off1C, off20;
-    s32 calc_10, calc_14, calc_18, calc_1C;
-    f32 float_val;
-    f32 fpu_result;
-    s32 loop_control_count;
-    LoopElement *src_ptr;
-    char *dest_array;
-    s32 i;
-    s32 shift_constant;
-    register s32 val0 __asm__("$2");
-    register s32 val4 __asm__("$3");
-    register s32 val8 __asm__("$4");
-    register s32 valC __asm__("$6");
-
-    __asm__ volatile("daddu %0, %1, $0" : "=r"(t0) : "r"(a0));
-
-    off10 = t0->offset_10;
-    off14 = t0->offset_14;
-    off18 = t0->offset_18;
-    off1C = t0->offset_1C;
-    off20 = t0->offset_20;
-
-    calc_10 = off10 + (s32)t0;
-    calc_14 = off14 + (s32)t0;
-    calc_18 = off18 + (s32)t0;
-    calc_1C = off1C + (s32)t0;
-
-    __asm__ volatile("" : : "r"(calc_1C), "r"(calc_14), "r"(calc_18));
-    t0->offset_10 = calc_1C;
-    t0->offset_14 = calc_14;
-    t0->offset_18 = calc_18;
-
-    if (off20 != 0) {
-        t0->offset_20 = calc_10 + off1C;
-    }
-
-    float_val = t0->float_0C;
-    fpu_result = float_val * 0.0032114223f;
-
-    loop_control_count = (s32)((s16 *)calc_14)[3]; 
-    src_ptr = (LoopElement *)t0->offset_18;
-
-    t0->float_0C = fpu_result;
-
-    if (loop_control_count > 0) {
-        shift_constant = 0x1E;
-        
-        for (i = 0; i < loop_control_count; i++) {
-            val0 = src_ptr->f0;
-            val4 = src_ptr->f4;
-            val8 = src_ptr->f8;
-            valC = src_ptr->fC;
-
-            val0 = val0 >> 4;
-            val4 = val4 >> 4;
-            val8 = shift_constant - val8;
-            valC = shift_constant - valC;
-
-            dest_array = (char *)t0->offset_18;
-
-            *(s16 *)(dest_array + (i << 4) + 0)  = (s16)val8;
-            *(s16 *)(dest_array + (i << 4) + 2)  = (s16)valC;
-            *(s16 *)(dest_array + (i << 4) + 4)  = (s16)val0;
-            *(s16 *)(dest_array + (i << 4) + 6)  = (s16)val4;
-
-            *(s16 *)(dest_array + (i << 4) + 8)  = (s16)val8;
-            *(s16 *)(dest_array + (i << 4) + 10) = (s16)val0;
-            *(s16 *)(dest_array + (i << 4) + 12) = (s16)val4;
-            *(s16 *)(dest_array + (i << 4) + 14) = (s16)valC;
-
-            __asm__ volatile("" : "+r"(src_ptr));
-            src_ptr++;
-        }
-    }
-
-    __asm__ volatile("" : : "r"(loop_control_count), "r"(src_ptr));
-
-    return 0;
-}
-/* localdecomp:end func_003A4768 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A4768);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A4860);
 
-/* localdecomp:start func_003A4A20 */
 extern int D_001DA0D0[];
-
-int func_003A4A20(void) {
-    register char *_gpreg __asm__("$28");
-    register int *reg_v1 __asm__("v1");
-    register int *reg_v0 __asm__("v0");
-    register int *reg_a0 __asm__("a0");
-    register int *reg_a1 __asm__("a1");
-
-    reg_v1 = (int *)D_001DA0D0;
-    reg_v0 = (int *)0x30000003;
-    reg_a0 = (int *)(_gpreg + -18560);
-    *reg_v1 = (int)reg_v0;
-
-    reg_a1 = (int *)0x50000003;
-    reg_v0 = (int *)D_001DA0D0;
-    *(reg_v0 + 1) = (int)reg_a0;
-
-    reg_v1 = (int *)D_001DA0D0;
-    *(reg_v1 + 2) = 0;
-
-    reg_a0 = (int *)D_001DA0D0;
-    *(reg_a0 + 3) = (int)reg_a1;
-
-    reg_v0 = (int *)D_001DA0D0;
-    reg_v0 = (int *)((char *)reg_v0 + 16);
-
-    *(int *)(_gpreg + -10208) = (int)reg_v0;
-
-    return (int)reg_v0;
-}
-/* localdecomp:end func_003A4A20 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A4A20);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A4A78);
 
@@ -2114,91 +1673,12 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A4E70);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A53B0);
 
-/* localdecomp:start func_003A53E0 */
-// External routine archetype mapping to absolute function location 0x00116F98
 extern void func_00116F98(s32 *a0, s32 a1, s32 *a2);
-
-s32 func_003A53E0(s32 *s0, f32 f12) {
-    // Pinning the local float variable to register $f20 perfectly generates
-    // the target's exact entry block copy instruction "mov.s $f20, $f12" at 18:
-    register f32 f20 __asm__("$f20") = f12;
-    
-    f32 f0, f1, f2;
-
-    // Condition check block matching 'bnez $s0, 34' at offset 14:
-    if (s0 == 0) {
-        // Calculating addresses via upper boundaries prevents constant folding,
-        // natively generating the exact 'addiu' instructions at 24: and 28:
-        s32 *a0_ptr = (s32 *)((char *)0x1E0000 - 32592); // -0x7f50
-        s32 *a2_ptr = (s32 *)((char *)0x1E0000 - 32568); // -0x7f38
-        
-        func_00116F98(a0_ptr, 0x3D, a2_ptr);
-    }
-
-    // =========================================================================
-    // FLOATING POINT LIFECYCLE MATH (Offsets 34: through 64:)
-    // =========================================================================
-    f1 = 1.0f;
-    f0 = -1.0f;
-
-    f0 = f0 - f20;
-    f2 = f20 * f1;
-
-    // Storing components out sequentially into the object structure base pointer
-    ((f32 *)s0)[0] = f20; // swc1 $f20, 0($s0)
-    ((f32 *)s0)[1] = f2;  // swc1 $f2, 4($s0)
-    ((f32 *)s0)[2] = f0;  // swc1 $f0, 8($s0)
-    ((f32 *)s0)[3] = f1;  // swc1 $f1, 0xc($s0)
-
-    return 0;
-}
-/* localdecomp:end func_003A53E0 */
-
-/* localdecomp:start func_003A5458 */
-typedef struct {
-    int unknown_0;       /* Offset 0x00 */
-    s32 field_4;         /* Offset 0x04 */
-    char pad_8[0x110];   /* Offset 0x08 */
-    s32 field_118;       /* Offset 0x118 */
-} GameContext;
+INCLUDE_ASM("asm/nonmatchings/text", func_003A53E0);
 
 extern char D_001D8160[];
 extern void func_003A53B0(void);
-
-s32 func_003A5458(GameContext* ctx) {
-#if !defined(PORTABLE) && !defined(PC_PORT)
-    // TARGET MATCHING: Replicates the original hand-written PS2 assembly
-    __asm__ (
-        ".set noreorder\n\t"
-        "sw    $0,  0x118($4)\n\t"  /* 0:  sw $zero, 0x118($a0) */
-        "nop\n\t"                   /* 4:  nop                  */
-        "addiu $29, $29, 0x10\n\t"  /* 8:  addiu $sp, $sp, 0x10 */
-        "nop\n\t"                   /* c:  nop                  */
-        "addiu $29, $29, 0x30\n\t"  /* 10: addiu $sp, $sp, 0x30 */
-        "nop\n\t"                   /* 14: nop                  */
-        "addiu $29, $29, 0x20\n\t"  /* 18: addiu $sp, $sp, 0x20 */
-        "nop\n\t"                   /* 1c: nop                  */
-        "addiu $29, $29, -0x10\n\t" /* 20: addiu $sp, $sp, -0x10*/
-        "lui   $2,  0x1e\n\t"       /* 24: lui   $v0, 0x1e      */
-        "addiu $2,  $2, -32416\n\t" /* 28: addiu $v0, $v0, -0x7ea0 */
-        "sd    $31, 0($29)\n\t"     /* 2c: sd $ra, 0($sp)       */
-        "jal   func_003A53B0\n\t"   /* 30: jal 3a53b0           */
-        "sw    $2,  4($4)\n\t"      /* 34: sw $v0, 4($a0)       */
-        "ld    $31, 0($29)\n\t"     /* 38: ld $ra, 0($sp)       */
-        "jr    $31\n\t"             /* 3c: jr $ra               */
-        "addiu $29, $29, 0x10\n\t"  /* 40: addiu $sp, $sp, 0x10 */
-        ".set reorder"
-    );
-    return 0; 
-#else
-    // NATIVE PORT: Clean, logical C for your PC port compilation
-    ctx->field_118 = 0;
-    ctx->field_4 = 0x001D8160;
-    func_003A53B0();
-    return 0;
-#endif
-}
-/* localdecomp:end func_003A5458 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A5458);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A54A0);
 
@@ -2242,23 +1722,13 @@ void func_003A58A0(void) {
 }
 /* localdecomp:end func_003A58A0 */
 
-/* localdecomp:start func_003A58C0 */
 extern s32 D_001D8118;
 extern void func_003A5620(void *);
-void func_003A58C0(void *a0) {
-    *(s32 *)a0 = (s32)&D_001D8118;
-    func_003A5620(a0);
-}
-/* localdecomp:end func_003A58C0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A58C0);
 
-/* localdecomp:start func_003A58E0 */
 extern s32 D_001D8100;
 extern void func_003A5620(void *);
-void func_003A58E0(void *a0) {
-    *(s32 *)a0 = (s32)&D_001D8100;
-    func_003A5620(a0);
-}
-/* localdecomp:end func_003A58E0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A58E0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A5900);
 
@@ -2305,12 +1775,8 @@ void func_003A5A50(void *a0, f32 a1, f32 a2, f32 a3, f32 a4) {
 }
 /* localdecomp:end func_003A5A50 */
 
-/* localdecomp:start func_003A5A78 */
 extern s32 D_001D8218;
-void func_003A5A78(void *a0) {
-    *(s32 *)((u8 *)a0 + 0x24) = (s32)&D_001D8218;
-}
-/* localdecomp:end func_003A5A78 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A5A78);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A5A90);
 
@@ -2358,11 +1824,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A5FB8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A6190);
 
-/* localdecomp:start func_003A61C8 */
-void func_003A61C8(void) {
-    asm volatile("addiu $sp, $sp, 0x20");
-}
-/* localdecomp:end func_003A61C8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A61C8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A61D0);
 
@@ -2376,22 +1838,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A63E0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A6410);
 
-/* localdecomp:start func_003A6448 */
-void func_003A6448(void) {
-    asm volatile("addiu $sp, $sp, 0x20");
-}
-/* localdecomp:end func_003A6448 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A6448);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A6450);
 
-/* localdecomp:start func_003A64B0 */
 extern s32 D_001D81D0;
 extern void func_003A5BC0(void *);
-void func_003A64B0(void *a0) {
-    *(s32 *)((u8 *)a0 + 0x24) = (s32)&D_001D81D0;
-    func_003A5BC0(a0);
-}
-/* localdecomp:end func_003A64B0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A64B0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A64D8);
 
@@ -2433,11 +1886,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A6880);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A6888);
 
-/* localdecomp:start func_003A6908 */
-void func_003A6908(void) {
-    asm volatile("addiu $sp, $sp, 0x10");
-}
-/* localdecomp:end func_003A6908 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A6908);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A6910);
 
@@ -2537,13 +1986,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A7F80);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A7F90);
 
-/* localdecomp:start func_003A7FC8 */
-void func_003A7FC8(void *a0, s32 a1, f32 a2, f32 a3) {
-    u8 *p = (u8 *)a0 + a1 * 4;
-    *(f32 *)(p + 0xc) = a3;
-    *(f32 *)p = a2;
-}
-/* localdecomp:end func_003A7FC8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A7FC8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A7FE0);
 
@@ -2577,74 +2020,18 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A9AC0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9AE8);
 
-/* localdecomp:start func_003A9B10 */
 extern void func_003A6880(void *);
 extern void func_003A9768(void *);
 extern void func_00121760(void *, void *);
 extern void func_0039D668(void *, s32, s32);
 extern void func_003A6888(void *, s32, void *, s32);
-extern void func_0011A264_2(void *, s32, s32);
 extern void func_0011F0A0(s32);
 extern void func_0039D6C8(s32);
 extern void func_003A6790(void *);
 extern void func_003A9890(void *, void *, void *);
 extern s32 D_001D5C78;
 extern u8 D_00160C40[];
-
-void *func_003A9B10(void *a0, s32 a1) {
-    s32 i;
-    s32 *p;
-    void *s0;
-    s32 sizeParam;
-
-    p = (s32 *)((u8 *)a0 + 4);
-    for (i = 0x707; i != -1; i--) {
-        p[0] = 0;
-        p[1] = 0;
-        p[2] = 0;
-        p[3] = 0;
-        p += 4;
-    }
-
-    func_003A6880((u8 *)a0 + 0x1fc90);
-    func_003A9768((u8 *)a0 + 0x1fca8);
-    func_00121760((u8 *)0x1e0000 - 0x7890, a1);
-
-    sizeParam = 0x24f10;
-    D_001D5C78 = (s32)a0;
-    *(u32 *)a0 = ((u32)a0 + sizeParam + 3) & ~3;
-
-    s0 = (u8 *)a0 + 0x20000;
-    *(s32 *)((u8 *)s0 + 0x4dc8) = sizeParam;
-
-    func_0039D668((u8 *)a0 + 0x7090,
-                   *(s32 *)(D_00160C40 + 0x61c8) + *(s32 *)(D_00160C40 + 0x4954),
-                   *(s32 *)(D_00160C40 + 0x61cc));
-
-    func_003A6888((u8 *)a0 + 0x1fc90, 0x10, (u8 *)a0 + 4, 0x7080);
-
-    *(s32 *)((u8 *)s0 + 0x4dec) = 0;
-    *(s32 *)((u8 *)s0 + 0x4dcc) = 0;
-    *(s32 *)((u8 *)s0 + 0x4dd0) = 0;
-    *(s32 *)((u8 *)s0 + 0x4dd4) = 0;
-    *(s32 *)((u8 *)s0 + 0x4dd8) = 0;
-    *(s32 *)((u8 *)s0 + 0x4de4) = 0;
-    func_0011A264((u8 *)a0 + 0x24df0, 0, 0x20);
-    *(s32 *)((u8 *)s0 + 0x4de8) = 0;
-
-    func_0011A264((u8 *)a0 + 0x24e10, 0, 0x100);
-    func_0011F0A0(0);
-
-    for (i = 1; i < 8; i++) {
-    }
-
-    func_0039D6C8(1);
-    func_003A6790((u8 *)a0 + 0x7090);
-    func_003A9890((u8 *)a0 + 0x1fca8, a0, (u8 *)a0 + 0x1fc90);
-
-    return a0;
-}
-/* localdecomp:end func_003A9B10 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A9B10);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9CE8);
 
@@ -2821,11 +2208,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003ACD38);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ACED0);
 
-/* localdecomp:start func_003ACFD0 */
-void func_003ACFD0(void) {
-    asm volatile("addiu $sp, $sp, 0x10");
-}
-/* localdecomp:end func_003ACFD0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003ACFD0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ACFD8);
 
@@ -2869,11 +2252,7 @@ s32 func_003AD0E0(s32 arg0) {
 }
 /* localdecomp:end func_003AD0E0 */
 
-/* localdecomp:start func_003AD100 */
-void func_003AD100(void) {
-    asm volatile("addiu $sp, $sp, 0x20");
-}
-/* localdecomp:end func_003AD100 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003AD100);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AD108);
 
@@ -2940,14 +2319,9 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003ADBB0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ADC68);
 
-/* localdecomp:start func_003ADC70 */
 extern s32 D_001D8888;
 extern s32 D_001D888C;
-void func_003ADC70(s32 a0) {
-    D_001D8888 = a0;
-    D_001D888C = 0;
-}
-/* localdecomp:end func_003ADC70 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003ADC70);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ADC80);
 
@@ -3090,11 +2464,7 @@ void func_003AFA70(s32 arg0) {
 }
 /* localdecomp:end func_003AFA70 */
 
-/* localdecomp:start func_003AFA90 */
-s32 func_003AFA90(s32 a0) {
-    return a0 * 0x9000 + 0x3336D0;
-}
-/* localdecomp:end func_003AFA90 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003AFA90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AFAA8);
 
@@ -3166,12 +2536,8 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B1030);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B1068);
 
-/* localdecomp:start func_003B1098 */
 extern s32 D_001D8A70;
-void func_003B1098(void) {
-    D_001D8A70 = 4;
-}
-/* localdecomp:end func_003B1098 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003B1098);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B10A8);
 
@@ -3247,14 +2613,9 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B41F8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B4220);
 
-/* localdecomp:start func_003B42C0 */
 extern s32 D_001D8C0C;
 extern s32 D_001D8C10;
-void func_003B42C0(s32 a0, s32 a1) {
-    D_001D8C0C = a0;
-    D_001D8C10 = a1;
-}
-/* localdecomp:end func_003B42C0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003B42C0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B42D0);
 
@@ -3359,12 +2720,8 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B5A70);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B5AB0);
 
-/* localdecomp:start func_003B5BD0 */
 extern s32 D_001D8C18;
-void func_003B5BD0(void) {
-    *(u8 *)&D_001D8C18 = 1;
-}
-/* localdecomp:end func_003B5BD0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003B5BD0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B5BE0);
 
@@ -3383,7 +2740,7 @@ typedef struct {
 
 extern TargetStruct_0037BA20 D_0037BA20;
 
-void func_003B0D98(s32 arg_a0) {
+void func_003B5C08(s32 arg_a0) {
     D_0037BA20.field_74 = 1;
     D_0037BA20.field_78 = arg_a0;
 }
@@ -3714,8 +3071,8 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BE340);
 // Bypass the C compiler entirely so it stops adding jr $ra
 __asm__(    
     ".section .text\n"
-    ".global func_0038E3A0\n"
-    "func_0038E3A0:\n"
+    ".global func_003BE3A0\n"
+    "func_003BE3A0:\n"
     "addiu $29, $29, 0x30\n"
     "nop\n"
     "addiu $2, $0, 0xff\n"
@@ -3833,11 +3190,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BFD10);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BFD90);
 
-/* localdecomp:start func_003BFDB0 */
-void func_003BFDB0(void) {
-    asm volatile("addiu $sp, $sp, 0x10");
-}
-/* localdecomp:end func_003BFDB0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003BFDB0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BFDB8);
 
@@ -3917,11 +3270,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003C7AD8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C7AE8);
 
-/* localdecomp:start func_003C7B90 */
-void func_003C7B90(void) {
-    asm volatile("addiu $sp, $sp, 0x10");
-}
-/* localdecomp:end func_003C7B90 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003C7B90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C7B98);
 
@@ -4071,11 +3420,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003CF790);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D00C0);
 
-/* localdecomp:start func_003D00F0 */
-s32 func_003D00F0(void) {
-    __asm__ volatile("addi $2, $0, -1");
-}
-/* localdecomp:end func_003D00F0 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003D00F0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D00F8);
 
@@ -4324,12 +3669,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E06D0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E0770);
 
-/* localdecomp:start func_003E0780 */
-s32 func_003E0780(void *a0, s32 a1) {
-    void *arr = *(void **)a0;
-    return *(s32 *)((u8 *)arr + a1 * 4 + 0xdc);
-}
-/* localdecomp:end func_003E0780 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003E0780);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E0798);
 
@@ -4389,12 +3729,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E16B8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1760);
 
-/* localdecomp:start func_003E1770 */
-s32 func_003E1770(void *a0, s32 a1) {
-    void *arr = *(void **)((u8 *)a0 + 4);
-    return *(s32 *)((u8 *)arr + a1 * 4 + 0x18);
-}
-/* localdecomp:end func_003E1770 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003E1770);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1788);
 
@@ -4436,7 +3771,6 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E1B68);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1B90);
 
-/* localdecomp:start func_003E1B98 */
 typedef struct {
     s32 field_0;        /* Offset 0x00 - Targeted by sw $zero, 0($a0) */
     s32 field_4;        /* Offset 0x04 - Padding */
@@ -4444,25 +3778,7 @@ typedef struct {
 } TargetStruct;
 
 extern char D_001D96B0[];
-
-void func_003B0DA8(TargetStruct* ctx) {
-    // 0: lui $v0, 0x1e
-    // 4: addiu $v0, $v0, -0x6950
-    // Casting the global symbol reference directly to a generic void pointer 
-    // forces ee-gcc to load the address directly into scratch register $v0 ($2) 
-    // and keep it active across the subsequent assignments.
-    void* symbol_ptr = (void*)D_001D96B0;
-
-    // 8: sw $zero, 0($a0)
-    ctx->field_0 = 0;
-
-    // c: sw $v0, 8($a0)
-    // Writing the staged pointer directly to the struct field completes the sequence.
-    // The -O2 optimizer will automatically bundle this block into the jr $ra return sequence,
-    // naturally leaving the 'move $v0, $a0' (0x80102d) signature inside the exit delay slot!
-    ctx->field_8 = symbol_ptr;
-}
-/* localdecomp:end func_003E1B98 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003E1B98);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1BB0);
 
@@ -5084,7 +4400,7 @@ s32 func_003EB500(void *a0, f32 *a1) {
 /* localdecomp:end func_003EB500 */
 
 /* localdecomp:start func_003EB518 */
-s32 func_063E8518(u32 a0, u32 a1, u32 a2) {
+s32 func_003EB518(u32 a0, u32 a1, u32 a2) {
     u32 ptr;
 
     ptr = *(u32 *)(a0 + 0x2C);
@@ -5181,11 +4497,7 @@ s32 func_003ECDC0(s32 a0, s32 a1) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ECDC8);
 
-/* localdecomp:start func_003ECDD8 */
-void func_003ECDD8(void) {
-    asm volatile("addiu $2, $0, 0x1");
-}
-/* localdecomp:end func_003ECDD8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003ECDD8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ECDE0);
 

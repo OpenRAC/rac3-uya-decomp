@@ -57,7 +57,7 @@ HEADER_OBJ := $(BUILD_DIR)/asm/header.s.o
 # step producing text.c.o with everything in it.
 TEXT_OBJ := $(BUILD_DIR)/src/text.c.o
 
-.PHONY: all clean check
+.PHONY: all clean check objdiff
 all: check
 
 # -I include: every splat-generated .s (data segments, per-function
@@ -97,3 +97,23 @@ check: $(TARGET_BIN)
 
 clean:
 	@if exist "$(subst /,\,$(BUILD_DIR))" rmdir /s /q "$(subst /,\,$(BUILD_DIR))"
+
+# --- objdiff progress report inputs ---------------------------------------
+# target: the full-build text.c.o. Only copied after `check` has confirmed
+#         MATCH, so every function in it (asm or C) is proven retail-exact.
+# base:   the same text.c compiled with -DOBJDIFF_BASE, which makes every
+#         INCLUDE_ASM expand to nothing (see include/include_asm.h). It holds
+#         only the decompiled C functions, so objdiff reports
+#         "decompiled / total" instead of 100%.
+OBJDIFF_TARGET := $(BUILD_DIR)/objdiff/target/text.o
+OBJDIFF_BASE   := $(BUILD_DIR)/objdiff/base/text.o
+
+objdiff: check $(OBJDIFF_TARGET) $(OBJDIFF_BASE)
+
+$(OBJDIFF_TARGET): $(TEXT_OBJ) $(TARGET_BIN)
+	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
+	copy /Y "$(subst /,\,$(TEXT_OBJ))" "$(subst /,\,$@)" >nul
+
+$(OBJDIFF_BASE): src/text.c include/include_asm.h
+	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
+	"$(CC)" -c $(CFLAGS) -DOBJDIFF_BASE -o "$@" "$<"

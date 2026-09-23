@@ -37,7 +37,7 @@ jobs:
       - name: Generate progress report
         shell: pwsh
         run: |
-           objdiff-cli.exe report generate -o build/report.json
+          objdiff-cli.exe report generate -o build/report.json
 
       - name: Upload report artifact
         uses: actions/upload-artifact@v4

@@ -1,16 +1,5 @@
 name: Build and report progress
 
-# Runs on YOUR self-hosted Windows runner only -- never on a GitHub-hosted
-# runner -- because the SN ProDG toolchain (ee-gcc/ee-ld/etc) is not
-# redistributable and must never be uploaded into this repo or any CI
-# image. This workflow assumes the toolchain is already installed on the
-# runner machine itself, exactly as it is for your local manual builds.
-#
-# If your repo is public, make sure required-approval-for-first-time-
-# contributors is turned on under Settings -> Actions -> General before
-# relying on this, since a self-hosted runner on a public repo can
-# otherwise be driven by an untrusted PR.
-
 on:
   push:
     branches: [main]

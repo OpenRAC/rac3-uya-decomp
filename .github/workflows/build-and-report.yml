@@ -18,33 +18,12 @@ on:
 
 jobs:
   build-and-report:
-    # Match this to whatever label(s) you gave the runner during setup.
-    # "self-hosted" alone would match ANY self-hosted runner on the repo/org;
-    # naming it specifically avoids accidentally scheduling this on a
-    # different machine later.
     runs-on: [self-hosted, windows, ps2-toolchain]
 
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
 
-      # This is the SAME command you already run locally, just without the
-      # interactive redirect-and-eyeball-the-log step -- it lets the
-      # exit code speak for itself instead. Only frontbin has a splat
-      # project + Makefile right now, so this only builds frontbin; every
-      # other unit in objdiff.json intentionally has no base_path, which
-      # is what makes them report as 0%/not-yet-started rather than
-      # erroring or being silently skipped.
-      #
-      # $LASTEXITCODE is checked explicitly because make.exe can still
-      # exit 0 after printing errors to stdout in some misconfigurations --
-      # worth confirming that's NOT the case here before trusting this
-      # blindly, but checking the real exit code is the correct default
-      # regardless.
-      # Confirmed: frontbin.splat.yaml, the retail frontbin.elf, and the
-      # Makefile all live at repo root (ratchet-uya-decomp\), and that's
-      # also where actions/checkout@v4 places the checkout by default --
-      # so no working-directory override is needed.
       - name: Build frontbin
         shell: pwsh
         run: |
@@ -60,11 +39,7 @@ jobs:
         with:
           name: build_log
           path: build_log.txt
-
-      # objdiff-cli itself IS safe to fetch in CI (it's not the SN
-      # toolchain, it's an open-source diffing tool) -- installed here
-      # rather than assumed pre-installed on the runner, so this step is
-      # reproducible even if the runner is reconfigured later.
+          
       - name: Install objdiff-cli
         shell: pwsh
         run: |
@@ -81,7 +56,5 @@ jobs:
       - name: Upload report artifact
         uses: actions/upload-artifact@v4
         with:
-          # decomp.dev expects this "<version>_report" naming convention
-          # when it polls the repo's workflow artifacts.
           name: v1_report
           path: build/report.json

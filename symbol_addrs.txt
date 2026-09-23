@@ -1,2 +1,0 @@
-func_0011A264 = 0x0011A264; // absolute:True
-D_00143950_b = 0x00143950; // absolute:True

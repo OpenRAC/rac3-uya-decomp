@@ -7,23 +7,12 @@ build/
 *.pyc
 localdecomp/
 build_log.txt
-reloc_addrs.txt
-symbol_addrs_resolved.txt
-undefined_funcs_auto.txt
-undefined_syms_auto.txt
 tmp.c
 flagtest.c
-test_common.h
-test_diff.bat
-test_func*.ld
-test_func*.o
-test_func*.elf
-test_func_disasm.txt
 source.bin
 target.bin
 diff_settings.py
 func_*_candidate*.c
-New folder/
 RequestScreenTransition.c
 .vscode/
 Thumbs.db

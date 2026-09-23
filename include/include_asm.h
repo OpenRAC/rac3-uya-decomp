@@ -3,6 +3,13 @@
 
 #if !defined(M2CTX) && !defined(PERMUTER)
 
+/* objdiff "base" build (make objdiff): drop every not-yet-decompiled function
+ * so the object only contains real C. objdiff then counts those as missing. */
+#ifdef OBJDIFF_BASE
+#define INCLUDE_ASM(FOLDER, NAME)
+#define INCLUDE_RODATA(FOLDER, NAME)
+#endif
+
 #ifndef INCLUDE_ASM
 #define INCLUDE_ASM(FOLDER, NAME) \
     __asm__( \

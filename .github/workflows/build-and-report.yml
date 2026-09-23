@@ -13,15 +13,18 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
-      - name: Copy retail reference binaries
+      # Retail frontbin.elf is copyrighted and gitignored; check_match.py needs it.
+      - name: Copy retail frontbin.elf
         shell: pwsh
         run: |
-          Copy-Item "C:\decomp-refs\*" -Destination "." -Recurse -Force
+          Copy-Item "C:\decomp-refs\frontbin.elf" -Destination "frontbin.elf" -Force
 
-      - name: Build frontbin
+      # `make objdiff` runs the full build + MATCH check first, then produces
+      # build/objdiff/target/text.o and build/objdiff/base/text.o.
+      - name: Build frontbin and objdiff inputs
         shell: pwsh
         run: |
-          & "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe" *> build_log.txt
+          & "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe" objdiff *> build_log.txt
           if ($LASTEXITCODE -ne 0) {
             Get-Content build_log.txt
             throw "make.exe failed (exit $LASTEXITCODE) -- see build_log.txt above"

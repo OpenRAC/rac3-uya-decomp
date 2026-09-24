@@ -2992,7 +2992,11 @@ s32 func_003B4990(s32 a0, s32 a1) {
 }
 /* localdecomp:end func_003B4990 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B49A0);
+/* localdecomp:start func_003B49A0 */
+s32 func_003B49A0(s32 a0, s32 a1) {
+    return a1 + 0x4F00A9;
+}
+/* localdecomp:end func_003B49A0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B49B0);
 

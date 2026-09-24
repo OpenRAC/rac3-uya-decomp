@@ -2542,7 +2542,13 @@ s32 func_003AD788(void *p) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AD798);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AD7F8);
+/* localdecomp:start func_003AD7F8 */
+void func_003AD7F8(volatile s32 *p) {
+    if (p[3] > 0) {
+        p[3]--;
+    }
+}
+/* localdecomp:end func_003AD7F8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AD818);
 

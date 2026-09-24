@@ -111,7 +111,7 @@ s32 func_0037DCE8(void) {
 /* localdecomp:end func_0037DCE8 */
 
 /* localdecomp:start func_0037DCF0 */
-s32 func_0037DCFB(void) {
+s32 func_0037DCF0(void) {
     return 0;
 }
 /* localdecomp:end func_0037DCF0 */
@@ -161,13 +161,15 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0037DF20);
 INCLUDE_ASM("asm/nonmatchings/text", func_0037DF28);
 
 /* localdecomp:start func_0037DF98 */
-s32 func_0037DF98(void) {
+extern s32 func_0037DF28(s32);
+
+s32 func_0037DF98(s32 id) {
     register u8 *gp __asm__("gp");
     s32 index;
     s32 fallback;
     s32** basePtr;
 
-    index = func_0037DF28();
+    index = func_0037DF28(id);
     fallback = (s32)(gp - 0x7128);
     
     // Pattern Library Scheduling Fence: Passing both operands forces the 
@@ -187,7 +189,6 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0037DFD8);
 
 /* localdecomp:start func_0037E030 */
 extern s32 func_0037DFD8(void);
-extern void func_0037DF98(s32);
 void func_0037E030(void) {
     func_0037DF98(func_0037DFD8());
 }

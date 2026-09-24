@@ -1999,7 +1999,11 @@ void func_003A6770(void *a0, s32 a1) {
 }
 /* localdecomp:end func_003A6770 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A6788);
+/* localdecomp:start func_003A6788 */
+void func_003A6788(void *p, s32 value) {
+    *(s32 *)((u8 *)p + 0x38) = value;
+}
+/* localdecomp:end func_003A6788 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A6790);
 

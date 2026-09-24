@@ -4924,6 +4924,10 @@ s32 *func_003ECDC8(s32 *p) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ECDD8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ECDE0);
+/* localdecomp:start func_003ECDE0 */
+s32 func_003ECDE0(s32 *p) {
+    return *p != 0;
+}
+/* localdecomp:end func_003ECDE0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ECDF0);

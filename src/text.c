@@ -2517,7 +2517,12 @@ s32 func_003AD6A8(void) {
 }
 /* localdecomp:end func_003AD6A8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AD6B0);
+/* localdecomp:start func_003AD6B0 */
+void func_003AD6B0(void *p) {
+    *(volatile s32 *)((u8 *)p + 0xC) = 0;
+    *(volatile s32 *)((u8 *)p + 0x8) = 0;
+}
+/* localdecomp:end func_003AD6B0 */
 
 /* localdecomp:start func_003AD6C0 */
 s32 func_003AD6C0(void *a0) {

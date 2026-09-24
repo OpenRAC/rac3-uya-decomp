@@ -1952,7 +1952,11 @@ extern s32 D_001D81D0;
 extern void func_003A5BC0(void *);
 INCLUDE_ASM("asm/nonmatchings/text", func_003A64B0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A64D8);
+/* localdecomp:start func_003A64D8 */
+void func_003A64D8(void *p, s32 value) {
+    *(s32 *)((u8 *)p + 0x3C) = value;
+}
+/* localdecomp:end func_003A64D8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A64E0);
 

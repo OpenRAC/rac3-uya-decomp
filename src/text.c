@@ -2110,7 +2110,11 @@ void func_003A7F58(InitContext* ctx) {
 }
 /* localdecomp:end func_003A7F58 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A7F78);
+/* localdecomp:start func_003A7F78 */
+void func_003A7F78(void *p, s32 value) {
+    *(s32 *)((u8 *)p + 0x80) = value;
+}
+/* localdecomp:end func_003A7F78 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A7F80);
 

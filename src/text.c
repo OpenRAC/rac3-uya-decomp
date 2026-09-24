@@ -4233,7 +4233,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E16B8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1760);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1770);
+/* localdecomp:start func_003E1770 */
+typedef struct { u8 pad[0x18]; s32 arr[1]; } S_3E1770;
+ 
+s32 func_003E1770(void *p, s32 i) {
+    return (*(S_3E1770 **)((u8 *)p + 0x4))->arr[i];
+}
+/* localdecomp:end func_003E1770 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1788);
 

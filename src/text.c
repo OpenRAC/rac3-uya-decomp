@@ -4358,7 +4358,11 @@ s32 func_003E1BB0(s32 arg0, s32 arg1) {
 }
 /* localdecomp:end func_003E1BB0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1BB8);
+/* localdecomp:start func_003E1BB8 */
+void func_003E1BB8(s32 *p) {
+    *p += 1;
+}
+/* localdecomp:end func_003E1BB8 */
 
 /* localdecomp:start func_003E1BC8 */
 // Define the context structure passing through $a0

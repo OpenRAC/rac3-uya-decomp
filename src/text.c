@@ -3261,7 +3261,14 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BB5C0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BB730);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BB790);
+/* localdecomp:start func_003BB790 */
+extern void func_003A2DF8(void *);
+extern u8 D_00319170[];
+ 
+void func_003BB790(void) {
+    func_003A2DF8(D_00319170);
+}
+/* localdecomp:end func_003BB790 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BB7B0);
 

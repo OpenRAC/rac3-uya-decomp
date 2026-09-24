@@ -4310,7 +4310,19 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E1460);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E14A8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1510);
+/* localdecomp:start func_003E1510 */
+extern void func_003E09D8(void *);
+ 
+typedef struct { void *arr[5]; s32 idx; } S_3E1510;
+ 
+void func_003E1510(void *p) {
+    S_3E1510 *q = *(S_3E1510 **)((u8 *)p + 0x4);
+    void *x = q->arr[q->idx];
+    if (x != 0) {
+        func_003E09D8(x);
+    }
+}
+/* localdecomp:end func_003E1510 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1548);
 

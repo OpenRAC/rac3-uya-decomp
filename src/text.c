@@ -5140,7 +5140,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003ECCA0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ECD08);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ECD40);
+/* localdecomp:start func_003ECD40 */
+void func_003ECD40(s32 *p, s32 *node) {
+    *node = p[6];
+    p[6] = (s32)node;
+    p[5]--;
+}
+/* localdecomp:end func_003ECD40 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ECD60);
 

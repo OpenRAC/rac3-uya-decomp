@@ -4133,7 +4133,11 @@ typedef struct {
 extern char D_001D96B0[];
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1B98);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1BB0);
+/* localdecomp:start func_003E1BB0 */
+s32 func_003E1BB0(s32 arg0, s32 arg1) {
+    return arg1 == 0;
+}
+/* localdecomp:end func_003E1BB0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1BB8);
 

@@ -5035,7 +5035,14 @@ s32 func_003E91B8(void) {
 }
 /* localdecomp:end func_003E91B8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E91C0);
+/* localdecomp:start func_003E91C0 */
+s32 func_003E91C0(s32 p, s32 k) {
+    if (k == 7) {
+        return 1;
+    }
+    return func_003E8640(p, k);
+}
+/* localdecomp:end func_003E91C0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E91F0);
 

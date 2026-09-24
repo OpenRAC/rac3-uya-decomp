@@ -3095,7 +3095,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B5BE8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B5BF0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B5BF8);
+/* localdecomp:start func_003B5BF8 */
+extern s32 D_0037BA94;
+ 
+void func_003B5BF8(void) {
+    D_0037BA94 = 7;
+}
+/* localdecomp:end func_003B5BF8 */
 
 /* localdecomp:start func_003B5C08 */
 typedef struct {

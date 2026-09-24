@@ -4122,7 +4122,17 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003DE558);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003DE560);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DE870);
+/* localdecomp:start func_003DE870 */
+typedef struct { u8 pad[0x40]; s32 f40; u8 pad2[0x14]; s32 f58; } S_302D80;
+extern S_302D80 D_00302D80;
+ 
+void func_003DE870(void) {
+    S_302D80 *s = &D_00302D80;
+    if (s->f40 == 7 && s->f58 == 1) {
+        s->f58 = 2;
+    }
+}
+/* localdecomp:end func_003DE870 */
 
 /* localdecomp:start func_003DE8A0 */
 extern s32 D_00302DC0;

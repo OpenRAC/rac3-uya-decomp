@@ -2717,7 +2717,15 @@ void func_003B0258(void) {
 }
 /* localdecomp:end func_003B0258 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B0278);
+/* localdecomp:start func_003B0278 */
+extern s32 func_0037DCE8(void);
+extern void func_003B43C0();
+ 
+void func_003B0278(void) {
+    func_0037DCE8();
+    func_003B43C0();
+}
+/* localdecomp:end func_003B0278 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B02A0);
 

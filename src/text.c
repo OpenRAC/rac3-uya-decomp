@@ -161,8 +161,6 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0037DF20);
 INCLUDE_ASM("asm/nonmatchings/text", func_0037DF28);
 
 /* localdecomp:start func_0037DF98 */
-extern s32 func_0037DF28(void);
-
 s32 func_0037DF98(void) {
     register u8 *gp __asm__("gp");
     s32 index;

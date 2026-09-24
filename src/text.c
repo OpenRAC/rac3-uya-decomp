@@ -2662,7 +2662,6 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003ADAE0);
 extern u8 D_001DA9B8[];
 extern void *func_003E16B8(void);
 extern void func_003E1548(void *);
-extern void func_003E15D8(void *);
  
 void func_003ADB40(void) {
     void *x = D_001DA9B8;

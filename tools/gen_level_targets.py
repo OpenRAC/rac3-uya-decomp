@@ -17,10 +17,18 @@ Per overlay:
      Data words that decode as non-EE opcodes (sdc1, sc, ...) are rewritten
      to `.word` using the byte comment spimdisasm writes on the same line.
   5. Verify: every .text word equals retail unless it carries a relocation.
+  6. Add the overlay's data: every allocated, non-executable retail section
+     (.lit, .data, lvl.*, .bss) under its retail name and size, PROGBITS with
+     the exact retail bytes, NOBITS as zero-fill. Merged in with `ld -r`;
+     .text, its relocations and the function symbols are unchanged by this.
+
+`--data-only <retail.elf> <out.o>` builds just step 6, for frontbin's data
+unit (its code comes from the real build instead).
 
 Usage (Linux, needs splat64==0.50.0, spimdisasm==1.42.4, pyelftools,
 binutils-mips-linux-gnu):
     python3 gen_level_targets.py <levels_dir> <out_dir>
+    python3 gen_level_targets.py --data-only <retail.elf> <out.o>
 where <levels_dir> contains singleplayer/<N_name>/overlay.elf and
 multiplayer/<N_name>/overlay.elf (Wrench's unpacked layout).
 """
@@ -40,6 +48,40 @@ sys.argv = ["splat"] + sys.argv[1:]
 runpy.run_module("splat", run_name="__main__")
 '''
 LINE = re.compile(r"^(\s*/\* [0-9A-F]+ [0-9A-F]{8} ([0-9A-F]{8}) \*/)\s*.*$")
+
+SHF_WRITE, SHF_ALLOC, SHF_EXEC = 0x1, 0x2, 0x4
+
+def data_sections(elf_path):
+    out = []
+    for s in ELFFile(open(elf_path, "rb")).iter_sections():
+        f = s["sh_flags"]
+        if (f & SHF_ALLOC) and not (f & SHF_EXEC) and s["sh_size"]:
+            out.append((s.name, s["sh_type"], s["sh_offset"], s["sh_size"], bool(f & SHF_WRITE), max(s["sh_addralign"], 1)))
+    return out
+
+def build_data_obj(elf_path, out_obj):
+    lines = []
+    for name, typ, off, size, writable, align in data_sections(elf_path):
+        fl = "aw" if writable else "a"
+        if typ == "SHT_NOBITS":
+            lines += [f'.section {name}, "{fl}", @nobits', f".balign {align}", f".space {size:#x}"]
+        else:
+            lines += [f'.section {name}, "{fl}", @progbits', f".balign {align}",
+                      f'.incbin "{os.path.abspath(elf_path)}", {off:#x}, {size:#x}']
+    src = out_obj + ".s"
+    open(src, "w").write("\n".join(lines) + "\n")
+    subprocess.run(AS + ["--no-pad-sections", src, "-o", out_obj], check=True)
+    os.unlink(src)
+
+def verify_data(retail_elf, obj):
+    raw = open(retail_elf, "rb").read(); o = ELFFile(open(obj, "rb")); bad = []
+    for name, typ, off, size, _, _ in data_sections(retail_elf):
+        s = o.get_section_by_name(name)
+        if s is None or s["sh_size"] != size:
+            bad.append(name)
+        elif typ != "SHT_NOBITS" and s.data() != raw[off:off + size]:
+            bad.append(name)
+    return bad
 
 def build(elf_path, work, out_obj):
     shutil.rmtree(work, ignore_errors=True); os.makedirs(work)
@@ -108,9 +150,26 @@ segments:
     rb = raw[t_off:t_off + t_sz]
     bad = sum(1 for i in range(0, len(rb) - 3, 4) if ob[i:i+4] != rb[i:i+4] and i not in relocs)
     nfunc = sum(1 for s in o.get_section_by_name(".symtab").iter_symbols() if s["st_info"]["type"] == "STT_FUNC")
+    code_obj, data_obj = out_obj + ".code.o", out_obj + ".data.o"
+    os.replace(out_obj, code_obj)
+    build_data_obj(elf_path, data_obj)
+    subprocess.run(["mips-linux-gnu-ld", "-r", "-EL", code_obj, data_obj, "-o", out_obj], check=True)
+    os.unlink(code_obj); os.unlink(data_obj)
+    m = ELFFile(open(out_obj, "rb"))
+    if m.get_section_by_name(".text").data() != ob:
+        raise RuntimeError("merging data changed .text")
+    bad_data = verify_data(elf_path, out_obj)
+    if bad_data:
+        raise RuntimeError(f"data sections differ from retail: {bad_data}")
     return nfunc, bad
 
 if __name__ == "__main__":
+    if sys.argv[1] == "--data-only":
+        retail, out = sys.argv[2:4]
+        build_data_obj(retail, out)
+        bad = verify_data(retail, out)
+        print(f"{os.path.basename(out)}: data sections differing from retail: {bad or 'none'}")
+        sys.exit(1 if bad else 0)
     levels, out = sys.argv[1:3]
     os.makedirs(out, exist_ok=True)
     for elf in sorted(glob.glob(os.path.join(levels, "*", "*", "overlay.elf"))):

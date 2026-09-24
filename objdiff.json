@@ -41,6 +41,15 @@
       }
     },
     {
+      "name": "frontbin/data",
+      "target_path": "build/objdiff/target/frontbin_data.o",
+      "metadata": {
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
       "name": "levels/singleplayer/Veldin",
       "target_path": "build/objdiff/target/levels/1_veldin.o",
       "metadata": {

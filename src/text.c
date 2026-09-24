@@ -1330,10 +1330,9 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039B200);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039B240);
 
-/* localdecomp:start func_0039B2DC */
-void func_0039B2DC(void) {
-}
-/* localdecomp:end func_0039B2DC */
+/* 0x39B2DC is 4 bytes past an 8-byte boundary: GCC pads every C function to 8,
+   so this can't be a C function (it's likely leftover bytes after the previous one). */
+INCLUDE_ASM("asm/nonmatchings/text", func_0039B2DC);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039B2E8);
 

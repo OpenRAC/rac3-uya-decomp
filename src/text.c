@@ -4822,7 +4822,11 @@ void func_003E8568(void *p, s32 mask, s32 set) {
 }
 /* localdecomp:end func_003E8568 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E8590);
+/* localdecomp:start func_003E8590 */
+s32 func_003E8590(void *p, s32 mask) {
+    return (*(s32 *)((u8 *)p + 0xC) & mask) != 0;
+}
+/* localdecomp:end func_003E8590 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E85A0);
 

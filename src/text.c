@@ -654,7 +654,22 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00389FB8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038A848);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038B1B0);
+/* localdecomp:start func_0038B1B0 */
+void func_0038B1B0(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h) {
+    p[0] = a;
+    p[1] = b;
+    p[2] = c;
+    p[3] = d;
+    p[4] = e;
+    p[5] = f;
+    p[8] = g;
+    p[9] = h;
+    p[6] = 0;
+    p[7] = 0;
+    p[10] = 0;
+    p[11] = 0;
+}
+/* localdecomp:end func_0038B1B0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038B1E8);
 

@@ -1317,7 +1317,7 @@ s32 func_0039A590(void) {
 /* localdecomp:end func_0039A590 */
 
 /* localdecomp:start func_0039A5A8 */
-extern void func_0039A550(s32);
+extern func_0039A550(s32);
 void func_0039A5A8(void) {
     func_0039A550(0x21);
 }

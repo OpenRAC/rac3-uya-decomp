@@ -2602,7 +2602,11 @@ s32 func_003AF140(void) {
 }
 /* localdecomp:end func_003AF140 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AF148);
+/* localdecomp:start func_003AF148 */
+s32 func_003AF148(void) {
+    return 2;
+}
+/* localdecomp:end func_003AF148 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AF150);
 

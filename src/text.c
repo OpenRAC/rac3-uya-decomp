@@ -160,7 +160,30 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0037DF20);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037DF28);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0037DF98);
+/* localdecomp:start func_0037DF98 */
+extern s32 func_0037DF28(void);
+
+s32 func_0037DF98(void) {
+    register u8 *gp __asm__("gp");
+    s32 index;
+    s32 fallback;
+    s32** basePtr;
+
+    index = func_0037DF28();
+    fallback = (s32)(gp - 0x7128);
+    
+    // Pattern Library Scheduling Fence: Passing both operands forces the 
+    // compiler to completely materialize row 14 BEFORE executing the branch check.
+    __asm__ volatile("" : : "r"(index), "r"(fallback));
+
+    if (index < 0) {
+        return fallback;
+    }
+    
+    basePtr = (s32**)0x1D9A20; // 0x001E0000 - 0x65E0
+    return (*basePtr)[index * 4];
+}
+/* localdecomp:end func_0037DF98 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037DFD8);
 

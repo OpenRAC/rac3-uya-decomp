@@ -1329,7 +1329,7 @@ void func_0039A5C8(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_0039A5E8);
 
 /* localdecomp:start func_0039A620 */
-extern void func_0039A550(s32);
+extern func_0039A550(s32);
 void func_0039A620(void) {
     func_0039A550(0x20);
 }

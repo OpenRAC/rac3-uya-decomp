@@ -39,12 +39,14 @@ jobs:
 
       # Level target objects are generated from retail overlays by
       # tools/gen_level_targets.py (copyrighted, so they live on the runner,
-      # not in git). objdiff.json expects them under build/objdiff/target/levels.
-      - name: Copy level target objects
+      # not in git). frontbin_data.o is frontbin's retail data sections, made by
+      # `gen_level_targets.py --data-only`. objdiff.json expects both under build/objdiff/target.
+      - name: Copy level and data target objects
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path "build\objdiff\target\levels" | Out-Null
           Copy-Item "C:\decomp-refs\level-targets\*.o" -Destination "build\objdiff\target\levels\" -Force
+          Copy-Item "C:\decomp-refs\frontbin_data.o" -Destination "build\objdiff\target\frontbin_data.o" -Force
           $n = (Get-ChildItem "build\objdiff\target\levels\*.o").Count
           if ($n -ne 51) { throw "expected 51 level objects, found $n" }
 

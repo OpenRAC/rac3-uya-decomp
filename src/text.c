@@ -1,6 +1,8 @@
 #include "common.h"
 
 /* localdecomp:start func_0037D100 */
+extern void func_003934E8(s32, s32);
+
 void func_0037D100(void) {
     func_003934E8(0, 0);
 }
@@ -2172,7 +2174,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A9AC0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9AE8);
 
-extern void func_003A6880(void *);
+extern void *func_003A6880(void *);
 extern void func_003A9768(void *);
 extern void func_00121760(void *, void *);
 extern void func_0039D668(void *, s32, s32);

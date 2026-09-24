@@ -37,6 +37,17 @@ jobs:
           name: build_log
           path: build_log.txt
 
+      # Level target objects are generated from retail overlays by
+      # tools/gen_level_targets.py (copyrighted, so they live on the runner,
+      # not in git). objdiff.json expects them under build/objdiff/target/levels.
+      - name: Copy level target objects
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "build\objdiff\target\levels" | Out-Null
+          Copy-Item "C:\decomp-refs\level-targets\*.o" -Destination "build\objdiff\target\levels\" -Force
+          $n = (Get-ChildItem "build\objdiff\target\levels\*.o").Count
+          if ($n -ne 51) { throw "expected 51 level objects, found $n" }
+
       - name: Generate progress report
         shell: pwsh
         run: |
@@ -45,5 +56,5 @@ jobs:
       - name: Upload report artifact
         uses: actions/upload-artifact@v4
         with:
-          name: v1_report
+          name: SCUS_973.53_report
           path: build/report.json

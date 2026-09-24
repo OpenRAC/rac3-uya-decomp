@@ -4940,7 +4940,11 @@ s32 func_003E8590(void *p, s32 mask) {
 }
 /* localdecomp:end func_003E8590 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E85A0);
+/* localdecomp:start func_003E85A0 */
+void func_003E85A0(void *p, s32 a, s32 b) {
+    *(u32 *)((u8 *)p + 0xC) = (((*(u32 *)((u8 *)p + 0xC) & ~0x600) | (a << 9)) & ~0x1800) | (b << 11);
+}
+/* localdecomp:end func_003E85A0 */
 
 /* localdecomp:start func_003E85D8 */
 void func_003E85D8(void *p, s32 *a, s32 *b) {

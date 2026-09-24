@@ -5347,7 +5347,16 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003ECC70);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ECCA0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ECD08);
+/* localdecomp:start func_003ECD08 */
+extern s32 func_003ECCA0(void *, u32);
+ 
+s32 func_003ECD08(void *p, u32 n) {
+    if (*(u32 *)((u8 *)p + 0xC) < n) {
+        return 0;
+    }
+    return func_003ECCA0(p, n);
+}
+/* localdecomp:end func_003ECD08 */
 
 /* localdecomp:start func_003ECD40 */
 void func_003ECD40(s32 *p, s32 *node) {

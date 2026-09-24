@@ -2136,7 +2136,11 @@ void func_003A7FE0(void *p, s32 value) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A7FE8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A8028);
+/* localdecomp:start func_003A8028 */
+void func_003A8028(void *p, s32 value) {
+    *(s32 *)((u8 *)p + 0x20) = value;
+}
+/* localdecomp:end func_003A8028 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A8030);
 

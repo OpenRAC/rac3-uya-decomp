@@ -4744,7 +4744,12 @@ s32 func_003EAA68(void *a0, s32 a1) {
 }
 /* localdecomp:end func_003EAA68 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003EAA80);
+/* localdecomp:start func_003EAA80 */
+void func_003EAA80(void *p, f32 x, f32 y) {
+    *(f32 *)((u8 *)p + 0x48) = x;
+    *(f32 *)((u8 *)p + 0x4C) = y;
+}
+/* localdecomp:end func_003EAA80 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003EAA90);
 

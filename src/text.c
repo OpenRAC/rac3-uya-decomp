@@ -1278,7 +1278,13 @@ s32 func_0039A720(void) {
 }
 /* localdecomp:end func_0039A720 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039A730);
+/* localdecomp:start func_0039A730 */
+extern u8 D_001427B2;
+ 
+s32 func_0039A730(void) {
+    return D_001427B2 & 2;
+}
+/* localdecomp:end func_0039A730 */
 
 /* localdecomp:start func_0039A740 */
 typedef struct { u8 pad[0x25]; u8 f25; u8 pad2[0x0d]; u8 f33; } S_1426E0;

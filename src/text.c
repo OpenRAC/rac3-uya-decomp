@@ -3431,7 +3431,11 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BF4F8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BF5C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF5D0);
+/* localdecomp:start func_003BF5D0 */
+s32 func_003BF5D0(s32 arg0) {
+    return (u32)(arg0 - 500) < 41;
+}
+/* localdecomp:end func_003BF5D0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BF5E0);
 

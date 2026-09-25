@@ -7477,6 +7477,7 @@ s32 func_003E7378(u8 *p, f32 a, f32 b) {
 /* localdecomp:end func_003E7378 */
 
 /* localdecomp:start func_003E73E0 */
+typedef struct { u8 pad[0x10]; s32 (*isA)(void *, s32); } VT_E;
 extern s32 D_001D9770_g;
 s32 func_003E73E0(u8 *p, s32 a) {
     if ((*(VT_E **)(p + 8))->isA(p, D_001D9770_g)) {

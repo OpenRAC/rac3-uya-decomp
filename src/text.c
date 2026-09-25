@@ -7313,6 +7313,7 @@ s32 func_003E6960(u8 *p, s32 a) {
 /* localdecomp:end func_003E6960 */
 
 /* localdecomp:start func_003E69B8 */
+typedef struct { u32 key; void *val; } HE_8;
 typedef struct { s32 f0; s32 n; HE_8 e[8]; } HT_8;
 extern u8 D_001DAA99;
 extern void *func_003E4FA8(HT_8 *, u32);

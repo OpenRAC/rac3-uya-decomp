@@ -7547,9 +7547,14 @@ s32 func_003E75D0(u8 *p, f32 a, f32 b) {
 }
 /* localdecomp:end func_003E75D0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E7638);
+/* localdecomp:start func_003E7638 */
+s32 func_003E7638(void) {
+    // TODO
+}
+/* localdecomp:end func_003E7638 */
 
 /* localdecomp:start func_003E7710 */
+typedef struct { u8 pad[0x10]; s32 (*isA)(void *, s32); } VT_E;
 extern s32 D_001D9770[];
 s32 func_003E7710(u8 *p, f32 a, f32 b) {
     if ((*(VT_E **)(p + 8))->isA(p, D_001D9770[0])) {

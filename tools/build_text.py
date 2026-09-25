@@ -38,6 +38,28 @@ def read_parts(path):
     return parts
 
 
+def expand_flags(flags, cc):
+    """Expand text_parts.txt pseudo-flags that depend on the toolchain path.
+
+    @ps2as  assemble this range with SN's own assembler (ee/bin/Ps2EeAs.exe)
+            instead of the default bin/ee-as.exe. gcc looks for
+            "<prefix>as.exe"; Windows file names are case-insensitive, so the
+            prefix ".../ee/bin/Ps2Ee" finds Ps2EeAs.exe. gcc uses the last -B,
+            so these are placed after the Makefile's CFLAGS.
+    @newas  use ee/bin/as.exe (May 2001), the one gcc picks without any -B."""
+    root = os.path.dirname(os.path.dirname(os.path.abspath(cc)))
+    out = []
+    for f in flags:
+        if f == '@ps2as':
+            out.append('-B' + os.path.join(root, 'ee', 'bin', 'Ps2Ee'))
+            out.append('-DNO_MACRO_INC')  # Ps2EeAs can't read include/macro.inc
+        elif f == '@newas':
+            out.append('-B' + os.path.join(root, 'ee', 'bin') + os.sep)
+        else:
+            out.append(f)
+    return out
+
+
 def part_index(parts, addr):
     idx = 0
     for i, (start, _) in enumerate(parts):
@@ -189,7 +211,15 @@ def main():
         opath = os.path.join(workdir, f'text_p{pi:02d}.o')
         with open(cpath, 'w') as f:
             f.write(''.join(out))
-        cmd = [a.cc, '-c'] + parts[pi][1] + cflags + ['-o', opath, cpath]
+        pflags = expand_flags(parts[pi][1], a.cc)
+        asflags = [f for f in pflags if f.startswith('-B')]
+        pflags = [f for f in pflags if not f.startswith('-B')]
+        # gcc uses the LAST -B, so the range's assembler choice goes after cflags
+        pcflags = cflags
+        if '@ps2as' in parts[pi][1]:
+            # Ps2EeAs rejects the GNU as options (-mips3, -mcpu=5900, ...)
+            pcflags = [f for f in cflags if not f.startswith('-Wa,')]
+        cmd = [a.cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, cpath]
         print(' '.join(cmd), flush=True)
         r = subprocess.run(cmd)
         if r.returncode != 0:

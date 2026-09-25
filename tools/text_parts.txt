@@ -1,0 +1,36 @@
+# Per-address-range compiler flags for src/text.c (read by tools/build_text.py
+# and by localdecomp). Format: <start address> <flags...>; a range runs up to
+# the next line's start.
+#
+# Retail frontbin was built from many source files. Most use -O2 -G8; some
+# also use -mno-split-addresses (globals loaded straight into the register
+# that uses them, constructors/destructors with sd ra after the loads).
+# Evidence and the full compiler/flag matrix: docs/compiler_matrix_findings.md
+#
+# The exact original file boundaries are unknown. Each boundary below sits
+# at the first function known to need that range's flags; anything between
+# the last function of one range and the first of the next is either still
+# INCLUDE_ASM or matches with both flag sets. When a newly matched function
+# only matches with the other flag set, move the boundary (or add a range).
+#
+# start        flags
+0x0037D100     -O2 -G8
+0x00387BD8     -O2 -G8 -mno-split-addresses
+0x003970D0     -O2 -G8
+0x00397258     -O2 -G8 -mno-split-addresses
+0x0039A550     -O2 -G8
+0x0039BEA8     -O2 -G8 -mno-split-addresses
+0x0039C2A8     -O2 -G8
+0x003A5620     -O2 -G8 -mno-split-addresses
+0x003ABD60     -O2 -G8
+0x003AD458     -O2 -G8 -mno-split-addresses
+0x003ADAA8     -O2 -G8
+0x003AEE80     -O2 -G8 -mno-split-addresses
+0x003AF1B8     -O2 -G8
+0x003B0F58     -O2 -G8 -mno-split-addresses
+0x003B4970     -O2 -G8
+0x003B8BC8     -O2 -G8 -mno-split-addresses
+0x003BA350     -O2 -G8
+0x003D46B0     -O2 -G8 -mno-split-addresses
+0x003DBEA0     -O2 -G8
+0x003E1B98     -O2 -G8 -mno-split-addresses

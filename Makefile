@@ -42,7 +42,13 @@ TARGET_BIN := $(BUILD_DIR)/frontbin.bin
 # mechanism) rather than being a plain -I. UNVERIFIED -- if ee-gcc2953.exe
 # doesn't accept -Wa the same way modern GCC does, this needs adjusting
 # once we see the real error.
-CFLAGS := -O2 -G0 -I include -I . -Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi -DINCLUDE_ASM_USE_MACRO_INC=1
+# Optimisation/-G/-mno-split-addresses are NOT set here: they come per
+# address range from tools/text_parts.txt (see tools/build_text.py and
+# compiler_matrix_findings.md). Retail frontbin was built from many source
+# files, some with -mno-split-addresses; all use -O2 -G8.
+CFLAGS := -I include -I . -Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi -DINCLUDE_ASM_USE_MACRO_INC=1
+PYTHON ?= python
+TEXT_PARTS := tools/text_parts.txt
 
 # --- data segments: splat's whole-segment disassembly, one .o each -------
 DATA_SEGMENTS := lit data lvl_vtbl lvl_camvtbl lvl_sndvtbl
@@ -79,9 +85,9 @@ $(HEADER_OBJ): asm/header.s
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
 	"$(AS)" $(ASFLAGS) -o "$@" "$<"
 
-$(TEXT_OBJ): src/text.c
+$(TEXT_OBJ): src/text.c $(TEXT_PARTS) tools/build_text.py
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
-	"$(CC)" -c $(CFLAGS) -o "$@" "$<"
+	$(PYTHON) tools/build_text.py --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
 
 $(TARGET): $(HEADER_OBJ) $(DATA_OBJS) $(TEXT_OBJ) $(LD_SCRIPT)
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
@@ -114,6 +120,6 @@ $(OBJDIFF_TARGET): $(TEXT_OBJ) $(TARGET_BIN)
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
 	copy /Y "$(subst /,\,$(TEXT_OBJ))" "$(subst /,\,$@)" >nul
 
-$(OBJDIFF_BASE): src/text.c include/include_asm.h
+$(OBJDIFF_BASE): src/text.c include/include_asm.h $(TEXT_PARTS) tools/build_text.py
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
-	"$(CC)" -c $(CFLAGS) -DOBJDIFF_BASE -o "$@" "$<"
+	$(PYTHON) tools/build_text.py --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"

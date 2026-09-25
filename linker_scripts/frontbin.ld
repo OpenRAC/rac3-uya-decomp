@@ -30,7 +30,10 @@ SECTIONS
     lit_ROM_END = __romPos;
     lit_VRAM = ADDR(.lit);
     lit_VRAM_END = .;
-    _gp = lit_ROM_START + 0x7FF0;
+    /* Real $gp value of the running game (PCSX2 live debug, see
+       frontbin.splat.yaml gp_value). Needed once C code built with -G8 emits
+       genuine %gp_rel relocations. */
+    _gp = 0x001DC8B0;
 
     data_ROM_START = __romPos;
     .data 0x317E80 : AT(data_ROM_START)

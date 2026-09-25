@@ -200,3 +200,39 @@ The boundaries get sharper as more functions are matched. A function's flag only
 - About 20 existing matched functions use inline `__asm__` or a hand-rolled `$gp` register hack. They produce correct bytes, so they count, but they aren't original-style C. func_003A4758, func_003ABE58 and func_003E1D50 already match as plain C at `-G8`, and the others are candidates for a cleanup pass.
 - func_003A4A20 reads `D_001DA0D0` with `lui` and writes it through `$gp` in the same function. No single declaration reproduces this, so the original probably used two declarations or a macro.
 - RAC1 (Lynder063's project) reports SN ProDG GCC 2.95.3 for `text` and Sony 2.9-ee for `core_text`, plus `-G2` in places. In UYA's frontbin, the 2.9 builds are not better than SN for any tested group, and `-G2` fails every 4-byte `$gp` variable.
+
+## Update 2026-09-25: the three "ceilings" are toolchain settings
+
+All three groups previously written off (`$s` saves in 8-byte slots, `div` without the trap, `mtc1`/`nop`) match with SN tools and settings. Checked by a full cloud build of text.c: 2043/2043 functions byte-identical, all relocations resolve to retail addresses.
+
+| Symptom | Fix |
+|---|---|
+| `$s` registers saved with `sq` in 16-byte slots (retail: `sd`, 8-byte) | `-fopt-stack` (SN-only cc1 option, "Optimise stack frame") |
+| `div` followed by `break 7` trap | `-mno-check-zero-division` |
+| Missing `nop` after `mtc1` before its use | Assemble with `bin/ee-as.exe` (Aug 2000) instead of `ee/bin/as.exe` (May 2001): `-B$(TOOLBIN)/ee-` |
+
+Both compiler flags are on every line of `tools/text_parts.txt`. They changed none of the existing matched code.
+
+### The retail assembler is SN's Ps2EeAs.exe
+
+`ee/bin/Ps2EeAs.exe` (ps2eeas 1.9.25) explains the rest:
+
+- It is single-pass. A global is only `$gp`-relative if it's known to be small at the point of use (defined earlier in the file, or `.extern` seen earlier). gcc emits `.extern` at the end of the file, so otherwise it uses `lui`.
+- A macro load/store in a branch delay slot (`.set noreorder`) can't expand to two instructions, so it is forced `$gp`-relative.
+- This is the "mixed" pattern: `lui` reads and `$gp` writes of the same variable in one function. Natural C matches. Examples: the D_001D4CEC functions are bitfield writes (`flags.b5 = 0;`), and the GIF packet writers are `p[0] = ...; p += 4;`.
+- Its `mtc1` hazard nops depend on whether the next instruction uses the register, also for `li.s`. That's why some float functions only match with it.
+- It can't read GNU `macro.inc`, so it can't build `INCLUDE_ASM` stubs. The default assembler stays `bin/ee-as.exe`. It reproduces everything else.
+
+`text_parts.txt` accepts pseudo-flags that `tools/build_text.py` and `localdecomp/server.py` expand:
+
+- `@ps2as`: assemble the range with Ps2EeAs (adds `-DNO_MACRO_INC` and drops the GNU `-Wa,` options).
+- `@newas`: use `ee/bin/as.exe`.
+
+gcc uses the last `-B`, so the range's choice wins over the Makefile's default.
+
+Other notes:
+
+- Globals that retail reads through `lui` and writes through `$gp` can also be reproduced with ee-as by using two declarations: an array for reads, and a sized alias (`D_X_g`) for writes. Several functions use this.
+- `-Wa,-G0` with a sized declaration gives split loads with `lui $at` stores (func_00396B50).
+- Split/no-split and assembler choice now vary per function. Single-function overrides in `text_parts.txt` are marked `# single-function override`.
+- Still open: 64-bit constant synthesis (`li 0x8000; dsll 24`, func_00383B08), the `div.s` double-nop padding (func_003E1D18), and a few float `li.s` cases.

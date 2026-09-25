@@ -46,7 +46,9 @@ TARGET_BIN := $(BUILD_DIR)/frontbin.bin
 # address range from tools/text_parts.txt (see tools/build_text.py and
 # compiler_matrix_findings.md). Retail frontbin was built from many source
 # files, some with -mno-split-addresses; all use -O2 -G8.
-CFLAGS := -I include -I . -Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi -DINCLUDE_ASM_USE_MACRO_INC=1
+# -B$(TOOLBIN)/ee- makes gcc use bin/ee-as.exe (the Aug 2000 assembler) instead
+# of ee/bin/as.exe; retail needs the older one (mtc1 hazard nops).
+CFLAGS := -I include -I . -Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi -DINCLUDE_ASM_USE_MACRO_INC=1 -B$(TOOLBIN)/ee-
 PYTHON ?= python
 TEXT_PARTS := tools/text_parts.txt
 

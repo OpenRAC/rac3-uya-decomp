@@ -30,10 +30,15 @@
     )
 #endif
 
+/* NO_MACRO_INC: set by tools/build_text.py for ranges assembled with SN's
+ * Ps2EeAs (@ps2as in tools/text_parts.txt), which can't read GNU as macro
+ * files. Such ranges hold only C, so they need neither include. */
+#ifndef NO_MACRO_INC
 #if INCLUDE_ASM_USE_MACRO_INC
 __asm__(".include \"include/macro.inc\"\n");
 #else
 __asm__(".include \"include/labels.inc\"\n");
+#endif
 #endif
 
 #else

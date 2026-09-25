@@ -1403,7 +1403,8 @@ void func_00396378(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003963C8);
 
 /* localdecomp:start func_00396458 */
-
+typedef struct { u8 pad[0x10]; s32 f10; u8 pad2[0x150]; s32 f164; s32 f168; u8 pad3[0x10]; s32 f17C; } S_142430x;
+extern S_142430x D_142430;
 extern s32 D_001D4CE8_g;
 void func_00396458(void) {
     S_142430x *p = &D_142430;
@@ -2384,6 +2385,11 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A3B00);
 INCLUDE_ASM("asm/nonmatchings/text", func_003A3B50);
 
 /* localdecomp:start func_003A3BB8 */
+typedef struct {
+    u8 pad[0x84];
+    s32 f84;
+} Struct227600;
+extern Struct227600 D_00227600;
 extern s32 D_001DA0C8[];
 extern u32 *D_001DA0D0_g;
 extern s32 D_001DA0DC_g;

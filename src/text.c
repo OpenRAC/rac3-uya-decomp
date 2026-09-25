@@ -1403,7 +1403,6 @@ void func_00396378(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003963C8);
 
 /* localdecomp:start func_00396458 */
-typedef struct { u8 pad[0x10]; s32 f10; u8 pad2[0x150]; s32 f164; s32 f168; u8 pad3[0x10]; s32 f17C; } S_142430x;
 extern S_142430x D_142430;
 extern s32 D_001D4CE8_g;
 void func_00396458(void) {
@@ -7391,8 +7390,6 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E6F50);
 INCLUDE_ASM("asm/nonmatchings/text", func_003E7028);
 
 /* localdecomp:start func_003E70B0 */
-typedef struct { u32 key; void *val; } HE_8;
-typedef struct { s32 f0; s32 n; HE_8 e[8]; } HT_8;
 extern u8 D_001DAA96;
 extern void *func_003E4E28(HT_8 *, u32);
 s32 func_003E70B0(HT_8 *t, u32 key, void *val) {
@@ -7614,8 +7611,6 @@ s32 func_003E78B0(u8 *p, s32 a) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003E7900);
 
 /* localdecomp:start func_003E7960 */
-typedef struct { u32 key; void *val; } HE_8;
-typedef struct { s32 f0; s32 n; HE_8 e[8]; } HT_8;
 extern u8 D_001DAA97;
 extern void *func_003E4EA8(HT_8 *, u32);
 s32 func_003E7960(HT_8 *t, u32 key, void *val) {
@@ -7711,8 +7706,6 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E7C90);
 INCLUDE_ASM("asm/nonmatchings/text", func_003E7D68);
 
 /* localdecomp:start func_003E7DF8 */
-typedef struct { u32 key; void *val; } HE_8;
-typedef struct { s32 f0; s32 n; HE_8 e[8]; } HT_8;
 extern u8 D_001DAA98;
 extern void *func_003E4F28(HT_8 *, u32);
 s32 func_003E7DF8(HT_8 *t, u32 key, void *val) {
@@ -7737,8 +7730,6 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E7EC8);
 INCLUDE_ASM("asm/nonmatchings/text", func_003E7F20);
 
 /* localdecomp:start func_003E7F70 */
-typedef struct { u32 key; void *val; } HE_8;
-typedef struct { s32 f0; s32 n; HE_8 e[8]; } HT_8;
 extern u8 D_001DAA9A;
 extern void *func_003E5028(HT_8 *, u32);
 s32 func_003E7F70(HT_8 *t, u32 key, void *val) {

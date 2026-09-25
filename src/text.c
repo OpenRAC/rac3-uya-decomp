@@ -7338,6 +7338,7 @@ s32 func_003E6D48(u8 *p, s32 a, s32 b) {
 /* localdecomp:end func_003E6D48 */
 
 /* localdecomp:start func_003E6DB0 */
+typedef struct { u8 pad[0x10]; s32 (*isA)(void *, s32); } VT_E;
 extern s32 D_001D97A0_g;
 extern s32 func_003E8590(void *, s32);
 s32 func_003E6DB0(u8 *p, s32 a, u8 *out) {

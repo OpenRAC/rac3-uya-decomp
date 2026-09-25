@@ -28,8 +28,8 @@
 0x003AEE80     -O2 -G8 -mno-split-addresses
 0x003AF1B8     -O2 -G8
 0x003B0F58     -O2 -G8 -mno-split-addresses
-0x003B4970     -O2 -G8
-0x003B8BC8     -O2 -G8 -mno-split-addresses
+0x003B2AA0     -O2 -G8
+0x003B8A48     -O2 -G8 -mno-split-addresses
 0x003BA350     -O2 -G8
 0x003D46B0     -O2 -G8 -mno-split-addresses
 0x003DBEA0     -O2 -G8

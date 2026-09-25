@@ -7192,6 +7192,7 @@ s32 func_003E6610(u8 *p, f32 a, f32 b) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003E6680);
 
 /* localdecomp:start func_003E6758 */
+typedef struct { u8 pad[0x10]; s32 (*isA)(void *, s32); } VT_E;
 extern s32 D_001D9800[];
 extern void func_003EB4A8(void *, f32);
 s32 func_003E6758(u8 *p, f32 a) {

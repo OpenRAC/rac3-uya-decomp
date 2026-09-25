@@ -7230,6 +7230,7 @@ s32 func_003E68F0(u8 *p, f32 a, f32 b) {
 /* localdecomp:end func_003E68F0 */
 
 /* localdecomp:start func_003E6960 */
+typedef struct { u8 pad[0x10]; s32 (*isA)(void *, s32); } VT_E;
 extern s32 D_001D9800_g;
 extern s32 func_003EB500();
 s32 func_003E6960(u8 *p, s32 a) {
@@ -7242,6 +7243,7 @@ s32 func_003E6960(u8 *p, s32 a) {
 /* localdecomp:end func_003E6960 */
 
 /* localdecomp:start func_003E69B8 */
+typedef struct { s32 f0; s32 n; HE_8 e[8]; } HT_8;
 extern u8 D_001DAA99;
 extern void *func_003E4FA8(HT_8 *, u32);
 s32 func_003E69B8(HT_8 *t, u32 key, void *val) {

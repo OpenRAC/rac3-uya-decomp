@@ -6099,7 +6099,30 @@ void func_003B8D00(s32 a) {
 }
 /* localdecomp:end func_003B8D00 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B8D08);
+/* localdecomp:start func_003B8D08 */
+__asm__(".extern D_001D8D30, 4");
+extern u32 *D_001DA0D0;
+extern u8 D_1D02D0[];
+extern u8 D_001D7300[];
+extern s32 D_001D8D30;
+void func_003B8D08(void) {
+    D_001DA0D0[0] = 0x30000002;
+    D_001DA0D0[1] = (u32)&D_001D8D30;
+    D_001DA0D0[2] = 0;
+    D_001DA0D0[3] = 0x50000002;
+    D_001DA0D0 += 4;
+    D_001DA0D0[0] = 0x30000029;
+    D_001DA0D0[1] = (u32)D_1D02D0;
+    D_001DA0D0[2] = 0;
+    D_001DA0D0[3] = 0x50000029;
+    D_001DA0D0 += 4;
+    D_001DA0D0[0] = 0x30000003;
+    D_001DA0D0[1] = (u32)D_001D7300;
+    D_001DA0D0[2] = 0;
+    D_001DA0D0[3] = 0x50000003;
+    D_001DA0D0 += 4;
+}
+/* localdecomp:end func_003B8D08 */
 
 /* localdecomp:start func_003B8E08 */
 extern u8 D_001D8D01;

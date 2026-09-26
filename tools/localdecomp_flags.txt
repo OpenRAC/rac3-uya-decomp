@@ -1,0 +1,5 @@
+# localdecomp-only flag overrides for functions still INCLUDE_ASM in text.c.
+# func_XXXXXXXX <flags...>   (same syntax as text_parts.txt; wins over it in localdecomp)
+# When a function matches and goes into text.c, move the override to text_parts.txt.
+func_0039BEC0 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+func_003830E8 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as

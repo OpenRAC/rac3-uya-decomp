@@ -4040,7 +4040,39 @@ void func_003AA800(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AA828);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AAA00);
+/* localdecomp:start func_003AAA00 */
+typedef struct { u8 pad[0xB0]; s32 wB0; } S_AAA00;
+extern void *D_001DA11C;
+extern void *D_001DA108;
+extern void *D_001DA148;
+extern S_AAA00 *D_001DA134;
+extern void *D_001DA138;
+extern void *D_001DA130;
+extern u8 D_13D208[];
+extern void func_003ABD78(void *);
+extern void func_003AD6A8(void *);
+extern void func_11EC70(void *);
+extern void func_11EC30(void *);
+extern s32 func_11F940(s32);          /* return type matters - see technique 2 */
+extern void func_11EB50(s32, s32);
+extern void func_12D4D8(u8 *);
+extern void func_003AD040(void *);
+extern void func_003AAB60(void *);
+extern void func_003ABE70(void *);
+void func_003AAA00(void) {
+    func_003ABD78(D_001DA11C);
+    func_003AD6A8(D_001DA108);
+    func_11EC70(D_001DA148);
+    func_11EC30(D_001DA148);
+    func_11F940(2);
+    func_11EB50(2, D_001DA134->wB0);
+    func_12D4D8(D_13D208);
+    func_003AD040(D_001DA134);
+    func_003AAB60(D_001DA138);
+    func_003ABE70(D_001DA130);
+    *(u32 *)0x1000E000 &= ~2;
+}
+/* localdecomp:end func_003AAA00 */
 
 /* localdecomp:start func_003AAA98 */
 s32 func_003AAA98(void) {

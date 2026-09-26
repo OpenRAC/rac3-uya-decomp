@@ -2598,7 +2598,17 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039CC98);
 INCLUDE_ASM("asm/nonmatchings/text", func_0039CEA8);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318510);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039D4D0);
+/* localdecomp:start func_0039D4D0 */
+typedef struct { u8 pad0[4]; s16 h4; u8 b6; } S_39D4D0;
+extern S_39D4D0 D_1CCFD0[];
+extern s32 func_13CEB0(void);
+void func_0039D4D0(void) {
+    if (D_1CCFD0->h4 != 0) {
+        func_13CEB0();
+        D_1CCFD0->b6 = 1;
+    }
+}
+/* localdecomp:end func_0039D4D0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039D510);
 

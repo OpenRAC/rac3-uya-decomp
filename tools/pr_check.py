@@ -17,6 +17,9 @@ reasons it fails, in terms of the line you need to fix:
   typedefs   a typedef name is not defined twice with different bodies
   aliases    every per-function alias (D_XXXXXXXX_suffix) has an address in
              symbol_addrs_resolved.txt, or the link fails with "undefined"
+  rodata     every INCLUDE_RODATA (jump table) directly follows its
+             function's INCLUDE_ASM, so a converted function doesn't keep a
+             stale copy of its table
   ps2as      no text_parts.txt range assembled with @ps2as contains an
              INCLUDE_ASM stub (Ps2EeAs cannot read macro.inc)
   overrides  tools/localdecomp_flags.txt entries for functions that are now
@@ -171,6 +174,17 @@ def check_text_c():
     for name in sorted(set(asm) & set(defined)):
         err(f"text.c:{lineno(raw, defined[name])}: {name} is both C and INCLUDE_ASM "
             f"(line {lineno(raw, asm[name])}); remove the INCLUDE_ASM line")
+
+    # jump tables: an INCLUDE_RODATA belongs right after its function's
+    # INCLUDE_ASM. Left behind after the function became C, it duplicates the
+    # table gcc now emits and shifts all of .data.
+    prev = ""
+    for i, line in enumerate(raw.split("\n"), 1):
+        t = line.strip()
+        if t.startswith("INCLUDE_RODATA(") and not prev.startswith(("INCLUDE_ASM(", "INCLUDE_RODATA(")):
+            err(f"text.c:{i}: {t} does not follow an INCLUDE_ASM; if its function is C now, delete this line")
+        if t:
+            prev = t
 
     # variable definitions
     for pos, stmt in top_level_statements(code):

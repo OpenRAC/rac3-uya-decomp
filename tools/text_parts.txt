@@ -122,6 +122,8 @@
 0x003AEE80     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003AF1B8     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003B0F58     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
+0x003B0FC8     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
+0x003B1028     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003B1368     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003B13A8     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003B13D0     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override

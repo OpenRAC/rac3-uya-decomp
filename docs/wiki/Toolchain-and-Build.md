@@ -4,9 +4,9 @@ How `make` turns the repo into a byte-identical `frontbin.elf`, and which files 
 
 ## Pipeline
 
-1. `asm/header.s` (the retail ELF header) and the data segments `asm/data/{lit,data,lvl_vtbl,lvl_camvtbl,lvl_sndvtbl}.data.s` are assembled with `bin/ee-as.exe`.
+1. `asm/header.s` (the retail ELF header) and the data segments `asm/data/{lit,data_a,data_b,lvl_vtbl,lvl_camvtbl,lvl_sndvtbl}.data.s` are assembled with `bin/ee-as.exe`.
 2. `src/text.c` is built by `tools/build_text.py`, which cuts it into parts at the addresses in `tools/text_parts.txt`, compiles each part with that range's flags, and joins them with `ld -r` into `build/src/text.c.o`.
-3. `ee-ld.exe -T linker_scripts/frontbin.ld` places every section at its retail file offset. `INPUT(symbol_addrs_resolved.txt)` supplies the address of every external symbol.
+3. `ee-ld.exe -T linker_scripts/frontbin.ld` places every section at its retail file offset. `INPUT(symbol_addrs_resolved.txt)` supplies the address of every external symbol. The `.data` output is `data_a` + `text.c.o(.rodata)` (all switch jump tables, in function order) + `data_b`, the same layout the original linker produced.
 4. `ee-objcopy -O binary` makes `build/frontbin.bin`, and `tools/check_match.py` compares its SHA-1 with the one in `frontbin.splat.yaml`. That is the `MATCH` line.
 
 `make objdiff` also builds the objdiff inputs: `build/objdiff/target/text.o` (the full build) and `build/objdiff/base/text.o` (the same text.c with every `INCLUDE_ASM` compiled away), so objdiff reports decompiled/total.
@@ -65,7 +65,7 @@ When the function matches, move its flags to a single-function override in `text
 ## include/
 
 - `common.h`: the `s8`...`f64` typedefs and `include_asm.h`.
-- `include_asm.h`: the `INCLUDE_ASM` macro, the `OBJDIFF_BASE` switch that compiles stubs away, and the `NO_MACRO_INC` guard for `@ps2as` ranges.
+- `include_asm.h`: the `INCLUDE_ASM` and `INCLUDE_RODATA` macros (the latter pulls an asm function's jump table from `asm/nonmatchings/text/rodata/`), the `OBJDIFF_BASE` switch that compiles stubs away, and the `NO_MACRO_INC` guard for `@ps2as` ranges.
 - `macro.inc`, `labels.inc`: splat's assembler macros for the stubs.
 
 ## CI

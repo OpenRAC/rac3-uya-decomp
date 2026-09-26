@@ -26,7 +26,7 @@ Start with the [wiki](https://github.com/vetusmagnus/ratchet-uya-decomp/wiki):
 - [Matching patterns](https://github.com/vetusmagnus/ratchet-uya-decomp/wiki/Matching-Patterns)
 - [Pull requests](https://github.com/vetusmagnus/ratchet-uya-decomp/wiki/Pull-Requests)
 
-The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in [`docs/compiler_matrix_findings.md`](docs/compiler_matrix_findings.md).
+The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in [`docs/compiler_matrix_findings.md`](docs/compiler_matrix_findings.md), and the plan to 100% is in [`docs/full_match_roadmap.md`](docs/full_match_roadmap.md).
 
 ## Tools
 
@@ -36,5 +36,6 @@ The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in 
 | `tools/try_func.py` | The same compile and diff from the command line (Windows, or Linux via wibo) |
 | `tools/pr_check.py` | Catches the usual full-build failures before a PR |
 | `tools/build.py` | The Makefile's build for Linux and macOS |
+| `tools/triage.py` | Sorts the remaining functions into buckets (plain, switch, vu0, handwritten, remnant, ...) |
 | `tools/build_text.py` | Builds `src/text.c` in address ranges with per-range flags (`tools/text_parts.txt`) |
 | `tools/check_match.py` | Compares the built binary with retail |

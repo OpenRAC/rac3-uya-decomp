@@ -494,8 +494,12 @@ class Project:
         start_marker = f"/* localdecomp:start {name} */"
         end_marker = f"/* localdecomp:end {name} */"
 
+        # The stub plus any INCLUDE_RODATA lines right after it (the asm
+        # function's jump tables, see tools/migrate_jtbls.py): once the
+        # function is C, gcc emits its own table in the same place.
         include_pat = re.compile(
             rf'INCLUDE_ASM\([^)]*,\s*{re.escape(name)}\s*\)\s*;'
+            r'(?:[ \t]*\r?\n[ \t]*INCLUDE_RODATA\([^)]*\)\s*;)*'
         )
         if include_pat.search(text_c):
             wrapped = f"{start_marker}\n{body}{end_marker}"

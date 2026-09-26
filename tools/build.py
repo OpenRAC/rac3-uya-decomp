@@ -17,10 +17,9 @@ bin/ee-as.exe, bin/ee-ld.exe, bin/ee-objcopy.exe, ee/bin/Ps2EeAs.exe).
 build_text.py derives the toolchain root from the compiler path, so this
 script writes small wrapper scripts into build/wrap/ that call wibo.
 """
-import argparse, os, stat, subprocess, sys
+import argparse, os, re, stat, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_SEGMENTS = ["lit", "data", "lvl_vtbl", "lvl_camvtbl", "lvl_sndvtbl"]
 ASFLAGS = ["-I", "include", "-EL", "-mips3", "-mcpu=5900", "-mabi=eabi"]
 
 
@@ -45,7 +44,9 @@ def main():
     os.makedirs(os.path.join(build, "src"), exist_ok=True)
 
     run(exe("ee-as.exe") + ASFLAGS + ["-o", "build/asm/header.s.o", "asm/header.s"])
-    for seg in DATA_SEGMENTS:
+    # the data segments are whatever the linker script links
+    script = open(os.path.join(ROOT, "linker_scripts", "frontbin.ld")).read()
+    for seg in dict.fromkeys(re.findall(r"build/asm/data/(\w+)\.data\.s\.o", script)):
         run(exe("ee-as.exe") + ASFLAGS + ["-o", f"build/asm/data/{seg}.data.s.o", f"asm/data/{seg}.data.s"])
 
     # Wrappers live inside a fake toolchain tree (wrap/bin/...) with ee/ linked

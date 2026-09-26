@@ -40,7 +40,13 @@ SECTIONS
     {
         FILL(0x00000000);
         data_DATA_START = .;
-        build/asm/data/data.data.s.o(.data);
+        build/asm/data/data_a.data.s.o(.data);
+        /* Every source file's read-only data (gcc's `.rdata`, which the
+           assembler names .rodata): the switch jump tables, in link order.
+           Retail has them here, fenced by the linker's 0xCD fill. Asm
+           functions pull theirs in with INCLUDE_RODATA (tools/migrate_jtbls.py). */
+        build/src/text.c.o(.rodata);
+        build/asm/data/data_b.data.s.o(.data);
         data_DATA_END = .;
         data_DATA_SIZE = ABSOLUTE(data_DATA_END - data_DATA_START);
     }
@@ -106,7 +112,7 @@ SECTIONS
         text_DATA_END = .;
         text_DATA_SIZE = ABSOLUTE(text_DATA_END - text_DATA_START);
         text_RODATA_START = .;
-        build/src/text.c.o(.rodata);
+        /* text.c.o(.rodata) is linked into .data (jump tables), see above */
         text_RODATA_END = .;
         text_RODATA_SIZE = ABSOLUTE(text_RODATA_END - text_RODATA_START);
     }

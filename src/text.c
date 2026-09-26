@@ -62,6 +62,9 @@ void func_0037D1A8(void) {
 /* localdecomp:end func_0037D1A8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037D200);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00317FE0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318000);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318050);
 
 /* localdecomp:start func_0037DC30 */
 s32 func_0037DC30(void) {
@@ -321,6 +324,7 @@ void func_0037EB20(u8 *p) {
 INCLUDE_ASM("asm/nonmatchings/text", func_0037EB68);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037EE80);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318080);
 
 /* localdecomp:start func_0037F090 */
 extern S_37D000 D_0037D000[];
@@ -395,6 +399,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003822C8);
 INCLUDE_ASM("asm/nonmatchings/text", func_003823A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00382458);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003180A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00382F40);
 
@@ -718,7 +723,19 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00388648);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388680);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388698);
+/* localdecomp:start func_00388698 */
+/* VU0 macro code is inline asm, as in the original. The assembler moves the
+   sqc2 into the jr delay slot, like retail. */
+void func_00388698(void *o, void *a, void *b) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0(%1)\n"
+        "lqc2 $vf2, 0(%2)\n"
+        "vmini.xyzw $vf1, $vf1, $vf2\n"
+        "nop\n"
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(o), "r"(a), "r"(b) : "memory");
+}
+/* localdecomp:end func_00388698 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003886B0);
 
@@ -869,8 +886,10 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00389B98);
 INCLUDE_ASM("asm/nonmatchings/text", func_00389D18);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00389FB8);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003180C0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038A848);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003180F0);
 
 /* localdecomp:start func_0038B1B0 */
 void func_0038B1B0(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h) {
@@ -1320,12 +1339,14 @@ void func_0038F3A0(S_38F3A0 *p) {
 INCLUDE_ASM("asm/nonmatchings/text", func_0038F3F8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038FDC0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318120);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003906E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00390730);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00390C18);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318140);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003919E0);
 
@@ -1518,6 +1539,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00395360);
 INCLUDE_ASM("asm/nonmatchings/text", func_003953E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003953F0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318170);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00395628);
 
@@ -2122,6 +2144,15 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003972A0);
 INCLUDE_ASM("asm/nonmatchings/text", func_00397380);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00397490);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318190);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318210);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318230);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003182A0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003182F0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318340);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318360);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318390);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003183C0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00399660);
 
@@ -2184,6 +2215,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039A130);
 INCLUDE_ASM("asm/nonmatchings/text", func_0039A170);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039A3B0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003183E0);
 
 /* localdecomp:start func_0039A518 */
 s32 func_0039A518(u8 *p) {
@@ -2342,6 +2374,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039ABA0);
 INCLUDE_ASM("asm/nonmatchings/text", func_0039ABB0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039AE08);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318410);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039B0E8);
 
@@ -2415,6 +2448,8 @@ s32 func_0039BD40(void) {
 /* localdecomp:end func_0039BD40 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039BD48);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318470);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003184C0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039BE90);
 
@@ -2540,6 +2575,7 @@ void func_0039CC78(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_0039CC98);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039CEA8);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318510);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039D4D0);
 
@@ -2711,6 +2747,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039DB38);
 INCLUDE_ASM("asm/nonmatchings/text", func_0039E4A8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039E4B0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318530);
 
 /* localdecomp:start func_0039E8E0 */
 typedef struct { u8 pad[0x5C0]; } S_39E8E0;
@@ -2857,6 +2894,7 @@ void func_003A0130(s32 a, long l) {
 /* localdecomp:end func_003A0130 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A0170);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318670);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A01F8);
 
@@ -4574,6 +4612,7 @@ void func_003AE300(void) {
 /* localdecomp:end func_003AE300 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AE368);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318690);
 
 /* localdecomp:start func_003AE430 */
 extern s32 D_001D8888;
@@ -4583,8 +4622,10 @@ void func_003AE430(void) {
 /* localdecomp:end func_003AE430 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AE438);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003186C0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AE8A8);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318740);
 
 /* localdecomp:start func_003AECA0 */
 void func_003AECA0(void *p, s32 a) {
@@ -4865,6 +4906,7 @@ s32 func_003AFC10(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003AFC68);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AFF20);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003187C0);
 
 /* localdecomp:start func_003B0210 */
 extern s32 func_003E3040();
@@ -4898,6 +4940,7 @@ void func_003B0278(void) {
 /* localdecomp:end func_003B0278 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B02A0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003187E0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B0580);
 
@@ -4991,6 +5034,7 @@ s32 func_003B0D88(void) {
 /* localdecomp:end func_003B0D88 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B0DA0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318800);
 
 /* localdecomp:start func_003B0F58 */
 extern void func_003A3DA0(s32);
@@ -5008,7 +5052,20 @@ void func_003B0F58(void) {
 }
 /* localdecomp:end func_003B0F58 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B0FC8);
+/* localdecomp:start func_003B0FC8 */
+/* First C switch: its jump table comes from gcc now (tools/migrate_jtbls.py). */
+extern u8 D_00143A07[];
+s32 func_003B0FC8(void) {
+    switch (D_00143A07[0]) {
+    case 2: return 0x151;
+    case 3: return 0x153;
+    case 4: return 0x152;
+    case 5: return 0x154;
+    case 6: case 7: return 0x150;
+    case 0: case 1: default: return 0x150;
+    }
+}
+/* localdecomp:end func_003B0FC8 */
 
 /* localdecomp:start func_003B1028 */
 extern s32 D_001D8A48;
@@ -5193,6 +5250,7 @@ void func_003B26E8(s32 a) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003B2720);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B27A8);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318840);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B2958);
 
@@ -5239,8 +5297,10 @@ s32 func_003B2AA0(void) {
 /* localdecomp:end func_003B2AA0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B2AF8);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318860);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B2F50);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003188E0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B3558);
 
@@ -5421,6 +5481,7 @@ void func_003B56F0(void *a0, f32 a1, f32 a2, f32 a3, f32 a4) {
 /* localdecomp:end func_003B56F0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B5708);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318970);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B57F8);
 
@@ -5534,6 +5595,7 @@ s32 func_003B6198(void) {
 /* localdecomp:end func_003B6198 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B61A0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318990);
 
 /* localdecomp:start func_003B62D0 */
 extern u8 D_001D8CE0;
@@ -6105,6 +6167,7 @@ void func_003BC0B8(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003BC0F0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BC218);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318A00);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BC568);
 
@@ -6446,6 +6509,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BFEE0);
 INCLUDE_ASM("asm/nonmatchings/text", func_003BFEF0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C00B8);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318AC0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C0B10);
 
@@ -6910,8 +6974,14 @@ s32 func_003DBEA0(void) {
 /* localdecomp:end func_003DBEA0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003DBEB0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318AE0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318B10);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003DCD08);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318B90);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318BC0);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318C50);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318C70);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003DE260);
 
@@ -9390,6 +9460,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E9D78);
 INCLUDE_ASM("asm/nonmatchings/text", func_003EA078);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003EA290);
+INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318C90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003EA648);
 

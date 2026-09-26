@@ -1129,7 +1129,17 @@ void func_0038DB18(s32 a) {
 }
 /* localdecomp:end func_0038DB18 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038DB98);
+/* localdecomp:start func_0038DB98 */
+extern u32 *D_001DA0D0;
+extern s32 D_001D4CF8;
+void func_0038DB98(void) {
+    D_001DA0D0[0] = 0x30000009;
+    D_001DA0D0[1] = (D_001D4CF8 + 0xC0) & 0xFFFFFFF;
+    D_001DA0D0[2] = 0;
+    D_001DA0D0[3] = 0x50000009;
+    D_001DA0D0 += 4;
+}
+/* localdecomp:end func_0038DB98 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038DC08);
 

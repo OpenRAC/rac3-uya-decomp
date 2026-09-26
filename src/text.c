@@ -5075,12 +5075,18 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B12C8);
 extern s32 D_001D8ACC;
 extern s32 D_001D8AE4;
 extern s32 D_001D8A70_g;
-extern void func_00396F18();
+extern void func_003ADC80(void *); // Ensure this prototype matches exactly
+extern void func_00396F18(void (*)(), s32, void (*)());
 extern void func_003B1158();
 extern void func_003B1030();
+
+
 void func_003B1368(void) {
-    func_003ADC80((void *)D_001D8ACC);
-    D_001D8A70_g = 1;
+    func_003ADC80((void *)(s32)D_001D8ACC);
+    
+    // Explicit sequence point
+    *(volatile s32 *)&D_001D8A70_g = 1; 
+    
     func_00396F18(func_003B1158, D_001D8AE4, func_003B1030);
 }
 /* localdecomp:end func_003B1368 */

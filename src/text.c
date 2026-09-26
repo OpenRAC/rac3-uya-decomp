@@ -5548,7 +5548,12 @@ s32 func_003B5BE0(void) {
 }
 /* localdecomp:end func_003B5BE0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B5BE8);
+/* localdecomp:start func_003B5BE8 */
+extern u8 D_001D8C18;
+void func_003B5BE8(void) {
+    D_001D8C18 = 0;
+}
+/* localdecomp:end func_003B5BE8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B5BF0);
 

@@ -142,10 +142,13 @@ def split_chunks(text):
     """Split text.c into (addr_or_None, start_line, chunk_text) in file order.
 
     A chunk is one localdecomp block or INCLUDE_ASM line (addr = its function)
-    or the free-standing text between them (addr = None)."""
+    or the free-standing text between them (addr = None). INCLUDE_RODATA lines
+    right after an INCLUDE_ASM (its jump tables) stay with that function's
+    part, so .rdata keeps function order and never lands in an @ps2as part."""
     pat = re.compile(
         r'(/\* localdecomp:start (func_[0-9A-Fa-f]{8}) \*/.*?/\* localdecomp:end \2 \*/\n?)'
-        r'|(^INCLUDE_ASM\("[^"]*",\s*(func_[0-9A-Fa-f]{8})\);[^\n]*\n?)', re.S | re.M)
+        r'|(^INCLUDE_ASM\("[^"]*",\s*(func_[0-9A-Fa-f]{8})\);[^\n]*\n?'
+        r'(?:INCLUDE_RODATA\("[^"]*",\s*\w+\);[^\n]*\n?)*)', re.S | re.M)
     chunks, pos = [], 0
     for m in pat.finditer(text):
         if m.start() > pos:

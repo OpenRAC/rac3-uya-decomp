@@ -271,3 +271,16 @@ The whole build runs on Linux with wibo 1.0.0-beta.1 running the Windows toolcha
 - `tools/try_func.py`: compile one C file with its range's flags and diff it against retail, with relocations masked. `--all-modes` tries split/no-split times ee-as/Ps2EeAs.
 - `tools/pr_check.py`: source checks for the usual full-build failures (unbalanced markers, C plus `INCLUDE_ASM` for one function, variable definitions, conflicting typedefs, aliases missing from `symbol_addrs_resolved.txt`, `@ps2as` ranges containing stubs, retail files tracked by git) and, with `--obj`, data sections in `text.c.o`.
 - The contributor guide lives in `docs/wiki/` and is synced to the GitHub wiki.
+
+## Update 2026-09-26 (2): blockers for 100%
+
+The full breakdown and plan are in `docs/full_match_roadmap.md`. The findings in brief:
+
+- **Jump tables fixed.** The 47 switch tables form one block at the start of `.data` (0x317FE0 to 0x318CB0), 16-byte aligned, in function order, fenced by `0xCDCDCDCD` linker fill. It is the concatenated read-only data of all source files. gcc's `.rdata` directive lands in the section named `.rodata`, which the old linker script discarded. `tools/migrate_jtbls.py` split the blob into `data_a`/`data_b` and moved the tables into `text.c` (`INCLUDE_RODATA`), and `text.c.o(.rodata)` now links between the halves. `func_003B0FC8` is the first C `switch`; the full build matches.
+- **VU0 inline asm matches.** `func_00388698` (lqc2/vmini/sqc2) matches as `__asm__ __volatile__` with explicit `$vfN` registers and the default assembler, which moves the last instruction into the `jr` delay slot.
+- **Linker remnants.** 203 splat "functions" are just [instruction, `nop`] pairs with no return and no references (619 instructions, 449 of them `addiu $sp, $sp, N`). They are the last odd instruction of functions the original linker stripped. They are not source.
+- **Handwritten.** 100 functions are flagged handwritten by spimdisasm and belong in `.s` files.
+- **Floats through `$gp`** are small-data variables (220 in frontbin's `.lit`, 8 in the main executable's), not literals.
+- **Short loops.** The default ee-as does not pad short loops in gcc output (gcc emits them in noreorder mode). Ps2EeAs does pad them, which matters for `@ps2as` functions with tight loops.
+- **Ps2EeAs has automatic DIV hazard padding.** Its strings include "DIV related opcode too near branch instruction - Added %i padding NOP/s". This is the lead for the open `div.s` double-nop case (func_003E1D18).
+- **`/DISCARD/ : { *(*) }`** at the end of the linker script silently drops any section not named earlier. Check it whenever C starts producing a new section type.

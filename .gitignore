@@ -17,3 +17,5 @@ RequestScreenTransition.c
 Thumbs.db
 .DS_Store
 scratch/
+*.premigrate
+*.pre_jtbl.bak

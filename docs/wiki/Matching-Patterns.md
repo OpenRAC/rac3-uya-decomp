@@ -98,6 +98,54 @@ Ps2EeAs can't read the GNU `macro.inc`, so a range assembled with it must not co
 - Float arguments need prototypes. Without one, a `float` argument is promoted to `double` (you'll see `cvt.d.s` and the wrong registers). Declare it (`extern f32 func_00388A28(f32, f32);`) or cast at the call (`((void (*)(void *, f32))func_00388830)(a, f)`).
 - 64-bit values (`sd`, `ld`, `dsll32`, `dsra32`) are `long` or `unsigned long` in this compiler, not `s32`.
 
+### Floats read through $gp
+
+A float loaded through `$gp` (`lwc1 $f12, -0x33a4($gp)`) is a small-data global in frontbin's `.lit` segment (0x1D5680 to 0x1D9900), not a literal. Declare it sized, like any `$gp` variable:
+
+```c
+extern f32 D_001D950C;           /* 0x1DC8B0 - 0x33A4 */
+```
+
+A few such loads reach below 0x1D5680, into the main executable's small data; declare those the same way. Constants written in the source come out inline (`lui`/`ori`/`mtc1`) and need `@ps2as`, as above.
+
+## Switch statements
+
+`switch` works in C. The jump tables used to sit inside the data blob; since `tools/migrate_jtbls.py` they come from `text.c`, in function order, exactly where retail has them (the start of `.data`). Each asm function with a table has an `INCLUDE_RODATA(...)` line right after its `INCLUDE_ASM`. When you convert the function, delete both lines: gcc's table takes the same place. `pr_check.py` catches a leftover `INCLUDE_RODATA`.
+
+Getting the table to start at the right index: if retail's table has entries for 0 and 1 that go to the default code, list them with the default at the end, as in `func_003B0FC8`:
+
+```c
+switch (D_00143A07[0]) {
+case 2: return 0x151;
+...
+case 6: case 7: return 0x150;
+case 0: case 1: default: return 0x150;
+}
+```
+
+## VU0 code: inline asm
+
+Insomniac wrote VU0 math as inline assembly inside C functions, so that is the matching form too. Use explicit `$vfN` registers in the template and pass pointers as `"r"` operands:
+
+```c
+void func_00388698(void *o, void *a, void *b) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0(%1)\n"
+        "lqc2 $vf2, 0(%2)\n"
+        "vmini.xyzw $vf1, $vf1, $vf2\n"
+        "nop\n"
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(o), "r"(a), "r"(b) : "memory");
+}
+```
+
+The default assembler moves the last instruction into the `jr $ra` delay slot, like retail. Keep any `nop` that retail has between VU0 instructions in the template.
+
+## Not everything is C
+
+- **Linker remnants** (the `remnant` bucket in `triage.py`, about 200 entries). Retail has about 620 single instructions, each followed by a `nop`, between functions. Nothing references them, and 449 of them are `addiu $sp, $sp, N`, a function epilogue. They are what the original linker left behind when it stripped unused functions: the final odd instruction plus its alignment `nop`. They are not source code. Keep them as data (a macro that emits the words); don't write C for them.
+- **Handwritten assembly** (the `handwritten` bucket, 100 functions). spimdisasm flags them (`addi`, `$at`, unusual registers). The original was a `.s` file, so they will move to `.s` files rather than C.
+
 ## Codegen tricks that matter
 
 When the instructions are right but their order or registers aren't:
@@ -126,8 +174,8 @@ If you find a family, say so in your PR. It helps the next person.
 
 Leave these for now, or open an issue if you crack one:
 
-- `lwc1 $fN, off($gp)` followed by `nop` before the use (e.g. `func_003882D0`). No flag or assembler reproduces the `nop` yet. Current matches use a `$gp` register hack plus `__asm__("nop")`.
+- `lwc1 $fN, off($gp)` followed by `nop` before the use (e.g. `func_003882D0`, which reads the main executable's literal pool). No flag or assembler reproduces the `nop` yet. Current matches use a `$gp` register hack plus `__asm__("nop")`.
 - 64-bit constant synthesis `li 0x8000; dsll 24` (`func_00383B08`).
-- `div.s` with double-`nop` padding (`func_003E1D18`).
+- `div.s` with double-`nop` padding (`func_003E1D18`). Lead: Ps2EeAs has built-in DIV padding ("DIV related opcode too near branch instruction - Added padding NOP/s"), so try `@ps2as`.
 - Register allocation where retail keeps an argument in a temporary (`move $t3, $a0` at entry) while `$a0` holds a constant, e.g. `func_0039BEC0`. All its memory accesses match with `@ps2as`; only the registers differ.
 - About 20 matched functions use inline `__asm__` or a hand-rolled `$gp` register. They count, but plain-C rewrites of them are welcome.

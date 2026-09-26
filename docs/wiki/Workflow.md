@@ -6,16 +6,18 @@ The loop for one function: pick it, read its assembly, write C until it matches,
 
 Every not-yet-decompiled function is an `INCLUDE_ASM("asm/nonmatchings/text", func_XXXXXXXX);` line in `src/text.c`, and its retail assembly is `asm/nonmatchings/text/func_XXXXXXXX.s`. The header line gives the size: `nonmatching func_0037D100, 0x20`.
 
+`python tools/triage.py --tsv remaining.tsv` sorts every remaining function into a bucket (plain, switch, vu0, mmi, handwritten, remnant, ...) with its size. Pick from **plain**, smallest first, or from **switch** and **vu0** once you know those patterns.
+
 Good first functions:
 
 - Small ones (under about 0x100 bytes).
 - Members of a family that is already matched: find a matched function with the same shape and copy its approach. Getters, setters, `isA` checks through a vtable, and the 8-slot hash lookups (`HT_8`) all come in families.
 
-Skip these for now:
+Not for C:
 
-- **Splitting fragments.** The function starts with `addiu $sp, $sp, +N`, a `nop`, or a stray store instead of a normal prologue. The splitter cut it in the wrong place.
-- **Jump tables.** `jr $reg` with a register other than `$ra`.
-- **VU0 macro code.** `lqc2`, `sqc2`, `qmtc2`, `vadd` and friends.
+- **remnant:** only `[instruction, nop]` pairs and no return. These are the last 8 bytes of functions the original linker stripped as unused ([details](Matching-Patterns#not-everything-is-c)).
+- **handwritten:** the original was assembly. It moves to a `.s` file instead.
+- **odd:** probably a bad split. Report it; don't write C for it yet.
 - Functions listed in [Matching patterns: known open problems](Matching-Patterns#known-open-problems).
 
 Tell others what you're working on (open a draft PR early) so two people don't match the same function.

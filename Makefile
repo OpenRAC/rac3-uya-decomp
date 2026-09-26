@@ -53,7 +53,8 @@ PYTHON ?= python
 TEXT_PARTS := tools/text_parts.txt
 
 # --- data segments: splat's whole-segment disassembly, one .o each -------
-DATA_SEGMENTS := lit data lvl_vtbl lvl_camvtbl lvl_sndvtbl
+# data is split around the jump-table block (tools/migrate_jtbls.py); text.c.o(.rodata) goes between.
+DATA_SEGMENTS := lit data_a data_b lvl_vtbl lvl_camvtbl lvl_sndvtbl
 DATA_OBJS := $(patsubst %,$(BUILD_DIR)/asm/data/%.data.s.o,$(DATA_SEGMENTS))
 
 # --- header segment: raw ELF header + padding, see asm/header.s ----------

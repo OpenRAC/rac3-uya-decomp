@@ -2076,7 +2076,12 @@ void func_00397080(void) {
 extern s32 D_001D4CEC[];
 register char *_gpreg __asm__("$28");
 #define D_001D4CEC_gp (*(s32 *)(_gpreg + -0x7bc4))
-INCLUDE_ASM("asm/nonmatchings/text", func_003970A0);
+/* localdecomp:start func_003970A0 */
+extern s32 D_001D4CEC;
+void func_003970A0(void) {
+    D_001D4CEC |= 0x2000;
+}
+/* localdecomp:end func_003970A0 */
 
 /* localdecomp:start func_003970B8 */
 extern u8 D_001DA028_g;

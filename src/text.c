@@ -5368,7 +5368,18 @@ s32 func_003B41F0(void) {
 }
 /* localdecomp:end func_003B41F0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B41F8);
+/* localdecomp:start func_003B41F8 */
+extern s32 D_001D8C04;
+extern s32 D_001D8C08;
+void func_003B41F8(s32 a0, s32 a1) {
+    D_001D8C04 = 0x40;
+    D_001D8C08 = 0x10;
+    if (a0 != 0xFFFF) {
+        D_001D8C04 = a0;
+    }
+    D_001D8C08 = a1;
+}
+/* localdecomp:end func_003B41F8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B4220);
 

@@ -2095,6 +2095,7 @@ u8 func_003970B8(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003970C8);
 
 /* localdecomp:start func_003970D0 */
+extern S_142430 D_00142430;
 void func_003970D0(s16 v) {
     u8 *b = (u8 *)&D_00142430;
     s32 t = *(s32 *)(b + 0x164);

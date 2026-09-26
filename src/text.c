@@ -3146,7 +3146,16 @@ void func_003A3DA0(s32 a) {
 }
 /* localdecomp:end func_003A3DA0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A3DE8);
+/* localdecomp:start func_003A3DE8 */
+extern u32 *D_001DA0D0;
+void func_003A3DE8(s32 a0, u32 a1) {
+    D_001DA0D0[0] = a1 | 0x30000000;
+    D_001DA0D0[1] = a0;
+    D_001DA0D0[2] = 0;
+    D_001DA0D0[3] = 0;
+    D_001DA0D0 += 4;
+}
+/* localdecomp:end func_003A3DE8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A3E38);
 

@@ -7024,7 +7024,21 @@ void func_003D3050(void) {
 }
 /* localdecomp:end func_003D3050 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D30D0);
+/* localdecomp:start func_003D30D0 */
+__asm__(".extern D_001D938C, 4");
+extern u32 *D_001DA0D0;
+extern s32 D_001D55F4;
+extern u8 D_1D2A50[];
+extern s32 D_001D938C;
+void func_003D30D0(void) {
+    D_001DA0D0[0] = (D_001D55F4 >> 4) | 0x30000000;
+    D_001DA0D0[1] = (u32)D_1D2A50;
+    D_001DA0D0[2] = 0;
+    D_001DA0D0[3] = (D_001D55F4 >> 4) | 0x50000000;
+    D_001D938C = 0;
+    D_001DA0D0 += 4;
+}
+/* localdecomp:end func_003D30D0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D3148);
 

@@ -1856,7 +1856,23 @@ void func_00396780(void) {
 }
 /* localdecomp:end func_00396780 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003967C0);
+/* localdecomp:start func_003967C0 */
+extern s32 D_00142438[];
+extern s32 D_001D4CEC;
+extern s32 D_001D4CE8;
+extern u8 D_001D5BDC;
+void func_003967C0(void) {
+    s32 f;
+    if (D_00142438[0] != 2) { D_001D4CE8 = 4; return; }
+    f = D_001D4CEC;
+    if (f & 0x20) {
+        D_001D4CEC = f ^ 0x20;
+        if (D_001D5BDC != 0) { D_001D4CE8 = 0x1B; } else { D_001D4CE8 = 0xE; }
+        return;
+    }
+    if (f & 0x2000) { D_001D4CE8 = 0x10; }
+}
+/* localdecomp:end func_003967C0 */
 
 /* localdecomp:start func_00396830 */
 typedef struct { u8 pad[0x15C]; s32 x15C; s32 x160; s32 x164; s32 x168; s32 x16C; } S_396830;

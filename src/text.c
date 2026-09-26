@@ -5135,7 +5135,12 @@ void func_003B1068(void) {
 /* localdecomp:end func_003B1068 */
 
 extern s32 D_001D8A70[];
-INCLUDE_ASM("asm/nonmatchings/text", func_003B1098);
+/* localdecomp:start func_003B1098 */
+extern s32 D_001D8A70;
+void func_003B1098(void) {
+    D_001D8A70 = 4;
+}
+/* localdecomp:end func_003B1098 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B10A8);
 

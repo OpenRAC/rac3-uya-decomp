@@ -7305,7 +7305,35 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003D95B0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D96C4);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D97C8);
+/* localdecomp:start func_003D97C8 */
+extern u32 *D_001DA0D0;
+extern u32 *D_001DA7E0;
+extern s32 D_001DA7E4;
+extern s32 D_001D4BB0;
+extern s32 func_003DB318(s32);
+extern void func_003A40C8(void);
+void func_003D97C8(void) {
+    u32 *save = D_001DA0D0;
+    s32 r;
+    D_001DA0D0 += 4;
+    D_001DA7E0[0] = 0x20000000;
+    D_001DA7E0[1] = (u32)D_001DA0D0;
+    D_001DA7E0[2] = 0;
+    D_001DA7E0[3] = 0;
+    r = func_003DB318(D_001D4BB0);
+    func_003A40C8();
+    if (D_001DA7E4 < r) { D_001DA7E4 = r; }
+    D_001DA0D0[0] = 0x20000000;
+    D_001DA0D0[1] = (u32)(D_001DA7E0 + 4);
+    D_001DA0D0[2] = 0;
+    D_001DA0D0[3] = 0;
+    D_001DA0D0 += 4;
+    save[0] = 0x20000000;
+    save[1] = (u32)D_001DA0D0;
+    save[2] = 0;
+    save[3] = 0;
+}
+/* localdecomp:end func_003D97C8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D98D0);
 

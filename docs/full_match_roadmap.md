@@ -1,0 +1,119 @@
+# Road to 100%: blockers and plan
+
+Status on 2026-09-26. `python tools/triage.py` prints the current numbers.
+
+## Where we are
+
+The build has matched byte for byte since the start. The goal is to have every function come from real source: C for compiled code, `.s` for code that was assembly in the original.
+
+| | Functions | Bytes of `.text` |
+|---|---|---|
+| In C | 695 | about 0xAB00 (10%) |
+| Still `INCLUDE_ASM` | 1,150 | about 0x65200 (90%) |
+
+The functions matched so far are the small ones (63 bytes on average). What's left averages about 380 bytes, so measure progress by bytes, not by function count.
+
+## Remaining functions by bucket
+
+| Bucket | Functions | Bytes | What it needs | Status |
+|---|---|---|---|---|
+| plain | 691 | 0x34CE8 | Ordinary matching. 428 are under 0x100 bytes. | The main workload |
+| switch | 30 | about 0xC7F0 | Jump tables in the right place | **Unblocked**: `tools/migrate_jtbls.py`; first C switch is `func_003B0FC8` |
+| vu0 | 101 | about 0x9680 | Inline asm for the VU0 parts, as the original had | **Unblocked**: pattern proven with `func_00388698` |
+| mmi | 16 | 0x36E0 | EE 128-bit instructions | Probably inline asm like VU0; untested |
+| sys | 2 | 0x44 | COP0 / sync | Inline asm |
+| float-nop | 1 | 0x34 | `lwc1` from `$gp` then `nop` | Open problem |
+| odd | 5 | 0xEC | Bad function boundaries (0x3CC880 to 0x3CD510) | Fix the split |
+| handwritten | 100 | 0x15E48 | Nothing to decompile: the original was assembly | Mechanical: move to `.s` files |
+| remnant | 203 | 0xFE4 | Nothing: linker leftovers, not source | Mechanical: emit as data |
+
+Handwritten functions and remnants are 22% of the remaining bytes and need no matching at all, just a clean home in the source tree.
+
+## Findings behind the table
+
+### Jump tables (fixed)
+
+All 47 switch tables sit in one block at the start of `.data` (0x317FE0 to 0x318CB0). They are 16-byte aligned, in exactly the order of the functions that use them, and fenced by the original linker's `0xCDCDCDCD` fill on both sides. That block is every source file's read-only data, concatenated in link order.
+
+gcc writes its tables with `.rdata` / `.align 4`, which the assembler files under `.rodata`. So the fix is:
+
+- the data blob is split into `data_a` and `data_b`;
+- `text.c.o(.rodata)` is linked between the two halves;
+- asm functions pull their tables into `text.c` with `INCLUDE_RODATA`.
+
+Converting a function means deleting its `INCLUDE_ASM` and `INCLUDE_RODATA` lines together. Verified: full build `MATCH` with `func_003B0FC8` in C.
+
+Before this fix, the linker script discarded `text.c.o(.rodata)`, so no function with a `switch` could have matched.
+
+### Linker remnants
+
+Retail has 619 single instructions, each followed by a `nop`, sitting between functions. They are in 203 splat "functions" with no return and no references. 449 of them are `addiu $sp, $sp, N`, the last instruction of an epilogue.
+
+They are what the original linker left when it stripped unused functions. It removed each function's bytes down to an 8-byte boundary, so for functions with an odd instruction count the final instruction and its alignment `nop` stayed behind. They cluster at source file boundaries (for example `0x37D1A0`, just before the known boundary at `0x37D1A8`).
+
+They can't come from C with our GNU linker. Emit them as data words.
+
+### Handwritten assembly
+
+spimdisasm flags 100 functions as handwritten: they use `addi`, `$at` and loop shapes gcc never emits. Examples are the memset-style loops at 0x388418 and 0x388440 and the hardware wait loops around 0x3D6BC0. They move to `.s` files. They are also why `tools/fix_short_loops.py` exists: the default assembler would pad their short loops, but compiled C never hits this, because gcc emits its loops in noreorder mode.
+
+### VU0
+
+VU0 macro instructions (`lqc2`, `vmul`, `qmtc2`...) appear in 101 compiled functions. The original used inline asm inside C functions, and that matches: with `__asm__ __volatile__` and explicit `$vfN` registers, the default assembler even moves the last instruction into the `jr` delay slot like retail. See [Matching patterns](wiki/Matching-Patterns.md#vu0-code-inline-asm).
+
+### Floats through `$gp`
+
+The 232 `lwc1 ...($gp)` loads in retail read small-data variables, not literals. 220 are in frontbin's `.lit` segment, 8 in the main executable's small data, and 4 just past `.lit` in the `.bss` range. Declare them sized. Constants in the source come out inline and need `@ps2as`. Only the loads followed by a `nop` are unexplained.
+
+### Source file boundaries
+
+For a later "real source files" pass (not needed for 100% C), boundaries can be recovered from:
+
+- the split/no-split address runs;
+- the linker remnants at file ends;
+- the `0xCD` fills between output sections (8 in `.lit`, 3 in `.data`, 1 in `.text` at 0x39B1A0);
+- the order of jump tables and small data, which follows file order.
+
+## Year-end plan
+
+About 14 weeks remain. The compiled buckets (plain, switch, vu0, mmi, sys) are about 840 functions and 0x4E000 bytes, roughly 7 times the bytes matched so far. That needs about 60 functions a week, weighted toward bigger ones.
+
+1. **October: clear the mechanical buckets and the small plain functions.**
+   - Remnants become data, and handwritten functions move to `.s` (this removes 303 entries).
+   - Fix the 5 bad splits.
+   - Run agent batches on the 428 plain functions under 0x100 bytes.
+2. **November: medium work.**
+   - Plain functions from 0x100 to 0x400 (about 225).
+   - The 30 switch functions and 101 VU0 functions, now that both patterns work.
+   - Test the MMI group.
+3. **December: the long tail.**
+   - The 20 plain functions over 0x400 bytes.
+   - Register-allocation stragglers like `func_0039BEC0`.
+   - The open problems: the `lwc1`/`nop` load, 64-bit constants, and `div.s` padding (lead: Ps2EeAs's DIV padding).
+
+Honest risk: the last 5 to 10% (large functions and register-allocation holdouts) is where schedules slip. Keep the build matching at every step, so a partial result is always usable.
+
+## A playable main menu
+
+`frontbin.elf` is not a program. It is a **level overlay**, the "front end level", with the same layout as the level files (`lvl.vtbl`, `lvl.camvtbl`, `lvl.sndvtbl`). The main executable (SCUS_973.53) loads it on top of itself at 0x1D5680 and calls its entry at 0x37D200. It depends on that executable for almost everything:
+
+| Dependency on the main executable | Count |
+|---|---|
+| Functions it calls directly | 132 distinct, 571 call sites in 166 functions |
+| Main-executable globals it reads or writes | 253 via `lui` (1,387 references in 368 functions) plus 240 `$gp` accesses |
+| Indirect calls (function pointers, vtables) | 272 |
+
+It also talks straight to the hardware:
+
+- DMA channels (0x1000xxxx), GS registers (0x12000000) and the scratchpad (0x70000000, 819 references);
+- VU0 in macro mode (101 functions).
+
+The menu's textures, fonts and sounds are loaded from the disc by the main executable.
+
+So a native `.exe` cannot be built from `frontbin.elf` alone. The routes:
+
+1. **Modded menu running in PCSX2 (reachable this year).** Our build already produces a byte-identical `frontbin.elf`. Change the C, rebuild, and put the file back into your own disc image or load it with an emulator patch. This is how most decomp projects become "playable" first. It needs a small repacking step (for example with Wrench).
+2. **Static recompilation (separate track).** Recompile both the main executable and frontbin to native code with a PS2 recompiler plus a runtime that emulates GS, VU1 and IOP. The decomp helps (names, types), but doesn't have to be complete.
+3. **True native port (multi-year).** Decompile the parts of the main executable that frontbin reaches: the renderer and VU1 microcode path, file and WAD loading, pad input, the sound RPC to the IOP, memory management, and whatever those call in turn. Then replace the hardware layer (GS packets, DMA, VU0/VU1) with a PC backend. The first step would be splitting and triaging SCUS_973.53 the same way as frontbin, to measure the transitive closure of those 132 functions.
+
+Recommendation: make "100% C frontbin, byte-identical" plus "modified menu boots in PCSX2" the year-end goals. Treat the native menu as next year's project, starting with the main executable.

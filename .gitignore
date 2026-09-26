@@ -5,7 +5,6 @@ build/
 .test_flags_work/
 *.o
 *.pyc
-localdecomp/
 build_log.txt
 tmp.c
 flagtest.c
@@ -17,3 +16,4 @@ RequestScreenTransition.c
 .vscode/
 Thumbs.db
 .DS_Store
+scratch/

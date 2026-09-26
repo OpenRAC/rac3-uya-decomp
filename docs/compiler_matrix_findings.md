@@ -236,3 +236,38 @@ Other notes:
 - `-Wa,-G0` with a sized declaration gives split loads with `lui $at` stores (func_00396B50).
 - Split/no-split and assembler choice now vary per function. Single-function overrides in `text_parts.txt` are marked `# single-function override`.
 - Still open: 64-bit constant synthesis (`li 0x8000; dsll 24`, func_00383B08), the `div.s` double-nop padding (func_003E1D18), and a few float `li.s` cases.
+
+## Update 2026-09-26
+
+### Ps2EeAs and `$gp`: declare the size early
+
+With `@ps2as`, a sized `extern` alone gives `lui` accesses, because gcc writes its `.extern NAME, size` hints at the end of the file and Ps2EeAs is single-pass. To get `$gp` for a variable that retail always reaches through `$gp`, put the hint before the function:
+
+```c
+__asm__(".extern D_001D6DA4, 4");
+extern s32 D_001D6DA4;
+```
+
+`.extern` declares a size only and creates no storage. Used in func_003969B8 and func_003D3050, and it gets every memory access of func_0039BEC0 right (5B90/5B94/4CEC/1A7430 through `lui`, 6DA4/6D9C/6DA0/6DA8 through `$gp`, the 5B90 store as `lui $at` + `sw`). func_0039BEC0 is still not a match: retail keeps `screenId` in `$t3` (`move $t3, $a0` in the first delay slot) and uses `$a0` for the `-2` constant. About 40 source variants did not change that register allocation.
+
+### Float constants: `R_MIPS_LITERAL lit4` means inline `li.s`
+
+Retail builds most float constants inline (`lui $at` / `ori` / `mtc1`). `bin/ee-as.exe` puts them in a `.lit4` pool addressed through `$gp`, which fails to link (`relocation truncated to fit: R_MIPS_LITERAL lit4`) and would not match anyway. Ps2EeAs expands them inline, so such functions need `@ps2as` (func_003830E8 is an example).
+
+### Still unreproduced: `lwc1` from `$gp` followed by a load-delay `nop`
+
+func_003882D0, func_00388308 and func_00388340 load a float with `lwc1 $f0, -0x75a8($gp)` and retail has a `nop` before its use. Plain C with a sized `extern f32` gives the right load but no `nop` with `bin/ee-as.exe`, Ps2EeAs (with `.extern`) or `ee/bin/as.exe`, in split or no-split mode. The existing matches use a `$gp` register variable plus `__asm__("nop")`. Similar loads appear in func_0037FF90, func_003801C0 and func_003813E0.
+
+### Work-in-progress flag overrides
+
+`tools/localdecomp_flags.txt` (`func_XXXXXXXX <flags>`) gives a function flags in localdecomp and `tools/try_func.py` while it is still `INCLUDE_ASM`. `text_parts.txt` can't carry `@ps2as` for such a function, because Ps2EeAs can't assemble the stub. Once the function matches, its flags move to a single-function override in `text_parts.txt`.
+
+### Linux builds
+
+The whole build runs on Linux with wibo 1.0.0-beta.1 running the Windows toolchain, and gives the same `MATCH` (`tools/build.py`). Per-function matching works the same way through `tools/try_func.py`.
+
+### Contributor tooling
+
+- `tools/try_func.py`: compile one C file with its range's flags and diff it against retail, with relocations masked. `--all-modes` tries split/no-split times ee-as/Ps2EeAs.
+- `tools/pr_check.py`: source checks for the usual full-build failures (unbalanced markers, C plus `INCLUDE_ASM` for one function, variable definitions, conflicting typedefs, aliases missing from `symbol_addrs_resolved.txt`, `@ps2as` ranges containing stubs, retail files tracked by git) and, with `--obj`, data sections in `text.c.o`.
+- The contributor guide lives in `docs/wiki/` and is synced to the GitHub wiki.

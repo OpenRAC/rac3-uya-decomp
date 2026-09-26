@@ -1,0 +1,4 @@
+# Python packages for the contributor tools (tools/try_func.py, tools/pr_check.py --obj).
+# localdecomp itself uses only the standard library, plus asm-differ (see the wiki's Setup page).
+pyelftools>=0.29
+capstone>=5.0

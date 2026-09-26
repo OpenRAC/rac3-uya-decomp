@@ -39,7 +39,7 @@ errors, warnings = [], []
 # A function definition: at the start of a line, a return type with no '(' or
 # '=' before the name, a balanced parameter list, then '{'.
 DEF_RE = re.compile(r"^[A-Za-z_][^\n;=(){}]*?\b(func_[0-9A-Fa-f]{8})\s*"
-                    r"\((?:[^()]|\([^()]*\))*\)\s*\{", re.M)
+                    r"\((?:[^()]|\([^()]*\))*\)\s*(?:[A-Za-z_][^;{}()]*;\s*)*\{", re.M)  # also K&R
 
 
 def err(msg): errors.append(msg)
@@ -103,7 +103,9 @@ def top_level_statements(code):
                     yield start, stmt
                     start, buf = i + 1, []
         elif depth == 0:
-            if c == ";":
+            if c == ";" and re.search(r"\b\w+\s*\([\w\s,]*\)\s*[A-Za-z_][^()]*$", "".join(buf)):
+                buf.append(c)  # K&R parameter declaration: `f(p) u8 *p; {`
+            elif c == ";":
                 yield start, "".join(buf).strip()
                 start, buf = i + 1, []
             else:

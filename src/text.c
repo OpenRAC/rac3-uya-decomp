@@ -4909,13 +4909,7 @@ void func_003A7F90(S_3A7F90 *p, s32 i, f32 a, f32 b, f32 c, f32 d, f32 e) {
 }
 /* localdecomp:end func_003A7F90 */
 
-/* localdecomp:start func_003A7FC8 */
-void func_003A7FC8(void *a0, s32 a1, f32 a2, f32 a3) {
-    u8 *p = (u8 *)a0 + a1 * 4;
-    *(f32 *)(p + 0xc) = a3;
-    *(f32 *)p = a2;
-}
-/* localdecomp:end func_003A7FC8 */
+INCLUDE_ASM("asm/nonmatchings/text", func_003A7FC8);
 
 /* localdecomp:start func_003A7FE0 */
 void func_003A7FE0(void *p, s32 value) {
@@ -4955,6 +4949,7 @@ LINKER_REMNANT("asm/remnants", func_003A8228);
 INCLUDE_ASM("asm/nonmatchings/text", func_003A8230);
 
 /* localdecomp:start func_003A95A0 */
+
 void func_003A95A0(void *arg0, s32 arg1) {
     void *temp_s0;
     void *temp_s1;

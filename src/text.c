@@ -2687,6 +2687,7 @@ void func_0039CC78(void) {
 }
 /* localdecomp:end func_0039CC78 */
 /* localdecomp:end func_0039CC78 */
+/* localdecomp:end func_0039CC78 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039CC98);
 

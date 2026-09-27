@@ -538,10 +538,6 @@ class Project:
                 self.src_file.read_text(), re.MULTILINE):
             raise BuildError("save", f"{name} is final assembly (ASM_FUNC / LINKER_REMNANT); "
                              "there is no C to save for it")
-        m_addr = re.fullmatch(r"func_([0-9A-Fa-f]{8})", name)
-        if m_addr and int(m_addr.group(1), 16) % 8:
-            raise BuildError("save", f"{name} starts 4 bytes past an 8-byte boundary; gcc aligns "
-                             "every C function to 8, so the full build would shift. It can't be C.")
         self._func_store_path(name).write_text(c_source)
 
         if not self.src_file.exists():
@@ -1019,7 +1015,25 @@ SECTIONS
         extra_cflags = list(extra_cflags) + ["-DNO_MACRO_INC"]
         extra_cflags = [f for f in extra_cflags if not f.startswith("-Wa,")]
     extra_cflags = [as_flags.get(f, f) for f in extra_cflags]
-    cmd = [str(gcc), "-c", "-B" + str(project.toolbin / "ee-")] + extra_cflags + ["-o", str(o_path), str(c_path)]
+    # compile to assembly, apply retail's loop padding (tools/asm_filter.py,
+    # same as the full build), then assemble
+    s_path = o_path.with_suffix(".s")
+    base = [str(gcc), "-B" + str(project.toolbin / "ee-")] + extra_cflags
+    cmd = base[:1] + ["-S"] + base[1:] + ["-o", str(s_path), str(c_path)]
+    proc = subprocess.run(cmd, cwd=work, capture_output=True, text=True)
+    if proc.returncode != 0:
+        raise BuildError("compile", proc.stdout + proc.stderr)
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "asm_filter", str(project.root / "tools" / "asm_filter.py"))
+        af = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(af)
+        s_text = s_path.read_text()
+        s_path.write_text(af.filter_asm(s_text))
+    except FileNotFoundError:
+        pass
+    cmd = base[:1] + ["-c"] + base[1:] + ["-o", str(o_path), str(s_path)]
     proc = subprocess.run(cmd, cwd=work, capture_output=True, text=True)
     if proc.returncode != 0:
         raise BuildError("compile", proc.stdout + proc.stderr)

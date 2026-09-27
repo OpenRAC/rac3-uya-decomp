@@ -90,7 +90,7 @@ def expand(flags, toolchain):
     out, bopts = [], ["-B" + os.path.join(toolchain, "bin", "ee-")]
     for f in flags:
         if f == "@ps2as":
-            bopts.append("-B" + os.path.join(toolchain, "ee", "bin", "Ps2Ee"))
+            bopts.append("-B" + os.environ.get("UYA_PS2AS_PREFIX", os.path.join(toolchain, "ee", "bin", "Ps2Ee")))
             out.append("-DNO_MACRO_INC")
         elif f == "@newas":
             bopts.append("-B" + os.path.join(toolchain, "ee", "bin") + os.sep)
@@ -163,9 +163,19 @@ def compile_c(src_path, flags, args, name=None):
     o_path = os.path.join(tmpdir, "t.o")
     open(c_path, "w").write(src)
     gcc = os.path.join(args.toolchain, "bin", "ee-gcc2953.exe")
-    cmd = ([args.runner] if args.runner else []) + [gcc, "-c", "-I", "include", "-I", "."] \
-        + expand(flags, args.toolchain) + ["-o", o_path, c_path]
+    s_path = os.path.join(tmpdir, "t.s")
+    base = ([args.runner] if args.runner else []) + [gcc, "-I", "include", "-I", "."] + expand(flags, args.toolchain)
+    cmd = base[:2] + ["-S"] + base[2:] + ["-o", s_path, c_path]
     p = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
+    if not p.returncode and os.path.exists(s_path):
+        # retail's loop padding (tools/asm_filter.py), as in the full build
+        sys.path.insert(0, os.path.join(ROOT, "tools"))
+        import asm_filter
+        filtered = asm_filter.filter_asm(open(s_path, newline="").read())
+        open(s_path, "w", newline="").write(filtered)
+        cmd = base[:2] + ["-c"] + base[2:] + ["-o", o_path, s_path]
+        p2 = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
+        p = subprocess.CompletedProcess(cmd, p2.returncode, p.stdout + p2.stdout, p.stderr + p2.stderr)
     if p.returncode or not os.path.exists(o_path):
         print("COMPILE ERROR\n" + " ".join(cmd) + "\n" + (p.stdout + p.stderr)[-3000:])
         if "<text.c context>" in p.stdout + p.stderr:

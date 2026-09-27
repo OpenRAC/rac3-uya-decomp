@@ -4,6 +4,7 @@
 - [Setup](Setup)
 - [Workflow](Workflow)
 - [Matching patterns](Matching-Patterns)
+- [Tools](Tools)
 - [Toolchain and build](Toolchain-and-Build)
 - [Pull requests](Pull-Requests)
 

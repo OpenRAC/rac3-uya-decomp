@@ -5,7 +5,7 @@ A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arse
 ## Where things stand
 
 - `src/text.c` holds every function in the `.text` section. Functions that are done are C. The rest are `INCLUDE_ASM(...)` stubs that pull in the retail assembly from `asm/nonmatchings/text/`.
-- About 720 of the 1,846 functions are C so far. Run `python tools/pr_check.py` for the current count.
+- As of 2026-09-27, 1,112 of the 1,846 functions are final source: 764 in C, plus 144 hand-written assembly functions (`ASM_FUNC`) and 204 linker remnants (`LINKER_REMNANT`). Run `python tools/pr_check.py` for the current count.
 - The toolchain is fully identified: SN Systems ee-gcc 2.95.3 v1.36, plus the right assembler per function. See [Toolchain and build](Toolchain-and-Build).
 - The level overlays are tracked for progress only. Nobody is working on them yet.
 
@@ -16,6 +16,7 @@ A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arse
 | [Setup](Setup) | Toolchain, Python, your own copy of the game file, first build |
 | [Workflow](Workflow) | Picking a function, matching it in localdecomp or on the command line, putting it into `text.c` |
 | [Matching patterns](Matching-Patterns) | The rules and tricks that make this compiler produce retail code |
+| [Tools](Tools) | Every script in `tools/`, localdecomp and the Makefile: what each is for and when to use it |
 | [Toolchain and build](Toolchain-and-Build) | How the build works: `text_parts.txt`, assemblers, symbol files, objdiff |
 | [Pull requests](Pull-Requests) | What a PR must contain and the checklist a reviewer uses |
 

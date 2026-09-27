@@ -135,8 +135,27 @@ def dis(word):
     return f"{ins[0].mnemonic} {ins[0].op_str}" if ins else f".word 0x{word:08x}"
 
 
-def compile_c(src_path, flags, args):
+def text_c_context(name, own_src):
+    """(context, source): the declarations the full build puts in front of
+    `name` (build_text.function_context), and `own_src` without typedefs the
+    context already defines identically."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("build_text", os.path.join(ROOT, "tools", "build_text.py"))
+    bt = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(bt)
+    text = open(os.path.join(ROOT, "src", "text.c"), errors="replace").read().replace("\r\n", "\n")
+    parts = bt.read_parts(os.path.join(ROOT, "tools", "text_parts.txt"))
+    ctx = bt.function_context(text, parts, name)
+    return ctx, bt.drop_repeated_typedefs(ctx, own_src)
+
+
+def compile_c(src_path, flags, args, name=None):
     src = open(src_path).read()
+    if name and not args.no_context:
+        # Compile in the same context as the full build: earlier #defines,
+        # prototypes and .extern hints change code generation.
+        ctx, src = text_c_context(name, src)
+        src = '#line 1 "<text.c context>"\n' + ctx + '#line 1 "%s"\n' % src_path + src
     if "common.h" not in src:
         src = '#include "common.h"\n' + src
     tmpdir = tempfile.mkdtemp(prefix="try_func_")
@@ -149,6 +168,10 @@ def compile_c(src_path, flags, args):
     p = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
     if p.returncode or not os.path.exists(o_path):
         print("COMPILE ERROR\n" + " ".join(cmd) + "\n" + (p.stdout + p.stderr)[-3000:])
+        if "<text.c context>" in p.stdout + p.stderr:
+            print("(an error in <text.c context> means your file conflicts with an earlier "
+                  "declaration in src/text.c; the full build would fail the same way. "
+                  "--no-context compiles the file alone.)")
         return None
     return o_path
 
@@ -266,6 +289,8 @@ def main():
     ap.add_argument("--flags", default="")
     ap.add_argument("--all-modes", action="store_true")
     ap.add_argument("--quiet", action="store_true")
+    ap.add_argument("--no-context", action="store_true",
+                    help="compile the file alone, without the declarations src/text.c puts in front of it")
     ap.add_argument("--toolchain", default=DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--retail", default=os.path.join(ROOT, "frontbin.elf"))
@@ -286,7 +311,7 @@ def main():
         flags = apply_overrides(base, mode, asm) + args.flags.split()
         if args.all_modes:
             print(f"--- mode {mode}, assembler {asm}")
-        o = compile_c(args.file, flags, args)
+        o = compile_c(args.file, flags, args, names[0])
         if o:
             diff_object(o, names, retail, args.quiet or args.all_modes)
 

@@ -393,11 +393,37 @@ class Project:
                 }
             )
 
-        funcs.sort(key=lambda f: f["vaddr"])
+        # Assembly that is final source rather than a matching target
+        # (tools/migrate_asm_sources.py): hand-written functions and the
+        # leftovers of functions the original linker stripped. They count as
+        # done, the same way the objdiff base build counts them.
+        for kind, sub in (("handwritten", "handwritten"), ("remnant", "remnants")):
+            for s_path in sorted((self.root / "asm" / sub).glob("*.s")):
+                content = s_path.read_text()
+                m_name = re.search(r"^glabel\s+(\S+)", content, re.MULTILINE)
+                m_size = re.search(r"nonmatching\s+\S+,\s*(0x[0-9A-Fa-f]+)", content)
+                if not m_name:
+                    continue
+                name = m_name.group(1)
+                funcs.append({
+                    "name": name,
+                    "vaddr": _func_vaddr(name, content),
+                    "size": int(m_size.group(1), 16) if m_size else None,
+                    "asm_path": str(s_path.relative_to(self.root)),
+                    "match_status": "perfect",
+                    "kind": kind,
+                    "current_score": 0,
+                    "max_score": None,
+                })
+
+        funcs.sort(key=lambda f: f["vaddr"] or 0)
         return funcs
 
     def get_function_asm(self, name: str) -> str:
-        for s_path in self.asm_dir.rglob("*.s"):
+        paths = list(self.asm_dir.rglob("*.s"))
+        for sub in ("handwritten", "remnants"):
+            paths += list((self.root / "asm" / sub).glob("*.s"))
+        for s_path in paths:
             content = s_path.read_text()
             if re.search(rf"^glabel\s+{re.escape(name)}\b", content, re.MULTILINE):
                 return content
@@ -658,6 +684,32 @@ def resolve_symbol_address(sym_hint: str):
     return None
 
 
+def _text_c_context(project, func_name, c_source):
+    """The declarations the full build compiles in front of this function
+    (tools/build_text.py function_context): earlier #defines, prototypes,
+    typedefs, extern declarations and the part's .extern hints. Without them a
+    function could score 0 here and still differ, or fail to compile, in the
+    real build. Returns (context, source) with the editor content's typedefs
+    that the context already defines identically removed from the source, as
+    the full build would; common.h is left out (localdecomp_common.h stands in
+    for it)."""
+    import importlib.util
+    try:
+        spec = importlib.util.spec_from_file_location(
+            "build_text", str(project.root / "tools" / "build_text.py"))
+        bt = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(bt)
+        text = project.src_file.read_text(errors="replace").replace("\r\n", "\n")
+        parts = bt.read_parts(str(project.root / "tools" / "text_parts.txt"))
+        ctx = bt.function_context(text, parts, func_name)
+        c_source = bt.drop_repeated_typedefs(ctx, c_source)
+    except Exception as e:  # never block a build on this
+        return f"/* text.c context unavailable: {e} */\n", c_source
+    ctx = "\n".join(l for l in ctx.split("\n")
+                    if not re.match(r'\s*#\s*include\s+"(common|include_asm)\.h"', l))
+    return "/* ---- src/text.c context (declarations only) ---- */\n" + ctx + "\n/* ---- function ---- */\n", c_source
+
+
 def build_and_diff(project: Project, func_name: str, c_source: str, extra_cflags=None):
     # Serialize the whole build+diff pipeline (see _build_lock's comment
     # above) -- the shared diff_settings.py race is the specific hazard,
@@ -846,8 +898,10 @@ def _build_and_diff_locked(project: Project, func_name: str, c_source: str, extr
 
     # The #defines must appear before c_source so they're in effect when the
     # user's code uses those symbol names.
+    context, filtered_c_source = _text_c_context(project, func_name, filtered_c_source)
     full_c = (
         f'#include "{common_h.name}"\n\n'
+        + context
         + gp_helpers
         + gp_defines
         + "\n"

@@ -127,7 +127,7 @@ def declarations_only(chunk, dropped=None):
             if not text:
                 pass
             elif text.startswith(('INCLUDE_ASM', 'INCLUDE_RODATA', 'ASM_FUNC', 'LINKER_REMNANT',
-                                  '__asm__', 'asm(', 'asm (')):
+                                  'TEXT_PADDING', '__asm__', 'asm(', 'asm (')):
                 pass
             elif text.startswith(('extern', 'typedef', 'register')) or \
                     (re.match(r'^(struct|union|enum)\b[^=]*$', text)) or \
@@ -139,6 +139,10 @@ def declarations_only(chunk, dropped=None):
     return '\n'.join(k for k in keep if k)
 
 
+# TEXT_PADDING(N) right after a function belongs to that function's chunk.
+_PAD = r'(?:[ \t\r\n]*^TEXT_PADDING\(\w+\);[^\n]*\n?)?'
+
+
 def split_chunks(text):
     """Split text.c into (addr_or_None, start_line, chunk_text) in file order.
 
@@ -147,9 +151,9 @@ def split_chunks(text):
     right after an INCLUDE_ASM (its jump tables) stay with that function's
     part, so .rdata keeps function order and never lands in an @ps2as part."""
     pat = re.compile(
-        r'(/\* localdecomp:start (func_[0-9A-Fa-f]{8}) \*/.*?/\* localdecomp:end \2 \*/\n?)'
+        r'(/\* localdecomp:start (func_[0-9A-Fa-f]{8}) \*/.*?/\* localdecomp:end \2 \*/\n?' + _PAD + ')'
         r'|(^(?:INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\("[^"]*",\s*(func_[0-9A-Fa-f]{8})\);[^\n]*\n?'
-        r'(?:INCLUDE_RODATA\("[^"]*",\s*\w+\);[^\n]*\n?)*)', re.S | re.M)
+        r'(?:INCLUDE_RODATA\("[^"]*",\s*\w+\);[^\n]*\n?)*' + _PAD + ')', re.S | re.M)
     chunks, pos = [], 0
     for m in pat.finditer(text):
         if m.start() > pos:

@@ -19,6 +19,14 @@
     )
 #define LINKER_REMNANT(FOLDER, NAME) ASM_FUNC(FOLDER, NAME)
 
+/* TEXT_PADDING(N): N zero words (nops) after the preceding function. A few
+ * retail functions are followed by more nops than gcc's 8-byte function
+ * alignment adds (see docs/trailing_padding.md). The INCLUDE_ASM .s carries
+ * them after its endlabel; once the function is C, put TEXT_PADDING right
+ * after it with N = retail trailing nops minus the one alignment nop gcc
+ * emits (if any). tools/pr_check.py reports the N each such function needs. */
+#define TEXT_PADDING(N) __asm__(".section .text\n    .space (" #N ") * 4\n")
+
 /* objdiff "base" build (make objdiff): drop every not-yet-decompiled function
  * so the object only contains real C. objdiff then counts those as missing. */
 #ifdef OBJDIFF_BASE
@@ -61,6 +69,7 @@ __asm__(".include \"include/labels.inc\"\n");
 
 #define ASM_FUNC(FOLDER, NAME)
 #define LINKER_REMNANT(FOLDER, NAME)
+#define TEXT_PADDING(N)
 #ifndef INCLUDE_ASM
 #define INCLUDE_ASM(FOLDER, NAME)
 #endif

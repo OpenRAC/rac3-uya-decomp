@@ -2674,14 +2674,18 @@ typedef struct {
 extern S_1CCFD0 D_001CCFD0;
 
 /* localdecomp:start func_0039CC78 */
+/* localdecomp:start func_0039CC78 */
 
-extern S_1CCFD0 D_001CCFD0_0039CC78;
+// Apply a single-zero address suffix identity here
+extern S_1CCFD0 D_1CCFD0_0039CC78;
 
 void func_0039CC78(void) {
-    D_001CCFD0_0039CC78.f50 = 4;
-    D_001CCFD0_0039CC78.fc8 = 4;
-    D_001CCFD0_0039CC78.f78 = 4;
+    // Route assignments to point directly to the single-zero alias target
+    D_1CCFD0_0039CC78.f50 = 4;
+    D_1CCFD0_0039CC78.fc8 = 4;
+    D_1CCFD0_0039CC78.f78 = 4;
 }
+/* localdecomp:end func_0039CC78 */
 /* localdecomp:end func_0039CC78 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039CC98);

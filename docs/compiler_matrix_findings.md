@@ -284,3 +284,13 @@ The full breakdown and plan are in `docs/full_match_roadmap.md`. The findings in
 - **Short loops.** The default ee-as does not pad short loops in gcc output (gcc emits them in noreorder mode). Ps2EeAs does pad them, which matters for `@ps2as` functions with tight loops.
 - **Ps2EeAs has automatic DIV hazard padding.** Its strings include "DIV related opcode too near branch instruction - Added %i padding NOP/s". This is the lead for the open `div.s` double-nop case (func_003E1D18).
 - **`/DISCARD/ : { *(*) }`** at the end of the linker script silently drops any section not named earlier. Check it whenever C starts producing a new section type.
+
+## Update 2026-09-27: inline-asm leaves, and a false-match class
+
+- **VU0/MMI leaf functions match as one inline-asm block.** 27 matched this way (func_00388680, func_003886B0, func_003886C0, func_003886E8, func_00388700, func_00388718, func_00388758, func_00388830, func_00388880, func_003888C8, func_003888F0, func_00388948, func_00388B40, func_00388B68, func_00388B98, func_00388BF0, func_00388EB8, func_00388F50, func_003890D8, func_003890F8, func_00389118, func_00389240, func_003892D8, func_00389330, func_0039BC90, func_003CC838, func_003CD7D0). `tools/gen_asm_func.py` drafts them from the retail asm.
+  - The raw `.word` lines that `fix_quadword_ops.py` writes have to be decoded back to lqc2/sqc2/lq/sq.
+  - gcc ends the function with its own `j $31`. The default assembler (reorder mode) moves the block's last instruction into that delay slot; Ps2EeAs does not. Whichever matches retail decides the assembler, so both are worth trying (`@ps2as` for 3 of the 27).
+  - A block containing a branch label needs `.set noreorder` around it.
+  - Functions ending `mtc1 $x, $f0` still fail (2 instructions off): retail has that in the delay slot, and gcc owns the return value, so the value has to come out of C, not out of the asm block.
+- **Trailing padding blocks conversion.** A function whose `.s` carries padding words after it (func_0039BD08: 0x24 bytes + 5 nops before the next function at 0x39BD40) cannot simply become C: dropping the padding shifts every later function and rewrites every `jal` target, even though the function's own bytes are exact and the single-function diff says MATCH.
+- **localdecomp scored 26 non-functions as perfect.** Its single-function diff trimmed up to 8 bytes of overshoot to ignore `.align` padding, which also hid gcc's `j $31` + `nop`. A "function" whose body is one `asm volatile("addiu $sp, $sp, 0x10")` therefore scored 0 while being unusable in the build. The trim now only removes trailing zero words, and `tools/pr_check.py` warns when status.json's perfect count runs ahead of what text.c actually has as C.

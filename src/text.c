@@ -2610,7 +2610,6 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039C1C8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039C210);
 
-extern void func_0013CF40(s32);
 /* localdecomp:start func_0039C2A8 */
 extern void func_13CF40(void (*)());
 extern void func_0039D770();
@@ -2662,6 +2661,7 @@ typedef struct {
 extern S_1CCFD0 D_001CCFD0;
 
 /* localdecomp:start func_0039CC78 */
+extern S_1CCFD0 D_001CCFD0;
 void func_0039CC78(void) {
     D_001CCFD0.f50 = 4;
     D_001CCFD0.fc8 = 4;

@@ -2,6 +2,8 @@
 
 Status on 2026-09-26. `python tools/triage.py` prints the current numbers.
 
+> **Update 2026-09-27:** the handwritten (100) and remnant (203) buckets are done: they moved to `asm/handwritten/` and `asm/remnants/`, included with `ASM_FUNC` / `LINKER_REMNANT`, and count as finished in objdiff. Current state: 763 functions in C, 303 assembly sources, 779 still to match (655 plain, 31 switch, 72 vu0, 14 mmi, 7 other). `python tools/triage.py` has live numbers.
+
 ## Where we are
 
 The build has matched byte for byte since the start. The goal is to have every function come from real source: C for compiled code, `.s` for code that was assembly in the original.

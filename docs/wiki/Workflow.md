@@ -15,8 +15,7 @@ Good first functions:
 
 Not for C:
 
-- **remnant:** only `[instruction, nop]` pairs and no return. These are the last 8 bytes of functions the original linker stripped as unused ([details](Matching-Patterns#not-everything-is-c)).
-- **handwritten:** the original was assembly. It moves to a `.s` file instead.
+- **Already done, not C:** `ASM_FUNC(...)` lines in `text.c` are functions that were hand-written assembly in the original (their `.s` in `asm/handwritten/` is the source), and `LINKER_REMNANT(...)` lines are the leftover words of functions the original linker stripped (`asm/remnants/`). Both count as finished, including in objdiff. See [Matching patterns](Matching-Patterns#not-everything-is-c).
 - **odd:** probably a bad split. Report it; don't write C for it yet.
 - Functions listed in [Matching patterns: known open problems](Matching-Patterns#known-open-problems).
 

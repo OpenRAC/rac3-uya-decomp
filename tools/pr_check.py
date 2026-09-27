@@ -121,7 +121,7 @@ def is_variable_definition(stmt):
     s = re.sub(r"\s+", " ", stmt).strip()
     if not s:
         return False
-    if re.match(r"(extern|typedef|__asm__|asm|INCLUDE_ASM|INCLUDE_RODATA)\b", s):
+    if re.match(r"(extern|typedef|__asm__|asm|INCLUDE_ASM|INCLUDE_RODATA|ASM_FUNC|LINKER_REMNANT)\b", s):
         return False
     if s.endswith("{}") and ")" in s:           # function definition
         return False
@@ -168,7 +168,7 @@ def check_text_c():
 
     # duplicates
     asm = {m.group(1): m.start() for m in
-           re.finditer(r'INCLUDE_ASM\("[^"]+",\s*(func_[0-9A-Fa-f]{8})\)', code_str)}
+           re.finditer(r'(?:INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\("[^"]+",\s*(func_[0-9A-Fa-f]{8})\)', code_str)}
     defined = {}
     for m in DEF_RE.finditer(code):
         if m.group(1) in defined:
@@ -184,7 +184,8 @@ def check_text_c():
     prev = ""
     for i, line in enumerate(raw.split("\n"), 1):
         t = line.strip()
-        if t.startswith("INCLUDE_RODATA(") and not prev.startswith(("INCLUDE_ASM(", "INCLUDE_RODATA(")):
+        if t.startswith("INCLUDE_RODATA(") and not prev.startswith(
+                ("INCLUDE_ASM(", "INCLUDE_RODATA(", "ASM_FUNC(", "LINKER_REMNANT(")):
             err(f"text.c:{i}: {t} does not follow an INCLUDE_ASM; if its function is C now, delete this line")
         if t:
             prev = t
@@ -269,8 +270,10 @@ def check_status(defined, asm):
     except (ValueError, OSError):
         warn(".localdecomp_work/status.json could not be read")
         return
+    text = open(TEXT_C, errors="replace").read()
+    nonmatching = set(re.findall(r'INCLUDE_ASM\("[^"]+",\s*(func_[0-9A-Fa-f]{8})\)', text))
     stale = sorted(n for n, v in status.items()
-                   if isinstance(v, dict) and v.get("current_score") == 0 and n in asm)
+                   if isinstance(v, dict) and v.get("current_score") == 0 and n in nonmatching)
     if stale:
         warn(f"localdecomp scored {len(stale)} function(s) 0 that are still INCLUDE_ASM in "
              f"text.c, so its match count runs ahead of the build: "
@@ -335,6 +338,16 @@ def main():
     for e in errors:
         print("error:", e)
     total = len(asm) + len(defined)
+    counts = {m: len(re.findall(r"^%s\(" % m, open(TEXT_C, errors="replace").read(), re.M))
+              for m in ("ASM_FUNC", "LINKER_REMNANT")}
+    if any(counts.values()):
+        print(f"{counts['ASM_FUNC']} hand-written asm functions (ASM_FUNC), "
+              f"{counts['LINKER_REMNANT']} linker remnants (LINKER_REMNANT)")
+        done = len(defined) + sum(counts.values())
+        total_entries = len(defined) + len(asm)
+        print(f"done: {done} of {total_entries} entries ({100.0 * done / total_entries:.1f}%): C plus assembly sources")
+    asm = {k: v for k, v in asm.items()
+           if re.search(r'INCLUDE_ASM\("[^"]+",\s*%s\)' % k, open(TEXT_C, errors="replace").read())}
     print(f"{len(defined)} functions in C, {len(asm)} INCLUDE_ASM"
           + (f" ({100.0 * len(defined) / total:.1f}% in C)" if total else ""))
     print("OK" if not errors else f"{len(errors)} error(s)")

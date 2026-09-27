@@ -5,8 +5,10 @@ The fast command-line way to test a match, without localdecomp. It compiles
 FILE.c the way tools/build_text.py would compile that address range (flags
 from tools/localdecomp_flags.txt, then tools/text_parts.txt), then compares
 each function word by word against the retail frontbin.elf in the repo root.
-Relocated fields (the %hi/%lo halves, jal targets) are masked, so
-`lui $a0, 0` vs `lui $a0, 0x1e` is not a difference.
+Relocated fields (%hi/%lo halves, $gp offsets, jal targets) are filled in
+with the symbols' real addresses (symbol_addrs_resolved.txt, or the address in
+a D_/func_ name) and compared in full, so a wrong symbol or two swapped stores
+show up. Only relocations against unnamed sections are still masked.
 
     python tools/try_func.py scratch/func_0039BEC0.c
     python tools/try_func.py scratch/f.c func_0039BEC0 --mode S --as ps2as
@@ -151,16 +153,81 @@ def compile_c(src_path, flags, args):
     return o_path
 
 
+GP = 0x1DC8B0
+_ADDRS = None
+
+
+def symbol_address(name):
+    """Real address of a symbol: symbol_addrs_resolved.txt first, then the
+    address encoded in splat-style names (D_/func_/jtbl_ + hex, optional
+    _suffix alias). None if unknown."""
+    global _ADDRS
+    if _ADDRS is None:
+        _ADDRS = {}
+        p = os.path.join(ROOT, "symbol_addrs_resolved.txt")
+        if os.path.exists(p):
+            for m in re.finditer(r"^\s*(\w+)\s*=\s*(0x[0-9A-Fa-f]+)", open(p).read(), re.M):
+                _ADDRS[m.group(1)] = int(m.group(2), 16)
+    if name in _ADDRS:
+        return _ADDRS[name]
+    m = re.match(r"^(?:D|func|jtbl)_([0-9A-Fa-f]{5,8})(?:_\w+)?$", name)
+    return int(m.group(1), 16) if m else None
+
+
+def sext16(v):
+    return v - 0x10000 if v & 0x8000 else v
+
+
+def resolve_relocations(elf, text):
+    """Relocated instructions filled in with the real addresses, so a diff
+    compares them fully. Masking them instead (the old behavior) hid real
+    differences: two $gp stores swapped with each other differ only in their
+    GPREL16 immediates, so a wrong statement order still reported MATCH.
+
+    Returns ({offset: resolved word}, {offset: mask}) where the mask covers
+    relocations whose symbol address is unknown (section-relative ones)."""
+    resolved, mask = {}, {}
+    symtab = list(elf.get_section_by_name(".symtab").iter_symbols())
+    relocs = []
+    for sec in elf.iter_sections():
+        if isinstance(sec, RelocationSection) and sec.name in (".rel.text", ".rela.text"):
+            relocs += list(sec.iter_relocations())
+    relocs.sort(key=lambda r: r["r_offset"])
+    word = lambda off: struct.unpack("<I", text[off:off + 4])[0]
+    pending_hi = []
+    for r in relocs:
+        off, t = r["r_offset"], r["r_info_type"]
+        sym = symtab[r["r_info_sym"]]
+        addr = symbol_address(sym.name) if sym.name and sym["st_info"]["type"] != "STT_SECTION" else None
+        ins = word(off)
+        if addr is None:
+            mask[off] = 0xFC000000 if t == 4 else 0xFFFF0000 if t in (5, 6, 7) else 0
+            continue
+        if t == 4:  # R_MIPS_26
+            target = addr + ((ins & 0x3FFFFFF) << 2)
+            resolved[off] = (ins & 0xFC000000) | ((target >> 2) & 0x3FFFFFF)
+        elif t == 5:  # R_MIPS_HI16, resolved at its LO16
+            pending_hi.append((off, sym.name, ins))
+        elif t == 6:  # R_MIPS_LO16
+            lo = sext16(ins & 0xFFFF)
+            for hoff, hname, hins in [h for h in pending_hi if h[1] == sym.name]:
+                full = addr + ((hins & 0xFFFF) << 16) + lo
+                resolved[hoff] = (hins & 0xFFFF0000) | (((full + 0x8000) >> 16) & 0xFFFF)
+            pending_hi = [h for h in pending_hi if h[1] != sym.name]
+            resolved[off] = (ins & 0xFFFF0000) | ((addr + lo) & 0xFFFF)
+        elif t == 7:  # R_MIPS_GPREL16
+            resolved[off] = (ins & 0xFFFF0000) | ((addr + sext16(ins & 0xFFFF) - GP) & 0xFFFF)
+        else:
+            mask[off] = 0
+    for hoff, _, _ in pending_hi:  # HI16 without a LO16: fall back to masking
+        mask[hoff] = 0xFFFF0000
+    return resolved, mask
+
+
 def diff_object(o_path, names, retail, quiet):
     elf = ELFFile(open(o_path, "rb"))
     text = elf.get_section_by_name(".text").data()
-    mask = {}
-    for sec in elf.iter_sections():
-        if isinstance(sec, RelocationSection) and sec.name in (".rel.text", ".rela.text"):
-            for r in sec.iter_relocations():
-                t = r["r_info_type"]
-                # R_MIPS_26 -> jump target field; HI16/LO16/GPREL16 -> immediate field
-                mask[r["r_offset"]] = 0xFC000000 if t == 4 else 0xFFFF0000 if t in (5, 6, 7) else 0
+    resolved, mask = resolve_relocations(elf, text)
     syms = {s.name: s for s in elf.get_section_by_name(".symtab").iter_symbols()}
     results = {}
     for name in names:
@@ -175,6 +242,8 @@ def diff_object(o_path, names, retail, quiet):
         diffs, lines = 0, []
         for i in range(n):
             a, b = word(ours, i), word(theirs, i)
+            if a is not None and off + i * 4 in resolved:
+                a = resolved[off + i * 4]
             m = mask.get(off + i * 4, 0xFFFFFFFF)
             same = (a is not None and b is not None and (a & m) == (b & m)) \
                 or (a in (0, None) and b in (0, None))  # trailing alignment nops

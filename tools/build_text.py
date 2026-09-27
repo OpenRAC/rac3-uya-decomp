@@ -126,7 +126,8 @@ def declarations_only(chunk, dropped=None):
             stmt = []
             if not text:
                 pass
-            elif text.startswith(('INCLUDE_ASM', 'INCLUDE_RODATA', '__asm__', 'asm(', 'asm (')):
+            elif text.startswith(('INCLUDE_ASM', 'INCLUDE_RODATA', 'ASM_FUNC', 'LINKER_REMNANT',
+                                  '__asm__', 'asm(', 'asm (')):
                 pass
             elif text.startswith(('extern', 'typedef', 'register')) or \
                     (re.match(r'^(struct|union|enum)\b[^=]*$', text)) or \
@@ -147,7 +148,7 @@ def split_chunks(text):
     part, so .rdata keeps function order and never lands in an @ps2as part."""
     pat = re.compile(
         r'(/\* localdecomp:start (func_[0-9A-Fa-f]{8}) \*/.*?/\* localdecomp:end \2 \*/\n?)'
-        r'|(^INCLUDE_ASM\("[^"]*",\s*(func_[0-9A-Fa-f]{8})\);[^\n]*\n?'
+        r'|(^(?:INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\("[^"]*",\s*(func_[0-9A-Fa-f]{8})\);[^\n]*\n?'
         r'(?:INCLUDE_RODATA\("[^"]*",\s*\w+\);[^\n]*\n?)*)', re.S | re.M)
     chunks, pos = [], 0
     for m in pat.finditer(text):

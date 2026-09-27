@@ -1887,18 +1887,18 @@ void func_00396780(void) {
 /* localdecomp:start func_003967C0 */
 extern s32 D_00142438[];
 extern s32 D_001D4CEC;
-extern s32 D_001D4CE8;
+extern s32 D_001D4CE8_003967C0;
 extern u8 D_001D5BDC;
 void func_003967C0(void) {
     s32 f;
-    if (D_00142438[0] != 2) { D_001D4CE8 = 4; return; }
+    if (D_00142438[0] != 2) { D_001D4CE8_003967C0 = 4; return; }
     f = D_001D4CEC;
     if (f & 0x20) {
         D_001D4CEC = f ^ 0x20;
-        if (D_001D5BDC != 0) { D_001D4CE8 = 0x1B; } else { D_001D4CE8 = 0xE; }
+        if (D_001D5BDC != 0) { D_001D4CE8_003967C0 = 0x1B; } else { D_001D4CE8_003967C0 = 0xE; }
         return;
     }
-    if (f & 0x2000) { D_001D4CE8 = 0x10; }
+    if (f & 0x2000) { D_001D4CE8_003967C0 = 0x10; }
 }
 /* localdecomp:end func_003967C0 */
 

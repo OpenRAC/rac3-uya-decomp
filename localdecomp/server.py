@@ -538,6 +538,10 @@ class Project:
                 self.src_file.read_text(), re.MULTILINE):
             raise BuildError("save", f"{name} is final assembly (ASM_FUNC / LINKER_REMNANT); "
                              "there is no C to save for it")
+        m_addr = re.fullmatch(r"func_([0-9A-Fa-f]{8})", name)
+        if m_addr and int(m_addr.group(1), 16) % 8:
+            raise BuildError("save", f"{name} starts 4 bytes past an 8-byte boundary; gcc aligns "
+                             "every C function to 8, so the full build would shift. It can't be C.")
         self._func_store_path(name).write_text(c_source)
 
         if not self.src_file.exists():

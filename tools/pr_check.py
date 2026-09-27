@@ -25,6 +25,7 @@ reasons it fails, in terms of the line you need to fix:
   overrides  tools/localdecomp_flags.txt entries for functions that are now
              C (move them into text_parts.txt)
   retail     no retail binaries are tracked by git
+  status     localdecomp's status.json agrees with text.c about what is C
   --obj      the built text.c.o has no data sections
 
 Exit status 1 if any error was found. Warnings don't fail.
@@ -255,6 +256,33 @@ def check_parts(raw, code, asm, defined):
                      "text_parts.txt as a single-function override and delete this line")
 
 
+def check_status(defined, asm):
+    """localdecomp's status.json vs text.c: a function it scored 0 but that is
+    still INCLUDE_ASM here is either not saved yet, or was scored before a
+    server fix (see localdecomp/server.py's trailing-padding note)."""
+    path = os.path.join(ROOT, ".localdecomp_work", "status.json")
+    if not os.path.exists(path):
+        return
+    try:
+        import json
+        status = json.load(open(path))
+    except (ValueError, OSError):
+        warn(".localdecomp_work/status.json could not be read")
+        return
+    stale = sorted(n for n, v in status.items()
+                   if isinstance(v, dict) and v.get("current_score") == 0 and n in asm)
+    if stale:
+        warn(f"localdecomp scored {len(stale)} function(s) 0 that are still INCLUDE_ASM in "
+             f"text.c, so its match count runs ahead of the build: "
+             f"{', '.join(stale[:5])}{' ...' if len(stale) > 5 else ''}. "
+             "Rebuild them in localdecomp to get a real score.")
+    missing = sorted(n for n in defined if n not in status)
+    if missing:
+        warn(f"{len(missing)} function(s) are C in text.c but have no localdecomp score "
+             f"(matched outside the tool): {', '.join(missing[:5])}"
+             f"{' ...' if len(missing) > 5 else ''}")
+
+
 def check_git():
     try:
         out = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True, timeout=30)
@@ -296,6 +324,7 @@ def main():
 
     raw, code, asm, defined = check_text_c()
     check_parts(raw, code, asm, defined)
+    check_status(defined, asm)
     if not args.no_git:
         check_git()
     if args.obj:

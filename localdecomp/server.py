@@ -962,7 +962,12 @@ SECTIONS
     # extra instructions.
     source_raw = _elf_section_bytes(elf_path, ".text") or source_bin.read_bytes()
     source_bin.write_bytes(source_raw)
-    if size < len(source_raw) <= size + ALIGN_SLOP:
+    # Trim ONLY trailing zero words (`.align` padding). Real instructions past
+    # the target size are a genuine difference and must stay in the diff: gcc
+    # always ends a function with `j $31` + nop, so trimming them scored a
+    # one-instruction "function" whose whole body was an inline-asm statement
+    # as a perfect match, while in the full build it shifts everything after it.
+    if size < len(source_raw) <= size + ALIGN_SLOP and not any(source_raw[size:]):
         source_bin.write_bytes(source_raw[:size])
 
     # target side: slice the real frontbin.elf at vaddr's file offset.

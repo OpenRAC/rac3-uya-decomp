@@ -2674,11 +2674,11 @@ typedef struct {
 extern S_1CCFD0 D_001CCFD0;
 
 /* localdecomp:start func_0039CC78 */
-extern S_1CCFD0 D_001CCFD0;
+extern S_1CCFD0 D_001CCFD0_0039CC78;
 void func_0039CC78(void) {
-    D_001CCFD0.f50 = 4;
-    D_001CCFD0.fc8 = 4;
-    D_001CCFD0.f78 = 4;
+    D_001CCFD0_0039CC78.f50 = 4;
+    D_001CCFD0_0039CC78.fc8 = 4;
+    D_001CCFD0_0039CC78.f78 = 4;
 }
 /* localdecomp:end func_0039CC78 */
 

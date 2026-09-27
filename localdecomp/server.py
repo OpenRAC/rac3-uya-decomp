@@ -358,10 +358,27 @@ class Project:
         funcs = []
         status = self.load_status()
         text_c = self.src_file.read_text() if self.src_file.exists() else ""
+        # Functions whose .s now lives in asm/handwritten or asm/remnants are
+        # listed from there (below). A stale copy left in asm/nonmatchings
+        # would otherwise show up a second time, as "unverified".
+        asm_sources = {
+            p.stem
+            for sub in ("handwritten", "remnants")
+            for p in (self.root / "asm" / sub).glob("*.s")
+        }
 
         for s_path in sorted(self.asm_dir.rglob("*.s")):
+            if s_path.stem in asm_sources:
+                continue
             content = s_path.read_text()
             m_name = re.search(r"^glabel\s+(\S+)", content, re.MULTILINE)
+            if not m_name:
+                # splat disassembles a few functions (COP0 code, the last one)
+                # as data; list them only when text.c includes them as code.
+                m_name = re.search(r"^dlabel\s+(func_[0-9A-Fa-f]{8})\b", content, re.MULTILINE)
+                if m_name and not re.search(
+                        rf'INCLUDE_ASM\([^)]*,\s*{m_name.group(1)}\s*\)', text_c):
+                    m_name = None
             m_size = re.search(r"nonmatching\s+\S+,\s*(0x[0-9A-Fa-f]+)", content)
             m_addr = re.search(
                 r"/\*\s*[0-9A-Fa-f]+\s+([0-9A-Fa-f]+)\s+[0-9A-Fa-f]+\s*\*/", content
@@ -400,7 +417,7 @@ class Project:
         for kind, sub in (("handwritten", "handwritten"), ("remnant", "remnants")):
             for s_path in sorted((self.root / "asm" / sub).glob("*.s")):
                 content = s_path.read_text()
-                m_name = re.search(r"^glabel\s+(\S+)", content, re.MULTILINE)
+                m_name = re.search(r"^(?:glabel|dlabel)\s+(\S+)", content, re.MULTILINE)
                 m_size = re.search(r"nonmatching\s+\S+,\s*(0x[0-9A-Fa-f]+)", content)
                 if not m_name:
                     continue
@@ -420,12 +437,13 @@ class Project:
         return funcs
 
     def get_function_asm(self, name: str) -> str:
-        paths = list(self.asm_dir.rglob("*.s"))
+        paths = []
         for sub in ("handwritten", "remnants"):
             paths += list((self.root / "asm" / sub).glob("*.s"))
+        paths += list(self.asm_dir.rglob("*.s"))
         for s_path in paths:
             content = s_path.read_text()
-            if re.search(rf"^glabel\s+{re.escape(name)}\b", content, re.MULTILINE):
+            if re.search(rf"^(?:glabel|dlabel)\s+{re.escape(name)}\b", content, re.MULTILINE):
                 return content
         raise KeyError(name)
 
@@ -487,6 +505,24 @@ class Project:
             store_path.write_text(recovered)
             return recovered
 
+        # Final assembly (ASM_FUNC / LINKER_REMNANT in src/text.c) has no C
+        # to write. Say so instead of offering a blank TODO template.
+        text_c = self.src_file.read_text() if self.src_file.exists() else ""
+        m_src = re.search(
+            rf'^(ASM_FUNC|LINKER_REMNANT)\("([^"]+)",\s*{re.escape(name)}\s*\);',
+            text_c, re.MULTILINE)
+        if m_src:
+            macro, folder = m_src.group(1), m_src.group(2)
+            if macro == "LINKER_REMNANT":
+                why = ("the leftover last instruction (plus alignment nop) of a function\n"
+                       " * the original linker stripped as unused. It is not source code.")
+            else:
+                why = ("hand-written assembly in the original game, so its .s file\n"
+                       " * is the source.")
+            return (f"/* {name} is done: it is {why}\n"
+                    f" *\n * Built from {folder}/{name}.s via {macro}(...) in src/text.c.\n"
+                    f" * Nothing to decompile here. */\n")
+
         return f"s32 {name}(void) {{\n    // TODO\n}}\n"
 
     def save_function_c(self, name: str, c_source: str):
@@ -497,6 +533,11 @@ class Project:
         either the INCLUDE_ASM(...) stub (first save) or a previously-saved
         body for this function (subsequent saves).
         """
+        if self.src_file.exists() and re.search(
+                rf'^(?:ASM_FUNC|LINKER_REMNANT)\([^)]*,\s*{re.escape(name)}\s*\);',
+                self.src_file.read_text(), re.MULTILINE):
+            raise BuildError("save", f"{name} is final assembly (ASM_FUNC / LINKER_REMNANT); "
+                             "there is no C to save for it")
         self._func_store_path(name).write_text(c_source)
 
         if not self.src_file.exists():

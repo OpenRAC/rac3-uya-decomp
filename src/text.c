@@ -36,7 +36,7 @@ s32 func_0037D198(void) {
 }
 /* localdecomp:end func_0037D198 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0037D1A0);
+LINKER_REMNANT("asm/remnants", func_0037D1A0);
 
 extern s32 func_0011A264(s32, s32, s32);
 extern s32 func_003ECDC0(s32, s32);
@@ -120,7 +120,7 @@ void func_0037DCB0(void) {
 }
 /* localdecomp:end func_0037DCB0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0037DCD0);
+LINKER_REMNANT("asm/remnants", func_0037DCD0);
 
 /* localdecomp:start func_0037DCD8 */
 s32 func_0037DCD8(void) {
@@ -183,7 +183,7 @@ s32 func_0037DD28(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037DD30);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0037DF20);
+LINKER_REMNANT("asm/remnants", func_0037DF20);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037DF28);
 
@@ -241,7 +241,7 @@ void func_0037E070(void) {
 }
 /* localdecomp:end func_0037E070 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0037E098);
+LINKER_REMNANT("asm/remnants", func_0037E098);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E0B8);
 
@@ -290,15 +290,16 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0037E368);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E4B8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0037E548);
+LINKER_REMNANT("asm/remnants", func_0037E548);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E568);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E630);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0037E7C8);
+LINKER_REMNANT("asm/remnants", func_0037E7C8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E7D8);
+TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E878);
 
@@ -306,9 +307,10 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0037E920);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037E9B0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0037EA98);
+LINKER_REMNANT("asm/remnants", func_0037EA98);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0037EAA0);
+TEXT_PADDING(2);
 
 /* localdecomp:start func_0037EB20 */
 typedef struct { s32 a, b, c, d, e; } S_37D000;
@@ -361,16 +363,19 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003801C0);
 INCLUDE_ASM("asm/nonmatchings/text", func_003804A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00380600);
+TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003807F0);
+TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003808E0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003809F0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00380AB0);
+TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00380D28);
+LINKER_REMNANT("asm/remnants", func_00380D28);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00380D48);
 
@@ -378,17 +383,17 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003810C0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003813E0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00381A48);
+LINKER_REMNANT("asm/remnants", func_00381A48);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00381A50);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00381C18);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00381D90);
+LINKER_REMNANT("asm/remnants", func_00381D90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00381DD0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00381F10);
+LINKER_REMNANT("asm/remnants", func_00381F10);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00381F18);
 
@@ -407,7 +412,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00382F90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003830E8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00383840);
+LINKER_REMNANT("asm/remnants", func_00383840);
 
 /* localdecomp:start func_00383848 */
 extern s32 D_001D9C88[], D_001D9C90[], D_001D9C94[], D_001D9C8C[], D_001D9CB8[], D_001D9CC0[], D_001D9C5C[], D_001D9C60[];
@@ -463,19 +468,20 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00383BB0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00383FD8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00384418);
+LINKER_REMNANT("asm/remnants", func_00384418);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00384420);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00384B48);
+LINKER_REMNANT("asm/remnants", func_00384B48);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00384B68);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00384C98);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00384DA0);
+TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00384EB0);
+LINKER_REMNANT("asm/remnants", func_00384EB0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00384EC0);
 
@@ -572,13 +578,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003866E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003867F8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003869E0);
+LINKER_REMNANT("asm/remnants", func_003869E0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003869E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00386D98);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00386F28);
+LINKER_REMNANT("asm/remnants", func_00386F28);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00386F38);
 
@@ -614,13 +620,14 @@ void func_00387BD8(s32 a, s32 b, s32 c, s32 d, unsigned long e, s32 g) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00387C78);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00387DB8);
+LINKER_REMNANT("asm/remnants", func_00387DB8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00387DC8);
+TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388018);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388258);
+LINKER_REMNANT("asm/remnants", func_00388258);
 
 /* localdecomp:start func_00388278 */
 extern void func_003C8CE0(void);
@@ -638,88 +645,77 @@ void func_00388278(void) {
 /* localdecomp:end func_00388278 */
 
 /* localdecomp:start func_003882D0 */
-register char *_gpreg __asm__("$28");
-#define D_001D5308 (*(f32 *)(_gpreg + -30120))
+extern f32 D_001D5308;
 f32 func_003882D0(f32 x) {
     f32 val = D_001D5308;
-    __asm__ volatile("nop");
+    __asm__ volatile("nop");  /* retail has a nop between the load and its use; no flag reproduces it */
     return val * x;
 }
 /* localdecomp:end func_003882D0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003882E0);
+ASM_FUNC("asm/handwritten", func_003882E0);
 
 /* localdecomp:start func_00388308 */
-register char *_gpreg __asm__("$28");
-#define D_001D530C (*(f32 *)(_gpreg + -30116))
-
+extern f32 D_001D530C;
 f32 func_00388308(f32 x) {
     f32 val = D_001D530C;
-    
-    // Inject a raw nop right after the load.
-    __asm__ volatile("nop"); 
-
-    // The compiler's -O2 will naturally schedule this multiplication 
-    // into the branch delay slot of the jr $ra instruction.
+    __asm__ volatile("nop");  /* retail has a nop between the load and its use; no flag reproduces it */
     return val * x;
 }
 /* localdecomp:end func_00388308 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388318);
+ASM_FUNC("asm/handwritten", func_00388318);
 
 /* localdecomp:start func_00388340 */
-register char *_gpreg __asm__("$28");
-#define D_001D5310 (*(f32 *)(_gpreg + -30112))
+extern f32 D_001D5310;
 f32 func_00388340(f32 x) {
     f32 val = D_001D5310;
-    __asm__ volatile("nop");
+    __asm__ volatile("nop");  /* retail has a nop between the load and its use; no flag reproduces it */
     return val * x;
 }
 /* localdecomp:end func_00388340 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388350);
+ASM_FUNC("asm/handwritten", func_00388350);
 
 /* localdecomp:start func_00388378 */
-register char *_gpreg __asm__("$28");
-#define D_001D5314 (*(f32 *)(_gpreg + -30108))
+extern f32 D_001D5314;
 f32 func_00388378(f32 x) {
     f32 val = D_001D5314;
-    __asm__ volatile("nop");
+    __asm__ volatile("nop");  /* retail has a nop between the load and its use; no flag reproduces it */
     return val * x;
 }
 /* localdecomp:end func_00388378 */
 
 /* localdecomp:start func_00388388 */
-register char *_gpreg __asm__("$28");
-#define D_001D5318 (*(f32 *)(_gpreg + -30104))
+extern f32 D_001D5318;
 f32 func_00388388(f32 x) {
     f32 val = D_001D5318;
-    __asm__ volatile("nop");
+    __asm__ volatile("nop");  /* retail has a nop between the load and its use; no flag reproduces it */
     return val * x;
 }
 /* localdecomp:end func_00388388 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388398);
+ASM_FUNC("asm/handwritten", func_00388398);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003883C8);
+ASM_FUNC("asm/handwritten", func_003883C8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003883F8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388418);
+ASM_FUNC("asm/handwritten", func_00388418);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388440);
+ASM_FUNC("asm/handwritten", func_00388440);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388468);
+ASM_FUNC("asm/handwritten", func_00388468);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388490);
+ASM_FUNC("asm/handwritten", func_00388490);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388550);
+ASM_FUNC("asm/handwritten", func_00388550);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003885F0);
+ASM_FUNC("asm/handwritten", func_003885F0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388618);
+ASM_FUNC("asm/handwritten", func_00388618);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388648);
+ASM_FUNC("asm/handwritten", func_00388648);
 
 /* localdecomp:start func_00388680 */
 void func_00388680(void) {
@@ -822,13 +818,13 @@ void func_00388758(void) {
 }
 /* localdecomp:end func_00388758 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388770);
+ASM_FUNC("asm/handwritten", func_00388770);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003887A0);
+ASM_FUNC("asm/handwritten", func_003887A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003887C8);
+ASM_FUNC("asm/handwritten", func_003887C8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388800);
+ASM_FUNC("asm/handwritten", func_00388800);
 
 /* localdecomp:start func_00388830 */
 void func_00388830(s32 a, s32 b, f32 x) {
@@ -920,7 +916,7 @@ void func_003888F0(void) {
 }
 /* localdecomp:end func_003888F0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388920);
+ASM_FUNC("asm/handwritten", func_00388920);
 
 /* localdecomp:start func_00388948 */
 void func_00388948(void) {
@@ -934,13 +930,13 @@ void func_00388948(void) {
 }
 /* localdecomp:end func_00388948 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388960);
+ASM_FUNC("asm/handwritten", func_00388960);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388978);
+ASM_FUNC("asm/handwritten", func_00388978);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388990);
+ASM_FUNC("asm/handwritten", func_00388990);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388A28);
+ASM_FUNC("asm/handwritten", func_00388A28);
 
 /* localdecomp:start func_00388B40 */
 void func_00388B40(void) {
@@ -1023,7 +1019,7 @@ void func_00388BF0(void) {
 }
 /* localdecomp:end func_00388BF0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388C10);
+ASM_FUNC("asm/handwritten", func_00388C10);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388E38);
 
@@ -1080,7 +1076,7 @@ void func_00388EB8(void) {
 }
 /* localdecomp:end func_00388EB8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388F08);
+ASM_FUNC("asm/handwritten", func_00388F08);
 
 /* localdecomp:start func_00388F50 */
 void func_00388F50(void) {
@@ -1146,7 +1142,7 @@ void func_00388F90(void) {
 }
 /* localdecomp:end func_00388F90 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389018);
+ASM_FUNC("asm/handwritten", func_00389018);
 
 /* localdecomp:start func_003890D8 */
 void func_003890D8(void) {
@@ -1195,9 +1191,9 @@ void func_00389118(void) {
 }
 /* localdecomp:end func_00389118 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389150);
+LINKER_REMNANT("asm/remnants", func_00389150);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389158);
+ASM_FUNC("asm/handwritten", func_00389158);
 
 /* localdecomp:start func_00389240 */
 void func_00389240(void) {
@@ -1300,17 +1296,17 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00389380);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003893C8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389410);
+ASM_FUNC("asm/handwritten", func_00389410);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00389468);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003894A0);
+ASM_FUNC("asm/handwritten", func_003894A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003894E8);
+ASM_FUNC("asm/handwritten", func_003894E8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003895E0);
+LINKER_REMNANT("asm/remnants", func_003895E0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003895E8);
+ASM_FUNC("asm/handwritten", func_003895E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003896E8);
 
@@ -1328,14 +1324,11 @@ s32 func_003898C0(u8 *p, s32 off, s32 *out) {
 }
 /* localdecomp:end func_003898C0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389900);
+LINKER_REMNANT("asm/remnants", func_00389900);
 
 extern s32 D_001D9C48[];
-register char *_gpreg __asm__("$28");
-#define D_001D5B34 (*(s32 *)(_gpreg + -0x6d7c))
 /* localdecomp:start func_00389908 */
 extern s32 D_001D9C48[];
-#undef D_001D5B34  /* drop the $gp-register macro above; a plain extern gets retail's scheduling */
 extern s32 D_001D5B34;
 void func_00389908(void) { D_001D5B34 = D_001D9C48[0] - 1; }
 /* localdecomp:end func_00389908 */
@@ -1416,7 +1409,7 @@ void func_0038C490(void) {
 }
 /* localdecomp:end func_0038C490 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C4B0);
+LINKER_REMNANT("asm/remnants", func_0038C4B0);
 
 /* localdecomp:start func_0038C4E8 */
 extern void func_00389D18();
@@ -1426,7 +1419,7 @@ void func_0038C4E8(void) {
 }
 /* localdecomp:end func_0038C4E8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C508);
+LINKER_REMNANT("asm/remnants", func_0038C508);
 
 /* localdecomp:start func_0038C510 */
 extern void func_00389D18();
@@ -1436,7 +1429,7 @@ void func_0038C510(void) {
 }
 /* localdecomp:end func_0038C510 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C530);
+LINKER_REMNANT("asm/remnants", func_0038C530);
 
 /* localdecomp:start func_0038C538 */
 extern void func_00389D18();
@@ -1446,23 +1439,23 @@ void func_0038C538(s32 a, s32 b, s32 c, f32 d) {
 }
 /* localdecomp:end func_0038C538 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C558);
+LINKER_REMNANT("asm/remnants", func_0038C558);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038C580);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038C628);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C708);
+LINKER_REMNANT("asm/remnants", func_0038C708);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038C718);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038C778);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C830);
+LINKER_REMNANT("asm/remnants", func_0038C830);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038C840);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C878);
+LINKER_REMNANT("asm/remnants", func_0038C878);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038C888);
 
@@ -1473,7 +1466,7 @@ void func_0038C8A8(s32 a, s32 b, s32 c, s32 d, s32 e, s32 g) {
 }
 /* localdecomp:end func_0038C8A8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C8D8);
+LINKER_REMNANT("asm/remnants", func_0038C8D8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038C8F8);
 
@@ -1484,7 +1477,7 @@ void func_0038C980(s32 a, s32 b, s32 c, s32 d, s32 e, s32 g) {
 }
 /* localdecomp:end func_0038C980 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C9B0);
+LINKER_REMNANT("asm/remnants", func_0038C9B0);
 
 /* localdecomp:start func_0038C9B8 */
 extern void func_0038B1E8(s32, s32, s32, s32, unsigned long, s32, f32, f32);
@@ -1539,7 +1532,7 @@ void func_0038CB60(void) {
 }
 /* localdecomp:end func_0038CB60 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038CBC8);
+LINKER_REMNANT("asm/remnants", func_0038CBC8);
 
 /* localdecomp:start func_0038CBD0 */
 extern s32 D_001D4D08_0038CBD0;
@@ -1551,7 +1544,7 @@ void func_0038CBD0(s32 dx, s32 dy, s32 clamp) {
 }
 /* localdecomp:end func_0038CBD0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038CC58);
+LINKER_REMNANT("asm/remnants", func_0038CC58);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038CC68);
 
@@ -1559,7 +1552,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0038CE40);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038DA28);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038DA50);
+LINKER_REMNANT("asm/remnants", func_0038DA50);
 
 /* localdecomp:start func_0038DA58 */
 extern void func_12C4B0(s32);
@@ -1734,7 +1727,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0038E508);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038E5B8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E688);
+LINKER_REMNANT("asm/remnants", func_0038E688);
 
 /* localdecomp:start func_0038E6B8 */
 extern u8 D_001D551C;
@@ -1743,7 +1736,7 @@ void func_0038E6B8(void) {
 }
 /* localdecomp:end func_0038E6B8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E6C0);
+LINKER_REMNANT("asm/remnants", func_0038E6C0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038E6D0);
 
@@ -1756,11 +1749,11 @@ void func_0038E728(s32 a) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038E730);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E788);
+LINKER_REMNANT("asm/remnants", func_0038E788);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038E798);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E8F8);
+LINKER_REMNANT("asm/remnants", func_0038E8F8);
 
 /* localdecomp:start func_0038E900 */
 extern u32 D_001D5D50;
@@ -1777,6 +1770,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0038E930);
 INCLUDE_ASM("asm/nonmatchings/text", func_0038EA58);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038EA88);
+TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038EB10);
 
@@ -1872,7 +1866,7 @@ void func_0038F0C0(void *p) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038F0F0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038F2A8);
+LINKER_REMNANT("asm/remnants", func_0038F2A8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038F310);
 
@@ -1916,7 +1910,7 @@ s32 func_00391B60(void) {
 }
 /* localdecomp:end func_00391B60 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00391B68);
+LINKER_REMNANT("asm/remnants", func_00391B68);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00391B70);
 
@@ -1938,7 +1932,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003925F0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00392878);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00392A20);
+LINKER_REMNANT("asm/remnants", func_00392A20);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00392A40);
 
@@ -1948,7 +1942,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00393120);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00393290);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00393360);
+LINKER_REMNANT("asm/remnants", func_00393360);
 
 /* localdecomp:start func_00393370 */
 extern u8 D_001D5EDC;
@@ -1957,7 +1951,7 @@ void func_00393370(void) { D_001D5EDC = 1; }
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00393380);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00393418);
+LINKER_REMNANT("asm/remnants", func_00393418);
 
 /* localdecomp:start func_00393420 */
 extern u8 D_001D5EDD;
@@ -1981,14 +1975,13 @@ void func_00393430(void) {
 /* localdecomp:end func_00393430 */
 
 /* localdecomp:start func_00393448 */
-register char *_gpreg __asm__("$28");
-#define D_001D5EE0 (*(s32 *)(_gpreg + -0x69d0))
+extern s32 D_001D5EE0;
 s32 func_00393448(void) {
     return D_001D5EE0 == 3;
 }
 /* localdecomp:end func_00393448 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00393458);
+LINKER_REMNANT("asm/remnants", func_00393458);
 
 /* localdecomp:start func_00393460 */
 extern void func_00385B60(s32);
@@ -2015,15 +2008,15 @@ void func_00393460(s32 a, s32 b, s32 c) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003934E8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00393550);
+LINKER_REMNANT("asm/remnants", func_00393550);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00393580);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003936A0);
+LINKER_REMNANT("asm/remnants", func_003936A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003936A8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003937C8);
+ASM_FUNC("asm/handwritten", func_003937C8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00393878);
 
@@ -2031,7 +2024,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00393A18);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00393C98);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00393DB0);
+LINKER_REMNANT("asm/remnants", func_00393DB0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00393DC8);
 
@@ -2082,20 +2075,21 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00394C58);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00394F78);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00395088);
+LINKER_REMNANT("asm/remnants", func_00395088);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00395090);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00395358);
+LINKER_REMNANT("asm/remnants", func_00395358);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00395360);
+TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003953E8);
+LINKER_REMNANT("asm/remnants", func_003953E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003953F0);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318170);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00395628);
+LINKER_REMNANT("asm/remnants", func_00395628);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00395648);
 
@@ -2113,7 +2107,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00395BC0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00395C48);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00395E10);
+LINKER_REMNANT("asm/remnants", func_00395E10);
 
 /* localdecomp:start func_00395E18 */
 typedef struct { s32 id; s32 pad[4]; } E_395E18;
@@ -2130,7 +2124,7 @@ s32 func_00395E18(s32 id) {
 }
 /* localdecomp:end func_00395E18 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00395EA8);
+LINKER_REMNANT("asm/remnants", func_00395EA8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00395EB8);
 
@@ -2620,8 +2614,6 @@ s32 func_00397058(u32 a) {
 
 extern s32 D_001D4CEC[];
 extern s32 D_00142578[];
-register char *_gpreg __asm__("$28");
-#define D_001D4CEC_gp (*(s32 *)(_gpreg + -0x7bc4))
 /* localdecomp:start func_00397080 */
 extern s32 D_001D4CEC_00397080;
 extern s32 D_00142578[];
@@ -2647,7 +2639,7 @@ u8 func_003970B8(void) {
 }
 /* localdecomp:end func_003970B8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003970C8);
+LINKER_REMNANT("asm/remnants", func_003970C8);
 
 /* localdecomp:start func_003970D0 */
 extern S_142430 D_00142430;
@@ -2666,8 +2658,6 @@ void func_003970D0(s16 v) {
 INCLUDE_ASM("asm/nonmatchings/text", func_00397100);
 
 extern s32 D_001D4CEC[];
-register char *_gpreg __asm__("$28");
-#define D_001D4CEC_gp (*(s32 *)(_gpreg + -0x7bc4))
 /* localdecomp:start func_003971E8 */
 extern F_4CEC D_001D4CEC_f;
 void func_003971E8(void) {
@@ -2687,8 +2677,6 @@ void func_00397200(void) {
 /* localdecomp:end func_00397200 */
 
 extern s32 D_001D4CEC[];
-register char *_gpreg __asm__("$28");
-#define D_001D4CEC_gp (*(s32 *)(_gpreg + -0x7bc4))
 /* localdecomp:start func_00397238 */
 extern F_4CEC D_001D4CEC_f;
 void func_00397238(void) {
@@ -2707,8 +2695,6 @@ s32 func_00397258(void) {
 /* localdecomp:end func_00397258 */
 
 extern s32 D_001D4CEC[];
-register char *_gpreg __asm__("$28");
-#define D_001D4CEC_gp (*(s32 *)(_gpreg + -0x7bc4))
 /* localdecomp:start func_00397270 */
 extern F_4CEC D_001D4CEC_f;
 void func_00397270(void) {
@@ -2716,7 +2702,7 @@ void func_00397270(void) {
 }
 /* localdecomp:end func_00397270 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00397288);
+LINKER_REMNANT("asm/remnants", func_00397288);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003972A0);
 
@@ -2735,7 +2721,7 @@ INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003183C0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00399660);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00399708);
+LINKER_REMNANT("asm/remnants", func_00399708);
 
 /* localdecomp:start func_00399710 */
 s32 func_00399710(s32 *p) {
@@ -2802,7 +2788,7 @@ s32 func_0039A518(u8 *p) {
 }
 /* localdecomp:end func_0039A518 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039A528);
+LINKER_REMNANT("asm/remnants", func_0039A528);
 
 /* localdecomp:start func_0039A550 */
 extern u8 D_00142734[];
@@ -2915,7 +2901,7 @@ s32 func_0039A780(void) {
 }
 /* localdecomp:end func_0039A780 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039A7A8);
+LINKER_REMNANT("asm/remnants", func_0039A7A8);
 
 /* localdecomp:start func_0039A7B0 */
 s32 func_0039A7B0(u8 *p, s32 a, s32 b, s32 i) {
@@ -2944,44 +2930,45 @@ s32 func_0039A980(u8 *p, s32 a, s32 b) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039A9E0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039AA80);
+LINKER_REMNANT("asm/remnants", func_0039AA80);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039AAF0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039ABA0);
+LINKER_REMNANT("asm/remnants", func_0039ABA0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039ABB0);
+TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039AE08);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318410);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B0E8);
+LINKER_REMNANT("asm/remnants", func_0039B0E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039B0F8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B198);
+ASM_FUNC("asm/handwritten", func_0039B198);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B200);
+ASM_FUNC("asm/handwritten", func_0039B200);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B240);
+ASM_FUNC("asm/handwritten", func_0039B240);
 
 /* 0x39B2DC is 4 bytes past an 8-byte boundary: GCC pads every C function to 8,
    so this can't be a C function (it's likely leftover bytes after the previous one). */
 INCLUDE_ASM("asm/nonmatchings/text", func_0039B2DC);  /* 4-byte aligned: cannot be a compiled C function (gcc aligns to 8) */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B2E8);
+ASM_FUNC("asm/handwritten", func_0039B2E8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B4E8);
+ASM_FUNC("asm/handwritten", func_0039B4E8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B628);
+ASM_FUNC("asm/handwritten", func_0039B628);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B760);
+ASM_FUNC("asm/handwritten", func_0039B760);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BA30);
+ASM_FUNC("asm/handwritten", func_0039BA30);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BA50);
+ASM_FUNC("asm/handwritten", func_0039BA50);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BBC8);
+ASM_FUNC("asm/handwritten", func_0039BBC8);
 
 /* localdecomp:start func_0039BC00 */
 void func_0039BC00(void) {
@@ -3025,7 +3012,7 @@ void func_0039BCA0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039BCC8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BD08);
+ASM_FUNC("asm/handwritten", func_0039BD08);
 
 /* localdecomp:start func_0039BD40 */
 s32 func_0039BD40(void) {
@@ -3036,7 +3023,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039BD48);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318470);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003184C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BE90);
+LINKER_REMNANT("asm/remnants", func_0039BE90);
 
 /* localdecomp:start func_0039BEA0 */
 extern s32 D_001D6D98;
@@ -3079,7 +3066,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039BEC0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039BF98);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039C020);
+LINKER_REMNANT("asm/remnants", func_0039C020);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039C028);
 
@@ -3134,7 +3121,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039CAB8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039CBA0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039CC70);
+LINKER_REMNANT("asm/remnants", func_0039CC70);
 
 typedef struct {
     u8 pad0[0x24];
@@ -3322,7 +3309,7 @@ void func_0039DA60(s32 a, long b) {
 }
 /* localdecomp:end func_0039DA60 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039DAD0);
+LINKER_REMNANT("asm/remnants", func_0039DAD0);
 
 extern s32 D_001D6DE8[];
 /* localdecomp:start func_0039DAE0 */
@@ -3341,11 +3328,11 @@ void func_0039DAE0(s32 a0, s32 a1) {
 }
 /* localdecomp:end func_0039DAE0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039DB00);
+LINKER_REMNANT("asm/remnants", func_0039DB00);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039DB38);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039E4A8);
+LINKER_REMNANT("asm/remnants", func_0039E4A8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039E4B0);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318530);
@@ -3378,7 +3365,7 @@ s32 func_0039E928(s32 a, s32 i) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039E9A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039EA58);
+LINKER_REMNANT("asm/remnants", func_0039EA58);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039EA60);
 
@@ -3409,7 +3396,7 @@ void func_0039EE40(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039EE68);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039FAF8);
+LINKER_REMNANT("asm/remnants", func_0039FAF8);
 
 /* localdecomp:start func_0039FB08 */
 extern u8 D_1A30B0[];
@@ -3451,7 +3438,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039FE80);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039FF28);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039FFB8);
+LINKER_REMNANT("asm/remnants", func_0039FFB8);
 
 /* localdecomp:start func_0039FFC8 */
 extern u8 D_001A30B0[];
@@ -3464,7 +3451,7 @@ s32 func_0039FFC8(u32 a0, s32 a1) {
 }
 /* localdecomp:end func_0039FFC8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039FFF0);
+LINKER_REMNANT("asm/remnants", func_0039FFF0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A0010);
 
@@ -3497,7 +3484,7 @@ void func_003A0130(s32 a, long l) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003A0170);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318670);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A01F8);
+LINKER_REMNANT("asm/remnants", func_003A01F8);
 
 /* localdecomp:start func_003A0200 */
 typedef struct { u8 x0; s8 x1; s8 x2; s8 x3; u16 x4; u16 x6; s32 x8; s32 xC; u32 x10; s32 x14; s32 x18; u8 pad[0x60-0x1C]; } S_3A0200;
@@ -3520,7 +3507,7 @@ void func_003A0200(void) {
 }
 /* localdecomp:end func_003A0200 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A0268);
+LINKER_REMNANT("asm/remnants", func_003A0268);
 
 /* localdecomp:start func_003A0280 */
 extern s32 D_00229930[];
@@ -3540,7 +3527,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A02D8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A04A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A0D20);
+LINKER_REMNANT("asm/remnants", func_003A0D20);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A0D58);
 
@@ -3554,7 +3541,7 @@ void func_003A1340(void *p) {
 }
 /* localdecomp:end func_003A1340 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A1380);
+LINKER_REMNANT("asm/remnants", func_003A1380);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A13B0);
 
@@ -3618,7 +3605,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A2EE0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A3028);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A30D8);
+LINKER_REMNANT("asm/remnants", func_003A30D8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A30E0);
 
@@ -3682,6 +3669,7 @@ void func_003A3508(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003A35C0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A3A00);
+TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A3A40);
 
@@ -3746,7 +3734,7 @@ void func_003A3DE8(s32 a0, u32 a1) {
 }
 /* localdecomp:end func_003A3DE8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A3E38);
+LINKER_REMNANT("asm/remnants", func_003A3E38);
 
 /* localdecomp:start func_003A3E40 */
 extern u32 *D_001DA0D0_003A3E40;
@@ -3762,7 +3750,7 @@ void func_003A3E40(u32 a0, s32 a1, u32 a2) {
 }
 /* localdecomp:end func_003A3E40 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A3EE8);
+LINKER_REMNANT("asm/remnants", func_003A3EE8);
 
 /* localdecomp:start func_003A3EF0 */
 extern u32 *D_001DA0D0_003A3EF0;
@@ -3782,7 +3770,7 @@ void func_003A3EF0(s32 a0, unsigned long a1) {
 }
 /* localdecomp:end func_003A3EF0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A3FA8);
+LINKER_REMNANT("asm/remnants", func_003A3FA8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A3FB0);
 
@@ -3822,7 +3810,7 @@ void func_003A4188(void) {
 }
 /* localdecomp:end func_003A4188 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A41E8);
+LINKER_REMNANT("asm/remnants", func_003A41E8);
 
 /* localdecomp:start func_003A41F0 */
 extern u32 *D_001DA0D0_003A41F0;
@@ -3845,7 +3833,7 @@ void func_003A41F0(void) {
 }
 /* localdecomp:end func_003A41F0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A42D0);
+LINKER_REMNANT("asm/remnants", func_003A42D0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A42E0);
 
@@ -3868,9 +3856,9 @@ void func_003A4580(void) {
 }
 /* localdecomp:end func_003A4580 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A45F0);
+ASM_FUNC("asm/handwritten", func_003A45F0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A46F0);
+ASM_FUNC("asm/handwritten", func_003A46F0);
 
 /* localdecomp:start func_003A4720 */
 typedef struct { u32 a, b, c, d; } S_3A4720;
@@ -4120,7 +4108,7 @@ s32 func_003A5910(void *p) {
 }
 /* localdecomp:end func_003A5910 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A5918);
+LINKER_REMNANT("asm/remnants", func_003A5918);
 
 /* localdecomp:start func_003A5928 */
 void func_003A5928(void *a0, f32 a1, f32 a2, f32 a3, f32 a4) {
@@ -4131,7 +4119,7 @@ void func_003A5928(void *a0, f32 a1, f32 a2, f32 a3, f32 a4) {
 }
 /* localdecomp:end func_003A5928 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A5950);
+LINKER_REMNANT("asm/remnants", func_003A5950);
 
 /* localdecomp:start func_003A5958 */
 void func_003A5958(void *a0, s32 a1) {
@@ -4158,7 +4146,7 @@ void func_003A5978(S_3A5978 *p, s32 v) {
 }
 /* localdecomp:end func_003A5978 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A59E0);
+LINKER_REMNANT("asm/remnants", func_003A59E0);
 
 /* localdecomp:start func_003A59E8 */
 typedef struct { u8 pad[0x10]; s32 f10; u8 pad2[4]; u8 f18; u8 pad3[7]; s32 f20; } S_3A59E8;
@@ -4190,7 +4178,7 @@ u8 *func_003A5A78(u8 *p) { *(s32 **)(p + 0x24) = D_001D8218; return p; }
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A5A90);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A5BB8);
+LINKER_REMNANT("asm/remnants", func_003A5BB8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A5BC0);
 
@@ -4208,7 +4196,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A5CA8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A5D58);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A5DD8);
+LINKER_REMNANT("asm/remnants", func_003A5DD8);
 
 /* localdecomp:start func_003A5DE8 */
 s32 func_003A5DE8(void *p) {
@@ -4281,7 +4269,7 @@ u8 *func_003A6190(u8 *p) {
 }
 /* localdecomp:end func_003A6190 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A61C8);
+LINKER_REMNANT("asm/remnants", func_003A61C8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A61D0);
 
@@ -4312,7 +4300,7 @@ u8 *func_003A6410(u8 *p) {
 }
 /* localdecomp:end func_003A6410 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A6448);
+LINKER_REMNANT("asm/remnants", func_003A6448);
 
 /* localdecomp:start func_003A6450 */
 extern s32 D_00331820[];
@@ -4425,7 +4413,7 @@ void *func_003A6880(void *p) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A6888);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A6908);
+LINKER_REMNANT("asm/remnants", func_003A6908);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A6910);
 
@@ -4437,7 +4425,7 @@ void func_003A69A0(void *a0, void *a1) {
 }
 /* localdecomp:end func_003A69A0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A69C0);
+LINKER_REMNANT("asm/remnants", func_003A69C0);
 
 /* localdecomp:start func_003A69C8 */
 extern u8 *func_003A5C70(u8 *);
@@ -4450,13 +4438,13 @@ u8 *func_003A69C8(u8 *p) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A6A00);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A6C08);
+LINKER_REMNANT("asm/remnants", func_003A6C08);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A6C30);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A7090);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A7380);
+LINKER_REMNANT("asm/remnants", func_003A7380);
 
 /* localdecomp:start func_003A7398 */
 s32 func_003A7398(void) {
@@ -4481,7 +4469,7 @@ s32 func_003A7CC8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A7CD0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A7D80);
+LINKER_REMNANT("asm/remnants", func_003A7D80);
 
 /* localdecomp:start func_003A7E48 */
 void *func_003A7E48(u8 *p) {
@@ -4500,7 +4488,7 @@ void *func_003A7E48(u8 *p) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A7E80);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A7F38);
+LINKER_REMNANT("asm/remnants", func_003A7F38);
 
 /* localdecomp:start func_003A7F40 */
 void func_003A7F40(void *p, s32 value) {
@@ -4508,7 +4496,7 @@ void func_003A7F40(void *p, s32 value) {
 }
 /* localdecomp:end func_003A7F40 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A7F48);
+LINKER_REMNANT("asm/remnants", func_003A7F48);
 
 /* localdecomp:start func_003A7F58 */
 typedef struct {
@@ -4599,11 +4587,11 @@ void func_003A8030(void *p, f32 value) {
 }
 /* localdecomp:end func_003A8030 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A8038);
+LINKER_REMNANT("asm/remnants", func_003A8038);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A8060);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A8228);
+LINKER_REMNANT("asm/remnants", func_003A8228);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A8230);
 
@@ -4611,13 +4599,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A95A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9698);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9758);
+LINKER_REMNANT("asm/remnants", func_003A9758);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9768);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9890);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9AB0);
+LINKER_REMNANT("asm/remnants", func_003A9AB0);
 
 /* localdecomp:start func_003A9AC0 */
 extern void func_003A7618(void *);
@@ -4648,11 +4636,11 @@ extern s32 D_001D5C78;
 extern u8 D_00160C40[];
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9B10);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9CE8);
+LINKER_REMNANT("asm/remnants", func_003A9CE8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9CF8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9DE0);
+LINKER_REMNANT("asm/remnants", func_003A9DE0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9E00);
 
@@ -4664,11 +4652,11 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003AA080);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AA0B8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AA278);
+LINKER_REMNANT("asm/remnants", func_003AA278);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AA290);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AA2D0);
+LINKER_REMNANT("asm/remnants", func_003AA2D0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AA2E8);
 
@@ -4755,7 +4743,7 @@ s32 func_003AAB60(void) {
 }
 /* localdecomp:end func_003AAB60 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AAB80);
+LINKER_REMNANT("asm/remnants", func_003AAB80);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AAB88);
 
@@ -4825,9 +4813,9 @@ s32 func_003AB608(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AB610);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AB7B8);
+ASM_FUNC("asm/handwritten", func_003AB7B8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AB9A8);
+ASM_FUNC("asm/handwritten", func_003AB9A8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AB9E8);
 
@@ -5028,7 +5016,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003ACD38);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ACED0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ACFD0);
+LINKER_REMNANT("asm/remnants", func_003ACFD0);
 
 /* localdecomp:start func_003ACFD8 */
 extern void func_139E50();
@@ -5106,7 +5094,7 @@ s32 func_003AD0E0(s32 arg0) {
 }
 /* localdecomp:end func_003AD0E0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AD100);
+LINKER_REMNANT("asm/remnants", func_003AD100);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AD108);
 
@@ -5240,11 +5228,11 @@ void func_003AD7F8(volatile s32 *p) {
 }
 /* localdecomp:end func_003AD7F8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AD818);
+LINKER_REMNANT("asm/remnants", func_003AD818);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AD820);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AD8A0);
+LINKER_REMNANT("asm/remnants", func_003AD8A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AD8A8);
 
@@ -5294,7 +5282,7 @@ void func_003ADB78(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ADBB0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ADC68);
+LINKER_REMNANT("asm/remnants", func_003ADC68);
 
 extern s32 D_001D8888;
 extern s32 D_001D888C;
@@ -6276,7 +6264,7 @@ void func_003B4E60(void *a0, s32 a1, s32 a2, s32 a3, s32 a4) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B4E78);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B4F08);
+LINKER_REMNANT("asm/remnants", func_003B4F08);
 
 /* localdecomp:start func_003B4F10 */
 extern void func_003E24B0(s32, s32);
@@ -6319,7 +6307,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B52B0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B5440);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B56C8);
+LINKER_REMNANT("asm/remnants", func_003B56C8);
 
 /* localdecomp:start func_003B56D0 */
 void func_003B56D0(s32 *arg0, float float1, float float2, float float3, float float4, float float5) {
@@ -6384,7 +6372,7 @@ void func_003B5BE8(void) {
 }
 /* localdecomp:end func_003B5BE8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B5BF0);
+LINKER_REMNANT("asm/remnants", func_003B5BF0);
 
 /* localdecomp:start func_003B5BF8 */
 extern s32 D_0037BA94[];
@@ -6425,7 +6413,7 @@ s32 func_003B5C38(u32 i) {
 }
 /* localdecomp:end func_003B5C38 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B5C60);
+LINKER_REMNANT("asm/remnants", func_003B5C60);
 
 /* localdecomp:start func_003B5C68 */
 extern s8 D_001D8C20[1];
@@ -6435,7 +6423,7 @@ s32 func_003B5C68(s32 i) {
 }
 /* localdecomp:end func_003B5C68 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B5C90);
+LINKER_REMNANT("asm/remnants", func_003B5C90);
 
 /* localdecomp:start func_003B5CA0 */
 typedef struct { u8 pad[0xC]; u8 *buf[4]; } S_3B5CA0;
@@ -6468,7 +6456,7 @@ void func_003B60B0(s32 a) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B60F0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B6190);
+LINKER_REMNANT("asm/remnants", func_003B6190);
 
 /* localdecomp:start func_003B6198 */
 s32 func_003B6198(void) {
@@ -7075,6 +7063,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BC218);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318A00);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BC568);
+TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BCFB0);
 
@@ -7088,11 +7077,11 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BD490);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BD550);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BD630);
+LINKER_REMNANT("asm/remnants", func_003BD630);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BD668);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BD768);
+LINKER_REMNANT("asm/remnants", func_003BD768);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BD778);
 
@@ -7130,7 +7119,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BD9A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BDA38);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BDAC0);
+LINKER_REMNANT("asm/remnants", func_003BDAC0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BDAC8);
 
@@ -7211,36 +7200,22 @@ void func_003BE2E0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BE340);
 
-/* localdecomp:start func_003BE3A0 */
-// Bypass the C compiler entirely so it stops adding jr $ra
-__asm__(    
-    ".section .text\n"
-    ".global func_003BE3A0\n"
-    "func_003BE3A0:\n"
-    "addiu $29, $29, 0x30\n"
-    "nop\n"
-    "addiu $2, $0, 0xff\n"
-    "nop\n"
-    "sw    $0, 0($3)\n"
-    "nop\n"
-    "addiu $2, $0, 0x1\n"
-    "nop\n"
-);
-/* localdecomp:end func_003BE3A0 */
+LINKER_REMNANT("asm/remnants", func_003BE3A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BE3C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BE400);
+LINKER_REMNANT("asm/remnants", func_003BE400);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BE418);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BE4F0);
+TEXT_PADDING(4);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BE688);
+LINKER_REMNANT("asm/remnants", func_003BE688);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BE6A8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BE740);
+LINKER_REMNANT("asm/remnants", func_003BE740);
 
 /* localdecomp:start func_003BE7F0 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3BE7F0;
@@ -7258,13 +7233,13 @@ f32 func_003BE7F0(V_3BE7F0 *p, s32 flags, s32 c, f32 dz) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BE860);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BE948);
+LINKER_REMNANT("asm/remnants", func_003BE948);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BE988);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BEA80);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BEB18);
+LINKER_REMNANT("asm/remnants", func_003BEB18);
 
 /* localdecomp:start func_003BEB48 */
 f32 func_003BEB48(f32 a, f32 b, f32 t) {
@@ -7274,19 +7249,20 @@ f32 func_003BEB48(f32 a, f32 b, f32 t) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BEB58);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BEBF0);
+LINKER_REMNANT("asm/remnants", func_003BEBF0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BEBF8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BEC48);
+LINKER_REMNANT("asm/remnants", func_003BEC48);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BEC60);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BEE08);
+LINKER_REMNANT("asm/remnants", func_003BEE08);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BEE20);
+TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BEFF8);
+LINKER_REMNANT("asm/remnants", func_003BEFF8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BF058);
 
@@ -7302,7 +7278,7 @@ void func_003BF2A0(void *a, void *b) {
 }
 /* localdecomp:end func_003BF2A0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF2F0);
+LINKER_REMNANT("asm/remnants", func_003BF2F0);
 
 /* localdecomp:start func_003BF2F8 */
 extern f32 func_00388978(f32);
@@ -7319,7 +7295,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BF360);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BF4F8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF5C0);
+LINKER_REMNANT("asm/remnants", func_003BF5C0);
 
 /* localdecomp:start func_003BF5D0 */
 s32 func_003BF5D0(s32 arg0) {
@@ -7329,7 +7305,7 @@ s32 func_003BF5D0(s32 arg0) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BF5E0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF630);
+LINKER_REMNANT("asm/remnants", func_003BF630);
 
 /* localdecomp:start func_003BF640 */
 extern f32 func_00388770(s32 a);
@@ -7339,7 +7315,7 @@ void func_003BF640(s32 a, f32 x) {
 }
 /* localdecomp:end func_003BF640 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF690);
+LINKER_REMNANT("asm/remnants", func_003BF690);
 
 /* localdecomp:start func_003BF6A8 */
 extern f32 func_0037E250(f32, f32);
@@ -7350,7 +7326,7 @@ void func_003BF6A8(f32 *v, f32 r) {
 }
 /* localdecomp:end func_003BF6A8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF728);
+LINKER_REMNANT("asm/remnants", func_003BF728);
 
 /* localdecomp:start func_003BF778 */
 extern void func_00388830(s32 a, s32 b, f32 x);
@@ -7363,19 +7339,19 @@ void func_003BF778(void *a, f32 f) {
 }
 /* localdecomp:end func_003BF778 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF7C8);
+LINKER_REMNANT("asm/remnants", func_003BF7C8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BF7E8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF820);
+LINKER_REMNANT("asm/remnants", func_003BF820);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BF838);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF8F8);
+LINKER_REMNANT("asm/remnants", func_003BF8F8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BF910);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BFA18);
+LINKER_REMNANT("asm/remnants", func_003BFA18);
 
 /* localdecomp:start func_003BFAF8 */
 typedef struct { u8 pad[0x40]; } M_3BFAF8;
@@ -7386,7 +7362,7 @@ M_3BFAF8 m; if (d == 0) { func_00388E78(&m, a + 0xC0); func_003888C8(b, c, &m); 
 }
 /* localdecomp:end func_003BFAF8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BFB60);
+LINKER_REMNANT("asm/remnants", func_003BFB60);
 
 /* localdecomp:start func_003BFB80 */
 f32 func_003BFB80(s32 a, s32 b, s32 c) {
@@ -7408,7 +7384,7 @@ void func_003BFCE8(void *p) {
 }
 /* localdecomp:end func_003BFCE8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BFD08);
+LINKER_REMNANT("asm/remnants", func_003BFD08);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BFD10);
 
@@ -7420,7 +7396,7 @@ void func_003BFD90(void *p) {
 }
 /* localdecomp:end func_003BFD90 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BFDB0);
+LINKER_REMNANT("asm/remnants", func_003BFDB0);
 
 /* localdecomp:start func_003BFDB8 */
 extern void func_003886E8(f32 *, void *, f32);
@@ -7434,7 +7410,7 @@ void func_003BFDB8(s32 a, s32 b, s32 c) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BFE08);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BFEE0);
+LINKER_REMNANT("asm/remnants", func_003BFEE0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BFEF0);
 
@@ -7445,95 +7421,95 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003C0B10);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C0D70);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C0E08);
+LINKER_REMNANT("asm/remnants", func_003C0E08);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C0E10);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C1070);
+LINKER_REMNANT("asm/remnants", func_003C1070);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C1130);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C1440);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C18F8);
+LINKER_REMNANT("asm/remnants", func_003C18F8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C1950);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C1A28);
+LINKER_REMNANT("asm/remnants", func_003C1A28);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C1A40);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C1A60);
+ASM_FUNC("asm/handwritten", func_003C1A60);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C1A90);
+ASM_FUNC("asm/handwritten", func_003C1A90);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C1DA0);
+ASM_FUNC("asm/handwritten", func_003C1DA0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C1F10);
+ASM_FUNC("asm/handwritten", func_003C1F10);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C1FE0);
+ASM_FUNC("asm/handwritten", func_003C1FE0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C21A0);
+ASM_FUNC("asm/handwritten", func_003C21A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C2310);
+ASM_FUNC("asm/handwritten", func_003C2310);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C2370);
+ASM_FUNC("asm/handwritten", func_003C2370);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C23E8);
+ASM_FUNC("asm/handwritten", func_003C23E8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C26C8);
+ASM_FUNC("asm/handwritten", func_003C26C8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C2868);
+ASM_FUNC("asm/handwritten", func_003C2868);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C28B0);
+ASM_FUNC("asm/handwritten", func_003C28B0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C35A8);
+ASM_FUNC("asm/handwritten", func_003C35A8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C4280);
+ASM_FUNC("asm/handwritten", func_003C4280);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C4F30);
+ASM_FUNC("asm/handwritten", func_003C4F30);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C5098);
+ASM_FUNC("asm/handwritten", func_003C5098);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C5AE0);
+ASM_FUNC("asm/handwritten", func_003C5AE0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C5D90);
+ASM_FUNC("asm/handwritten", func_003C5D90);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C5E70);
+ASM_FUNC("asm/handwritten", func_003C5E70);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C78B0);
+ASM_FUNC("asm/handwritten", func_003C78B0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C79F0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C7AD8);
+LINKER_REMNANT("asm/remnants", func_003C7AD8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C7AE8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C7B90);
+LINKER_REMNANT("asm/remnants", func_003C7B90);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C7B98);
+ASM_FUNC("asm/handwritten", func_003C7B98);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C7BA0);
+ASM_FUNC("asm/handwritten", func_003C7BA0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C7CE0);
+ASM_FUNC("asm/handwritten", func_003C7CE0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C7DE0);
+ASM_FUNC("asm/handwritten", func_003C7DE0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C7E68);
+ASM_FUNC("asm/handwritten", func_003C7E68);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C8A90);
+ASM_FUNC("asm/handwritten", func_003C8A90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C8B28);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C8C40);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C8CD8);
+LINKER_REMNANT("asm/remnants", func_003C8CD8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C8CE0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C8D50);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C8E68);
+LINKER_REMNANT("asm/remnants", func_003C8E68);
 
 /* localdecomp:start func_003C8E70 */
 typedef struct { u16 pad; u16 flags; } Q_3C8E70;
@@ -7555,17 +7531,17 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003C8ED0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C9078);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C9208);
+LINKER_REMNANT("asm/remnants", func_003C9208);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C9210);
+ASM_FUNC("asm/handwritten", func_003C9210);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C92B8);
+ASM_FUNC("asm/handwritten", func_003C92B8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C93B0);
+ASM_FUNC("asm/handwritten", func_003C93B0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C94B0);
+ASM_FUNC("asm/handwritten", func_003C94B0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C9798);
+ASM_FUNC("asm/handwritten", func_003C9798);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C9888);
 
@@ -7604,20 +7580,21 @@ void func_003C99D0(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003C9AE0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C9B80);
+TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C9C58);
+ASM_FUNC("asm/handwritten", func_003C9C58);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CA860);
+ASM_FUNC("asm/handwritten", func_003CA860);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CA9C8);
+ASM_FUNC("asm/handwritten", func_003CA9C8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CAC10);
+ASM_FUNC("asm/handwritten", func_003CAC10);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CB310);
+ASM_FUNC("asm/handwritten", func_003CB310);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CB498);
+ASM_FUNC("asm/handwritten", func_003CB498);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CB5A0);
+LINKER_REMNANT("asm/remnants", func_003CB5A0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003CB5B0);
 
@@ -7653,11 +7630,11 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003CBC70);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003CBE40);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CC198);
+ASM_FUNC("asm/handwritten", func_003CC198);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CC4B0);
+ASM_FUNC("asm/handwritten", func_003CC4B0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CC5F8);
+ASM_FUNC("asm/handwritten", func_003CC5F8);
 
 /* localdecomp:start func_003CC838 */
 void func_003CC838(void) {
@@ -7683,41 +7660,41 @@ void func_003CC838(void) {
 }
 /* localdecomp:end func_003CC838 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CC880);
+ASM_FUNC("asm/handwritten", func_003CC880);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CC884);
+ASM_FUNC("asm/handwritten", func_003CC884);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CC8B8);
+ASM_FUNC("asm/handwritten", func_003CC8B8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CC950);
+ASM_FUNC("asm/handwritten", func_003CC950);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CCB40);
+ASM_FUNC("asm/handwritten", func_003CCB40);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CCCF8);
+ASM_FUNC("asm/handwritten", func_003CCCF8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CCD08);
+ASM_FUNC("asm/handwritten", func_003CCD08);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CCDC4);
+ASM_FUNC("asm/handwritten", func_003CCDC4);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CCE10);
+ASM_FUNC("asm/handwritten", func_003CCE10);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CCF38);
+ASM_FUNC("asm/handwritten", func_003CCF38);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CCFB0);
+ASM_FUNC("asm/handwritten", func_003CCFB0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CD194);
+ASM_FUNC("asm/handwritten", func_003CD194);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CD250);
+ASM_FUNC("asm/handwritten", func_003CD250);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CD470);
+ASM_FUNC("asm/handwritten", func_003CD470);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CD4A8);
+ASM_FUNC("asm/handwritten", func_003CD4A8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CD510);
+ASM_FUNC("asm/handwritten", func_003CD510);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CD548);
+ASM_FUNC("asm/handwritten", func_003CD548);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CD598);
+ASM_FUNC("asm/handwritten", func_003CD598);
 
 /* localdecomp:start func_003CD710 */
 void func_003CD710(u8 *p) {
@@ -7805,27 +7782,27 @@ void func_003CD7D0(void) {
 }
 /* localdecomp:end func_003CD7D0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CD830);
+ASM_FUNC("asm/handwritten", func_003CD830);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CDDF0);
+ASM_FUNC("asm/handwritten", func_003CDDF0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CDE70);
+ASM_FUNC("asm/handwritten", func_003CDE70);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CDEB0);
+ASM_FUNC("asm/handwritten", func_003CDEB0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CE4B4);
+ASM_FUNC("asm/handwritten", func_003CE4B4);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CE6A0);
+ASM_FUNC("asm/handwritten", func_003CE6A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CE740);
+ASM_FUNC("asm/handwritten", func_003CE740);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CF790);
+ASM_FUNC("asm/handwritten", func_003CF790);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D00C0);
+ASM_FUNC("asm/handwritten", func_003D00C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D00F0);
+LINKER_REMNANT("asm/remnants", func_003D00F0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D00F8);
+ASM_FUNC("asm/handwritten", func_003D00F8);
 
 /* localdecomp:start func_003D14B0 */
 void func_003D14B0(s32 *p, s32 n) { s32 t = *p; t = (t + 0x1FFF) & -0x2000; *p = t + n; }
@@ -7839,7 +7816,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003D1650);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D1978);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D1B08);
+LINKER_REMNANT("asm/remnants", func_003D1B08);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D1B10);
 
@@ -7847,7 +7824,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003D1D40);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D1E68);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D22D8);
+LINKER_REMNANT("asm/remnants", func_003D22D8);
 
 /* localdecomp:start func_003D22E0 */
 extern void func_003D1E68(s32, s32, s32, s32, s32);
@@ -7873,7 +7850,7 @@ void func_003D2330(s32 a0, s32 a1, s32 a2) {
 }
 /* localdecomp:end func_003D2330 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D2358);
+LINKER_REMNANT("asm/remnants", func_003D2358);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D2370);
 
@@ -7964,21 +7941,21 @@ void func_003D3CF0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D3DC8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D3E08);
+LINKER_REMNANT("asm/remnants", func_003D3E08);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D3E40);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D3EE0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D3F78);
+LINKER_REMNANT("asm/remnants", func_003D3F78);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D3FA0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D4198);
+LINKER_REMNANT("asm/remnants", func_003D4198);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D41E0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D4680);
+LINKER_REMNANT("asm/remnants", func_003D4680);
 
 /* localdecomp:start func_003D46B0 */
 extern s32 D_001D4BB0[];
@@ -7994,49 +7971,49 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003D46E0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D47A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D4850);
+LINKER_REMNANT("asm/remnants", func_003D4850);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D4858);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D48D8);
+ASM_FUNC("asm/handwritten", func_003D48D8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D5814);
+ASM_FUNC("asm/handwritten", func_003D5814);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D5840);
+ASM_FUNC("asm/handwritten", func_003D5840);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D6130);
+ASM_FUNC("asm/handwritten", func_003D6130);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D6BC0);
+ASM_FUNC("asm/handwritten", func_003D6BC0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D6BE8);
+ASM_FUNC("asm/handwritten", func_003D6BE8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D6C10);
+ASM_FUNC("asm/handwritten", func_003D6C10);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D764C);
+ASM_FUNC("asm/handwritten", func_003D764C);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D7674);
+ASM_FUNC("asm/handwritten", func_003D7674);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D76A0);
+ASM_FUNC("asm/handwritten", func_003D76A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D7950);
+ASM_FUNC("asm/handwritten", func_003D7950);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D8098);
+ASM_FUNC("asm/handwritten", func_003D8098);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D80C0);
+ASM_FUNC("asm/handwritten", func_003D80C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D81E0);
+ASM_FUNC("asm/handwritten", func_003D81E0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D8218);
+ASM_FUNC("asm/handwritten", func_003D8218);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D9308);
+ASM_FUNC("asm/handwritten", func_003D9308);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D9330);
+ASM_FUNC("asm/handwritten", func_003D9330);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D94A8);
+ASM_FUNC("asm/handwritten", func_003D94A8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D95B0);
+ASM_FUNC("asm/handwritten", func_003D95B0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D96C4);
+ASM_FUNC("asm/handwritten", func_003D96C4);
 
 /* localdecomp:start func_003D97C8 */
 extern u32 *D_001DA0D0_003D97C8;
@@ -8072,17 +8049,17 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003D98D0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D99D8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D9A40);
+ASM_FUNC("asm/handwritten", func_003D9A40);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DB318);
+ASM_FUNC("asm/handwritten", func_003DB318);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DB5C0);
+ASM_FUNC("asm/handwritten", func_003DB5C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DBB70);
+ASM_FUNC("asm/handwritten", func_003DBB70);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DBCE8);
+ASM_FUNC("asm/handwritten", func_003DBCE8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DBDF0);
+LINKER_REMNANT("asm/remnants", func_003DBDF0);
 
 /* localdecomp:start func_003DBE20 */
 extern void func_003A3DA0(s32);
@@ -8102,7 +8079,7 @@ void func_003DBE20(void) {   /* same as func_003B0F58 plus the call below */
 }
 /* localdecomp:end func_003DBE20 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DBE98);
+LINKER_REMNANT("asm/remnants", func_003DBE98);
 
 /* localdecomp:start func_003DBEA0 */
 extern s32 D_00302DC0[];
@@ -8130,7 +8107,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003DE430);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003DE4A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DE558);
+LINKER_REMNANT("asm/remnants", func_003DE558);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003DE560);
 
@@ -8160,7 +8137,7 @@ void func_003DE8B8(void) {
 }
 /* localdecomp:end func_003DE8B8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DE8C8);
+LINKER_REMNANT("asm/remnants", func_003DE8C8);
 
 /* localdecomp:start func_003DE8D0 */
 extern s16 D_00302E04[];
@@ -8212,7 +8189,7 @@ void func_003DF7C0(s32 a) {
 }
 /* localdecomp:end func_003DF7C0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DF810);
+LINKER_REMNANT("asm/remnants", func_003DF810);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003DF820);
 
@@ -8260,7 +8237,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003DFCA8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003DFE10);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DFF78);
+LINKER_REMNANT("asm/remnants", func_003DFF78);
 
 /* localdecomp:start func_003DFF90 */
 extern u8 D_001D95C0;
@@ -8274,17 +8251,18 @@ void func_003DFF90(s32 a) {
 }
 /* localdecomp:end func_003DFF90 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DFFC0);
+LINKER_REMNANT("asm/remnants", func_003DFFC0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003DFFD0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E0068);
+TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E0178);
+LINKER_REMNANT("asm/remnants", func_003E0178);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E0190);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E0358);
+LINKER_REMNANT("asm/remnants", func_003E0358);
 
 /* localdecomp:start func_003E0370 */
 void func_003E0370(f32 *p, f32 lo, f32 hi) {
@@ -8320,7 +8298,7 @@ s32 func_003E0680(void **p) {
 }
 /* localdecomp:end func_003E0680 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E0690);
+LINKER_REMNANT("asm/remnants", func_003E0690);
 
 /* localdecomp:start func_003E06A0 */
 typedef struct { u8 pad[0x10]; s32 a[16]; } S_3E06A0;
@@ -8380,7 +8358,7 @@ s32 func_003E0D78(S_3E0D78 *s, s32 v) {
 }
 /* localdecomp:end func_003E0D78 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E0DF0);
+LINKER_REMNANT("asm/remnants", func_003E0DF0);
 
 /* localdecomp:start func_003E0DF8 */
 extern void func_003E11D0(void *, s32, s32);
@@ -8478,7 +8456,7 @@ void func_003E1668(S_3E1668 *p) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E16B8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1760);
+LINKER_REMNANT("asm/remnants", func_003E1760);
 
 /* localdecomp:start func_003E1770 */
 typedef struct { u8 pad[0x18]; s32 arr[1]; } S_3E1770;
@@ -8503,13 +8481,13 @@ s32 func_003E1788(void *p, u32 i, s32 v) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E17C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1890);
+LINKER_REMNANT("asm/remnants", func_003E1890);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1898);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E18C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1928);
+LINKER_REMNANT("asm/remnants", func_003E1928);
 
 /* localdecomp:start func_003E1930 */
 s32 *func_003E1930(s32 *p, s32 a, s32 b, s32 c, s32 d) {
@@ -8620,7 +8598,7 @@ void func_003E1B68(void *p) {
 }
 /* localdecomp:end func_003E1B68 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1B90);
+LINKER_REMNANT("asm/remnants", func_003E1B90);
 
 typedef struct {
     s32 field_0;        /* Offset 0x00 - Targeted by sw $zero, 0($a0) */
@@ -8719,7 +8697,7 @@ void func_003E1CE8(void) {
 }
 /* localdecomp:end func_003E1CE8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1D08);
+LINKER_REMNANT("asm/remnants", func_003E1D08);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1D18);
 
@@ -8752,41 +8730,41 @@ s32 func_003E1E48(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1E50);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1F38);
+LINKER_REMNANT("asm/remnants", func_003E1F38);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E1F40);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2028);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E2110);
+LINKER_REMNANT("asm/remnants", func_003E2110);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2118);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E21F0);
+LINKER_REMNANT("asm/remnants", func_003E21F0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E21F8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E22D0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E23B8);
+LINKER_REMNANT("asm/remnants", func_003E23B8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E23C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E24A8);
+LINKER_REMNANT("asm/remnants", func_003E24A8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E24B0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2560);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E2610);
+LINKER_REMNANT("asm/remnants", func_003E2610);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2618);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E2720);
+LINKER_REMNANT("asm/remnants", func_003E2720);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2728);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E2800);
+LINKER_REMNANT("asm/remnants", func_003E2800);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2808);
 
@@ -8798,15 +8776,15 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E2A90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2B98);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E2C80);
+LINKER_REMNANT("asm/remnants", func_003E2C80);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2C88);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E2D70);
+LINKER_REMNANT("asm/remnants", func_003E2D70);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2D90);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E2DD8);
+LINKER_REMNANT("asm/remnants", func_003E2DD8);
 
 /* localdecomp:start func_003E2DE0 */
 typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; } S_3E2DE0;
@@ -8844,7 +8822,7 @@ s32 func_003E2E60(s32 a) {
 }
 /* localdecomp:end func_003E2E60 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E2ED0);
+LINKER_REMNANT("asm/remnants", func_003E2ED0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2ED8);
 
@@ -8867,7 +8845,7 @@ s32 func_003E2F48(s32 a) {
 }
 /* localdecomp:end func_003E2F48 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E2FB8);
+LINKER_REMNANT("asm/remnants", func_003E2FB8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E2FC0);
 
@@ -8887,7 +8865,7 @@ s32 func_003E3040(s32 a) {
 }
 /* localdecomp:end func_003E3040 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E30B0);
+LINKER_REMNANT("asm/remnants", func_003E30B0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E30C8);
 
@@ -8895,11 +8873,11 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E31A8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E3250);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E3320);
+LINKER_REMNANT("asm/remnants", func_003E3320);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E3330);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E33E8);
+LINKER_REMNANT("asm/remnants", func_003E33E8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E33F0);
 
@@ -8922,7 +8900,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E3700);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E37F0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E38A8);
+LINKER_REMNANT("asm/remnants", func_003E38A8);
 
 /* localdecomp:start func_003E38B0 */
 extern void func_003E37F0(void *, s32, s32);
@@ -8956,7 +8934,7 @@ void func_003E3EE8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E3F08);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E4788);
+LINKER_REMNANT("asm/remnants", func_003E4788);
 
 /* localdecomp:start func_003E4790 */
 typedef struct { u32 key; void *val; } HE_8;
@@ -10345,11 +10323,11 @@ s32 func_003E8320(u8 *p, f32 a, f32 b) {
 }
 /* localdecomp:end func_003E8320 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E8390);
+LINKER_REMNANT("asm/remnants", func_003E8390);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E8420);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E8560);
+LINKER_REMNANT("asm/remnants", func_003E8560);
 
 /* localdecomp:start func_003E8568 */
 void func_003E8568(void *p, s32 mask, s32 set) {
@@ -10447,7 +10425,7 @@ extern char D_001D96B0[];
 void func_003E8790(u8 *p, s32 f) { *(u8 **)(p + 8) = D_001D96B0; if (f & 1) func_003ECDB8(p); }
 /* localdecomp:end func_003E8790 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E87C0);
+LINKER_REMNANT("asm/remnants", func_003E87C0);
 
 /* localdecomp:start func_003E87D8 */
 extern f32 D_001D96D8;
@@ -10484,6 +10462,7 @@ s32 func_003E8C28(void *a0, s32 a1) {
 /* localdecomp:end func_003E8C28 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E8C40);
+TEXT_PADDING(2);
 
 /* localdecomp:start func_003E8EA0 */
 void func_003E8EA0(u8 *p, f32 a, f32 b, f32 c, f32 d) {
@@ -10515,7 +10494,7 @@ s32 func_003E91C0(s32 p, s32 k) {
 }
 /* localdecomp:end func_003E91C0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E91F0);
+LINKER_REMNANT("asm/remnants", func_003E91F0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E91F8);
 
@@ -10556,7 +10535,7 @@ s32 func_003E9B18(void *p, s32 a) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E9B48);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E9B80);
+LINKER_REMNANT("asm/remnants", func_003E9B80);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E9BA8);
 
@@ -10816,7 +10795,7 @@ void func_003EB5A8(u8 *p, s32 m, s32 on) {
 }
 /* localdecomp:end func_003EB5A8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003EB5E8);
+LINKER_REMNANT("asm/remnants", func_003EB5E8);
 
 /* localdecomp:start func_003EB5F0 */
 void func_003EB5F0(void *p, s32 *a, s32 *b) {
@@ -10861,7 +10840,7 @@ s32 func_003EC660(s32 p, s32 k) {
 }
 /* localdecomp:end func_003EC660 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003EC690);
+LINKER_REMNANT("asm/remnants", func_003EC690);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003EC6E0);
 
@@ -10908,7 +10887,7 @@ extern s32 func_003ECDB8();
 void func_003ECBB0(u8 *p, s32 f) { *(u8 **)(p + 8) = D_001D96B0; if (f & 1) func_003ECDB8(p); }
 /* localdecomp:end func_003ECBB0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ECBE0);
+LINKER_REMNANT("asm/remnants", func_003ECBE0);
 
 /* localdecomp:start func_003ECC20 */
 void func_003ECC20(s32 *p, s32 a, s32 b, s32 c) {
@@ -10976,7 +10955,7 @@ void func_003ECD60(u8 *p, s32 f) {
 }
 /* localdecomp:end func_003ECD60 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ECD90);
+LINKER_REMNANT("asm/remnants", func_003ECD90);
 
 /* localdecomp:start func_003ECDB8 */
 s32 func_003ECDB8(void) {
@@ -10996,7 +10975,7 @@ s32 *func_003ECDC8(s32 *p) {
 }
 /* localdecomp:end func_003ECDC8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ECDD8);
+LINKER_REMNANT("asm/remnants", func_003ECDD8);
 
 /* localdecomp:start func_003ECDE0 */
 s32 func_003ECDE0(s32 *p) {

@@ -1970,11 +1970,11 @@ extern s32 D_001D4CEC[];
 extern s32 D_001D4CE8[];
 
 /* localdecomp:start func_00396AE0 */
-extern s32 D_001D4CEC[];
-extern s32 D_001D4CE8[];
+extern s32 D_001D4CEC_00396AE0[];
+extern s32 D_001D4CE8_00396AE0[];
 
 void func_00396AE0(void) {
-    if (!(D_001D4CEC[0] & 0x40)) D_001D4CE8[0] = 4;
+    if (!(D_001D4CEC_00396AE0[0] & 0x40)) D_001D4CE8_00396AE0[0] = 4;
 }
 /* localdecomp:end func_00396AE0 */
 

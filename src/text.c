@@ -2672,21 +2672,15 @@ typedef struct {
     u16 fc8;
 } S_1CCFD0;
 extern S_1CCFD0 D_001CCFD0;
-
-/* localdecomp:start func_0039CC78 */
 /* localdecomp:start func_0039CC78 */
 
-// Apply a single-zero address suffix identity here
 extern S_1CCFD0 D_1CCFD0_0039CC78;
 
 void func_0039CC78(void) {
-    // Route assignments to point directly to the single-zero alias target
     D_1CCFD0_0039CC78.f50 = 4;
     D_1CCFD0_0039CC78.fc8 = 4;
     D_1CCFD0_0039CC78.f78 = 4;
 }
-/* localdecomp:end func_0039CC78 */
-/* localdecomp:end func_0039CC78 */
 /* localdecomp:end func_0039CC78 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039CC98);
@@ -2696,12 +2690,12 @@ INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318510);
 
 /* localdecomp:start func_0039D4D0 */
 typedef struct { u8 pad0[4]; s16 h4; u8 b6; } S_39D4D0;
-extern S_39D4D0 D_1CCFD0[];
+extern S_39D4D0 D_1CCFD0_039D4D0[];
 extern s32 func_13CEB0(void);
 void func_0039D4D0(void) {
-    if (D_1CCFD0->h4 != 0) {
+    if (D_1CCFD0_039D4D0->h4 != 0) {
         func_13CEB0();
-        D_1CCFD0->b6 = 1;
+        D_1CCFD0_039D4D0->b6 = 1;
     }
 }
 /* localdecomp:end func_0039D4D0 */
@@ -2739,7 +2733,7 @@ void func_0039D800(s32 a, long l) {
 
 /* localdecomp:start func_0039D830 */
 typedef struct { u8 pad[0x48]; s16 f48, f4A, f4C; u8 pad2[0x46]; s32 f94; s16 f98, f9A, f9C; u8 pad3[0x12]; s32 fB0; } S_1CCFD0b;
-extern S_1CCFD0b D_1CCFD0;
+extern S_1CCFD0b D_1CCFD0_0039D830;
 extern u8 D_001A30B0[];
 extern void func_0039C548(s32, s32, s32, s32 *, s32);
 void func_0039D830(s32 a, long l) {
@@ -2752,14 +2746,26 @@ void func_0039D830(s32 a, long l) {
     if (a != 0) {
         if (*(s16 *)(p + 0xA) == 1) *(s16 *)(p + 0xA) = 2;
     } else {
-        func_0039C548(D_1CCFD0.f98, D_1CCFD0.f9C, D_1CCFD0.fB0, &D_1CCFD0.f94, D_1CCFD0.f9A);
+        func_0039C548(D_1CCFD0_0039D830.f98, D_1CCFD0_0039D830.f9C, D_1CCFD0_0039D830.fB0, &D_1CCFD0_0039D830.f94, D_1CCFD0_0039D830.f9A);
     }
 }
 /* localdecomp:end func_0039D830 */
 
 /* localdecomp:start func_0039D8B0 */
+typedef struct { 
+    u8 pad[0x48]; 
+    s16 f48, f4A, f4C; 
+    u8 pad2[0x46]; 
+    s32 f94; 
+    s16 f98, f9A, f9C; 
+    u8 pad3[0x12]; 
+    s32 fB0; 
+} S_1CCFD0b_local;
+
+extern S_1CCFD0b_local D_1CCFD0_0039D8B0;
 extern s32 D_001D6DB8;
 extern void func_0039C7B0(s32, s32, s32);
+
 void func_0039D8B0(s32 a, long l) {
     u8 *p = (u8 *)(s32)l;
     if (p == 0) return;
@@ -2767,7 +2773,7 @@ void func_0039D8B0(s32 a, long l) {
     if (a != 0) {
         if (*(s16 *)(p + 0xA) == 1) *(s16 *)(p + 0xA) = 2;
     } else if (D_001D6DB8 == 0) {
-        func_0039C7B0(D_1CCFD0.f48, D_1CCFD0.f4C, D_1CCFD0.f4A);
+        func_0039C7B0(D_1CCFD0_0039D8B0.f48, D_1CCFD0_0039D8B0.f4C, D_1CCFD0_0039D8B0.f4A);
     } else {
         *(s16 *)(p + 0xA) = 0;
     }

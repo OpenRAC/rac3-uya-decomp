@@ -3,6 +3,22 @@
 
 #if !defined(M2CTX) && !defined(PERMUTER)
 
+/* ASM_FUNC: a function that was assembly in the original (hand-written), so
+ * its .s is the source. LINKER_REMNANT: the leftover last word of a function
+ * the original linker stripped as unused; not source at all, just bytes that
+ * must stay in place. Both are final, so unlike INCLUDE_ASM they stay in the
+ * objdiff base build and count as done. See tools/migrate_asm_sources.py. */
+#define ASM_FUNC(FOLDER, NAME) \
+    __asm__( \
+        ".section .text\n" \
+        "    .set noat\n" \
+        "    .set noreorder\n" \
+        "    .include \"" FOLDER "/" #NAME ".s\"\n" \
+        "    .set reorder\n" \
+        "    .set at\n" \
+    )
+#define LINKER_REMNANT(FOLDER, NAME) ASM_FUNC(FOLDER, NAME)
+
 /* objdiff "base" build (make objdiff): drop every not-yet-decompiled function
  * so the object only contains real C. objdiff then counts those as missing. */
 #ifdef OBJDIFF_BASE
@@ -43,6 +59,8 @@ __asm__(".include \"include/labels.inc\"\n");
 
 #else
 
+#define ASM_FUNC(FOLDER, NAME)
+#define LINKER_REMNANT(FOLDER, NAME)
 #ifndef INCLUDE_ASM
 #define INCLUDE_ASM(FOLDER, NAME)
 #endif

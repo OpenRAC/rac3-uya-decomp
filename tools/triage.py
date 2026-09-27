@@ -8,10 +8,12 @@ Reads only src/text.c and asm/nonmatchings/text/*.s. Each remaining function
 gets one bucket, the first that applies:
 
   remnant      Only [instruction, nop] pairs and no return: the last 8 bytes of
-               functions the original linker stripped as unused. Not source
-               code; keep as asm.
+               functions the original linker stripped as unused. Not source.
   handwritten  spimdisasm marks it "Handwritten function" (addi, $at, odd
-               register use). The original was assembly; move to a .s file.
+               register use). The original was assembly.
+               tools/migrate_asm_sources.py moves both of these out of
+               INCLUDE_ASM (to ASM_FUNC / LINKER_REMNANT), so after it has run
+               they no longer show up here.
   odd          No return and not a remnant: probably a bad split. Fix the
                function boundaries before trying C.
   switch       Uses a jump table. Works in C since tools/migrate_jtbls.py;

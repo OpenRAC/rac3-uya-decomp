@@ -2801,7 +2801,8 @@ void func_0039DA08(s32 a, long l) {
 
 /* localdecomp:start func_0039DA48 */
 void func_0039DA48(s32 a0, long a1) {
-    s32 *p = (s32 *)a1;
+
+    s32 *p = (s32 *)(u32)a1;
     if (p != 0) {
         p[5] = a0;
     }

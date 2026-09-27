@@ -455,7 +455,22 @@ void func_00383A90(void) {
 }
 /* localdecomp:end func_00383A90 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00383B08);
+/* localdecomp:start func_00383B08 */
+extern void func_0038DC08(s32, s32, s32, s32);
+extern void func_003A3EF0(s32, unsigned long);
+extern void func_0038E030(s32, s32);
+void func_00383B08(s32 a0, s32 a1) {
+    s32 n = a0 + a1;
+    if (n > 16) {
+        n = 16;
+    }
+    func_0038DC08(a0, a1, ((0x3FF000 - (4 << n)) >> 13) << 13, 1);
+    func_003A3EF0(0x47, 0x30000);
+    func_003A3EF0(0x42, 0x8000000044);
+    func_0038E030(0x100, 0x100);
+    func_003A3EF0(0x42, 0x8000000044);
+}
+/* localdecomp:end func_00383B08 */
 
 /* localdecomp:start func_00383B90 */
 extern void func_0038DA80(void);
@@ -699,7 +714,7 @@ ASM_FUNC("asm/handwritten", func_00388398);
 
 ASM_FUNC("asm/handwritten", func_003883C8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003883F8);
+ASM_FUNC("asm/handwritten", func_003883F8);
 
 ASM_FUNC("asm/handwritten", func_00388418);
 
@@ -804,7 +819,7 @@ void func_00388718(void) {
 }
 /* localdecomp:end func_00388718 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388730);
+ASM_FUNC("asm/handwritten", func_00388730);
 
 /* localdecomp:start func_00388758 */
 void func_00388758(void) {
@@ -2954,7 +2969,10 @@ ASM_FUNC("asm/handwritten", func_0039B240);
 
 /* 0x39B2DC is 4 bytes past an 8-byte boundary: GCC pads every C function to 8,
    so this can't be a C function (it's likely leftover bytes after the previous one). */
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B2DC);  /* 4-byte aligned: cannot be a compiled C function (gcc aligns to 8) */
+/* localdecomp:start func_0039B2DC */
+void func_0039B2DC(void) {
+}
+/* localdecomp:end func_0039B2DC */  /* 4-byte aligned: cannot be a compiled C function (gcc aligns to 8) */
 
 ASM_FUNC("asm/handwritten", func_0039B2E8);
 

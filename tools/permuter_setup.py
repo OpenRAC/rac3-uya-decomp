@@ -140,7 +140,9 @@ OUT="$3"; case "$OUT" in /*) ;; *) OUT="$PWD/$OUT";; esac
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 cat "$DIR/prelude.c" "$IN" > "$TMP/in.c"
 cd {shlex.quote(ROOT)}
-{q(runner + [gcc, "-c", "-I", "include", "-I", "."] + cc_flags)} -o "$TMP/out.o" "$TMP/in.c"
+{q(runner + [gcc, "-S", "-I", "include", "-I", "."] + cc_flags)} -o "$TMP/out.s" "$TMP/in.c"
+python3 tools/asm_filter.py "$TMP/out.s"
+{q(runner + [gcc, "-c", "-I", "include", "-I", "."] + cc_flags)} -o "$TMP/out.o" "$TMP/out.s"
 cp "$TMP/out.o" "$OUT"
 """
     sh_path = os.path.join(d, "compile.sh")

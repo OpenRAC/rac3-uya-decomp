@@ -24,6 +24,10 @@ import argparse, os, re, subprocess, sys, shlex
 FUNC_RE = re.compile(r'func_([0-9A-Fa-f]{8})')
 
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import asm_filter  # noqa: E402
+
+
 def read_parts(path):
     parts = []
     for line in open(path):
@@ -291,11 +295,23 @@ def main():
         if '@ps2as' in parts[pi][1]:
             # Ps2EeAs rejects the GNU as options (-mips3, -mcpu=5900, ...)
             pcflags = [f for f in cflags if not f.startswith('-Wa,')]
-        cmd = [a.cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, cpath]
+        # compile to assembly, apply the loop-padding filter (tools/asm_filter.py:
+        # retail's assembler padded short loops differently from ours), assemble
+        spath = os.path.join(workdir, f'text_p{pi:02d}.s')
+        cmd = [a.cc, '-S'] + pflags + pcflags + asflags + ['-o', spath, cpath]
         print(' '.join(cmd), flush=True)
         r = subprocess.run(cmd)
         if r.returncode != 0:
             sys.exit(f'build_text: part {pi} (0x{parts[pi][0]:08X}) failed to compile')
+        with open(spath, newline='') as f:
+            stext = f.read()
+        with open(spath, 'w', newline='') as f:
+            f.write(asm_filter.filter_asm(stext))
+        cmd = [a.cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, spath]
+        print(' '.join(cmd), flush=True)
+        r = subprocess.run(cmd)
+        if r.returncode != 0:
+            sys.exit(f'build_text: part {pi} (0x{parts[pi][0]:08X}) failed to assemble')
         objs.append(opath)
     cmd = [a.ld, '-r', '-o', a.output] + objs
     print(' '.join(cmd), flush=True)

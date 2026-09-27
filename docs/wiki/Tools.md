@@ -173,6 +173,12 @@ Called by the build; you don't run it yourself. It cuts `src/text.c` at the addr
 
 Its `function_context` function is what gives localdecomp, `try_func.py` and `permuter_setup.py` the same declarations as the real build.
 
+### asm_filter.py
+
+Runs between gcc and the assembler in every build path (`build_text.py`, `try_func.py`, localdecomp, `permuter_setup.py`); you don't call it yourself. Retail's assembler padded every loop shorter than 6 instructions with `nop`s before the backward branch. Neither assembler we have does that: `ee-as` never pads such loops and Ps2EeAs pads them to 7. The filter adds the `nop`s to reach 6, then writes the branch as a raw `.word` so neither assembler pads it again. Loops whose body contains a macro instruction are left alone.
+
+Without it, no C function containing a short loop could match. With it, loops match with no special C.
+
 ### check_match.py
 
 The build's last step: compares the built binary with your `frontbin.elf` and prints MATCH, or the first differing offsets.
@@ -206,6 +212,17 @@ Moves functions that aren't decompilation targets out of `INCLUDE_ASM`:
 - **Linker remnants** (the last word of a function the original linker stripped) go to `asm/remnants/` as `LINKER_REMNANT(...)`.
 
 Both count as done in objdiff and decomp.dev. The script also comments out splat's `nonmatching` line, which would otherwise make objdiff flag the function as not matching.
+
+### split_remnant_prefix.py
+
+Finds `INCLUDE_ASM` functions that start with linker-remnant `[instruction, nop]` pairs. Splat had no symbol between the remnants and the real function after them, so it glued them together, and the result can't be matched as C.
+
+```
+python tools/split_remnant_prefix.py            # report
+python tools/split_remnant_prefix.py --apply    # split them
+```
+
+`--apply` splits each one into a `LINKER_REMNANT` (the pairs) and a new `INCLUDE_ASM` function starting at the real address, for example `func_003A5870` becomes a remnant plus `func_003A5880`. The build stays byte-identical. It found and split 21 functions.
 
 ### trailing_padding.py
 

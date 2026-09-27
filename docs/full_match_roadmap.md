@@ -138,3 +138,17 @@ Recommendation: make "100% C frontbin, byte-identical" plus "modified menu boots
 3. and 4. **`nop`s before `div.s`/`sqrt.s`: still open, now measured.** 129 `div.s`/`sqrt.s` in unmatched functions have two `nop`s in front, 15 have one, 55 have none, sometimes in the same function. No flag, `-m` option or assembler in the toolchain set (ee-as, Ps2EeAs, as.exe, `-mfix4300`, `-mips1`...) inserts them. Plain C gets every other instruction of func_003E1D18 right, including load order and registers, which suggests the padding is added after the compiler. An inline-asm `nop; nop; div.s` helper (the pattern func_003BF778 uses for `sqrt.s`) gets within 5 diffs but changes the scheduling. The one-nop and no-nop cases still need an explanation before this can be solved properly.
 5. **64-bit constant: matched.** func_00383B08 is plain C passing `0x8000000044` to func_003A3EF0 with `@ps2as`; Ps2EeAs expands it as `ori 0x8000; dsll 24; ori 0x44`, exactly like retail.
 6. **Angle-wrap pair: hand-written.** func_00389380 and func_003893C8 sit in the hand-written math range around 0x388000 to 0x389500, use `$f14`/`$f15` and `$v0` as scratch in a leaf, and have none of the FPU hazard `nop`s gcc always emits after `c.lt.s`. Both are now `ASM_FUNC`.
+
+
+## Update 2026-09-27 (evening): plain-function pass
+
+`python tools/pr_check.py`: 813 functions in C (up from 764 this morning), 144 `ASM_FUNC`, 225 `LINKER_REMNANT`, 685 `INCLUDE_ASM` left. 1,182 of 1,867 entries (63.3%) are final source.
+
+- **Short-loop padding solved (`tools/asm_filter.py`).** Retail's assembler padded every loop shorter than 6 instructions with nops before the backward branch; retail has 142 such loops and none shorter than 6. `ee-as` never pads them and Ps2EeAs pads to 7, so no C function with a short loop could match before. The filter runs between gcc and the assembler in every build path (build_text.py, try_func.py, localdecomp, permuter_setup.py). 177 remaining functions contain such loops.
+- **Remnant prefixes split (`tools/split_remnant_prefix.py`).** 21 functions started with linker-remnant `[insn, nop]` pairs glued on by splat. Each is now a `LINKER_REMNANT` plus a new function at the real address (1,846 entries became 1,867).
+- **Matching lessons:**
+  - Callees whose result is unused should be declared `void`; an `s32` return keeps `$v0` busy and swaps `$v0`/`$v1` later.
+  - A global accessed at several offsets matches as a struct array accessed with `->` (`extern S_X D_X[]; D_X->f18`): gcc then keeps the base in a register like retail, where byte-offset casts get folded into the symbol.
+  - Mixed `lui`/`$at` and `$gp` accesses: S mode + `@ps2as`, with the split-accessed globals declared as arrays and the macro-accessed ones sized. Which global Ps2EeAs puts on `$gp` can depend on statement order.
+  - 64-bit constants like `ori 0x8000; dsll 16` are just `(unsigned long)0x80000000` / `0x8000000044` literals.
+- **Still open:** the `nop`s before `div.s`/`sqrt.s` (behaviour varies within a single function; no rule found yet), and store pairs that gcc emits in the opposite order to the source.

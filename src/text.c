@@ -2988,7 +2988,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A00E8);
 
 /* localdecomp:start func_003A0130 */
 void func_003A0130(s32 a, long l) {
-    u8 *p = (u8 *)l;
+    u8 *p = (u8 *)(u32)l;
     if (p == 0) return;
     if (p[0x13] != *(s32 *)(p + 0x4C)) return;
     *(s32 *)p = a;

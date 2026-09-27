@@ -2710,7 +2710,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039D770);
 
 /* localdecomp:start func_0039D800 */
 void func_0039D800(s32 a, long l) {
-    s16 *p = (s16 *)l;
+    s16 *p = (s16 *)(u32)l; 
     if (p != 0 && a != 0 && p[5] == 2) {
         p[5] = 3;
     }

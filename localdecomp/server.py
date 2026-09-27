@@ -483,6 +483,18 @@ class Project:
             block = "\n".join(extra) + "\n" + block
         return block
 
+    def _block_in(self, name: str, cached: str) -> bool:
+        """True if the text.c block for `name` appears (whitespace-insensitive)
+        in `cached`."""
+        text_c = self.src_file.read_text() if self.src_file.exists() else ""
+        a = text_c.find(f"/* localdecomp:start {name} */")
+        b = text_c.find(f"/* localdecomp:end {name} */")
+        if a < 0 or b < a:
+            return True
+        block = text_c[a + len(f"/* localdecomp:start {name} */"):b]
+        norm = lambda t: re.sub(r"\s+", " ", t).strip()
+        return norm(block) in norm(cached)
+
     def get_function_c(self, name: str) -> str:
         """
         Return the FULL editor content (externs + body together) last saved
@@ -497,10 +509,18 @@ class Project:
         and re-populate the cache so this recovery only has to happen once.
         """
         store_path = self._func_store_path(name)
-        if store_path.exists():
-            return store_path.read_text()
-
         recovered = self._extract_marked_block(name)
+        if store_path.exists():
+            cached = store_path.read_text()
+            # src/text.c is the source of truth once a function is saved there.
+            # If its block was changed outside this tool (a merge, a fix-up
+            # script, a hand edit), the cached editor copy is stale; building
+            # or saving it would put the old version back into text.c.
+            if recovered is None or self._block_in(name, cached):
+                return cached
+            store_path.write_text(recovered)
+            return recovered
+
         if recovered is not None:
             store_path.write_text(recovered)
             return recovered
@@ -992,6 +1012,10 @@ SECTIONS
     .text : {{ *(.text) }}
 {rodata_block}
     _gp = 0x{project.gp_value:08X};
+    /* Float constants the default assembler puts in .lit4/.lit8 are loaded
+       $gp-relative; keep them in $gp range so the link works. (Retail builds
+       most float constants inline with lui/ori/mtc1, which needs @ps2as.) */
+    .lit 0x{project.gp_value - 0x7FF0:08X} : {{ *(.lit4) *(.lit8) *(.sdata) *(.sbss) *(.scommon) }}
 
     /DISCARD/ : {{ *(.reginfo) *(.MIPS.abiflags) *(.comment) *(.pdr) }}
 }}
@@ -1444,6 +1468,17 @@ class Handler(http.server.BaseHTTPRequestHandler):
             name = body.get("name")
             c_source = body.get("c", "")
             try:
+                # Only perfect matches go into src/text.c: a non-matching body
+                # there breaks the full build for everyone. Keep work in
+                # progress in the editor (it is cached) instead.
+                if not body.get("force"):
+                    diff = build_and_diff(self.project, name, c_source)
+                    score = diff.get("current_score") if isinstance(diff, dict) else None
+                    if score != 0:
+                        raise BuildError("save", f"{name} does not match yet (score {score}); "
+                                         "only perfect matches are saved into src/text.c, "
+                                         "because anything else breaks the full build. "
+                                         "Your code is kept in the editor.")
                 self.project.save_function_c(name, c_source)
                 git_result = self.project.sync_function_to_git(name)
                 self._send_json({"ok": True, "git": git_result.to_json()})

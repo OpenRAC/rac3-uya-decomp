@@ -721,7 +721,17 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00388618);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388648);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388680);
+/* localdecomp:start func_00388680 */
+void func_00388680(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0($5)\n"
+        "lqc2 $vf2, 0($6)\n"
+        "vmax.xyzw $vf1, $vf1, $vf2\n"
+        "nop\n"
+        "sqc2 $vf1, 0($4)\n"
+    );
+}
+/* localdecomp:end func_00388680 */
 
 /* localdecomp:start func_00388698 */
 /* VU0 macro code is inline asm, as in the original. The assembler moves the
@@ -737,19 +747,80 @@ void func_00388698(void *o, void *a, void *b) {
 }
 /* localdecomp:end func_00388698 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003886B0);
+/* localdecomp:start func_003886B0 */
+void func_003886B0(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0($5)\n"
+        "vabs.xyzw $vf1, $vf1\n"
+        "sqc2 $vf1, 0($4)\n"
+    );
+}
+/* localdecomp:end func_003886B0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003886C0);
+/* localdecomp:start func_003886C0 */
+void func_003886C0(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0($5)\n"
+        "mfc1 $5, $f12\n"
+        "lqc2 $vf2, 0($6)\n"
+        "qmtc2.ni $5, $vf3\n"
+        "vaddax.xyz ACC, $vf1, $vf0x\n"
+        "vmsubax.xyz ACC, $vf1, $vf3x\n"
+        "vmaddx.xyz $vf1, $vf2, $vf3x\n"
+        "sqc2 $vf1, 0($4)\n"
+    );
+}
+/* localdecomp:end func_003886C0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003886E8);
+/* localdecomp:start func_003886E8 */
+void func_003886E8(f32 * p0, void * p1, f32 p2) {
+    __asm__ __volatile__(
+        "mfc1 $at, $f12\n"
+        "lqc2 $vf1, 0($5)\n"
+        "qmtc2.ni $at, $vf2\n"
+        "vmulx.xyz $vf1, $vf1, $vf2x\n"
+        "sqc2 $vf1, 0($4)\n"
+    );
+}
+/* localdecomp:end func_003886E8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388700);
+/* localdecomp:start func_00388700 */
+void func_00388700(void) {
+    __asm__ __volatile__(
+        "mfc1 $at, $f12\n"
+        "lqc2 $vf1, 0($5)\n"
+        "qmtc2.ni $at, $vf2\n"
+        "vmulx.xyz $vf1, $vf1, $vf2x\n"
+        "sqc2 $vf1, 0($5)\n"
+    );
+}
+/* localdecomp:end func_00388700 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388718);
+/* localdecomp:start func_00388718 */
+void func_00388718(void) {
+    __asm__ __volatile__(
+        "mfc1 $at, $f12\n"
+        "lqc2 $vf1, 0($5)\n"
+        "qmtc2.ni $at, $vf2\n"
+        "vmulx.xyzw $vf1, $vf1, $vf2x\n"
+        "sqc2 $vf1, 0($4)\n"
+    );
+}
+/* localdecomp:end func_00388718 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388730);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388758);
+/* localdecomp:start func_00388758 */
+void func_00388758(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0($5)\n"
+        "lqc2 $vf2, 0($6)\n"
+        "vopmula.xyz ACC, $vf2, $vf1\n"
+        "vopmsub.xyz $vf3, $vf1, $vf2\n"
+        "sqc2 $vf3, 0($4)\n"
+    );
+}
+/* localdecomp:end func_00388758 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388770);
 
@@ -759,17 +830,109 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003887C8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388800);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388830);
+/* localdecomp:start func_00388830 */
+void func_00388830(s32 a, s32 b, f32 x) {
+    __asm__ __volatile__(
+        ".set noreorder\n"
+        "lqc2 $vf1, 0($5)\n"
+        "vaddw.xyz $vf3, $vf0, $vf0w\n"
+        "vmul.xyz $vf2, $vf1, $vf1\n"
+        "vadday.x ACC, $vf2, $vf2y\n"
+        "vmaddz.x $vf2, $vf3, $vf2z\n"
+        "mfc1 $at, $f12\n"
+        "qmtc2.ni $at, $vf3\n"
+        "vrsqrt Q, $vf3x, $vf2x\n"
+        "qmfc2.ni $at, $vf2\n"
+        "dsll32 $at, $at, 0\n"
+        "beqz $at, .L00388870_00388830\n"
+        "nop\n"
+        "vwaitq\n"
+        "vmulq.xyz $vf1, $vf1, Q\n"
+        "jr $31\n"
+        "sqc2 $vf1, 0($4)\n"
+        ".L00388870_00388830:\n"
+        ".set reorder\n"
+        "vadd.xyz $vf1, $vf0, $vf0\n"
+        "nop\n"
+        "sqc2 $vf1, 0($4)\n"
+    );
+}
+/* localdecomp:end func_00388830 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388880);
+/* localdecomp:start func_00388880 */
+void func_00388880(void) {
+    __asm__ __volatile__(
+        ".set noreorder\n"
+        "lqc2 $vf1, 0($5)\n"
+        "vmul.xy $vf2, $vf1, $vf1\n"
+        "vaddy.x $vf2, $vf2, $vf2y\n"
+        "mfc1 $at, $f12\n"
+        "qmtc2.ni $at, $vf3\n"
+        "vrsqrt Q, $vf3x, $vf2x\n"
+        "qmfc2.ni $at, $vf2\n"
+        "dsll32 $at, $at, 0\n"
+        "beqz $at, .L003888B8_00388880\n"
+        "nop\n"
+        "vwaitq\n"
+        "vmulq.xy $vf1, $vf1, Q\n"
+        "jr $31\n"
+        "sqc2 $vf1, 0($4)\n"
+        ".L003888B8_00388880:\n"
+        ".set reorder\n"
+        "vadd.xy $vf1, $vf0, $vf0\n"
+        "nop\n"
+        "sqc2 $vf1, 0($4)\n"
+    );
+}
+/* localdecomp:end func_00388880 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003888C8);
+/* localdecomp:start func_003888C8 */
+void func_003888C8(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf5, 0($5)\n"
+        "lqc2 $vf1, 0($6)\n"
+        "lqc2 $vf2, 16($6)\n"
+        "lqc2 $vf3, 32($6)\n"
+        "vmulax.xyzw ACC, $vf1, $vf5x\n"
+        "vmadday.xyzw ACC, $vf2, $vf5y\n"
+        "vmaddaz.xyzw ACC, $vf3, $vf5z\n"
+        "vmaddw.xyzw $vf6, $vf0, $vf5w\n"
+        "sqc2 $vf6, 0($4)\n"
+    );
+}
+/* localdecomp:end func_003888C8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003888F0);
+/* localdecomp:start func_003888F0 */
+void func_003888F0(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf5, 0($5)\n"
+        "lqc2 $vf1, 0($6)\n"
+        "lqc2 $vf2, 16($6)\n"
+        "lqc2 $vf3, 32($6)\n"
+        "lqc2 $vf4, 48($6)\n"
+        "nop\n"
+        "vmulax.xyzw ACC, $vf1, $vf5x\n"
+        "vmadday.xyzw ACC, $vf2, $vf5y\n"
+        "vmaddaz.xyzw ACC, $vf3, $vf5z\n"
+        "vmaddw.xyzw $vf6, $vf4, $vf5w\n"
+        "sqc2 $vf6, 0($4)\n"
+    );
+}
+/* localdecomp:end func_003888F0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388920);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388948);
+/* localdecomp:start func_00388948 */
+void func_00388948(void) {
+    __asm__ __volatile__(
+        "pextlh $5, $5, $0\n"
+        "psraw $5, $5, 16\n"
+        "qmtc2.ni $5, $vf1\n"
+        "vitof0.xyzw $vf1, $vf1\n"
+        "sqc2 $vf1, 0($4)\n"
+    );
+}
+/* localdecomp:end func_00388948 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388960);
 
@@ -779,15 +942,73 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00388990);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388A28);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388B40);
+/* localdecomp:start func_00388B40 */
+void func_00388B40(void) {
+    __asm__ __volatile__(
+        "vmulx.xyzw $vf1, $vf0, $vf0x\n"
+        "vmulx.xyzw $vf2, $vf0, $vf0x\n"
+        "vmr32.xyzw $vf3, $vf0\n"
+        "vaddw.x $vf1, $vf1, $vf0w\n"
+        "vaddw.y $vf2, $vf2, $vf0w\n"
+        "sqc2 $vf1, 0($4)\n"
+        "sqc2 $vf2, 16($4)\n"
+        "sqc2 $vf3, 32($4)\n"
+    );
+}
+/* localdecomp:end func_00388B40 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388B68);
+/* localdecomp:start func_00388B68 */
+void func_00388B68(void) {
+    __asm__ __volatile__(
+        "vmulx.xyzw $vf1, $vf0, $vf0x\n"
+        "vmulx.xyzw $vf2, $vf0, $vf0x\n"
+        "vmr32.xyzw $vf3, $vf0\n"
+        "vmove.xyzw $vf4, $vf0\n"
+        "vaddw.x $vf1, $vf1, $vf0w\n"
+        "vaddw.y $vf2, $vf2, $vf0w\n"
+        "sqc2 $vf1, 0($4)\n"
+        "sqc2 $vf2, 16($4)\n"
+        "sqc2 $vf3, 32($4)\n"
+        "sqc2 $vf4, 48($4)\n"
+    );
+}
+/* localdecomp:end func_00388B68 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388B98);
+/* localdecomp:start func_00388B98 */
+void func_00388B98(void) {
+    __asm__ __volatile__(
+        "mfc1 $at, $f12\n"
+        "qmtc2.ni $at, $vf5\n"
+        "vmulx.xyzw $vf1, $vf0, $vf0x\n"
+        "vmulx.xyzw $vf2, $vf0, $vf0x\n"
+        "vmulx.xyzw $vf3, $vf0, $vf0x\n"
+        "vmove.xyzw $vf4, $vf0\n"
+        "vaddx.x $vf1, $vf1, $vf5x\n"
+        "vaddx.y $vf2, $vf2, $vf5x\n"
+        "vaddx.z $vf3, $vf3, $vf5x\n"
+        "sqc2 $vf1, 0($4)\n"
+        "sqc2 $vf2, 16($4)\n"
+        "sqc2 $vf3, 32($4)\n"
+        "sqc2 $vf4, 48($4)\n"
+    );
+}
+/* localdecomp:end func_00388B98 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388BD0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388BF0);
+/* localdecomp:start func_00388BF0 */
+void func_00388BF0(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0($5)\n"
+        "vcallms 0xC80\n"
+        "qmfc2.i $at, $vf20\n"
+        "sqc2 $vf20, 0($4)\n"
+        "sqc2 $vf21, 16($4)\n"
+        "sqc2 $vf22, 32($4)\n"
+        "sqc2 $vf23, 48($4)\n"
+    );
+}
+/* localdecomp:end func_00388BF0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388C10);
 
@@ -797,31 +1018,207 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00388E58);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388E78);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388EB8);
+/* localdecomp:start func_00388EB8 */
+void func_00388EB8(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf4, 0($5)\n"
+        "lqc2 $vf5, 16($5)\n"
+        "lqc2 $vf6, 32($5)\n"
+        "lqc2 $vf1, 0($6)\n"
+        "lqc2 $vf2, 16($6)\n"
+        "lqc2 $vf3, 32($6)\n"
+        "vmulax.xyzw ACC, $vf4, $vf1x\n"
+        "vmadday.xyzw ACC, $vf5, $vf1y\n"
+        "vmaddz.xyzw $vf1, $vf6, $vf1z\n"
+        "vmulax.xyzw ACC, $vf4, $vf2x\n"
+        "vmadday.xyzw ACC, $vf5, $vf2y\n"
+        "vmaddz.xyzw $vf2, $vf6, $vf2z\n"
+        "vmulax.xyzw ACC, $vf4, $vf3x\n"
+        "vmadday.xyzw ACC, $vf5, $vf3y\n"
+        "vmaddz.xyzw $vf3, $vf6, $vf3z\n"
+        "nop\n"
+        "sqc2 $vf1, 0($4)\n"
+        "sqc2 $vf2, 16($4)\n"
+        "sqc2 $vf3, 32($4)\n"
+    );
+}
+/* localdecomp:end func_00388EB8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388F08);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00388F50);
+/* localdecomp:start func_00388F50 */
+void func_00388F50(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0($5)\n"
+        "lqc2 $vf2, 0($6)\n"
+        "vaddw.xyz $vf9, $vf0, $vf0w\n"
+        "vmul.w $vf3, $vf2, $vf1\n"
+        "vmul.xyz $vf4, $vf2, $vf1\n"
+        "vmulw.xyz $vf5, $vf2, $vf1w\n"
+        "vmulw.xyz $vf6, $vf1, $vf2w\n"
+        "vopmula.xyz ACC, $vf1, $vf2\n"
+        "vopmsub.xyz $vf7, $vf2, $vf1\n"
+        "vadday.x ACC, $vf4, $vf4y\n"
+        "vmaddz.x $vf4, $vf9, $vf4z\n"
+        "vadd.xyz $vf8, $vf5, $vf6\n"
+        "vadd.xyz $vf8, $vf8, $vf7\n"
+        "vsubx.w $vf8, $vf3, $vf4x\n"
+        "sqc2 $vf8, 0($4)\n"
+    );
+}
+/* localdecomp:end func_00388F50 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00388F90);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00389018);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003890D8);
+/* localdecomp:start func_003890D8 */
+void func_003890D8(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf8, 0($4)\n"
+        "vcallms 0xE98\n"
+        "vnop\n"
+        "sqc2 $vf14, 0($5)\n"
+        "sqc2 $vf15, 16($5)\n"
+        "sqc2 $vf16, 32($5)\n"
+    );
+}
+/* localdecomp:end func_003890D8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003890F8);
+/* localdecomp:start func_003890F8 */
+void func_003890F8(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf8, 0($4)\n"
+        "vcallms 0xE98\n"
+        "vnop\n"
+        "sqc2 $vf14, 0($5)\n"
+        "sqc2 $vf15, 16($5)\n"
+        "sqc2 $vf16, 32($5)\n"
+        "sqc2 $vf0, 48($5)\n"
+    );
+}
+/* localdecomp:end func_003890F8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389118);
+/* localdecomp:start func_00389118 */
+void func_00389118(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf4, 0($6)\n"
+        "lui $8, 0x3fb5\n"
+        "lqc2 $vf5, 0($5)\n"
+        "ori $8, $8, 0x4f3\n"
+        "qmtc2.ni $8, $vf6\n"
+        "vmulx.xyzw $vf4, $vf4, $vf6x\n"
+        "vopmula.xyz ACC, $vf4, $vf5\n"
+        "vmaddaw.xyz ACC, $vf5, $vf4w\n"
+        "vopmsub.xyz $vf6, $vf5, $vf4\n"
+        "vopmula.xyz ACC, $vf4, $vf6\n"
+        "vmaddaw.xyz ACC, $vf5, $vf0w\n"
+        "vopmsub.xyz $vf5, $vf6, $vf4\n"
+        "sqc2 $vf5, 0($4)\n"
+    );
+}
+/* localdecomp:end func_00389118 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00389150);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00389158);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389240);
+/* localdecomp:start func_00389240 */
+void func_00389240(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf8, 0($4)\n"
+        "lqc2 $vf1, 0($5)\n"
+        "vmulx.xyzw $vf14, $vf0, $vf0x\n"
+        "vmulx.xyzw $vf15, $vf0, $vf0x\n"
+        "vmr32.xyzw $vf16, $vf0\n"
+        "lqc2 $vf17, 0($6)\n"
+        "vaddw.x $vf14, $vf14, $vf0w\n"
+        "vaddw.y $vf15, $vf15, $vf0w\n"
+        "vadd.xyzw $vf9, $vf8, $vf8\n"
+        "vmulw.xyz $vf10, $vf9, $vf8w\n"
+        "vmulx.xyz $vf11, $vf9, $vf8x\n"
+        "vmuly.yz $vf12, $vf9, $vf8y\n"
+        "vmulz.z $vf13, $vf9, $vf8z\n"
+        "vaddz.x $vf15, $vf0, $vf10z\n"
+        "vsuby.x $vf16, $vf0, $vf10y\n"
+        "vaddx.y $vf16, $vf0, $vf10x\n"
+        "vsuby.x $vf14, $vf14, $vf12y\n"
+        "vsubx.y $vf15, $vf15, $vf11x\n"
+        "vsubx.z $vf16, $vf16, $vf11x\n"
+        "vsubz.y $vf14, $vf11, $vf10z\n"
+        "vaddy.z $vf14, $vf11, $vf10y\n"
+        "vsubx.z $vf15, $vf12, $vf10x\n"
+        "vaddy.x $vf15, $vf15, $vf11y\n"
+        "vaddz.x $vf16, $vf16, $vf11z\n"
+        "vaddz.y $vf16, $vf16, $vf12z\n"
+        "vsubz.x $vf14, $vf14, $vf13z\n"
+        "vsubz.y $vf15, $vf15, $vf13z\n"
+        "vsuby.z $vf16, $vf16, $vf12y\n"
+        "vmulx.xyz $vf14, $vf14, $vf1x\n"
+        "vmuly.xyz $vf15, $vf15, $vf1y\n"
+        "vmulz.xyz $vf16, $vf16, $vf1z\n"
+        "vaddx.w $vf17, $vf0, $vf0x\n"
+        "sqc2 $vf14, 0($7)\n"
+        "sqc2 $vf15, 16($7)\n"
+        "sqc2 $vf16, 32($7)\n"
+        "sqc2 $vf17, 48($7)\n"
+    );
+}
+/* localdecomp:end func_00389240 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003892D8);
+/* localdecomp:start func_003892D8 */
+void func_003892D8(void) {
+    __asm__ __volatile__(
+        "ld $at, 0x0($4)\n"
+        "nop\n"
+        "ld $2, 0x8($4)\n"
+        "pextlh $at, $at, $0\n"
+        "ld $3, 0x10($4)\n"
+        "psraw $at, $at, 16\n"
+        "pextlh $2, $2, $0\n"
+        "qmtc2.ni $at, $vf1\n"
+        "psrlw $2, $2, 13\n"
+        "qmtc2.ni $0, $vf0\n"
+        "pextlh $3, $3, $0\n"
+        "qmtc2.ni $2, $vf2\n"
+        "psraw $3, $3, 16\n"
+        "qmtc2.ni $3, $vf3\n"
+        "vitof15.xyzw $vf1, $vf1\n"
+        "vitof15.xyz $vf2, $vf2\n"
+        "vitof0.xyz $vf3, $vf3\n"
+        "sqc2 $vf1, 0($5)\n"
+        "sqc2 $vf2, 16($5)\n"
+        "nop\n"
+        "sqc2 $vf3, 32($5)\n"
+    );
+}
+/* localdecomp:end func_003892D8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389330);
+/* localdecomp:start func_00389330 */
+void func_00389330(void) {
+    __asm__ __volatile__(
+        "mfc1 $at, $f12\n"
+        "qmtc2.ni $at, $vf7\n"
+        "vsubx.w $vf7, $vf0, $vf7x\n"
+        "nop\n"
+        "lqc2 $vf1, 0($5)\n"
+        "lqc2 $vf2, 16($5)\n"
+        "lqc2 $vf3, 32($5)\n"
+        "lqc2 $vf4, 0($6)\n"
+        "lqc2 $vf5, 16($6)\n"
+        "lqc2 $vf6, 32($6)\n"
+        "vmulaw.xyzw ACC, $vf1, $vf7w\n"
+        "vmaddx.xyzw $vf1, $vf4, $vf7x\n"
+        "vmulaw.xyzw ACC, $vf2, $vf7w\n"
+        "vmaddx.xyzw $vf2, $vf5, $vf7x\n"
+        "vmulaw.xyzw ACC, $vf3, $vf7w\n"
+        "vmaddx.xyzw $vf3, $vf6, $vf7x\n"
+        "sqc2 $vf1, 0($4)\n"
+        "sqc2 $vf2, 16($4)\n"
+        "sqc2 $vf3, 32($4)\n"
+    );
+}
+/* localdecomp:end func_00389330 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00389380);
 
@@ -2528,7 +2925,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039BC70);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039BC80);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BC90);
+/* localdecomp:start func_0039BC90 */
+void func_0039BC90(void) {
+    __asm__ __volatile__(
+        "sync.p\n"
+    );
+}
+/* localdecomp:end func_0039BC90 */
 
 /* localdecomp:start func_0039BCA0 */
 void func_0039BCA0(void) {
@@ -4956,7 +5359,22 @@ s32 func_003AEEB8(s32 *p) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AEEC8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AEF70);
+/* localdecomp:start func_003AEF70 */
+typedef struct { s32 type; s8 pad4[8]; s32 fC; s32 f10; s32 f14; s32 f18; } S_3AEF70;
+
+s32 func_003AEF70(S_3AEF70 *a, s32 b, s32 c, s32 d, s32 e) {
+    s32 result = 0;
+    s32 t = a->type;
+    if ((t ^ 2) == 0 || (t ^ 1) == 0 || (t ^ 8) == 0) {
+        a->fC = b;
+        a->f10 = c;
+        a->f18 = d;
+        a->f14 = e;
+        result = 1;
+    }
+    return result;
+}
+/* localdecomp:end func_003AEF70 */
 
 /* localdecomp:start func_003AEFB0 */
 s32 func_003AEFB0(s32 *arg0) {
@@ -7093,7 +7511,29 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003CC4B0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003CC5F8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CC838);
+/* localdecomp:start func_003CC838 */
+void func_003CC838(void) {
+    __asm__ __volatile__(
+        "vcallms 0xDA0\n"
+        "qmfc2.i $at, $vf1\n"
+        "vmuly.xyz $vf29, $vf30, $vf1y\n"
+        "vaddaw.xyz ACC, $vf0, $vf0w\n"
+        "vmsubx.xyz $vf5, $vf30, $vf1x\n"
+        "vaddax.z ACC, $vf0, $vf1x\n"
+        "vsubay.x ACC, $vf0, $vf29y\n"
+        "vaddax.y ACC, $vf0, $vf29x\n"
+        "vmaddz.xyz $vf3, $vf5, $vf30z\n"
+        "vaddax.y ACC, $vf0, $vf1x\n"
+        "vaddaz.x ACC, $vf0, $vf29z\n"
+        "vsubax.z ACC, $vf0, $vf29x\n"
+        "vmaddy.xyz $vf2, $vf5, $vf30y\n"
+        "vaddax.x ACC, $vf0, $vf1x\n"
+        "vsubaz.y ACC, $vf0, $vf29z\n"
+        "vadday.z ACC, $vf0, $vf29y\n"
+        "vmaddx.xyz $vf1, $vf5, $vf30x\n"
+    );
+}
+/* localdecomp:end func_003CC838 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003CC880);
 
@@ -7133,7 +7573,35 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003CD598);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003CD710);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CD7D0);
+/* localdecomp:start func_003CD7D0 */
+void func_003CD7D0(void) {
+    __asm__ __volatile__(
+        "vaddw.xyz $vf24, $vf0, $vf0w\n"
+        "lqc2 $vf1, 0($5)\n"
+        "lqc2 $vf2, 0($6)\n"
+        "lqc2 $vf3, 0($7)\n"
+        "vsub.xyz $vf4, $vf2, $vf1\n"
+        "vsub.xyz $vf5, $vf3, $vf1\n"
+        "vmul.xyz $vf6, $vf4, $vf4\n"
+        "vmul.xyz $vf7, $vf4, $vf5\n"
+        "vadday.x ACC, $vf6, $vf6y\n"
+        "vmaddz.x $vf6, $vf24, $vf6z\n"
+        "vadday.x ACC, $vf7, $vf7y\n"
+        "vmaddz.x $vf7, $vf24, $vf7z\n"
+        "vdiv Q, $vf7x, $vf6x\n"
+        "vwaitq\n"
+        "vaddq.x $vf8, $vf0, Q\n"
+        "vminiw.x $vf7, $vf8, $vf0w\n"
+        "qmfc2.ni $8, $vf8\n"
+        "nop\n"
+        "vmaxx.x $vf7, $vf7, $vf0x\n"
+        "mtc1 $8, $f0\n"
+        "vmulax.xyz ACC, $vf4, $vf7x\n"
+        "vmaddw.xyz $vf1, $vf1, $vf0w\n"
+        "sqc2 $vf1, 0($4)\n"
+    );
+}
+/* localdecomp:end func_003CD7D0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003CD830);
 

@@ -162,6 +162,85 @@ def split_chunks(text):
     return chunks
 
 
+def assign_parts(text, parts):
+    """[(part index, start line, chunk text)] in file order, the way main()
+    distributes text.c over the parts: free-standing text goes with the next
+    function after it."""
+    assigned, pending = [], []
+    for addr, line, body in split_chunks(text):
+        if addr is None:
+            pending.append((line, body))
+            continue
+        idx = part_index(parts, addr)
+        for pl, pb in pending:
+            assigned.append((idx, pl, pb))
+        pending = []
+        assigned.append((idx, line, body))
+    last = assigned[-1][0] if assigned else 0
+    for pl, pb in pending:
+        assigned.append((last, pl, pb))
+    return assigned
+
+
+_EXTERN_HINT_RE = re.compile(r'^\s*__asm__\s*\(\s*"\s*\.extern\s[^"]*"\s*\)\s*;', re.M)
+_TYPEDEF_NAME_RE = re.compile(r'\btypedef\b[^;{]*?(?:\{(?:[^{}]|\{[^{}]*\})*\})?[^;{]*?\b(\w+)\s*(?:\[[^\]]*\])?\s*;', re.S)
+
+
+def typedef_names(src):
+    """Names of the typedefs a piece of C defines."""
+    return set(_TYPEDEF_NAME_RE.findall(strip_comments(src)))
+
+
+def drop_repeated_typedefs(context, src):
+    """`src` without the typedefs that `context` already defines identically.
+
+    The full build keeps the first definition; localdecomp's editor copy of a
+    block often repeats typedefs from earlier blocks, and C forbids defining
+    one twice. A typedef with the same name but a different body is left in:
+    that is a real conflict, and the compiler should report it."""
+    norm = lambda t: re.sub(r'\s+', ' ', t).strip()
+    have = {m.group(1): norm(m.group(0)) for m in _TYPEDEF_NAME_RE.finditer(strip_comments(context))}
+    return _TYPEDEF_NAME_RE.sub(
+        lambda m: '' if have.get(m.group(1)) == norm(m.group(0)) else m.group(0), src)
+
+
+def function_context(text, parts, name, drop_typedefs=()):
+    """What the full build compiles in front of function `name`, minus code.
+
+    The part file for a function starts with the declarations of every
+    earlier part, then its own part's text up to the function. From the own
+    part only declarations and top-level `.extern` size hints are kept: those
+    change code generation (a #define that rewrites a name, a prototype whose
+    return type decides register use, a hint that makes Ps2EeAs use $gp) but
+    emit no bytes. localdecomp and tools/try_func.py compile a function after
+    this, so a single-function build sees what the real build sees.
+
+    Typedefs named in `drop_typedefs` are removed (the function's own block
+    defines them; C forbids repeating a typedef)."""
+    assigned = assign_parts(text, parts)
+    target = None
+    for n, (idx, line, body) in enumerate(assigned):
+        if re.search(r'\b%s\s*\(' % re.escape(name), strip_comments(body)) and (
+                'localdecomp:start ' + name in body or re.search(r'INCLUDE_ASM\([^)]*\b%s\)' % re.escape(name), body)):
+            target = n
+            break
+    if target is None:
+        return ''
+    pi = assigned[target][0]
+    out = []
+    for idx, line, body in assigned[:target]:
+        decl = declarations_only(body)
+        if decl:
+            out.append(decl)
+        if idx == pi:
+            out.extend(m.group(0).strip() for m in _EXTERN_HINT_RE.finditer(strip_comments(body)))
+    ctx = '\n'.join(out) + '\n'
+    drop = set(drop_typedefs)
+    if drop:
+        ctx = _TYPEDEF_NAME_RE.sub(lambda m: '' if m.group(1) in drop else m.group(0), ctx)
+    return ctx
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--src', default='src/text.c')
@@ -176,22 +255,7 @@ def main():
 
     parts = read_parts(a.parts)
     text = open(a.src).read()
-    chunks = split_chunks(text)
-
-    # assign free-standing text to the part of the next function after it
-    assigned, pending = [], []
-    for addr, line, body in chunks:
-        if addr is None:
-            pending.append((line, body))
-            continue
-        idx = part_index(parts, addr)
-        for pl, pb in pending:
-            assigned.append((idx, pl, pb))
-        pending = []
-        assigned.append((idx, line, body))
-    last = assigned[-1][0] if assigned else 0
-    for pl, pb in pending:
-        assigned.append((last, pl, pb))
+    assigned = assign_parts(text, parts)
 
     header_end = 0
     workdir = a.workdir or os.path.join(os.path.dirname(a.output) or '.', 'parts' + ('_base' if a.base else ''))

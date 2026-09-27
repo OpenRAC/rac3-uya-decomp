@@ -50,6 +50,15 @@ def main():
         new_path = os.path.join(ROOT, folder, name + ".s")
         if os.path.exists(old_path):
             os.replace(old_path, new_path)
+        # splat's `nonmatching` line defines NAME.NON_MATCHING, which makes
+        # objdiff (and decomp.dev) count the function as not matching.
+        # This .s is final source, so turn that line into a comment.
+        if os.path.exists(new_path):
+            s_src = open(new_path, newline="").read()
+            s_src = re.sub(r"^nonmatching (func_[0-9A-Fa-f]{8})(, *0x[0-9A-Fa-f]+)?[ \t]*(\r?)$",
+                           r"/* nonmatching \1\2 -- marker removed: final source */\3",
+                           s_src, flags=re.M)
+            open(new_path, "w", newline="").write(s_src)
         src = re.sub(r'INCLUDE_ASM\("asm/nonmatchings/text",\s*%s\);' % name,
                      '%s("%s", %s);' % (macro, folder, name), src, count=1)
         moved[bucket] += 1

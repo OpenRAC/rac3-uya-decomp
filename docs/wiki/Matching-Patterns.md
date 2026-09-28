@@ -160,7 +160,13 @@ Most VU0 functions are pure assembly leaves: a few `lqc2` loads, vector math, an
 
 When the instructions are right but their order or registers aren't:
 
-- **Independent stores get rotated by the scheduler.** Try moving the last store first, or the reverse.
+- **Independent stores get rotated by the scheduler.** gcc emits the last store of a run to the same base first. For retail's order A, B, C, D write B, C, D, A (`func_003A61D0`, `func_003A6888`). The scheduler issues at most one memory access per cycle; between equal priorities it prefers the instruction with more dependents, then the one that frees a register, then source order (found by [rac1-decomp](https://github.com/Lynder063/rac1-decomp/blob/main/docs/DECOMP_PROGRESS.md)).
+- **`addu` operand order is picked by the access form, not by the order you write the `+`.** gcc canonicalises the addition. `p = (u8 *)T + i * 4` and `b = table + i` give index first; `T[i].field`, `S.arr[i]` and `table[i]` give base first (rac1-decomp). A field at a fixed offset from an indexed table (`sw $a0, 0x34($v0)` after `addu base, idx`) is an array member of a struct: `extern T D_X; D_X.arr[i] = v;` (`func_00395958`).
+- **Two registers holding the same pointer.** Retail computing `base + i * 4` into one register and copying it to another before the second store (`addu $v0, $a0, $a1; move $a0, $v0`) is two arrays in one struct: `s->a[i] = x; s->b[i] = y;` (`func_003A7FC8`). Pointer variables, `volatile` and return tricks don't produce it.
+- **Callee prototypes decide argument code.** Use the declaration text.c already has instead of an alias with guessed types. A `long` / `unsigned long` parameter builds its constant as one macro that can move (`func_003A3EF0`, `func_003D47A0`); a callee declared with too many arguments leaves extra `move`s (`func_0037EAA0`). A function that ignores its argument in retail may still be called with one: `func_003E16B8(&D_001DA9B8)` is what keeps the pointer in `$v0` in `func_003E2D90`.
+- **`volatile` pins accesses.** reorg never moves a volatile access into a delay slot, and volatile stores keep their order against the epilogue (rac1-decomp). Try it before an `__asm__` fence when retail leaves a slot empty.
+- **`fabsf` that isn't scheduled.** When retail's `abs.s` sits before `jr $ra` instead of in its delay slot, write `__asm__("abs.s %0, %1" : "=f"(r) : "f"(x))` (`func_003BEBF8`, `func_0037E920`).
+- **Check m2c's pointer arithmetic.** It writes `D_X + 0x40` or `p->f4 + 0x20` on struct or `s32 *` types, which scales the offset. Cast to `u8 *` first (`func_0039D510`, `func_003E16B8`).
 - **Early `return` vs `if/else`** changes block layout and which branch is likely (`beql`/`bnel`).
 - **`x = c ? a : b` vs `if`** produce different code (`movz`/`movn` vs branches). Try both.
 - **Declaration order of locals** can swap registers.
@@ -185,7 +191,7 @@ If you find a family, say so in your PR. It helps the next person.
 Leave these for now, or open an issue if you crack one:
 
 - `lwc1 $fN, off($gp)` followed by `nop` before the use (e.g. `func_003882D0`, which reads the main executable's literal pool). No flag or assembler reproduces the `nop` yet. Current matches use a `$gp` register hack plus `__asm__("nop")`.
-- 64-bit constant synthesis `li 0x8000; dsll 24` (`func_00383B08`).
+- **Resolved:** 64-bit constant synthesis `li 0x8000; dsll 24` (`func_00383B08`): pass the constant as an `unsigned long` literal with `@ps2as`.
 - `div.s` with double-`nop` padding (`func_003E1D18`). Lead: Ps2EeAs has built-in DIV padding ("DIV related opcode too near branch instruction - Added padding NOP/s"), so try `@ps2as`.
 - Register allocation where retail keeps an argument in a temporary (`move $t3, $a0` at entry) while `$a0` holds a constant, e.g. `func_0039BEC0`. All its memory accesses match with `@ps2as`; only the registers differ.
 - **Resolved: "a match in isolation can still differ in the full build".** `func_003AEDC8` and `func_003AED08` passed `try_func.py` but failed the full build with two `$gp` stores swapped. The cause was the tool, not the build: it masked every relocated field, and two stores through `$gp` differ only in their relocated offsets, so the wrong order looked identical. `try_func.py` now fills relocations in with the symbols' real addresses and compares them in full (checked against all 617 previously matched blocks: no false failures). The `#define D_001D5B34 ...` hack macros above some functions still replace a later `extern` of the same name; `#undef` it in your block (see `func_00389908`).

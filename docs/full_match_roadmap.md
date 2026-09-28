@@ -152,3 +152,21 @@ Recommendation: make "100% C frontbin, byte-identical" plus "modified menu boots
   - Mixed `lui`/`$at` and `$gp` accesses: S mode + `@ps2as`, with the split-accessed globals declared as arrays and the macro-accessed ones sized. Which global Ps2EeAs puts on `$gp` can depend on statement order.
   - 64-bit constants like `ori 0x8000; dsll 16` are just `(unsigned long)0x80000000` / `0x8000000044` literals.
 - **Still open:** the `nop`s before `div.s`/`sqrt.s` (behaviour varies within a single function; no rule found yet), and store pairs that gcc emits in the opposite order to the source.
+
+## Update 2026-09-27 (evening): near-miss pass
+
+829 functions in C, 144 `ASM_FUNC`, 225 `LINKER_REMNANT`, 669 `INCLUDE_ASM` left. 1,198 of 1,867 entries (64.2%) are final source.
+
+The 19 m2c drafts that were 1 to 5 instructions off went through the permuter and a manual pass. 16 now match and are in text.c (full build MATCH): func_0037E7D8, func_0037E920, func_0037EAA0, func_00396248, func_003997F0, func_0039D510, func_003A61D0, func_003A6888, func_003A6910, func_003BEBF8, func_003D47A0, func_003D99D8, func_003E1460, func_003E16B8, func_003E9C50, func_003EB620.
+
+The permuter found only one of them (func_003997F0: load `arg0[0]` before the `if`). The rest came from fixing the draft, so check these before starting a permuter run:
+
+- **Pointer arithmetic on typed pointers.** m2c writes `D_X + 0x40` or `p->f4 + 0x20` where `D_X`/`f4` has a struct or `s32 *` type, so the offset gets scaled. Cast to `u8 *` or give the field a `u8 *` type (func_0039D510, func_003E16B8).
+- **Wrong callee prototype.** A per-function alias hides the prototype text.c already uses. func_003A3EF0 takes `unsigned long`; declaring it `(s32, s32)` leaves the constant load scheduled differently (func_003D47A0). A callee that takes one argument but is declared with three leaves extra argument moves (func_0037EAA0). Look up the real declaration in text.c first.
+- **Base + index + field offset.** Retail often keeps `base + i * size` in a register and uses the field offset in the load (`lw 0x50($a0)`), where gcc folds `base + 0x50` into the `lui`/`addiu`. Take a pointer to the element first: `S *p = &D[i]; p->f50` (func_0037E7D8), `s32 **b = p->slots; slot = b + i;` (func_003E1460).
+- **Store order.** gcc emits the last of a run of stores to the same base first. To get retail's order A, B, C, D write B, C, D, A (func_003A61D0, func_003A6888). Trying every order of the stores with `try_func.py` takes seconds.
+- **`abs.s` that is not scheduled.** Where retail has `abs.s` right before `jr $ra` (not in the delay slot) or before a load, `fabsf()` doesn't match; `__asm__("abs.s %0, %1" : "=f"(r) : "f"(x))` does (func_003BEBF8, func_0037E920). SN's math header probably defined fabsf as inline asm.
+- **Mixed `$gp`/`lui` with `@ps2as`.** `__asm__(".extern D_X, 4");` before the function (Matching-Patterns, option A) fixed func_00396248.
+- **Branch sense and conditions.** Writing the `if` the other way round (`arg1 == 1` first) and using `(x ^ 4) == 0` where retail has `xori` fixed func_003EB620 and func_003E9C50.
+
+Still off: func_00395958 (1, `addu` operand order), func_003A7FC8 (3, retail copies the pointer from `$v0` to `$a0` before the second store), func_003E2D90 (4, the pointer lives in `$v0`, not `$a0`). The permuter got none of them within 25 minutes each.

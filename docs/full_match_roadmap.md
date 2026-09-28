@@ -155,9 +155,7 @@ Recommendation: make "100% C frontbin, byte-identical" plus "modified menu boots
 
 ## Update 2026-09-27 (evening): near-miss pass
 
-829 functions in C, 144 `ASM_FUNC`, 225 `LINKER_REMNANT`, 669 `INCLUDE_ASM` left. 1,198 of 1,867 entries (64.2%) are final source.
-
-The 19 m2c drafts that were 1 to 5 instructions off went through the permuter and a manual pass. 16 now match and are in text.c (full build MATCH): func_0037E7D8, func_0037E920, func_0037EAA0, func_00396248, func_003997F0, func_0039D510, func_003A61D0, func_003A6888, func_003A6910, func_003BEBF8, func_003D47A0, func_003D99D8, func_003E1460, func_003E16B8, func_003E9C50, func_003EB620.
+The 19 m2c drafts that were 1 to 5 instructions off went through the permuter and a manual pass. All 19 now match; the first 16 and are in text.c (full build MATCH): func_0037E7D8, func_0037E920, func_0037EAA0, func_00396248, func_003997F0, func_0039D510, func_003A61D0, func_003A6888, func_003A6910, func_003BEBF8, func_003D47A0, func_003D99D8, func_003E1460, func_003E16B8, func_003E9C50, func_003EB620.
 
 The permuter found only one of them (func_003997F0: load `arg0[0]` before the `if`). The rest came from fixing the draft, so check these before starting a permuter run:
 
@@ -169,4 +167,10 @@ The permuter found only one of them (func_003997F0: load `arg0[0]` before the `i
 - **Mixed `$gp`/`lui` with `@ps2as`.** `__asm__(".extern D_X, 4");` before the function (Matching-Patterns, option A) fixed func_00396248.
 - **Branch sense and conditions.** Writing the `if` the other way round (`arg1 == 1` first) and using `(x ^ 4) == 0` where retail has `xori` fixed func_003EB620 and func_003E9C50.
 
-Still off: func_00395958 (1, `addu` operand order), func_003A7FC8 (3, retail copies the pointer from `$v0` to `$a0` before the second store), func_003E2D90 (4, the pointer lives in `$v0`, not `$a0`). The permuter got none of them within 25 minutes each.
+The last three matched after comparing notes with [rac1-decomp](https://github.com/Lynder063/rac1-decomp/blob/main/docs/DECOMP_PROGRESS.md), which found that the access form, not the order of the `+`, decides `addu` operand order:
+
+- func_00395958: `D_0016C690.arr[i] = v` with `arr` at 0x34 of a struct (base-first `addu`, offset kept in the store).
+- func_003A7FC8: `s->a[i] = x; s->b[i] = y;` with two `f32[3]` arrays in one struct. That is what produces retail's `$v0` to `$a0` copy.
+- func_003E2D90: `func_003E16B8(&D_001DA9B8)`, passing the struct like its neighbours func_003E2DE0/func_003E2E60 do. func_003E16B8's definition became K&R (`void *func_003E16B8()`) so calls with an argument stay valid.
+
+The permuter got none of the three in 25 minutes each. Matching-Patterns has the new rules under "Codegen tricks that matter".

@@ -9487,7 +9487,31 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E17C0);
 
 LINKER_REMNANT("asm/remnants", func_003E1890);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1898);
+/* localdecomp:start func_003E1898 */
+typedef struct 
+{
+  u8 pad[0x14];
+  int index;
+} SubStruct;
+typedef struct 
+{
+  u8 pad;
+  SubStruct *sub;
+} MainStruct;
+s32 func_003E1898(MainStruct *p)
+{
+  SubStruct *sub = p->sub;
+  int *new_var;
+  if (sub != 0)
+  {
+    int *base_ptr = (int *) sub;
+    int element_offset = sub->index;
+    new_var = &base_ptr[element_offset];
+    return *new_var;
+  }
+  return 0;
+}
+/* localdecomp:end func_003E1898 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E18C0);
 

@@ -19,6 +19,7 @@ Thumbs.db
 scratch/
 *.premigrate
 *.pre_jtbl.bak
+asm/
 
 # decomp-permuter work dirs (tools/permuter_setup.py)
 /nonmatchings/

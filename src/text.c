@@ -2264,7 +2264,24 @@ void func_003958F0(void) {
 }
 /* localdecomp:end func_003958F0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00395958);
+/* localdecomp:start func_00395958 */
+extern s32 D_001D600C;
+typedef struct { u8 pad[0x34]; s32 arr[8]; } T_00395958;
+extern T_00395958 D_0016C690_00395958;
+typedef struct { s32 f0; s32 f4; } S_00395958;
+
+void func_00395958(S_00395958 *arg0, s32 arg1) {
+    if (arg1 != 0) {
+        if (arg0->f4 >= 0) {
+            D_0016C690_00395958.arr[arg0->f4] = arg0->f0;
+            if (arg0->f4 == D_001D600C) {
+                D_001D600C = arg0->f4 ^ 1;
+            }
+        }
+    }
+    arg0->f0 = -1;
+}
+/* localdecomp:end func_00395958 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003959A8);
 
@@ -5092,7 +5109,12 @@ void func_003A7F90(S_3A7F90 *p, s32 i, f32 a, f32 b, f32 c, f32 d, f32 e) {
 }
 /* localdecomp:end func_003A7F90 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A7FC8);
+/* localdecomp:start func_003A7FC8 */
+typedef struct { f32 a[3]; f32 b[3]; } V_7FC8;
+void func_003A7FC8(V_7FC8 *s, s32 i, f32 x, f32 y) {
+    s->a[i] = x; s->b[i] = y;
+}
+/* localdecomp:end func_003A7FC8 */
 
 /* localdecomp:start func_003A7FE0 */
 void func_003A7FE0(void *p, s32 value) {
@@ -9424,7 +9446,7 @@ typedef struct { u8 pad0[0x4]; u8 *f4; } S_001DA9B8_003E16B8;
 extern S_001DA9B8_003E16B8 D_001DA9B8_003E16B8[];
 extern u8 D_003177D0[];
 
-void *func_003E16B8(void) {
+void *func_003E16B8() {
     D_001DA9B8_003E16B8->f4 = D_003177D0;
     func_00388440_003E16B8(D_003177D0 + 0x18, 0, 8);
     func_00388440_003E16B8(D_001DA9B8_003E16B8->f4, 0, 0x14);
@@ -9775,7 +9797,18 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E2C88);
 
 LINKER_REMNANT("asm/remnants", func_003E2D70);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E2D90);
+/* localdecomp:start func_003E2D90 */
+typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; } S_3E2D90;
+extern S_3E2D90 D_001DA9B8_003E2D90;
+extern void *func_003E16B8();
+extern void func_003E18C0();
+void func_003E2D90(s32 a) {
+    S_3E2D90 *q;
+    if (D_001DA9B8_003E2D90.x4) q = &D_001DA9B8_003E2D90;
+    else q = func_003E16B8(&D_001DA9B8_003E2D90);
+    func_003E18C0(q, a);
+}
+/* localdecomp:end func_003E2D90 */
 
 LINKER_REMNANT("asm/remnants", func_003E2DD8);
 

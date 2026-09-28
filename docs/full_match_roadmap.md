@@ -174,3 +174,13 @@ The last three matched after comparing notes with [rac1-decomp](https://github.c
 - func_003E2D90: `func_003E16B8(&D_001DA9B8)`, passing the struct like its neighbours func_003E2DE0/func_003E2E60 do. func_003E16B8's definition became K&R (`void *func_003E16B8()`) so calls with an argument stay valid.
 
 The permuter got none of the three in 25 minutes each. Matching-Patterns has the new rules under "Codegen tricks that matter".
+
+## Update 2026-09-28: `nop`s before `div.s`/`sqrt.s` (in progress)
+
+70 of the 666 unmatched functions contain `div.s` or `sqrt.s`. Across all of frontbin, retail pads them with 2 `nop`s (123 cases), 1 (16), 3 (2) or none (57).
+
+- **The padding comes from the compiler, not the assembler.** Sony's ee-gcc 2.9-991111-01 (and -dtls13010), 2.96-ee-001003-1 and both 3.2 builds have a cc1 option `-mhandle-ee-div-pipeline-bug`, on by default. The `divsf3`/`sqrtsf3` templates then become `%(nop; nop; div.s%)`. SN 2.95.3 v1.36 (our compiler), Sony 2.95.3-114/-136, 2.95.2-273a, 2.9-991111 and 2.9-990721 don't have the option and never pad.
+- **Those compilers always emit 2 `nop`s; retail doesn't.** Retail's compiler must have had a conditional version of this workaround. None of the 15 builds we have reproduces it.
+- **Assemblers ruled out.** No GNU as build (any `-mcpu`/`-mips`) pads `div.s`. Ps2EeAs has an EE "divbug" padding rule ("DIV related opcode too near branch instruction / possible branch destination"), but it applies to integer `div` only.
+- **Best static rule so far (144 of 190 retail cases):** 2 `nop`s, unless the instruction just before writes one of the `div.s` operands (the pipeline stalls anyway) or the `div.s` directly follows a call's delay slot. Position in the basic block, distance to branches or labels, and alignment don't explain the rest.
+- **Next step:** implement the rule in `tools/asm_filter.py` (it already runs between gcc and the assembler), plus a per-function table listing retail's exact `nop` counts for the cases the rule misses, like `TEXT_PADDING`. That unblocks the 70 functions without inline asm, and the table shrinks as the rule improves.

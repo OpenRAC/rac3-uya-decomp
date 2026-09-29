@@ -19,6 +19,12 @@ jobs:
         run: |
           Copy-Item "C:\decomp-refs\frontbin.elf" -Destination "frontbin.elf" -Force
 
+      - name: Copy retail-derived asm
+        shell: pwsh
+        run: |
+          Copy-Item "C:\decomp-refs\asm" -Destination "asm" -Recurse -Force
+          if (-not (Test-Path "asm\header.s")) { throw "asm\header.s missing after copy" }
+
       # `make objdiff` runs the full build + MATCH check first, then produces
       # build/objdiff/target/text.o and build/objdiff/base/text.o.
       - name: Build frontbin and objdiff inputs
@@ -37,10 +43,6 @@ jobs:
           name: build_log
           path: build_log.txt
 
-      # Level target objects are generated from retail overlays by
-      # tools/gen_level_targets.py (copyrighted, so they live on the runner,
-      # not in git). frontbin_data.o is frontbin's retail data sections, made by
-      # `gen_level_targets.py --data-only`. objdiff.json expects both under build/objdiff/target.
       - name: Copy level and data target objects
         shell: pwsh
         run: |

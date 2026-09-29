@@ -6,7 +6,7 @@ This repo contains no game code or assets. To build it you need your own copy of
 
 ## Status
 
-About 690 of 1,846 functions in `.text` are C. The rest are still included as assembly. `python tools/pr_check.py` prints the current count.
+1202 of 1,867 functions (64.4%) in `.text` are fully matched for frontbin.elf. `python tools/pr_check.py` prints the current count. 833 functions are matched fully in C with the rest matched being confirmed handwritten assembly as no compiler or flags generate the matching assembly.
 
 ## Quick start (Windows)
 

@@ -1291,13 +1291,23 @@ def run_full_check(project):
 
     # 1. retail reference objects (copyrighted, live outside git, same as CI)
     try:
-        lv = root / "build" / "objdiff" / "target" / "levels"
+        # same layout as CI (.github/workflows/build-and-report.yml): the split level
+        # objects (common code/data, per-level code and data; made by
+        # tools/split_shared_levels.py) and the other executables (tools/gen_exe_targets.py)
+        tgt = root / "build" / "objdiff" / "target"
+        lv = tgt / "levels"
+        ex = tgt / "exes"
         lv.mkdir(parents=True, exist_ok=True)
+        ex.mkdir(parents=True, exist_ok=True)
         n = 0
-        for f in (refs / "level-targets").glob("*.o"):
+        for f in (refs / "level-targets-split").glob("*.o"):
             shutil.copy2(f, lv / f.name); n += 1
-        shutil.copy2(refs / "frontbin_data.o", root / "build" / "objdiff" / "target" / "frontbin_data.o")
-        if not step("copy reference objects", n == 51, f"{n} level objects + frontbin_data.o from {refs}"):
+        m = 0
+        for f in (refs / "exe-targets").glob("*.o"):
+            shutil.copy2(f, ex / f.name); m += 1
+        shutil.copy2(refs / "frontbin_data.o", tgt / "frontbin_data.o")
+        if not step("copy reference objects", n == 105 and m == 8,
+                    f"{n} level objects (expected 105) + {m} executable objects (expected 8) + frontbin_data.o from {refs}"):
             return result
     except Exception as e:
         step("copy reference objects", False, str(e)); return result
@@ -1519,7 +1529,7 @@ def main():
         "(on by default; auto-disables anyway if --project isn't a git repo)",
     )
     ap.add_argument("--refs", default=DEFAULT_REFS_DIR,
-                    help="folder holding level-targets\\*.o and frontbin_data.o (same as CI)")
+                    help="folder holding level-targets-split\\*.o, exe-targets\\*.o and frontbin_data.o (same as CI)")
     ap.add_argument("--objdiff-cli", default=DEFAULT_OBJDIFF_CLI, help="objdiff-cli executable")
     args = ap.parse_args()
 

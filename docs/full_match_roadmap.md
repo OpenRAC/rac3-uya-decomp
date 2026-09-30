@@ -184,3 +184,9 @@ The permuter got none of the three in 25 minutes each. Matching-Patterns has the
 - **Assemblers ruled out.** No GNU as build (any `-mcpu`/`-mips`) pads `div.s`. Ps2EeAs has an EE "divbug" padding rule ("DIV related opcode too near branch instruction / possible branch destination"), but it applies to integer `div` only.
 - **Best static rule so far (144 of 190 retail cases):** 2 `nop`s, unless the instruction just before writes one of the `div.s` operands (the pipeline stalls anyway) or the `div.s` directly follows a call's delay slot. Position in the basic block, distance to branches or labels, and alignment don't explain the rest.
 - **Next step:** implement the rule in `tools/asm_filter.py` (it already runs between gcc and the assembler), plus a per-function table listing retail's exact `nop` counts for the cases the rule misses, like `TEXT_PADDING`. That unblocks the 70 functions without inline asm, and the table shrinks as the rule improves.
+
+## Update 2026-09-30: the three open problems
+
+- **`lwc1 ($gp)` then `nop`: hand-written.** Retail has the same load-jump-use shape unpadded 19 times elsewhere; no compiler or assembler emits the `nop`. `func_003882D0`, `func_00388308`, `func_00388340`, `func_00388378` and `func_00388388` are now `ASM_FUNC` (149 hand-written functions).
+- **`div.s`/`sqrt.s` `nop`s: not a C problem; needs the asm_filter emulation.** All 207 retail cases measured (131 with 2 `nop`s, 58 with none, 16 with one). Ps2EeAs pads by itself but matches retail's count in about 26% of cases, and both assemblers delete an explicit `nop` in reorder mode, so the padding has to be emitted as a raw `.word` from a per-function table.
+- **Register allocation (`func_0039BEC0`): C-solvable in principle.** `tools/regalloc.py` shows gcc's priority order; two C changes reproduce retail's registers exactly (see Matching-Patterns), leaving a branch-shape difference (score 210).

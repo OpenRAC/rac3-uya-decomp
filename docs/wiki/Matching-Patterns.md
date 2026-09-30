@@ -176,6 +176,16 @@ When the instructions are right but their order or registers aren't:
 
 Stop after a handful of attempts on the same register difference. Leave it as a partial and move on: breadth gets more done.
 
+## Register allocation near misses
+
+When every instruction is right but a variable sits in another register, `python tools/regalloc.py scratch/func_X.c` prints gcc's global allocation order: for each variable its reference count, live length, priority (about `refs * log2(refs) / live`) and the register it got. gcc allocates in decreasing priority, and a variable takes the first register not used by anything live at the same time that was already allocated; a parameter prefers its incoming register but loses it to a higher-priority local that overlaps it. So to move a parameter, change what outranks it or what overlaps it:
+
+- Give the competing local a shorter live range (compute it later, or inline it into its single use), or one more or fewer use.
+- Declare a temporary in a different block, or turn an `if` that sets it into a conditional expression: both change the live length and reference count the priority uses.
+- Declaration order of locals only matters as a tie-break when priorities are equal.
+
+Change the C, re-run the tool, and compare the `->` registers with retail before spending a build on it.
+
 ## Families
 
 Many functions are near-copies. Once one is matched, the rest usually go fast:
@@ -190,9 +200,9 @@ If you find a family, say so in your PR. It helps the next person.
 
 Leave these for now, or open an issue if you crack one:
 
-- `lwc1 $fN, off($gp)` followed by `nop` before the use (e.g. `func_003882D0`, which reads the main executable's literal pool). No flag or assembler reproduces the `nop` yet. Current matches use a `$gp` register hack plus `__asm__("nop")`.
+- **Resolved (hand-written): `lwc1 $fN, off($gp)` followed by `nop`** (`func_003882D0`, `func_00388308`, `func_00388340`, `func_00388378`, `func_00388388`). Not a C problem. Retail has the same load-then-jump-then-use shape unpadded 19 other times, so the `nop` is not something a compiler or assembler adds: SN gcc's `-S` output has none, and neither GNU `as` (any `-mips`/`-mcpu`) nor Ps2EeAs inserts one. The five sit in the hand-written math range (0x3882D0 to 0x388388) between functions already classified as hand-written, so they are `ASM_FUNC` now instead of C plus an `__asm__("nop")` hack.
 - **Resolved:** 64-bit constant synthesis `li 0x8000; dsll 24` (`func_00383B08`): pass the constant as an `unsigned long` literal with `@ps2as`.
-- `div.s` with double-`nop` padding (`func_003E1D18`). Lead: Ps2EeAs has built-in DIV padding ("DIV related opcode too near branch instruction - Added padding NOP/s"), so try `@ps2as`.
-- Register allocation where retail keeps an argument in a temporary (`move $t3, $a0` at entry) while `$a0` holds a constant, e.g. `func_0039BEC0`. All its memory accesses match with `@ps2as`; only the registers differ.
+- `div.s`/`sqrt.s` `nop` padding (`func_003E1D18` and 69 other functions). Measured over all 207 retail cases: 131 have 2 `nop`s, 58 none, 16 one, 2 three (those two are a branch-delay `nop` plus 2). The padding is not a C problem and no rule found so far predicts it: not the preceding instruction, operand latency, alignment or branch position. Ps2EeAs *does* pad `div.s` by itself (correcting the earlier note), but its rule matches retail's count in only about 26% of the cases, so the retail build did not use this version. Both GNU `as` and Ps2EeAs delete explicit `nop`s in reorder mode, so any emulation has to emit the padding as a raw `.word` the assembler cannot remove (like `tools/asm_filter.py` does for short loops), driven by a per-function table.
+- **Register allocation where retail keeps an argument in a temporary (`move $t3, $a0` at entry) while `$a0` holds something else** (`func_0039BEC0`): solvable in C, mostly. The cause is gcc's priority order (see `tools/regalloc.py`): a block-local temporary outranks the parameter and overlaps it, so the parameter is pushed out of its incoming register. Two changes reproduce retail's exact allocation for `func_0039BEC0` (`screenId` `$t3`, the `-2` constant `$a0`, `result` `$t2`, `flag` `$t1`): declare `D_001A7430` unsized (`extern s32 D_001A7430[];`, read as `D_001A7430[0]`), because retail reaches it with a compiler `lui`, and write the flag as `s32 flag = (screenId >= 0) ? D_001D5B78[screenId] : 0;`. That takes the diff from 1,680 to 210; what is left is the branch shape (which instruction lands in the `bltz` delay slot). The forms that get the registers right change the branch layout, and the forms that get the layout right change the registers, so this function is logged for decomp-permuter.
 - **Resolved: "a match in isolation can still differ in the full build".** `func_003AEDC8` and `func_003AED08` passed `try_func.py` but failed the full build with two `$gp` stores swapped. The cause was the tool, not the build: it masked every relocated field, and two stores through `$gp` differ only in their relocated offsets, so the wrong order looked identical. `try_func.py` now fills relocations in with the symbols' real addresses and compares them in full (checked against all 617 previously matched blocks: no false failures). The `#define D_001D5B34 ...` hack macros above some functions still replace a later `extern` of the same name; `#undef` it in your block (see `func_00389908`).
 - About 20 matched functions use inline `__asm__` or a hand-rolled `$gp` register. They count, but plain-C rewrites of them are welcome.

@@ -246,6 +246,26 @@
     {
       "id": "level_55",
       "name": "Level 55: Blackwater City (Splitscreen)"
+    },
+    {
+      "id": "executables",
+      "name": "Other executables"
+    },
+    {
+      "id": "boot_elf",
+      "name": "Boot ELF (core engine)"
+    },
+    {
+      "id": "i5bootn",
+      "name": "Bootstrap (i5bootn)"
+    },
+    {
+      "id": "ntgui",
+      "name": "Network GUI (ntgui)"
+    },
+    {
+      "id": "sly2",
+      "name": "Sly 2 (sly2.elf)"
     }
   ],
   "units": [
@@ -1407,6 +1427,86 @@
         "progress_categories": [
           "level_data",
           "multiplayer"
+        ]
+      }
+    },
+    {
+      "name": "exes/boot_elf",
+      "target_path": "build/objdiff/target/exes/boot_elf.o",
+      "metadata": {
+        "progress_categories": [
+          "executables",
+          "boot_elf"
+        ]
+      }
+    },
+    {
+      "name": "exes/boot_elf (data)",
+      "target_path": "build/objdiff/target/exes/boot_elf_data.o",
+      "metadata": {
+        "progress_categories": [
+          "executables",
+          "boot_elf"
+        ]
+      }
+    },
+    {
+      "name": "exes/i5bootn",
+      "target_path": "build/objdiff/target/exes/i5bootn.o",
+      "metadata": {
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "exes/i5bootn (data)",
+      "target_path": "build/objdiff/target/exes/i5bootn_data.o",
+      "metadata": {
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "exes/ntgui",
+      "target_path": "build/objdiff/target/exes/ntgui.o",
+      "metadata": {
+        "progress_categories": [
+          "executables",
+          "ntgui"
+        ]
+      }
+    },
+    {
+      "name": "exes/ntgui (data)",
+      "target_path": "build/objdiff/target/exes/ntgui_data.o",
+      "metadata": {
+        "progress_categories": [
+          "executables",
+          "ntgui"
+        ]
+      }
+    },
+    {
+      "name": "exes/sly2",
+      "target_path": "build/objdiff/target/exes/sly2.o",
+      "metadata": {
+        "progress_categories": [
+          "executables",
+          "sly2"
+        ]
+      }
+    },
+    {
+      "name": "exes/sly2 (data)",
+      "target_path": "build/objdiff/target/exes/sly2_data.o",
+      "metadata": {
+        "progress_categories": [
+          "executables",
+          "sly2"
         ]
       }
     }

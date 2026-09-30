@@ -787,56 +787,21 @@ void func_00388278(void) {
 }
 /* localdecomp:end func_00388278 */
 
-/* localdecomp:start func_003882D0 */
-extern f32 D_001D5308;
-f32 func_003882D0(f32 x) {
-    f32 val = D_001D5308;
-    __asm__ volatile("nop");  /* retail has a nop between the load and its use; no flag reproduces it */
-    return val * x;
-}
-/* localdecomp:end func_003882D0 */
+ASM_FUNC("asm/handwritten", func_003882D0);
 
 ASM_FUNC("asm/handwritten", func_003882E0);
 
-/* localdecomp:start func_00388308 */
-extern f32 D_001D530C;
-f32 func_00388308(f32 x) {
-    f32 val = D_001D530C;
-    __asm__ volatile("nop");  /* retail has a nop between the load and its use; no flag reproduces it */
-    return val * x;
-}
-/* localdecomp:end func_00388308 */
+ASM_FUNC("asm/handwritten", func_00388308);
 
 ASM_FUNC("asm/handwritten", func_00388318);
 
-/* localdecomp:start func_00388340 */
-extern f32 D_001D5310;
-f32 func_00388340(f32 x) {
-    f32 val = D_001D5310;
-    __asm__ volatile("nop");  /* retail has a nop between the load and its use; no flag reproduces it */
-    return val * x;
-}
-/* localdecomp:end func_00388340 */
+ASM_FUNC("asm/handwritten", func_00388340);
 
 ASM_FUNC("asm/handwritten", func_00388350);
 
-/* localdecomp:start func_00388378 */
-extern f32 D_001D5314;
-f32 func_00388378(f32 x) {
-    f32 val = D_001D5314;
-    __asm__ volatile("nop");  /* retail has a nop between the load and its use; no flag reproduces it */
-    return val * x;
-}
-/* localdecomp:end func_00388378 */
+ASM_FUNC("asm/handwritten", func_00388378);
 
-/* localdecomp:start func_00388388 */
-extern f32 D_001D5318;
-f32 func_00388388(f32 x) {
-    f32 val = D_001D5318;
-    __asm__ volatile("nop");  /* retail has a nop between the load and its use; no flag reproduces it */
-    return val * x;
-}
-/* localdecomp:end func_00388388 */
+ASM_FUNC("asm/handwritten", func_00388388);
 
 ASM_FUNC("asm/handwritten", func_00388398);
 

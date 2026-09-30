@@ -86,6 +86,17 @@ python3 ../decomp-permuter/permuter.py nonmatchings/func_0037DF98 -j4 --stop-on-
 
 It writes `nonmatchings/<func>/` (gitignored), with the function's real flags, the `text.c` context and the retail target. `--mode S|N` and `--as ps2as` override the address mode or assembler. The permuter runs on Linux or WSL only. Full instructions: `docs/permuter.md`.
 
+### regalloc.py
+
+Shows how gcc's global register allocator treats a C snippet: for each variable its reference count, live length, priority and assigned register, in allocation order. Use it for register-allocation near misses, where every instruction is right but a variable ends up in another register (for example an argument kept in `$t3` while `$a0` holds something else). See [Matching patterns](Matching-Patterns#register-allocation-near-misses).
+
+```
+python tools/regalloc.py scratch/func_0039BEC0.c
+python tools/regalloc.py scratch/f.c --flags "-O2 -G8 -mno-split-addresses"
+```
+
+It compiles with `-dlg` and does not run the assembler, so it does not model which globals use `$gp` (the allocation itself is unaffected).
+
 ### gen_asm_func.py
 
 Drafts an inline-asm C function from retail assembly, for leaf functions that were inline asm in the original (VU0 vector math, 128-bit MMI code). It decodes the raw `.word` lines back into `lqc2`/`sqc2`/`lq`/`sq` and reuses the function's existing prototype.

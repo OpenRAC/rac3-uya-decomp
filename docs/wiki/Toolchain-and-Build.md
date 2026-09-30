@@ -98,3 +98,13 @@ python tools/split_shared_levels.py C:\decomp-refs\level-targets C:\decomp-refs\
 ```
 
 The second step writes 105 objects (`common.o`, `common_data.o`, `uninitialised.o`, 51 code objects, 51 data objects) and rewrites the level units and categories in `objdiff.json`. Only the script and `objdiff.json` are committed. The tool refuses to write into the repo (other than `build/`). Re-run it if the overlays are regenerated or a level starts being decompiled.
+
+## Other executables
+
+`boot_elf.elf`, `i5bootn.elf`, `ntgui.elf` and `sly2.elf` (from the unpacked disc) are also counted. They have no symbols, so `tools/gen_exe_targets.py` finds functions the way the level generator does (every `jal` target, then splat), but builds each object straight from the ELF bytes, so the code is retail by construction. It writes `<name>.o` (code sections) and `<name>_data.o` (other allocated sections with bytes: `.data`, `.rodata`, `.lit`, `.irx`, VU microcode) to `C:\decomp-refs\exe-targets\`, and with `--objdiff objdiff.json` adds their units and categories (one per executable, all under "Other executables"):
+
+```
+python tools/gen_exe_targets.py "<game_dir>" C:\decomp-refs\exe-targets --objdiff objdiff.json
+```
+
+About 3.0 MB of code in 15,146 functions and 6.6 MB of data. The objects have no relocations and are never committed. `.bss` and `.sbss` are left out (nothing to decompile). The main executable `SCUS_973.53` is not among these files and isn't counted yet.

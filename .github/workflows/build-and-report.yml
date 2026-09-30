@@ -52,6 +52,14 @@ jobs:
           $n = (Get-ChildItem "build\objdiff\target\levels\*.o").Count
           if ($n -ne 105) { throw "expected 105 level objects (51 code, 51 data, common, common data, zero-fill), found $n" }
 
+      - name: Copy executable target objects
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "build\objdiff\target\exes" | Out-Null
+          Copy-Item "C:\decomp-refs\exe-targets\*.o" -Destination "build\objdiff\target\exes\" -Force
+          $n = (Get-ChildItem "build\objdiff\target\exes\*.o").Count
+          if ($n -ne 8) { throw "expected 8 executable objects (4 code, 4 data), found $n" }
+
       - name: Generate progress report
         shell: pwsh
         run: |

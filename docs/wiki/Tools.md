@@ -263,6 +263,10 @@ Normalizes `undefined_funcs_auto.txt` and `undefined_syms_auto.txt`, so both sym
 
 Generates the objdiff *target* objects for the level overlays, so decomp.dev can count their functions (at 0% until someone decompiles a level). They come from retail files, so they are never committed. CI keeps them in `C:\decomp-refs\level-targets\`.
 
+### gen_exe_targets.py
+
+Builds objdiff target objects for `boot_elf.elf`, `i5bootn.elf`, `ntgui.elf` and `sly2.elf`, which have no symbols. Functions are found with splat; the code bytes are copied straight from the ELF. Output goes to `C:\decomp-refs\exe-targets\` (never the repo); `--objdiff objdiff.json` rewrites their units. See [Toolchain and build](Toolchain-and-Build#other-executables).
+
 ### split_shared_levels.py
 
 Turns those objects into common and level-specific code and data, so shared content is counted once. It writes `common.o`, `common_data.o`, `uninitialised.o` (`.bss` and zero words), one code object per level (shared functions demoted, data emptied) and one `_data.o` per level, and with `--objdiff objdiff.json` rewrites the level units and categories. See [Toolchain and build](Toolchain-and-Build#level-overlays). Output goes to `C:\decomp-refs\level-targets-split\`, never into the repo.

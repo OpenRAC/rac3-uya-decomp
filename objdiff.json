@@ -36,8 +36,12 @@
       "name": "Level-specific code"
     },
     {
+      "id": "common_level_data",
+      "name": "Common level data"
+    },
+    {
       "id": "level_data",
-      "name": "Level data (not deduplicated)"
+      "name": "Level-specific data"
     },
     {
       "id": "level_01",
@@ -272,6 +276,15 @@
         "progress_categories": [
           "levels",
           "common_level_code"
+        ]
+      }
+    },
+    {
+      "name": "levels/common data",
+      "target_path": "build/objdiff/target/levels/common_data.o",
+      "metadata": {
+        "progress_categories": [
+          "common_level_data"
         ]
       }
     },

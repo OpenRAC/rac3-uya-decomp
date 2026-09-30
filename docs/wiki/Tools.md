@@ -265,7 +265,7 @@ Generates the objdiff *target* objects for the level overlays, so decomp.dev can
 
 ### split_shared_levels.py
 
-Turns those objects into common code, level-specific code and level data, so shared functions are counted once. It writes `common.o`, one code object per level (shared functions demoted, data emptied) and one `_data.o` per level, and with `--objdiff objdiff.json` rewrites the level units and categories. See [Toolchain and build](Toolchain-and-Build#level-overlays). Output goes to `C:\decomp-refs\level-targets-split\`, never into the repo.
+Turns those objects into common and level-specific code and data, so shared content is counted once. It writes `common.o`, `common_data.o`, `uninitialised.o` (`.bss` and zero words), one code object per level (shared functions demoted, data emptied) and one `_data.o` per level, and with `--objdiff objdiff.json` rewrites the level units and categories. See [Toolchain and build](Toolchain-and-Build#level-overlays). Output goes to `C:\decomp-refs\level-targets-split\`, never into the repo.
 
 ---
 

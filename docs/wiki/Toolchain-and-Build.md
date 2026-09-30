@@ -83,9 +83,12 @@ About 95% of the code in the 51 overlays is shared: the same function appears, a
 | Common level code | `levels/common` | every function that appears in two or more overlays, once (about 4.3 MB, 7,779 functions) |
 | Level-specific code | one unit per level | functions found in only one overlay (about 5.1 MB) |
 | Level N: Name | the level's code unit | that level's specific code |
-| Level data (not deduplicated) | one `(data)` unit per level | `.data`, `.lit`, `.bss` and `lvl.*` (about 69 MB, mostly zero-filled `.bss`) |
+| Common level data | `levels/common data` | `.data`/`.lit` content found in two or more overlays, once (about 0.26 MB) |
+| Level-specific data | one `(data)` unit per level | the rest of each level's non-zero data, plus its `lvl.*` vtables (about 0.49 MB) |
 
-"Same function" means the same bytes once `j`/`jal` targets are masked. Data is kept out of the code numbers because it has no per-function structure to deduplicate.
+"Same function" means the same bytes once `j`/`jal` targets are masked. Data has no function boundaries, so it is matched by content: a 16-word window (at least 8 words non-zero) that occurs in two or more overlays is shared, with address-like words treated as wildcards because shared data holds pointers that move. This is meant for progress numbers. Its run boundaries are approximate, so it isn't a guide to where data sits in a real level build.
+
+`.bss` (52.7 MB over all levels) and zero words inside `.data`/`.lit` (8.0 MB) have nothing to decompile, only a size. They are written to `uninitialised.o` but left out of `objdiff.json` so they don't swamp the data total. Pass `--include-zero-fill` to list them as a "Zero-filled data" category.
 
 The pipeline runs outside the repo, in two steps:
 
@@ -94,4 +97,4 @@ python3 tools/gen_level_targets.py <levels_dir> C:\decomp-refs\level-targets
 python tools/split_shared_levels.py C:\decomp-refs\level-targets C:\decomp-refs\level-targets-split --objdiff objdiff.json
 ```
 
-The second step writes 103 objects (`common.o`, 51 code objects, 51 data objects) and rewrites the level units and categories in `objdiff.json`. Only the script and `objdiff.json` are committed. The tool refuses to write into the repo (other than `build/`). Re-run it if the overlays are regenerated or a level starts being decompiled.
+The second step writes 105 objects (`common.o`, `common_data.o`, `uninitialised.o`, 51 code objects, 51 data objects) and rewrites the level units and categories in `objdiff.json`. Only the script and `objdiff.json` are committed. The tool refuses to write into the repo (other than `build/`). Re-run it if the overlays are regenerated or a level starts being decompiled.

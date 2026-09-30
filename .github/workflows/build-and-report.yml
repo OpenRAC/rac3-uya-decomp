@@ -50,7 +50,7 @@ jobs:
           Copy-Item "C:\decomp-refs\level-targets-split\*.o" -Destination "build\objdiff\target\levels\" -Force
           Copy-Item "C:\decomp-refs\frontbin_data.o" -Destination "build\objdiff\target\frontbin_data.o" -Force
           $n = (Get-ChildItem "build\objdiff\target\levels\*.o").Count
-          if ($n -ne 103) { throw "expected 103 level objects (51 code, 51 data, common), found $n" }
+          if ($n -ne 105) { throw "expected 105 level objects (51 code, 51 data, common, common data, zero-fill), found $n" }
 
       - name: Generate progress report
         shell: pwsh

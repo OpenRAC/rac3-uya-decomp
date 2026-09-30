@@ -14,7 +14,18 @@ committed. Output goes to <out_dir>, which must be outside the repo:
                    plain symbols (size 0, NOTYPE) and its data sections
                    emptied, so objdiff counts only the level-specific code.
                    Relocations, symbols and .text are otherwise untouched.
-  <N>_<name>_data.o the level's .data/.lit/.bss/lvl.* sections, on their own
+  <N>_<name>_data.o the level's own (non-zero, not shared) .data/.lit content
+                   plus its lvl.* vtables, compacted
+  common_data.o    .data/.lit content found in two or more overlays, once
+  uninitialised.o  .bss and zero words of .data/.lit of every level, as two
+                   zero-fill sections: nothing to decompile, only a size. Not
+                   listed in objdiff.json unless --include-zero-fill.
+
+Data has no function boundaries, so it is deduplicated by content: a 16-word
+window (at least 8 words non-zero) that occurs in two or more overlays is shared.
+Words that look like addresses are wildcards, because shared data holds pointers
+that move with the overlay. Words at the edges of shared runs are approximate.
+This is meant for progress numbers, not as a guide to where data sits in a build.
 
 Two functions are "the same" when their bytes match once every j/jal target is
 masked (shared code sits at different addresses in each overlay). Only the
@@ -30,6 +41,7 @@ Usage:
 Needs pyelftools.
 """
 import argparse, glob, hashlib, json, os, re, struct, sys
+import numpy as np
 from elftools.elf.elffile import ELFFile
 
 SHF_WRITE, SHF_ALLOC, SHF_EXEC = 1, 2, 4
@@ -163,31 +175,138 @@ def write_level_code(lv, shared, out):
     return dropped
 
 
-def write_level_data(lv, out):
+WIN, MIN_NZ = 16, 8
+ADDR_MASK = 0xFFFFFFFF
+
+
+def word_hashes(words):
+    """Per-word hash with address-like words (0x100000..0x2000000, aligned) wildcarded."""
+    m = words.copy()
+    m[(words >= 0x00100000) & (words < 0x02000000) & ((words & 3) == 0)] = ADDR_MASK
+    h = (m.astype(np.uint64) + np.uint64(1)) * np.uint64(0x9E3779B97F4A7C15)
+    h ^= h >> np.uint64(32)
+    return h * np.uint64(0xC2B2AE3D27D4EB4F)
+
+
+def window_hashes(wh, nonzero):
+    """Hash of every WIN-word window, plus a mask of windows with enough non-zero words."""
+    n = len(wh) - WIN + 1
+    if n <= 0:
+        return np.zeros(0, np.uint64), np.zeros(0, bool)
+    h = np.zeros(n, np.uint64)
+    mult = np.uint64(1)
+    for k in range(WIN):
+        h += wh[k:k + n] * mult
+        mult = np.uint64((int(mult) * 0x100000001B3) & 0xFFFFFFFFFFFFFFFF)
+    cs = np.concatenate(([0], np.cumsum(nonzero, dtype=np.int64)))
+    return h, (cs[WIN:] - cs[:-WIN]) >= MIN_NZ
+
+
+def cover(n, starts):
+    """Mask of words covered by WIN-word windows starting at `starts`."""
+    d = np.zeros(n + 1, np.int32)
+    np.add.at(d, starts, 1)
+    np.add.at(d, starts + WIN, -1)
+    return np.cumsum(d[:n]) > 0
+
+
+def split_data(levels):
+    """-> (per-level {section: bytes}, common {section: bytes}, zero bytes per level, stats)."""
+    own = [{} for _ in levels]
+    common = {}
+    zero = [0] * len(levels)
+    stats = {"zero": 0, "specific": 0, "common": 0, "nonzero": 0}
+    for name in (".data", ".lit"):
+        arrs, nzs, hs, oks, lvl = [], [], [], [], []
+        for li, lv in enumerate(levels):
+            blob = next((d[6] for d in lv.data if d[1] == name), b"")
+            a = np.frombuffer(blob[:len(blob) // 4 * 4], dtype="<u4")
+            arrs.append(a)
+            nz = a != 0
+            nzs.append(nz)
+            h, ok = window_hashes(word_hashes(a), nz)
+            hs.append(h)
+            oks.append(ok)
+            lvl.append(np.full(len(h), li, np.int32))
+        H = np.concatenate([h[o] for h, o in zip(hs, oks)])
+        L = np.concatenate([l[o] for l, o in zip(lvl, oks)]).astype(np.uint64)
+        pairs = np.unique(np.stack([H, L], 1), axis=0)          # distinct (window, level), sorted
+        uh, first, cnt = np.unique(pairs[:, 0], return_index=True, return_counts=True)
+        first_level = pairs[first, 1]
+        for li, lv in enumerate(levels):
+            a, nz, h, ok = arrs[li], nzs[li], hs[li], oks[li]
+            starts = np.nonzero(ok)[0]
+            pos = np.searchsorted(uh, h[starts])
+            shared_w = cnt[pos] >= 2
+            new_w = shared_w & (first_level[pos] == li)
+            shared = cover(len(a), starts[shared_w]) & nz
+            new = cover(len(a), starts[new_w]) & nz
+            uniq = nz & ~shared
+            out_c = a[new & shared]
+            common.setdefault(name, []).append(out_c.tobytes())
+            own[li][name] = a[uniq].tobytes()
+            zero[li] += int((~nz).sum()) * 4
+            stats["zero"] += int((~nz).sum()) * 4
+            stats["nonzero"] += int(nz.sum()) * 4
+            stats["specific"] += int(uniq.sum()) * 4
+            stats["common"] += len(out_c) * 4
+    return own, {k: b"".join(v) for k, v in common.items()}, zero, stats
+
+
+def write_level_data(lv, own, out):
     secs, syms = [], []
-    for k, (_, name, nobits, flags, align, size, blob) in enumerate(lv.data, 1):
-        secs.append((name, SHT_NOBITS if nobits else SHT_PROGBITS, flags, align, None if nobits else blob, size))
-        syms.append((name, 0, 0, 0x03, k))               # STT_SECTION
+    for name in (".data", ".lit"):
+        blob = own.get(name, b"")
+        if blob:
+            secs.append((name, SHT_PROGBITS, SHF_ALLOC | SHF_WRITE, 16, blob, len(blob)))
+    for _, name, nobits, flags, align, size, blob in lv.data:
+        if name.startswith("lvl."):
+            secs.append((name, SHT_PROGBITS, flags, align, blob, size))
+    for k, sec in enumerate(secs, 1):
+        syms.append((sec[0], 0, 0, 0x03, k))                 # STT_SECTION
     p = os.path.join(out, os.path.basename(lv.path)[:-2] + "_data.o")
     open(p, "wb").write(build_elf(lv.ehdr, secs, syms))
-    return sum(d[5] for d in lv.data)
+    return sum(sec[5] for sec in secs)
 
 
-def update_objdiff(path, levels):
+def write_common_data(ehdr, common, out):
+    secs = [(n, SHT_PROGBITS, SHF_ALLOC | SHF_WRITE, 16, b, len(b)) for n, b in common.items() if b]
+    syms = [(sec[0], 0, 0, 0x03, k) for k, sec in enumerate(secs, 1)]
+    open(os.path.join(out, "common_data.o"), "wb").write(build_elf(ehdr, secs, syms))
+
+
+def write_uninitialised(ehdr, bss, zero_words, out):
+    flags = SHF_ALLOC | SHF_WRITE
+    secs = [(".bss", SHT_NOBITS, flags, 16, None, bss), (".data_zero", SHT_NOBITS, flags, 16, None, zero_words)]
+    syms = [(sec[0], 0, 0, 0x03, k) for k, sec in enumerate(secs, 1)]
+    open(os.path.join(out, "uninitialised.o"), "wb").write(build_elf(ehdr, secs, syms))
+
+
+def update_objdiff(path, levels, zero_fill=False):
     """Rewrite level units and categories in objdiff.json (frontbin units untouched)."""
     d = json.load(open(path))
     keep = [u for u in d["units"] if not u["name"].startswith("levels/")]
-    old = {level_no(u["target_path"]): u for u in d["units"] if u["name"].startswith("levels/") and "target_path" in u}
+    # only the per-level code units (safe to re-run: skips common/_data/zero-fill units)
+    old = {level_no(u["target_path"]): u for u in d["units"]
+           if u["name"].startswith("levels/") and re.match(r"\d+_.*(?<!_data)\.o$", os.path.basename(u.get("target_path", "")))}
     cats = [c for c in d.get("progress_categories", [])
             if c["id"] in ("frontend", "singleplayer", "multiplayer")]
     cats += [{"id": "levels", "name": "Level code"},
              {"id": "common_level_code", "name": "Common level code"},
              {"id": "level_specific", "name": "Level-specific code"},
-             {"id": "level_data", "name": "Level data (not deduplicated)"}]
+             {"id": "common_level_data", "name": "Common level data"},
+             {"id": "level_data", "name": "Level-specific data"}]
+    if zero_fill:
+        cats.append({"id": "zero_fill", "name": "Zero-filled data (.bss, zeroed .data)"})
     units = []
     tdir = "build/objdiff/target/levels/"
     units.append({"name": "levels/common", "target_path": tdir + "common.o",
                   "metadata": {"progress_categories": ["levels", "common_level_code"]}})
+    units.append({"name": "levels/common data", "target_path": tdir + "common_data.o",
+                  "metadata": {"progress_categories": ["common_level_data"]}})
+    if zero_fill:
+        units.append({"name": "levels/zero-filled data", "target_path": tdir + "uninitialised.o",
+                      "metadata": {"progress_categories": ["zero_fill"]}})
     for lv in levels:
         u = old[lv.no]
         pretty = u["name"].split("/", 2)[2]
@@ -211,6 +330,9 @@ def main():
     ap.add_argument("in_dir")
     ap.add_argument("out_dir")
     ap.add_argument("--objdiff", help="objdiff.json to update")
+    ap.add_argument("--include-zero-fill", action="store_true",
+                    help="also list uninitialised.o (.bss and zero words, ~61 MB) as a unit; off by default "
+                         "because it has nothing to decompile and swamps the data total")
     a = ap.parse_args()
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     out_abs = os.path.abspath(a.out_dir)
@@ -228,20 +350,27 @@ def main():
             owners[h] = owners.get(h, 0) + 1
     shared = {h for h, n in owners.items() if n > 1}
     common_bytes, common_funcs = write_common(levels, shared, a.out_dir)
+    own, common_data, zero, dstats = split_data(levels)
+    bss = sum(d[5] for lv in levels for d in lv.data if d[1] == ".bss")
+    write_common_data(levels[0].ehdr, common_data, a.out_dir)
+    write_uninitialised(levels[0].ehdr, bss, sum(zero), a.out_dir)
     total = spec = data = 0
-    for lv in levels:
+    for li, lv in enumerate(levels):
         t = sum(f[3] for f in lv.funcs)
         dropped = write_level_code(lv, shared, a.out_dir)
-        data += write_level_data(lv, a.out_dir)
+        data += write_level_data(lv, own[li], a.out_dir)
         total += t
         spec += t - dropped
     print("levels: %d, level code summed: %.1f MB" % (len(levels), total / 1e6))
     print("common code (each function once): %.2f MB in %d functions" % (common_bytes / 1e6, common_funcs))
     print("level-specific code: %.2f MB" % (spec / 1e6))
     print("code to decompile: %.2f MB (was %.1f MB)" % ((spec + common_bytes) / 1e6, total / 1e6))
-    print("level data (not deduplicated): %.1f MB" % (data / 1e6))
+    print("common data (each run once): %.2f MB" % (dstats["common"] / 1e6))
+    print("level-specific data: %.2f MB (incl. lvl.* tables)" % (data / 1e6))
+    print("zero-filled: %.1f MB .bss + %.1f MB zero words (was %.1f MB of data before)" % (
+        bss / 1e6, dstats["zero"] / 1e6, (bss + dstats["zero"] + dstats["nonzero"]) / 1e6))
     if a.objdiff:
-        update_objdiff(a.objdiff, levels)
+        update_objdiff(a.objdiff, levels, a.include_zero_fill)
         print("updated", a.objdiff)
 
 

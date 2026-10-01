@@ -46,11 +46,25 @@ The game contents can be extracted from your legally obtained ISO using [the fol
 ## 3. Python
 
 - Python 3.9 or newer.
-- `pip install -r tools/requirements.txt` (pyelftools and capstone, used by `try_func.py` and `pr_check.py --obj`).
+- `pip install -r tools/requirements.txt` (pyelftools and capstone, used by `try_func.py` and `pr_check.py --obj`, and splat, used by `tools/setup_asm.py`).
 - For localdecomp: [asm-differ](https://github.com/simonlindholm/asm-differ). localdecomp runs it as `python -m diff`, so `diff.py` has to be importable (put it on `PYTHONPATH` or in `site-packages`), plus its dependencies: `pip install colorama ansiwrap watchdog levenshtein cxxfilt`.
 - Optional: [objdiff](https://github.com/encounter/objdiff) (`objdiff-cli.exe`) for progress reports.
 
-## 4. First build
+## 4. Generate asm/ from your frontbin.elf
+
+`asm/` holds the disassembly of the game's code, so it is gitignored and a fresh clone doesn't have it. Generate it once from your own `frontbin.elf`:
+
+```
+python tools/setup_asm.py
+```
+
+It runs splat and the assembler fixups, then the same post-processing the project applied (moves the hand-written functions and linker remnants to `asm/handwritten` and `asm/remnants`, cuts trailing padding nops, splits the data blob and its jump tables). It checks the sha1 of `frontbin.elf` first, takes a few minutes, and is safe to repeat. Do not run a bare `python -m splat split` instead: it doesn't produce these files and it overwrites `undefined_funcs_auto.txt` and `undefined_syms_auto.txt`.
+
+You do **not** need `C:\decomp-refs` or `C:\decomp-refs-objdiff` to build or to match functions. Those folders only hold the retail objects that CI and localdecomp's "Full check" use for the objdiff progress report.
+
+If `make` stops with `No rule to make target 'asm/...'`, this step is missing or incomplete.
+
+## 5. First build
 
 From the repo root in PowerShell:
 
@@ -64,9 +78,9 @@ The last line should be:
 MATCH: build/frontbin.bin sha1 3bc94ee895e4b4af9b5602a229af599c1103b542 (0x218924 bytes)
 ```
 
-If it isn't, check your `frontbin.elf` hash and the toolchain layout before changing anything. The unmodified repo always matches.
+If it isn't, check your `frontbin.elf` hash and the toolchain layout before changing anything. If `make` fails right away because an `asm/` file is missing, run step 4 first. After that, the unmodified repo always matches.
 
-## 5. localdecomp
+## 6. localdecomp
 
 localdecomp is the project's local, decomp.me-style web editor. It builds one function at a time with that function's real flags and shows a live diff against retail.
 

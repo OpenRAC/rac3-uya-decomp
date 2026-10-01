@@ -12,10 +12,11 @@ This repo contains no game code or assets. To build it you need your own copy of
 
 1. Install SN Systems ee-gcc 2.95.3 v1.36 to `C:\tools\eegcc_2.95.3_sn_v1.36`.
 2. Put your own `frontbin.elf` in the repo root.
-3. `pip install -r tools/requirements.txt`
-4. `& "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe"`. The last line should be `MATCH: ...`.
+3. `pip install -r tools/requirements.txt` (this includes splat)
+4. `python tools/setup_asm.py`. This generates the `asm/` folder from your `frontbin.elf` (it is gitignored, so a fresh clone has none; without it `make` stops with "No rule to make target `asm/header.s'"). It takes a few minutes.
+5. `& "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe"`. The last line should be `MATCH: ...`.
 
-Linux and macOS: `python3 tools/build.py --toolchain <dir> --runner <wibo>`.
+Linux and macOS: run `python3 tools/setup_asm.py`, then `python3 tools/build.py --toolchain <dir> --runner <wibo>`.
 
 ## Contributing
 

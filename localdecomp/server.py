@@ -390,16 +390,19 @@ class Project:
             size = int(m_size.group(1), 16) if m_size else None
 
             entry = status.get(name)
-            if entry is not None:
+            is_stub = re.search(
+                rf'INCLUDE_ASM\([^)]*,\s*{re.escape(name)}\s*\)', text_c
+            ) is not None
+            if not is_stub:
+                # Real C in text.c (not an INCLUDE_ASM stub): `make` only prints MATCH when every
+                # such function is byte-identical, so it is done. This also covers functions
+                # matched through another server or by hand, and stale partial scores left in
+                # status.json from earlier attempts (those used to show up as "partial").
+                match_status = "perfect"
+            elif entry is not None:
                 match_status = "perfect" if entry.get("current_score") == 0 else "partial"
             else:
-                is_stub = re.search(
-                    rf'INCLUDE_ASM\([^)]*,\s*{re.escape(name)}\s*\)', text_c
-                ) is not None
-                # Real C in text.c (not an INCLUDE_ASM stub) with no recorded build: `make` only
-                # prints MATCH when every such function is byte-identical, and a fresh clone has
-                # no status.json, so count it as done instead of "unverified".
-                match_status = "none" if is_stub else "perfect"
+                match_status = "none"
 
             funcs.append(
                 {

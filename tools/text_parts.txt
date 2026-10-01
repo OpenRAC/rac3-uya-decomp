@@ -163,6 +163,8 @@
 0x003A62E8     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003A6450     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003A64B0     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
+0x003A6790     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x003A6830     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003A6888     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003A6908     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003A6910     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
@@ -315,7 +317,7 @@
 0x003E2800     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003E2808     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E28E0     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
-0x003E29B8     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
+0x003E29B8     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E2A90     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E2B98     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E2C80     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
@@ -332,6 +334,8 @@
 0x003E2FC0     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E3040     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E30B0     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
+0x003E30C8     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
+0x003E31A8     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003E3250     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E3320     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003E3330     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override

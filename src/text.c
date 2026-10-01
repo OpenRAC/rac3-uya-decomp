@@ -2385,22 +2385,24 @@ LINKER_REMNANT("asm/remnants", func_00395628);
 INCLUDE_ASM("asm/nonmatchings/text", func_00395648);
 
 /* localdecomp:start func_003958A0 */
-extern u8 D_00225780_003958A0[];
-extern s32 D_00227610_003958A0[];
-extern s32 D_001DA0D8_003958A0;
-extern void func_00395648(u8 *);
-void func_003958A0(s32 a0)
-{
-  u8 *new_var2;
-  u8 *b;
-  unsigned int new_var;
-  u8 *new_var3;
-  b = D_00225780_003958A0;
-  new_var2 = b - (-(a0 * 4));
-  *((s32 *) (b + 0x6C)) = *((s32 *) (new_var2 + 0x90));
-  new_var3 = new_var2;
-  func_00395648(new_var3);
-  *((s32 *) (b + 0x6C)) = D_00227610_003958A0[0] + (new_var = D_001DA0D8_003958A0);
+typedef struct {
+    u8 pad0[0x6C];
+    u32 f6C;
+    u8 pad1[0x20];
+    u32 slots[1];
+} T_958A0;
+
+extern T_958A0 D_00225780_003958A0[];
+extern u32 D_00227610_003958A0[];
+extern u32 D_001DA0D8_003958A0;
+extern void func_00395648(void);
+
+void func_003958A0(s32 a0) {
+    u32 value = D_00225780_003958A0[0].slots[a0];
+
+    D_00225780_003958A0[0].f6C = value;
+    func_00395648();
+    D_00225780_003958A0[0].f6C = D_00227610_003958A0[0] + D_001DA0D8_003958A0;
 }
 /* localdecomp:end func_003958A0 */
 

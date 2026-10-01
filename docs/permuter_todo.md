@@ -115,3 +115,15 @@ More near misses from the by-hand pass (not saved in `scratch/permuter_bests/`, 
 | `func_003B2958` | 340 | second loop has pointer/counter registers swapped |
 
 Tooling gap: `tools/asm_filter.py` does not pad short loops that contain a `jal` (`jal` is not in its simple-op list), but retail has the pad `nop` there (`func_003AED40`, `func_003B46F0`). Fixing the filter would unlock these without inline asm. Two idioms from this pass: `*(s32 *)0x1D4B4C = 0;` gives `lui $at; sw lo($at)` where a declared global gives `$gp` or `$v1`; chain `&` over call results with a separate temp (`t = f() != 0; r = r & t;`), because `r &= f() != 0` becomes `movz` (`func_003E3700`).
+
+## Update 2026-10-01 (third pass)
+
+Matched: `func_003BF4F8` (declare the locals in `r, g, b` order and store in natural order; `@ps2as`). Permuter runs of 400 s gave no improvement on `func_003958A0` (20), `003ADF88` (40), `003CB890` (40) or `003B1430` (60). New or improved near misses:
+
+| Function | Score | Note |
+|---|---|---|
+| `func_00391A18` | 20 (S) | two separate locals `s32 x, y;` (not an array), first call is `func_0038EDE8(a0, &x, &y)`; only the register order of two loads differs |
+| `func_00396F18` | 60 (NPS) | only the position of `sd $ra` in the prologue differs |
+| `func_003AED40` | 100 | loop padding `nop` after the `jal` delay slot; needs the `asm_filter.py` `jal` fix |
+| `func_00389468` | 360 (PS) | `__asm__("" : "+f"(pi));` before `pi + pi` stops gcc folding it; retail uses `$f0`/`$f1`, mine `$f12`/`$f0` |
+| `func_0038C888` | 400 | retail saves `$ra` with `sq`/`lq`; no flag mode emits it, likely needs inline asm |

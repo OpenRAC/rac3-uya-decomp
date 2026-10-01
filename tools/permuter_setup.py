@@ -124,10 +124,15 @@ def main():
     tsrc = os.path.join(tmp, "target.c")
     open(tsrc, "w").write('#include "common.h"\nINCLUDE_ASM("%s", %s);\n' % (tdir.replace("\\", "/"), name))
     tobj = os.path.join(d, "target.o")
+    # ee-gcc hands `-o <path>` to the assembler without quoting, so an output path with a space
+    # (a repo checked out under "RATCHET DECOMP DIRECTORY") breaks it: assemble in the temp dir, then copy.
+    tobj_tmp = os.path.join(tmp, "target_out.o")
     p = subprocess.run(runner + [gcc, "-c", "-I", "include", "-I", ".", "-DINCLUDE_ASM_USE_MACRO_INC=1"]
-                       + tflags + ["-o", tobj, tsrc], capture_output=True, text=True, cwd=ROOT)
-    if p.returncode or not os.path.exists(tobj):
+                       + tflags + ["-o", tobj_tmp, tsrc], capture_output=True, text=True, cwd=ROOT)
+    if p.returncode or not os.path.exists(tobj_tmp):
         sys.exit("assembling target failed:\n" + p.stdout + p.stderr)
+    import shutil
+    shutil.copyfile(tobj_tmp, tobj)
 
     # ---- compile.sh ----
     q = lambda xs: " ".join(shlex.quote(x) for x in xs)

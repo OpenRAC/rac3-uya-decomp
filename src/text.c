@@ -2355,7 +2355,27 @@ LINKER_REMNANT("asm/remnants", func_00395628);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00395648);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003958A0);
+/* localdecomp:start func_003958A0 */
+typedef struct {
+    u8 pad0[0x6C];
+    u32 f6C;
+    u8 pad1[0x20];
+    u32 slots[1];
+} T_958A0;
+
+extern T_958A0 D_00225780_003958A0[];
+extern u32 D_00227610_003958A0[];
+extern u32 D_001DA0D8_003958A0;
+extern void func_00395648(void);
+
+void func_003958A0(s32 a0) {
+    u32 value = D_00225780_003958A0[0].slots[a0];
+
+    D_00225780_003958A0[0].f6C = value;
+    func_00395648();
+    D_00225780_003958A0[0].f6C = D_00227610_003958A0[0] + D_001DA0D8_003958A0;
+}
+/* localdecomp:end func_003958A0 */
 
 /* localdecomp:start func_003958F0 */
 extern void func_00388440_003958F0(void *, s32, s32);
@@ -4331,7 +4351,24 @@ TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A3A40);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A3B00);
+/* localdecomp:start func_003A3B00 */
+extern u32 D_001D545C_003A3B00;
+extern u32 D_00330CF0[];
+extern s32 D_001DA0D8;
+extern s32 D_001D5BA4;
+extern void func_003A3B50(void);
+
+void func_003A3B00(void) {
+    u32 index = D_001D545C_003A3B00;
+
+    if (index >= 0x25) {
+        index = 0;
+    }
+    D_001D5BA4 = 0x1E000;
+    D_001DA0D8 = D_00330CF0[index];
+    func_003A3B50();
+}
+/* localdecomp:end func_003A3B00 */
 
 /* localdecomp:start func_003A3B50 */
 extern s32 D_001DA0DC;

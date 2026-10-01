@@ -103,7 +103,7 @@ def insn_count(lines):
 # rewritten to the slot retail uses. $ra is written as a raw word (sq =
 # 0x7FBF0000 | off, lq = 0x7BBF0000 | off, base $sp), like the retail .s files.
 SQ_RA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sq_ra_funcs.txt")
-SAVE_RE = re.compile(r"^(\s*)(sd|sq|ld|lq)\s+\$(1[6-9]|2[0-3]|30|31),\s*(\d+)\(\$sp\)\s*(#.*)?$")
+SAVE_RE = re.compile(r"^(\s*)(sd|sq|ld|lq)\s+\$(1[6-9]|2[0-3]|30|31|fp),\s*(\d+)\(\$sp\)\s*(#.*)?$")
 SAVE_ORDER = [16, 17, 18, 19, 20, 21, 22, 23, 30, 31]
 
 
@@ -122,7 +122,7 @@ def sq_rewrite(lines):
         body = l.rstrip("\r\n")
         m = SAVE_RE.match(body)
         if m:
-            saves.append((i, m.group(2) in ("sd", "sq"), int(m.group(3)), int(m.group(4)),
+            saves.append((i, m.group(2) in ("sd", "sq"), (30 if m.group(3) == "fp" else int(m.group(3))), int(m.group(4)),
                           m.group(1), l[len(body):]))
     regs = sorted({s[2] for s in saves}, key=SAVE_ORDER.index)
     offs = sorted({s[3] for s in saves})
@@ -135,7 +135,7 @@ def sq_rewrite(lines):
             w = (0x7FBF0000 if store else 0x7BBF0000) | o
             lines[i] = f"{ind}.word 0x{w:08X}  # {'sq' if store else 'lq'} $31,{o}($sp){nl}"
         else:
-            lines[i] = f"{ind}{'sq' if store else 'lq'} ${reg},{o}($sp){nl}"
+            lines[i] = f"{ind}{'sq' if store else 'lq'} {'$fp' if reg == 30 else '$' + str(reg)},{o}($sp){nl}"
     return lines
 
 

@@ -3404,7 +3404,18 @@ void func_0039C158(s32 a0, long a1) {
 }
 /* localdecomp:end func_0039C158 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039C170);
+/* localdecomp:start func_0039C170 */
+extern s32 func_0039C158();
+extern void func_0013BAB8(s32, s32, void *, unsigned long, s32);
+typedef struct { u8 p0[0x79A4]; s32 f79A4; u8 p1[0x10]; s32 f79B8; } S_C170a;
+typedef struct { u8 p0[0x90]; u32 f90; } S_C170b;
+extern S_C170a D_00160C40_0039C170[];
+extern S_C170b D_001A30B0_0039C170[];
+void func_0039C170(void) {
+    D_001A30B0_0039C170[0].f90 = 0xFFFFFFFF;
+    func_0013BAB8(D_00160C40_0039C170[0].f79B8 + D_00160C40_0039C170[0].f79A4, 0, &func_0039C158, (unsigned long) ((long) &D_001A30B0_0039C170[0].f90 << 0x20) >> 0x20, D_00160C40_0039C170[0].f79A4);
+}
+/* localdecomp:end func_0039C170 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0039C1C8);
 
@@ -7768,7 +7779,23 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B5EC8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B5F88);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B6050);
+/* localdecomp:start func_003B6050 */
+extern s32 D_001DA230_003B6050[];
+extern s32 D_001DA234_003B6050[];
+s32 func_003B6050(s32 arg0) {
+    s32 i = 0;
+    s32 c1 = 0x4F000;
+    s32 *q = D_001DA234_003B6050;
+    s32 *p = D_001DA230_003B6050;
+    do {
+        i++;
+        if (p[0] == arg0) return (q[0] & 1) ? c1 : 0x12C00;
+        q += 2;
+        p += 2;
+    } while (i < 7);
+    return -1;
+}
+/* localdecomp:end func_003B6050 */
 
 /* localdecomp:start func_003B60B0 */
 extern f32 D_001D8C5C;
@@ -8864,7 +8891,19 @@ s32 func_003BF5D0(s32 arg0) {
 }
 /* localdecomp:end func_003BF5D0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF5E0);
+/* localdecomp:start func_003BF5E0 */
+extern s32 func_003BF5D0(s16);
+extern u32 D_001DA51C_003BF5E0[];
+extern u32 D_001DA524[];
+s32 func_003BF5E0(u32 arg0) {
+    if (arg0 == 0) return 0;
+    if (arg0 < D_001DA51C_003BF5E0[0]) return 0;
+    if (D_001DA524[0] >= arg0) {
+        return func_003BF5D0(*(s16 *)((u8 *)arg0 + 0xAA)) != 0;
+    }
+    return 0;
+}
+/* localdecomp:end func_003BF5E0 */
 
 LINKER_REMNANT("asm/remnants", func_003BF630);
 

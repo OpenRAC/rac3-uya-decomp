@@ -3,4 +3,5 @@
 # When a function matches and goes into text.c, move the override to text_parts.txt.
 func_0039BEC0 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 func_003830E8 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-func_003A3B00 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as  
+func_003E1D18 -O2 -G8 
+

@@ -102,3 +102,16 @@ Matched since the list above was written: `func_003AE1A8`, `003E9BA8`, `003B8A68
 | `func_003E91F8` | 170 | NPS |
 
 Not touched yet: the mod-3 hash lookups/inserts and the 16-function table-lookup family above. Hand-search tricks that matched things in this pass: drop temporaries (`func_003B8A68`, `003AAEC8`), `(a1 << 2)` for the index (`003E18C0`), reorder stores (`003E9BA8`, `003EA9B0`).
+
+More near misses from the by-hand pass (not saved in `scratch/permuter_bests/`, rewrite from the m2c draft):
+
+| Function | Score | Note |
+|---|---|---|
+| `func_003BF4F8` | 20 (PS) | only the stack-byte store/load order differs |
+| `func_003AED40` | 100 | one missing `nop` in a short loop containing a `jal` |
+| `func_003BC0F0` | 120 (default) | one swapped `daddu $4/$5` pair in the third `func_0011B754` call |
+| `func_003D27C0` | 205 (N) | scheduling of one `lw` from `D_001A1ED4` |
+| `func_00396F18` | 60 (NPS) | position of `sd $ra` in the prologue |
+| `func_003B2958` | 340 | second loop has pointer/counter registers swapped |
+
+Tooling gap: `tools/asm_filter.py` does not pad short loops that contain a `jal` (`jal` is not in its simple-op list), but retail has the pad `nop` there (`func_003AED40`, `func_003B46F0`). Fixing the filter would unlock these without inline asm. Two idioms from this pass: `*(s32 *)0x1D4B4C = 0;` gives `lui $at; sw lo($at)` where a declared global gives `$gp` or `$v1`; chain `&` over call results with a separate temp (`t = f() != 0; r = r & t;`), because `r &= f() != 0` becomes `movz` (`func_003E3700`).

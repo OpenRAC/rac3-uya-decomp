@@ -17,7 +17,8 @@ What it does, in order (a plain `splat split` is NOT enough, see 3 and 6):
      (undefined_funcs_auto.txt, undefined_syms_auto.txt), which splat overwrites;
   3. splat only writes a .s for functions that are INCLUDE_ASM in src/text.c, so it
      temporarily turns the ASM_FUNC / LINKER_REMNANT entries back into INCLUDE_ASM
-     (those are final source, but their .s still has to come from somewhere);
+     (those are final source, but their .s still has to come from somewhere), and lists the
+     functions that are already C the same way so localdecomp sees all of them;
   4. python -m splat split (with every func_<address> of text.c added as a function symbol so
      the function boundaries are exactly text.c's), then puts the saved files back;
   5. the ee-as fixups: fix_reg_names.py, fix_quadword_ops.py, fix_short_loops.py,
@@ -135,6 +136,16 @@ def main():
     macro_rx = re.compile(rb'(?:ASM_FUNC|LINKER_REMNANT)\("(asm/(?:handwritten|remnants))",')
     final_src = re.findall(rb'(?:ASM_FUNC|LINKER_REMNANT)\("(asm/[a-z]+)",\s*(func_[0-9A-Fa-f]{8})\)', text)
     py = sys.executable
+    # Functions already written as C have no INCLUDE_ASM, so splat would skip them. localdecomp
+    # builds its function list (and the progress numbers) from asm/nonmatchings, so list them
+    # in the temporary text.c too: every function gets its .s, like a tree that was split before
+    # the conversions.
+    have = set(re.findall(rb'(?:INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\("asm/[A-Za-z/]+",\s*(func_[0-9A-Fa-f]{8})\)', text))
+    c_names = set(re.findall(rb"localdecomp:start (func_[0-9A-F]{8})", text))
+    c_names |= set(re.findall(rb"(?m)^[A-Za-z_][\w \*]*?\b(func_[0-9A-F]{8})\s*\([^;{]*\)[^;{]*\{", text))
+    c_names = {n for n in c_names - have if 0x37D100 <= int(n[5:], 16) < 0x3ED000}
+    c_stubs = b"".join(b'\nINCLUDE_ASM("asm/nonmatchings/text", %s);' % n for n in sorted(c_names)) + b"\n"
+    print("%d functions are already C; adding temporary stubs so each gets a .s" % len(c_names))
     # Function boundaries: the names in text.c (func_<address>) are the project's units,
     # and every .s must end exactly where the next one starts. Hand splat those addresses
     # as function symbols through a temporary extra symbol file and a temporary yaml.
@@ -150,7 +161,7 @@ def main():
     yml = re.sub(r"(symbol_addrs_path:\s*\n(\s*)- symbol_addrs\.txt)", r"\1\n\2- symbol_addrs_setup.txt", yml)
     open(tmp_yaml, "w").write(yml)
     try:
-        wr(TEXT_C, macro_rx.sub(b'INCLUDE_ASM("asm/nonmatchings/text",', text))
+        wr(TEXT_C, macro_rx.sub(b'INCLUDE_ASM("asm/nonmatchings/text",', text) + c_stubs)
         run(py, "-m", "splat", "split", "frontbin.setup.yaml")
     finally:
         wr(TEXT_C, text)

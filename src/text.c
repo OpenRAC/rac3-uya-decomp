@@ -4087,7 +4087,37 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A2C18);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A2DF8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A2E40);
+/* localdecomp:start func_003A2E40 */
+extern u8 *D_001D6EEC;
+void func_003A2E40(s32 a0, u8 *src) {
+    u8 *p;
+    s32 i;
+    if (D_001D6EEC == 0) return;
+    p = D_001D6EEC;
+    i = 0;
+    do {
+        i++;
+        if (*(s32 *)(p + 0x48) == 0) {
+            *(s32 *)(p + 0x38) = *(s32 *)(src + 0x38);
+            *(s32 *)(p + 0x3C) = *(s32 *)(src + 0x3C);
+            *(s32 *)(p + 0x30) = *(s32 *)(src + 0x30);
+            *(s32 *)(p + 0x44) = *(s32 *)(src + 0x44);
+            *(f32 *)(p + 0x24) = *(f32 *)(src + 0x24);
+            *(f32 *)(p + 0x20) = *(f32 *)(src + 0x20);
+            *(f32 *)(p + 0x28) = *(f32 *)(src + 0x28);
+            *(s32 *)(p + 0x34) = *(s32 *)(src + 0x34);
+            *(s32 *)(p + 0x2C) = *(s32 *)(src + 0x2C);
+            *(s32 *)(p + 0x40) = *(s32 *)(src + 0x40);
+            *(s32 *)(p + 0x4C) = *(s32 *)(src + 0x4C);
+            *(u128_t *)(p + 0) = *(u128_t *)(src + 0);
+            *(u128_t *)(p + 0x10) = *(u128_t *)(src + 0x10);
+            *(s32 *)(p + 0x48) = a0;
+            return;
+        }
+        p += 0x50;
+    } while (i < 0x200);
+}
+/* localdecomp:end func_003A2E40 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A2EE0);
 
@@ -8476,7 +8506,37 @@ void func_003BA3C8(void) {
 }
 /* localdecomp:end func_003BA3C8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BA3E8);
+/* localdecomp:start func_003BA3E8 */
+extern u8 *D_001D6EEC_003BA3E8[];
+void func_003BA3E8(s32 a0, u8 *src) {
+    u8 *p;
+    s32 i;
+    if (D_001D6EEC_003BA3E8[0] == 0) return;
+    p = D_001D6EEC_003BA3E8[0];
+    i = 0;
+    do {
+        i++;
+        if (*(s32 *)(p + 0x48) == 0) {
+            *(s32 *)(p + 0x38) = *(s32 *)(src + 0x38);
+            *(s32 *)(p + 0x3C) = *(s32 *)(src + 0x3C);
+            *(s32 *)(p + 0x30) = *(s32 *)(src + 0x30);
+            *(s32 *)(p + 0x44) = *(s32 *)(src + 0x44);
+            *(f32 *)(p + 0x24) = *(f32 *)(src + 0x24);
+            *(f32 *)(p + 0x20) = *(f32 *)(src + 0x20);
+            *(f32 *)(p + 0x28) = *(f32 *)(src + 0x28);
+            *(s32 *)(p + 0x34) = *(s32 *)(src + 0x34);
+            *(s32 *)(p + 0x2C) = *(s32 *)(src + 0x2C);
+            *(s32 *)(p + 0x40) = *(s32 *)(src + 0x40);
+            *(s32 *)(p + 0x4C) = *(s32 *)(src + 0x4C);
+            *(u128_t *)(p + 0) = *(u128_t *)(src + 0);
+            *(u128_t *)(p + 0x10) = *(u128_t *)(src + 0x10);
+            *(s32 *)(p + 0x48) = a0;
+            return;
+        }
+        p += 0x50;
+    } while (i < 0x15E);
+}
+/* localdecomp:end func_003BA3E8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BA490);
 

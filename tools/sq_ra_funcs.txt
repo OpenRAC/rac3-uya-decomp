@@ -1,0 +1,4 @@
+# Functions whose retail prologue saves $ra with sq/lq (see tools/asm_filter.py).
+# One function name per line; the C must already match apart from those two instructions.
+func_0038C888
+func_0038C9D8

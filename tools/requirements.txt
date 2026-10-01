@@ -2,5 +2,7 @@
 # localdecomp itself uses only the standard library, plus asm-differ (see the wiki's Setup page).
 pyelftools>=0.29
 capstone>=5.0
-# tools/setup_asm.py (generates asm/ from your frontbin.elf)
-splat64==0.50.0
+# tools/setup_asm.py (generates asm/ from your frontbin.elf). The [mips] extra pulls in
+# spimdisasm, rabbitizer and the other modules splat imports; plain splat64 fails with
+# "No module named spimdisasm".
+splat64[mips]==0.50.0

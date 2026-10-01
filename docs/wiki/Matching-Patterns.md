@@ -217,6 +217,23 @@ m2c (`--target mipsee-gcc-c --valid-syntax`) gets the logic right for many funct
 - **Check the raw words for `lq`/`sq`** (`.word 0x78..`/`0x7C..`) before rewriting a copy loop (`func_0037F550`).
 - **Singleton-style load through a different address form:** a second symbol alias at the same address (`D_001D52FC_003B42D0`, unsized array) gives retail's `lui`/`lw` where the plain name gives `$gp` (`func_003B42D0`).
 
+## Patterns from the hand pass (2026-10, 50 functions)
+
+Each of these fixed a real near miss.
+
+- **Toggle a callee between `void` and `s32`.** Retail's register choice depends on whether the callee's result is live in `$v0`. A call whose result is discarded but declared `s32` kept `$v0` busy and moved a following `lui` from `$v0` to `$v1` (`func_003AE098`, `func_003B12C8`, `func_003CB890`, `func_003BC0F0`, `func_003B62E8`). If another block in the same part already declares it `void`, call through a cast (`((s32 (*)(s32))func_0039D6C8)(1)`) instead of redeclaring.
+- **Scalar versus array decides who splits the address.** Under `@ps2as`, `extern s32 X;` becomes the assembler macro (`lui $a0; lw $a0, lo($a0)`, destination reused) and `extern s32 X[]` / `X[0]` becomes gcc's split form (`lui $v1; lw $v0, lo($v1)`). When a near miss differs only in which register holds the high half, flip that global (`func_003958A0`, `func_00396F18`, `func_003ADF88`). Add `.extern X, 4` for the symbols retail reaches through `$gp`.
+- **Singleton vtable wrappers (the `D_001DA9B8` family) match in plain `S` mode** (no `-mno-split-addresses`). The key is a temporary for the virtual call's result: `t = vcall(p); cb = lookup(table, t); r = cb(p, ...)`. Twelve functions follow this template (`func_003E2728`, `func_003E2808`, `func_003E28E0`, `func_003E1E50`, `func_003E2028`, `func_003E2C88`, `func_003E22D0`, `func_003E23C0`, `func_003E2B98`, `func_003E21F8`, `func_003E2618`, `func_003E2A90`), and the permuter found the same template for `func_003E2118`, `func_003E29B8` and `func_003E30C8`. The lookup functions are defined later in the same part, so call them through an alias symbol and a cast.
+- **Index first in an address sum.** `(i << 2) + (s32)base` gives `addu idx, base`, the order retail has; `base + i * 4` gives the other (`func_003E8EC8`, `func_00392108`).
+- **A callee that returns its argument.** Use the result (`b = f(b, 1)`), or the pointer needs its own callee-saved register (`func_003DFB40` family).
+- **Separate return variable, single return.** `func_003ABE98` and `func_003AD520` only match with one `return r;` at the end and no early return inside the else branch; early returns let gcc fold `r` to a constant and free the register.
+- **Hash-style update `off = (key & 1) + (off + 1)`** gets reassociated; a temporary (`t = off + 1; off = (key & 1) + t;`) keeps retail's order (`func_003E4890`, `func_003E5F00` and their siblings are within 60 to 120 of a match with it).
+- **Chains of `!= 0` tests combined with `&`** (`func_003E34F0`, `func_003E3580`, `func_003E3630`): `r = f(a, b) != 0; t = f(a, c) != 0; r = r & t; ...`. A single expression gives conditional moves instead.
+- **A switch whose table starts at 0** needs `case 0:` sharing the `default:` body (`func_003AE368`); without it gcc subtracts 1 and builds a shorter table.
+- **A reload that retail really performs** after a store to the same global needs `volatile` on that global (`func_00395FF0`, `D_001D4CEC`); a second alias symbol is scheduled above the store instead.
+- **Object-array initialisers** (`if (flag == 0) { for (...) init(p++); flag = 1; } return &array[i];`): retail has one `nop` in the loop that neither `S` nor `@ps2as` reproduces, so they need `i--; __asm__ volatile("nop"); p++;` (`func_003E13D0`, `func_003AD820`, `func_003AEDF8`, as in `func_003B46F0`). That is an inline-asm hack.
+- **Order of independent stores** can only be found by search. A statement-order hill climb on the store lines found `func_003AC0D8`. decomp-permuter finds the same kind of change; it also tends to introduce `do { ... } while (0)` and `new_var` temporaries, which are harmless, but check that it did not change what the code does (it once moved an assignment into an `if`).
+
 ### Declarations in text.c
 
 The full build compiles `text.c` in parts (`tools/text_parts.txt`), and a part only sees *declarations* from earlier parts, never definitions. So:

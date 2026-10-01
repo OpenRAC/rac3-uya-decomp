@@ -127,3 +127,23 @@ Matched: `func_003BF4F8` (declare the locals in `r, g, b` order and store in nat
 | `func_003AED40` | 100 | loop padding `nop` after the `jal` delay slot; needs the `asm_filter.py` `jal` fix |
 | `func_00389468` | 360 (PS) | `__asm__("" : "+f"(pi));` before `pi + pi` stops gcc folding it; retail uses `$f0`/`$f1`, mine `$f12`/`$f0` |
 | `func_0038C888` | 400 | retail saves `$ra` with `sq`/`lq`; no flag mode emits it, likely needs inline asm |
+
+## Update 2026-10-01 (fourth pass, 50 functions)
+
+Matched by hand or by the permuter: see `Matching-Patterns.md`, "Patterns from the hand pass". Still open, best first (all within a few instructions of retail; sources are in `scratch/permuter_bests` if you kept them):
+
+| Function | Score | Note |
+|---|---|---|
+| `func_003B8968` | 5 (def) | `addiu $s0,$s2,0x1a0` uses `$v0` for the base; retail copies `&D_00225780` into `$s2` in the `blez` delay slot. The permuter's `do { i = 0; ... } while (0)` prologue got it from 65 to 5 |
+| `func_003B27A8` | 5 (PS) | case 6: retail's first arm jumps to the second arm's tail (`b ec`); mine merges into the third arm's. Needs `.extern` hints for the four `$gp` globals and byte globals as scalars |
+| `func_003ADAE0` | 10 (N) | retail is split-address (`lui $v1; addiu $a0,$v1`) but then gcc merges the base into `$v0`; N mode gets the structure |
+| `func_003B0DA0` | 20 (PS) | store order around the first call |
+| `func_003AE120` | 30 (PS) | the two final stores come out in the other order |
+| `func_003E8420` | 55 (NPS) | order of the first stores and the two `lui`s |
+| `func_003E4890`, `003E4918`, `003E4DA0` | 60 (S) | the `daddu` that clears `off` is scheduled before the `li $a3,3`; retail has it last |
+| `func_003AD650` | 60 (S) | retail fills the `blez` delay slot with `lui`; mine with the `sw` |
+| `func_003DFB40` and `003DFCA8`, `003DFE10`, `003E50A8`, `003E5210`, `003AFAA8` | 140 (S) | use the result of `func_003E1770` (a pointer pass-through). Left: the register order of the middle `vt->f8(o, 2)` call (`lw $v0,8($s0); lw $v1,8($v0)` in retail) and where `li $a0,0x48` lands. Do not use the permuter's 25: it moved `s2 = func_003E1898(b1)` inside an `if` |
+| `func_003E1F40` | 100 (S) | sibling of the matched `D_001DA9B8` wrappers; the table address is built `lui; addiu; jal; daddu` here, not `lui; daddu; jal; addiu` |
+| `func_003E5F00`, `003E6680`, `003E67B8` | 120, 285 | mod-3 hash inserts: invariants (`key & 1`, base pointers) are hoisted in a different order |
+| `func_003B8E10` | 210 (PS) | same base-register copy as `func_003B8968` |
+| `func_003A4DC8` | 285 | two float temporaries swap `$f22`/`$f23` |

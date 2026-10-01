@@ -29,7 +29,7 @@ tools/permuter_setup.py, so every path compiles C the same way:
     python tools/asm_filter.py part.s          # rewrites in place
     ee-gcc -c ... -o part.o part.s
 """
-import re, sys
+import os, re, sys
 
 REG = {**{"$%d" % i: i for i in range(32)},
        **{"$" + n: i for i, n in enumerate(
@@ -94,10 +94,40 @@ def insn_count(lines):
     return n
 
 
+# Functions whose retail prologue saves $ra with `sq` (and reloads it with `lq`)
+# where gcc 2.95.3 writes `sd`/`ld`. 13 functions have this; no compiler or flag
+# we have produces it, so the two instructions are written as raw words
+# (sq = 0x7FBF0000 | off, lq = 0x7BBF0000 | off, base $sp), the same words
+# tools/fix_quadword_ops.py leaves in the retail .s files.
+SQ_RA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sq_ra_funcs.txt")
+SQ_RA_RE = re.compile(r"^(\s*)(sd|ld)\s+\$31,\s*(\d+)\(\$sp\)\s*(#.*)?$")
+
+
+def sq_ra_funcs():
+    try:
+        with open(SQ_RA_FILE) as f:
+            return {l.split("#")[0].strip() for l in f if l.split("#")[0].strip()}
+    except OSError:
+        return set()
+
+
 def filter_asm(text):
     out, labels, noreorder, app = [], {}, False, False
+    sq_funcs, cur = sq_ra_funcs(), None
     for line in text.splitlines(True):
         s = line.strip()
+        em = re.match(r"\.ent\s+(\S+)", s)
+        if em:
+            cur = em.group(1)
+        elif re.match(r"\.end\s", s):
+            cur = None
+        if cur in sq_funcs and not app:
+            sm = SQ_RA_RE.match(line.rstrip("\r\n"))
+            if sm:
+                base = 0x7FBF0000 if sm.group(2) == "sd" else 0x7BBF0000
+                nl = "\r\n" if line.endswith("\r\n") else "\n"
+                out.append(f"{sm.group(1)}.word 0x{base | int(sm.group(3)):08X}  # {'sq' if sm.group(2) == 'sd' else 'lq'} $31,{sm.group(3)}($sp){nl}")
+                continue
         if s.startswith("#APP"):
             app = True
         elif s.startswith("#NO_APP"):

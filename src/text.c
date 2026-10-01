@@ -1644,7 +1644,11 @@ void func_0038C840(s32 a0, s32 a1, s32 a2, f32 x, f32 y, f32 z) {
 
 LINKER_REMNANT("asm/remnants", func_0038C878);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C888);
+/* localdecomp:start func_0038C888 */
+void func_0038C888(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h) {
+    func_0038B1B0(p, a, b, c, d, e, f, g, h);
+}
+/* localdecomp:end func_0038C888 */
 
 /* localdecomp:start func_0038C8A8 */
 extern void func_0038B1E8(s32, s32, s32, s32, unsigned long, s32, f32, f32);
@@ -1683,7 +1687,12 @@ void func_0038C9B8(s32 a, s32 b, s32 c, s32 d, s32 e, s32 g, s32 h, f32 x) {
 }
 /* localdecomp:end func_0038C9B8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038C9D8);
+/* localdecomp:start func_0038C9D8 */
+extern void func_0038BB50();
+void func_0038C9D8(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s16 g, long h, s32 x, s32 y) {
+    func_0038BB50(a, b, c, d, g, h, x, y);
+}
+/* localdecomp:end func_0038C9D8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038CA08);
 

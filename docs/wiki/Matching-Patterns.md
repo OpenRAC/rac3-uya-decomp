@@ -279,3 +279,24 @@ Two more things worth knowing before a long session: `sizeof(long)` is 8 here, s
 64-bit type is `unsigned long` (`long long`, and therefore `u64`, is 16 bytes and any
 arithmetic on it fails with `unsupported wide integer operation`), and the literal suffix
 `ULL` is rejected by this compiler - use `UL` or a cast.
+
+#### Where the `sq`/`lq` forms probably come from
+
+The 128-bit saves are a **compiler-version signature**, not evidence of a custom toolchain.
+Two SN packages can be run side by side here, and they disagree exactly there:
+
+| compiler | `$ra` save | stack adjust |
+|---|---|---|
+| SN ProDG 3.01 `ee-gcc2953.exe` (this repo) | `sd` / `ld` | `addiu $sp,$sp,-0x20` |
+| SN ProDG 2.0 `ee-gcc295.exe` | **`sq` / `lq`** | `subu $sp,$sp,32` |
+| retail | **`sq` / `lq`** | `addiu $sp,$sp,-0x20` |
+
+Measured with the C bodies of `func_0038C888` and `func_0038C9D8`: 3.01 emits `sd`/`ld` under
+`-O1`, `-O2`, `-O3`, `-Os`, `-G0`, `-G8` and `-mgp64`; 2.0 emits `sq`/`lq` for both, but with
+the older `subu`/`j` spellings.
+
+Retail therefore looks like an **intermediate SN release**: 2.95.3 instruction selection with
+the older 16-byte stack slots - the same 2.95.3 built without the stack-save change that
+`-fopt-stack` selects in the 3.01 package. Running other SN packages against these 13
+functions is the cheapest way to pin the exact build; if one of them also fixes the `$at`
+and `sq $zero` cases above, that is the compiler the game was built with.

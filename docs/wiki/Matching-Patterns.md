@@ -246,3 +246,36 @@ Leave these for now, or open an issue if you crack one:
 - **Register allocation where retail keeps an argument in a temporary (`move $t3, $a0` at entry) while `$a0` holds something else** (`func_0039BEC0`): solvable in C, mostly. The cause is gcc's priority order (see `tools/regalloc.py`): a block-local temporary outranks the parameter and overlaps it, so the parameter is pushed out of its incoming register. Two changes reproduce retail's exact allocation for `func_0039BEC0` (`screenId` `$t3`, the `-2` constant `$a0`, `result` `$t2`, `flag` `$t1`): declare `D_001A7430` unsized (`extern s32 D_001A7430[];`, read as `D_001A7430[0]`), because retail reaches it with a compiler `lui`, and write the flag as `s32 flag = (screenId >= 0) ? D_001D5B78[screenId] : 0;`. That takes the diff from 1,680 to 210; what is left is the branch shape (which instruction lands in the `bltz` delay slot). The forms that get the registers right change the branch layout, and the forms that get the layout right change the registers, so this function is logged for decomp-permuter.
 - **Resolved: "a match in isolation can still differ in the full build".** `func_003AEDC8` and `func_003AED08` passed `try_func.py` but failed the full build with two `$gp` stores swapped. The cause was the tool, not the build: it masked every relocated field, and two stores through `$gp` differ only in their relocated offsets, so the wrong order looked identical. `try_func.py` now fills relocations in with the symbols' real addresses and compares them in full (checked against all 617 previously matched blocks: no false failures). The `#define D_001D5B34 ...` hack macros above some functions still replace a later `extern` of the same name; `#undef` it in your block (see `func_00389908`).
 - About 20 matched functions use inline `__asm__` or a hand-rolled `$gp` register. They count, but plain-C rewrites of them are welcome.
+
+### Forms this compiler has never been seen to produce (2026-10)
+
+Three shapes showed up while trying to match the smallest functions still filed as
+`plain`. All three are the reason to move on to another function, not to rewrite the C:
+if your target's `.s` contains one of them, the C is not the problem.
+
+- **`lq $at` - `$at` as a data register.** Compiling the same three-quadword copy
+  (`*(u128_t *)` at 0x00/0x10/0x20) with the range's flags allocates `$2`, `$3`, `$6`;
+  `$at` is not something this compiler hands to a value. In `frontbin.elf` the only
+  files containing `lq $at` are the nine under `asm/handwritten/`, plus
+  `func_00388E58` and `func_00388E38` - which `tools/triage.py` still lists as `plain`.
+- **`sq $31` / `lq $31` - a 128-bit save of `$ra` where this compiler emits `sd`/`ld`.**
+  13 functions in the text range save `$ra` that way, and **none** of the 13 has a C block
+  in `src/text.c`, while their neighbours that save with `sd`/`ld` are matched.
+  Unaffected by `-O1/-O3/-Os`, `-fno-opt-stack`, `-mgp64`, `-mips3`, `-mips4`, `-G0/-G24`
+  and both assemblers.
+- **`sq $zero` - a 128-bit zero store.** `*(u128_t *)p = 0;`, `(u128_t)0` and a named
+  `register u128_t z = 0;` all compile to `por $2,$zero,$zero` followed by `sq $2,0($a0)`:
+  the TImode zero is materialised in a register first, so retail's single `sq $zero` is out
+  of reach from C here.
+
+Reproduce any of them from the repo root:
+
+```
+python tools/try_func.py <your attempt>.c func_XXXXXXXX      # the ordinary judge
+python tools/try_func.py <your attempt>.c func_XXXXXXXX --all-modes   # 4 flag/assembler combos
+```
+
+Two more things worth knowing before a long session: `sizeof(long)` is 8 here, so the
+64-bit type is `unsigned long` (`long long`, and therefore `u64`, is 16 bytes and any
+arithmetic on it fails with `unsupported wide integer operation`), and the literal suffix
+`ULL` is rejected by this compiler - use `UL` or a cast.

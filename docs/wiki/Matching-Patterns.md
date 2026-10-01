@@ -209,6 +209,14 @@ m2c (`--target mipsee-gcc-c --valid-syntax`) gets the logic right for many funct
   Separate `t` and `v` are needed here: retail keeps the tested object in `$a0`.
 - **Pointer-count loops over a table of function pointers** keep one outer struct pointer: `p->q->fn[i]` rather than caching `p->q` (`func_003E15D8`).
 
+- **Loop padding no assembler mode reproduces** (retail has `jal; nop; nop; nop; bnez`): `do { r = f(); __asm__ volatile("nop
+	nop
+	nop"); } while (r);` (`func_003B6488`, `func_003AB100`). This is an inline-asm hack; revisit if a C-only form is found.
+- **64-bit constants and `lwu`:** declare the callee parameter and the struct field as `unsigned long` (`func_00386608`, needs `@ps2as`).
+- **Under `@ps2as`, a scalar `extern s32 X;` gets the non-gp form** (`lui; lw`, or `lui $at; sw`). Add `__asm__(".extern X, 4");` only for symbols retail reaches through `$gp` (`func_003A3220`, `func_003D3C80`).
+- **Check the raw words for `lq`/`sq`** (`.word 0x78..`/`0x7C..`) before rewriting a copy loop (`func_0037F550`).
+- **Singleton-style load through a different address form:** a second symbol alias at the same address (`D_001D52FC_003B42D0`, unsized array) gives retail's `lui`/`lw` where the plain name gives `$gp` (`func_003B42D0`).
+
 ### Declarations in text.c
 
 The full build compiles `text.c` in parts (`tools/text_parts.txt`), and a part only sees *declarations* from earlier parts, never definitions. So:

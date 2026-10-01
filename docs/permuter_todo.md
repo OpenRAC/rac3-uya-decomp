@@ -86,3 +86,19 @@ Same loop as above plus a call to the lookup; the `key & 1` and base-pointer set
 | `func_003B5440` | 0x284 | 1000 |
 | `func_003EB180` | 0x1D4 | 1000 |
 | `func_003BA3E8` | 0xA8 | 1000 |
+
+## Update 2026-10-01 (second pass)
+
+Matched since the list above was written: `func_003AE1A8`, `003E9BA8`, `003B8A68`, `003E18C0`, `003AAEC8`, `003E8718`, `003B42D0`, `003EA9B0`, `003B11C0`, `003EC6E0` (permuter or by hand), plus 14 plain functions from the by-hand pass. Closest remaining, with the best score reached (the sources are in the gitignored `scratch/permuter_bests/<func>.c`, first line = score and flag mode; start the permuter from those, not from a fresh m2c draft):
+
+| Function | Score | Mode |
+|---|---|---|
+| `func_003ADAE0` | 10 | N (only the `lui` temp register differs) |
+| `func_003958A0` | 20 | S |
+| `func_003ADF88` | 40 | default |
+| `func_003CB890` | 40 | default |
+| `func_003B1430` | 60 | S |
+| `func_003AE120` | 135 | PS |
+| `func_003E91F8` | 170 | NPS |
+
+Not touched yet: the mod-3 hash lookups/inserts and the 16-function table-lookup family above. Hand-search tricks that matched things in this pass: drop temporaries (`func_003B8A68`, `003AAEC8`), `(a1 << 2)` for the index (`003E18C0`), reorder stores (`003E9BA8`, `003EA9B0`).

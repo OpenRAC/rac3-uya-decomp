@@ -45,7 +45,7 @@ Useful options:
 | `--toolbin` | folder with `ee-gcc2953.exe` |
 | `--port` | web port (default 8477) |
 | `--no-git-sync` | don't auto-commit perfect matches |
-| `--refs` | folder with the level targets and `frontbin_data.o`, as used by CI |
+| `--refs` | folder with `level-targets-split\`, `exe-targets\` and `frontbin_data.o`, as used by CI (default `C:\decomp-refs`). Not in a fresh clone: see [Setup](Setup), "Full localdecomp build" |
 | `--objdiff-cli` | path to `objdiff-cli` |
 
 A score of 0 in localdecomp is necessary, not sufficient. The full build (`make`) still has to print MATCH.

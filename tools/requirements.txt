@@ -6,3 +6,5 @@ capstone>=5.0
 # spimdisasm, rabbitizer and the other modules splat imports; plain splat64 fails with
 # "No module named spimdisasm".
 splat64[mips]==0.50.0
+# tools/split_shared_levels.py and gen_exe_targets.py (the Full localdecomp build)
+numpy

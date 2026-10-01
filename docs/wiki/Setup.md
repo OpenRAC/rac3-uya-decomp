@@ -96,6 +96,41 @@ Options you might need:
 - `--no-git-sync` turns off auto-commit. Without it, localdecomp commits every function that reaches a perfect match. That's fine on a feature branch of your fork, but never on `main`.
 - `--refs DIR` and `--objdiff-cli` are only for the full "check" button, which also needs the level target objects. Contributors can skip this and run `make` instead.
 
+## 7. Full localdecomp build (optional)
+
+localdecomp's **Full check** button (and CI) compares your build with every retail object in the game, not just `frontbin.elf`: the level overlays, `boot_elf.elf`, `i5bootn.elf`, `ntgui.elf`, `sly2.elf` and frontbin's data. Those reference objects are made from your own copy of the game, so they aren't in the repo. A fresh clone has none, and the Full check stops at "copy reference objects". You do **not** need any of this for `make` or for matching functions in localdecomp; it is only for the full progress report.
+
+You need:
+
+- The unpacked disc from step 2 (the folder with `boot_elf.elf`, `files` and `levels`; the levels are in `levels\singleplayer` and `levels\multiplayer`).
+- Linux or WSL with `binutils-mips-linux-gnu` (`sudo apt install binutils-mips-linux-gnu`). The generators call `mips-linux-gnu-as` and `mips-linux-gnu-ld`, so they don't run on plain Windows.
+- A Python venv in that Linux/WSL environment: `python3 -m venv ~/uya_refs_venv`, then `~/uya_refs_venv/bin/pip install -r tools/requirements.txt` (splat, pyelftools and numpy are needed).
+- For the Full check itself, on Windows: `git`, the toolchain from step 1 and `objdiff-cli` (on `PATH` or in `C:\tools`).
+
+From the repo root inside WSL. Generate into a folder on the **Linux side** (here `~/uya-refs`), not directly under `/mnt/c`: the level step merges object files with `ld -r`, which fails ("merging data changed .text") when its output sits on the Windows drive. Then copy the result to the folder localdecomp reads, `C:\decomp-refs` by default. The tools refuse to write into the repo.
+
+```
+REFS=~/uya-refs
+GAME=/path/to/unpacked/disc        # the folder with boot_elf.elf, files and levels
+PY=~/uya_refs_venv/bin/python
+
+$PY tools/gen_level_targets.py --data-only frontbin.elf $REFS/frontbin_data.o
+$PY tools/gen_level_targets.py "$GAME/levels" $REFS/level-targets
+$PY tools/split_shared_levels.py $REFS/level-targets $REFS/level-targets-split
+$PY tools/gen_exe_targets.py "$GAME" $REFS/exe-targets
+
+mkdir -p /mnt/c/decomp-refs
+cp -r $REFS/level-targets-split $REFS/exe-targets $REFS/frontbin_data.o /mnt/c/decomp-refs/
+```
+
+The level step takes about ten minutes (51 overlays). Check the results in `C:\decomp-refs`:
+
+- `level-targets-split` must hold **105** `.o` files (code and data for each level, `common`, `common_data` and `uninitialised`). The intermediate `level-targets` folder isn't used by localdecomp or CI, so you can leave it behind.
+- `exe-targets` must hold **8** `.o` files (code and data for each of the four other executables).
+- `frontbin_data.o` must be there, and its generator must have printed `data sections differing from retail: none`. The level generator prints `non-reloc mismatches vs retail: 0` for every overlay; anything else means the object isn't an exact copy of retail.
+
+Then start localdecomp as usual (`python localdecomp/server.py --project .`, or add `--refs <folder>` if you used another one) and press Full check. Never commit any of these objects: they are retail code. See [Tools](Tools) for what each generator does.
+
 ## Linux and macOS
 
 The compiler and binutils are Windows executables. [wibo](https://github.com/decompals/wibo) runs them. The project was verified with wibo 1.0.0-beta.1.

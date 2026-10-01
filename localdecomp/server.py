@@ -1049,7 +1049,10 @@ SECTIONS
     # same as the full build), then assemble
     s_path = o_path.with_suffix(".s")
     base = [str(gcc), "-B" + str(project.toolbin / "ee-")] + extra_cflags
-    cmd = base[:1] + ["-S"] + base[1:] + ["-o", str(s_path), str(c_path)]
+    # ee-gcc passes file names to cpp/as without quoting, so an absolute path with a space in it
+    # (a repo under "RATCHET DECOMP DIRECTORY") fails with "cpp.exe: Too many arguments". The files are
+    # all in `work` (the cwd), so use bare names.
+    cmd = base[:1] + ["-S"] + base[1:] + ["-o", s_path.name, c_path.name]
     proc = subprocess.run(cmd, cwd=work, capture_output=True, text=True)
     if proc.returncode != 0:
         raise BuildError("compile", proc.stdout + proc.stderr)
@@ -1063,7 +1066,7 @@ SECTIONS
         s_path.write_text(af.filter_asm(s_text))
     except FileNotFoundError:
         pass
-    cmd = base[:1] + ["-c"] + base[1:] + ["-o", str(o_path), str(s_path)]
+    cmd = base[:1] + ["-c"] + base[1:] + ["-o", o_path.name, s_path.name]
     proc = subprocess.run(cmd, cwd=work, capture_output=True, text=True)
     if proc.returncode != 0:
         raise BuildError("compile", proc.stdout + proc.stderr)

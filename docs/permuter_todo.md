@@ -151,4 +151,4 @@ Matched by hand or by the permuter: see `Matching-Patterns.md`, "Patterns from t
 | `func_003C1A40` | 3 | `unsigned long` shift/or chain; retail does `dsll` of the last arg before the first `or` (returns the stored value) |
 | `func_003EB6B0` | 12 | midpoint of a box; retail loads `b[0]` into `$f12` first and stores `sw 0x34` before `sb 0x30` |
 | `func_0037DFD8`, `func_0038E730`, `func_0038E6D0` | 12-19 | table lookups; retail peels the first loop iteration (0038E730), merges the final select with `movz` (0037DFD8) |
-| `func_0038C888`, `func_0038C9D8` | - | right C, but retail saves `$ra` with `sq`; see the `sq`-for-`$ra` class above |
+| `func_003A9E60` | 19 diff (S, no `-fopt-stack`) | in `sq_ra_funcs.txt`; only the argument-copy registers differ (retail `$a0`->`$t5`, mine `$s1`) |

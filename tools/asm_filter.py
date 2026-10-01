@@ -94,13 +94,17 @@ def insn_count(lines):
     return n
 
 
-# Functions whose retail prologue saves $ra with `sq` (and reloads it with `lq`)
-# where gcc 2.95.3 writes `sd`/`ld`. 13 functions have this; no compiler or flag
-# we have produces it, so the two instructions are written as raw words
-# (sq = 0x7FBF0000 | off, lq = 0x7BBF0000 | off, base $sp), the same words
-# tools/fix_quadword_ops.py leaves in the retail .s files.
+# 13 retail functions save $ra with `sq` (16-byte slot) where gcc 2.95.3 writes
+# `sd`, and the ones that also save $s registers lay the slots out ascending
+# ($s0 lowest, $ra highest) where gcc puts $ra lowest. No compiler or flag we
+# have produces that. The slot set and the frame size are the same, so for the
+# functions listed in tools/sq_ra_funcs.txt (compiled without -fopt-stack, which
+# already gives sq for the $s registers) every callee-saved save and restore is
+# rewritten to the slot retail uses. $ra is written as a raw word (sq =
+# 0x7FBF0000 | off, lq = 0x7BBF0000 | off, base $sp), like the retail .s files.
 SQ_RA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sq_ra_funcs.txt")
-SQ_RA_RE = re.compile(r"^(\s*)(sd|ld)\s+\$31,\s*(\d+)\(\$sp\)\s*(#.*)?$")
+SAVE_RE = re.compile(r"^(\s*)(sd|sq|ld|lq)\s+\$(1[6-9]|2[0-3]|30|31),\s*(\d+)\(\$sp\)\s*(#.*)?$")
+SAVE_ORDER = [16, 17, 18, 19, 20, 21, 22, 23, 30, 31]
 
 
 def sq_ra_funcs():
@@ -111,23 +115,57 @@ def sq_ra_funcs():
         return set()
 
 
-def filter_asm(text):
-    out, labels, noreorder, app = [], {}, False, False
-    sq_funcs, cur = sq_ra_funcs(), None
+def sq_rewrite(lines):
+    """lines: one function's .s lines, from .ent to .end."""
+    saves = []  # (index, is_store, reg, offset, indent, line ending)
+    for i, l in enumerate(lines):
+        body = l.rstrip("\r\n")
+        m = SAVE_RE.match(body)
+        if m:
+            saves.append((i, m.group(2) in ("sd", "sq"), int(m.group(3)), int(m.group(4)),
+                          m.group(1), l[len(body):]))
+    regs = sorted({s[2] for s in saves}, key=SAVE_ORDER.index)
+    offs = sorted({s[3] for s in saves})
+    if not regs or len(regs) != len(offs):
+        return lines
+    new_off = dict(zip(regs, offs))
+    for i, store, reg, off, ind, nl in saves:
+        o = new_off[reg]
+        if reg == 31:
+            w = (0x7FBF0000 if store else 0x7BBF0000) | o
+            lines[i] = f"{ind}.word 0x{w:08X}  # {'sq' if store else 'lq'} $31,{o}($sp){nl}"
+        else:
+            lines[i] = f"{ind}{'sq' if store else 'lq'} ${reg},{o}($sp){nl}"
+    return lines
+
+
+def sq_pass(text):
+    funcs = sq_ra_funcs()
+    if not funcs:
+        return text
+    out, buf, cur = [], [], None
     for line in text.splitlines(True):
         s = line.strip()
         em = re.match(r"\.ent\s+(\S+)", s)
-        if em:
-            cur = em.group(1)
-        elif re.match(r"\.end\s", s):
-            cur = None
-        if cur in sq_funcs and not app:
-            sm = SQ_RA_RE.match(line.rstrip("\r\n"))
-            if sm:
-                base = 0x7FBF0000 if sm.group(2) == "sd" else 0x7BBF0000
-                nl = "\r\n" if line.endswith("\r\n") else "\n"
-                out.append(f"{sm.group(1)}.word 0x{base | int(sm.group(3)):08X}  # {'sq' if sm.group(2) == 'sd' else 'lq'} $31,{sm.group(3)}($sp){nl}")
-                continue
+        if cur is None and em and em.group(1) in funcs:
+            cur, buf = em.group(1), [line]
+            continue
+        if cur is not None:
+            buf.append(line)
+            if re.match(r"\.end\s", s):
+                out.extend(sq_rewrite(buf))
+                cur, buf = None, []
+            continue
+        out.append(line)
+    out.extend(buf)
+    return "".join(out)
+
+
+def filter_asm(text):
+    out, labels, noreorder, app = [], {}, False, False
+    text = sq_pass(text)
+    for line in text.splitlines(True):
+        s = line.strip()
         if s.startswith("#APP"):
             app = True
         elif s.startswith("#NO_APP"):

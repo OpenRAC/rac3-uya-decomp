@@ -50,7 +50,13 @@ def classify(name):
             continue
         w = re.match(r"\s*\.word\s+(0x[0-9A-Fa-f]+)", line)
         if w:  # raw words (short-loop branches, undecodable opcodes)
-            ins.append((int(w.group(1), 16), ".word", ""))
+            # The mnemonic, when it is known, lives in a trailing comment:
+            #   .word 0x78A10000 /* lq $at, 0x0($5) */
+            # tools/fix_quadword_ops.py writes lq/sq/lqc2/sqc2 that way, and a
+            # function whose only 128-bit ops are raw words was landing in
+            # "plain" because the op read ".word" here.
+            c = re.search(r"/\*\s*([a-z][a-z0-9.]*)", line)
+            ins.append((int(w.group(1), 16), c.group(1) if c else ".word", ""))
     m = re.search(r"nonmatching \w+, (0x[0-9A-Fa-f]+)", s)
     size = int(m.group(1), 16) if m else 4 * len(ins)
     words = [w for w, _, _ in ins]

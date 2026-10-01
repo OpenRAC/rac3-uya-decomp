@@ -24,7 +24,8 @@ What it does, in order (a plain `splat split` is NOT enough, see 3 and 6):
   5. the ee-as fixups: fix_reg_names.py, fix_quadword_ops.py, fix_short_loops.py,
      and extract_header.py (asm/header.s);
   6. the same post-processing the project applied when asm/ was committed:
-       - moves the ASM_FUNC / LINKER_REMNANT .s files to asm/handwritten and asm/remnants;
+       - moves the ASM_FUNC / LINKER_REMNANT .s files to asm/handwritten and asm/remnants and
+         comments out their `nonmatching` marker (it would make objdiff count them as unmatched);
        - trailing_padding.py --apply (cuts extra trailing nops; text.c is left unchanged);
        - cuts the switch jump tables out of asm/data/data.data.s into
          asm/nonmatchings/text/rodata/jtbl_*.s and splits the blob into
@@ -184,7 +185,15 @@ def main():
         s = os.path.join(src_dir, func + ".s")
         if not os.path.exists(s):
             sys.exit("missing %s (did splat finish?)" % s)
-        shutil.move(s, os.path.join(ROOT, folder, func + ".s"))
+        dest = os.path.join(ROOT, folder, func + ".s")
+        shutil.move(s, dest)
+        # splat's `nonmatching` line defines NAME.NON_MATCHING, which makes objdiff (and
+        # decomp.dev) count the function as not matching. This .s is final source, so turn
+        # that line into a comment, as tools/migrate_asm_sources.py did.
+        t = open(dest, newline="").read()
+        t = re.sub(r"^nonmatching (func_[0-9A-Fa-f]{8})(, *0x[0-9A-Fa-f]+)?[ \t]*(\r?)$",
+                   r"/* nonmatching \1\2 -- marker removed: final source */\3", t, flags=re.M)
+        open(dest, "w", newline="").write(t)
         n += 1
     print("moved %d ASM_FUNC / LINKER_REMNANT sources" % n)
 

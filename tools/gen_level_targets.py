@@ -113,6 +113,9 @@ options:
   compiler: EEGCC
   platform: ps2
   gp_value: 0x001DC8B0
+  # numeric register names ($8, not $t0): the assembler picks names by ABI ($t0 is $8 in o32 but $12 in
+  # eabi/n32), and newer binutils (2.45) no longer reads them the way the older ones did.
+  mips_abi_gpr: numeric
   asm_function_macro: glabel
   asm_data_macro: dlabel
   generate_asm_macros_files: True

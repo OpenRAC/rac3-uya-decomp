@@ -8831,7 +8831,30 @@ void func_003BF2F8(f32 *q, void *axis, f32 angle) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BF360);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF4F8);
+/* localdecomp:start func_003BF4F8 */
+extern void func_003C1A60(s32, s32 *, s32 *, s32 *);
+typedef struct { s16 x0; s16 x2; u8 x4, x5, x6; u8 p7[5]; u16 xC; s16 xE; } S_BF;
+void func_003BF4F8(s32 a0, S_BF *a1) {
+    s32 r, g, b;
+    s32 v = a1->x0;
+    if (v != 0 && a1->x2 == 0) {
+        return;
+    }
+    a1->x2 = 0;
+    a1->x0 = a1->xC;
+    if (v != 0) {
+        a1->x0 = (f32)(s16)a1->xC * ((f32)v / (f32)a1->xE);
+        if (a1->x0 <= 0) {
+            a1->x0 = 1;
+        }
+    } else {
+        func_003C1A60(a0, &r, &g, &b);
+        a1->x4 = r;
+        a1->x5 = g;
+        a1->x6 = b;
+    }
+}
+/* localdecomp:end func_003BF4F8 */
 
 LINKER_REMNANT("asm/remnants", func_003BF5C0);
 

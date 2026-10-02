@@ -4591,7 +4591,25 @@ s32 func_0039FE80(s32 a, s32 b, P_39FE80 *p) {
 }
 /* localdecomp:end func_0039FE80 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039FF28);
+/* localdecomp:start func_0039FF28 */
+extern s32 D_001D9DAC_0039FF28;
+extern s32 D_001D5B9C_0039FF28;
+extern u8 D_1A30B0_0039FF28[];
+extern s32 func_0039FBD8_0039FF28();
+s32 func_0039FF28(s32 a, s32 b, s32 c) {
+    s32 r;
+    u8 *e;
+    if (D_001D9DAC_0039FF28 == 0) return -1;
+    if (a >= D_001D5B9C_0039FF28) return -1;
+    r = func_0039FBD8_0039FF28(D_001D9DAC_0039FF28 + a * 32, b, c, 0, 0x400);
+    if (r >= 0) {
+        e = D_1A30B0_0039FF28 + r * 128;
+        *(s32 *)(e + 0xDC) = c;
+        *(s16 *)(e + 0xCA) = a;
+    }
+    return r;
+}
+/* localdecomp:end func_0039FF28 */
 
 LINKER_REMNANT("asm/remnants", func_0039FFB8);
 

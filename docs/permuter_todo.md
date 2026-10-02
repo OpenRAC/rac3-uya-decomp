@@ -186,3 +186,6 @@ Lessons from the two that matched:
 | `func_003C9AE0` | 23 (S) | nested table loops; counted inner loop form not found |
 | `func_003A5CA8` | 16 (N) | order of the byte stores at the end and where `lw $a0, 0x20($s0)` is placed |
 | `func_003B60F0` | 35 (S, `@ps2as`) | float clamp with two stores; retail uses `$f4`/`$f1` select form |
+| `func_003B9B60`, `func_003BA2A8` | 6, 10 (S) | sibling init functions: retail puts `move $a1, $zero` in the first call's delay slot after the `lui $at` byte stores; gcc fills the slot with the last byte store instead. Same fix would do both |
+| `func_003E89F0` | 8 (N) | constructor on the `D_001DA9B8` singleton template; the vtable store is interleaved with the singleton address calculation in retail and `$v0`/`$v1` are swapped |
+| `func_0037E878` | 7 (N) | retail keeps the counter address in `$a0` (then `$s3`); gcc uses `$v1` |

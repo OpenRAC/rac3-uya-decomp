@@ -6537,7 +6537,41 @@ void func_003AAC28(s32 *p) {
 }
 /* localdecomp:end func_003AAC28 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AAC70);
+/* localdecomp:start func_003AAC70 */
+typedef struct { s32 f0; s32 f4; u8 pad8[0x28]; s32 f30; s32 f34; s32 f38; s32 f3C; s32 f40; } B_3AAC70;
+void func_003AAC70(B_3AAC70 *b, s32 *o1, s32 *o2, s32 *o3, s32 *o4) {
+    s32 lo, hi, v, r;
+    if (b->f0 == 0) {
+        if (b->f4 != 4) {
+            *o1 = (s32)((u8 *)b + 8 + b->f30);
+            *o2 = 0x28 - b->f30;
+            *o3 = b->f34;
+            *o4 = b->f40;
+        } else {
+            *o1 = b->f34;
+            *o2 = b->f40;
+            *o3 = 0;
+            *o4 = 0;
+        }
+    } else {
+        v = b->f40;
+        lo = b->f3C;
+        hi = b->f38;
+        r = v - lo;
+        if (v - hi >= r) {
+            *o1 = b->f34 + hi;
+            *o2 = r;
+            *o3 = 0;
+            *o4 = 0;
+        } else {
+            *o1 = b->f34 + hi;
+            *o2 = b->f40 - b->f38;
+            *o3 = b->f34;
+            *o4 = r - (b->f40 - b->f38);
+        }
+    }
+}
+/* localdecomp:end func_003AAC70 */
 
 /* localdecomp:start func_003AAD40 */
 void func_003AAD40(void *arg0, s32 arg1) {

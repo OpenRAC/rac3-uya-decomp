@@ -375,6 +375,14 @@ the C that makes 3.01 match, so a compiler swap would mean re-tuning them, and r
 what the filter avoids. 2.0 also emits the `lq $at` bodies above exactly as 3.01 does, so
 it does not explain that shape either.
 
+One of those tests is done: `func_003A9E60` (0x8C, reconstructed from its retail
+disassembly alone, flags `-O2 -G8 -mno-split-addresses -mno-check-zero-division` plus the
+unsized `D_001D5C78[]` declaration the range needs) comes out with retail's frame and slots
+under 2.0 and with 3.01's layout under 3.01 - but both compilers leave the **same 22 of 35
+words** different, all of them the argument-copy registers (`a0` lands in `$s1` where retail
+uses `$t5`, and the `lui` takes `$2` where retail takes `$12`). So 2.0 does not fix this
+one's schedule either; that half looks like allocation, not a compiler version.
+
 So the layout is a real version signature and the arithmetic is unsettled. It is four
 functions, and only the two wrappers are byte-exact; nine of the 13 still have no C block
 at all. Most of the file still matches 3.01 at the project flags, so retail only

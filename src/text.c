@@ -7380,7 +7380,34 @@ void func_003ADB78(void) {
 }
 /* localdecomp:end func_003ADB78 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ADBB0);
+/* localdecomp:start func_003ADBB0 */
+__asm__(".extern D_001D8881_003ADBB0, 1");
+extern void func_003A4758();
+extern void func_003E18C0_003ADBB0();
+extern void func_003E1668();
+extern void *func_003E16B8();
+extern s32 D_001D9F40_003ADBB0;
+extern s32 D_001D9C5C_003ADBB0;
+extern u8 D_001D8881_003ADBB0;
+typedef struct { s32 f0; s32 f4; s32 f8[4]; } S_003ADBB0;
+extern S_003ADBB0 D_001DA9B8_003ADBB0;
+void func_003ADBB0(s32 a) {
+    S_003ADBB0 *q;
+    void *base;
+    if (D_001D9F40_003ADBB0 || D_001D9C5C_003ADBB0) {
+        *(volatile s32 *)&D_001D9F40_003ADBB0 = 0;
+        return;
+    }
+    func_003A4758(1);
+    if (D_001D8881_003ADBB0) return;
+    q = &D_001DA9B8_003ADBB0;
+    if (q->f4 != 0) base = q; else base = func_003E16B8(q);
+    func_003E18C0_003ADBB0(base, a);
+    q = &D_001DA9B8_003ADBB0;
+    if (q->f4 != 0) base = q; else base = func_003E16B8(q);
+    func_003E1668(base);
+}
+/* localdecomp:end func_003ADBB0 */
 
 LINKER_REMNANT("asm/remnants", func_003ADC68);
 

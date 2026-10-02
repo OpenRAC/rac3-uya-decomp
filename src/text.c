@@ -1769,7 +1769,14 @@ void func_0038C9D8(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s16 g, long h, s32 
 }
 /* localdecomp:end func_0038C9D8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038CA08);
+/* localdecomp:start func_0038CA08 */
+extern f32 func_0038C3C0(s32, s32, s32, f32);
+extern void func_00389FB8_0038CA08(s32, s32, s32, f32, f32, f32, f32, f32, s32, s32, unsigned long, f32);
+void func_0038CA08(s32 x, s32 y, s32 a, s32 b, s32 c, s32 d, f32 p) {
+    f32 r = func_0038C3C0(b, c, d, p);
+    func_00389FB8_0038CA08(a, b, c, (f32)x, (f32)y, r, r, 0.0f, 1, 0, 0x80000000UL, 0.0f);
+}
+/* localdecomp:end func_0038CA08 */
 
 /* localdecomp:start func_0038CAB0 */
 extern void func_003896E8();
@@ -1780,7 +1787,7 @@ void func_0038CAB0(void) {
 /* localdecomp:end func_0038CAB0 */
 
 /* localdecomp:start func_0038CAD0 */
-extern void func_0038C3C0();
+extern f32 func_0038C3C0();
  
 void func_0038CAD0(void) {
     func_0038C3C0();

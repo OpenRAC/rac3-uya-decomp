@@ -2417,7 +2417,30 @@ extern u8 D_001D5EDC;
 void func_00393370(void) { D_001D5EDC = 1; }
 /* localdecomp:end func_00393370 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00393380);
+/* localdecomp:start func_00393380 */
+__asm__(".extern D_001D5EDC, 1");
+__asm__(".extern D_001D5ED8, 4");
+extern u8 D_001D5EDC;
+extern s32 D_001D5ED8;
+extern void func_003866E8();
+void func_00393380(void) {
+    s32 v;
+    f32 t;
+    if (D_001D5EDC) {
+        D_001D5EDC = 0;
+        D_001D5ED8 = D_001D5ED8 + 1;
+        if (D_001D5ED8 > 10) D_001D5ED8 = 10;
+    } else {
+        D_001D5ED8 = D_001D5ED8 - 1;
+        if (D_001D5ED8 < 0) D_001D5ED8 = 0;
+    }
+    t = (f32)D_001D5ED8;
+    t = t / 10.0f;
+    t = t * 48.0f;
+    v = (s32)t;
+    if (v) func_003866E8(0, 0, 0, v);
+}
+/* localdecomp:end func_00393380 */
 
 LINKER_REMNANT("asm/remnants", func_00393418);
 

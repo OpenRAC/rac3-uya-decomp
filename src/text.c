@@ -3644,7 +3644,27 @@ INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318410);
 
 LINKER_REMNANT("asm/remnants", func_0039B0E8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039B0F8);
+/* localdecomp:start func_0039B0F8 */
+typedef struct { u8 pad[0x10]; f32 f10; f32 f14; u8 pad2[0xE0]; f32 fF8; } O_39B0F8;
+typedef struct { f32 x, y, z, w; } V_39B0F8;
+extern u32 D_001D545C_0039B0F8;
+extern s32 D_00333530[];
+extern O_39B0F8 *D_00228960[];
+extern V_39B0F8 D_143230[];
+void func_0039B0F8(void) {
+    s32 i;
+    if (D_001D545C_0039B0F8 < 0x13) {
+        for (i = D_00333530[D_001D545C_0039B0F8]; i < D_00333530[D_001D545C_0039B0F8 + 1]; i++) {
+            O_39B0F8 *o = D_00228960[i];
+            if (o) {
+                D_143230[i].x = o->f10;
+                D_143230[i].y = o->f14;
+                D_143230[i].z = o->fF8;
+            }
+        }
+    }
+}
+/* localdecomp:end func_0039B0F8 */
 
 ASM_FUNC("asm/handwritten", func_0039B198);
 

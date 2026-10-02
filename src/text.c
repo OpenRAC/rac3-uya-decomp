@@ -13348,7 +13348,7 @@ s32 func_003E28E0(s32 arg0, s32 arg1) {
 extern s32 func_003E1898(void *);
 extern s32 func_003E0E28();
 extern void *func_003E16B8();
-extern s32 func_003E4DA0();
+extern void *func_003E4DA0();
 extern s32 D_001D96A8_003E29B8;
 typedef struct { s32 f0; s32 f4; s32 f8[4]; } S_003E29B8;
 extern S_003E29B8 D_001DA9B8_003E29B8;
@@ -14105,9 +14105,61 @@ void *func_003E4810(HT_8 *t, u32 key) {
 }
 /* localdecomp:end func_003E4810 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E4890);
+/* localdecomp:start func_003E4890 */
+typedef struct { u32 key; void *val; } HE_003E4890;
+typedef struct { s32 f0; s32 n; HE_003E4890 e[3]; } HT_003E4890;
+extern u8 D_001DAA8B_003E4890;
+void *func_003E4890(HT_003E4890 *t, u32 key) {
+    s32 off;
+    s32 three;
+    void *sent;
+    s32 i;
+    s32 h;
+    void * v;
+    s32 u;
+    i = 0;
+    three = 3;
+    sent = &D_001DAA8B_003E4890;
+    off = 0;
+    for (; i < 3; i++) {
+        h = ((key % three) + off) % three;
+        v = t->e[h].val;
+        if (v == 0) return 0;
+        if (t->e[h].key == key && v != sent) return v;
+        u = off + 1;
+        off = (key & 1) + u;
+    }
+    return 0;
+}
+/* localdecomp:end func_003E4890 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E4918);
+/* localdecomp:start func_003E4918 */
+typedef struct { u32 key; void *val; } HE_003E4918;
+typedef struct { s32 f0; s32 n; HE_003E4918 e[3]; } HT_003E4918;
+extern u8 D_001DAA8C_003E4918;
+void *func_003E4918(HT_003E4918 *t, u32 key) {
+    s32 off;
+    s32 three;
+    void *sent;
+    s32 i;
+    s32 h;
+    void * v;
+    s32 u;
+    i = 0;
+    three = 3;
+    sent = &D_001DAA8C_003E4918;
+    off = 0;
+    for (; i < 3; i++) {
+        h = ((key % three) + off) % three;
+        v = t->e[h].val;
+        if (v == 0) return 0;
+        if (t->e[h].key == key && v != sent) return v;
+        u = off + 1;
+        off = (key & 1) + u;
+    }
+    return 0;
+}
+/* localdecomp:end func_003E4918 */
 
 /* localdecomp:start func_003E49A0 */
 extern u8 D_001DAA8D;
@@ -14221,7 +14273,33 @@ void *func_003E4D20(HT_8 *t, u32 key) {
 }
 /* localdecomp:end func_003E4D20 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E4DA0);
+/* localdecomp:start func_003E4DA0 */
+typedef struct { u32 key; void *val; } HE_003E4DA0;
+typedef struct { s32 f0; s32 n; HE_003E4DA0 e[3]; } HT_003E4DA0;
+extern u8 D_001DAA95_003E4DA0;
+void *func_003E4DA0(HT_003E4DA0 *t, u32 key) {
+    s32 off;
+    s32 three;
+    void *sent;
+    s32 i;
+    s32 h;
+    void * v;
+    s32 u;
+    i = 0;
+    three = 3;
+    sent = &D_001DAA95_003E4DA0;
+    off = 0;
+    for (; i < 3; i++) {
+        h = ((key % three) + off) % three;
+        v = t->e[h].val;
+        if (v == 0) return 0;
+        if (t->e[h].key == key && v != sent) return v;
+        u = off + 1;
+        off = (key & 1) + u;
+    }
+    return 0;
+}
+/* localdecomp:end func_003E4DA0 */
 
 /* localdecomp:start func_003E4E28 */
 extern u8 D_001DAA96;

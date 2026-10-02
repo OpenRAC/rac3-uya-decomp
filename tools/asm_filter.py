@@ -81,9 +81,16 @@ def insn_count(lines):
         if not s or s.startswith(".") or LABEL_RE.match(l):
             continue
         m = re.match(r"([a-z0-9.]+)\s*(.*)", s)
-        if m and m.group(1) in ("jal", "jalr"):
-            n += 1  # a call is one word, its symbol operand is not a macro
+        if m and (m.group(1) in ("jal", "jalr", "b", "j", "jr") or m.group(1) in TWO or m.group(1) in ONE
+                  or m.group(1) in REGIMM or m.group(1) in BC1 or m.group(1) in PSEUDO_Z):
+            n += 1  # a call or a branch is one word, its label operand is not a macro
             continue
+        if m and m.group(1) == "li":
+            im = re.match(r"^\$\w+\s*,\s*(-?\d+|-?0x[0-9a-fA-F]+)\s*(#.*)?$", m.group(2))
+            if im and -0x8000 <= int(im.group(1), 0) <= 0xFFFF:
+                n += 1  # a small immediate is a single addiu/ori
+                continue
+            return None
         if not m or not SIMPLE_OPS.match(m.group(1)):
             return None
         ops = m.group(2)

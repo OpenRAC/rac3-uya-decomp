@@ -4522,8 +4522,33 @@ void func_003A0130(s32 a, long l) {
 
 LINKER_REMNANT("asm/remnants", func_003A0170);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A0178);
-INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318670);
+/* localdecomp:start func_003A0178 */
+void func_003A0178(u8 *p, s32 i, s32 *v) {
+    switch (i) {
+    case 3:
+        *(s32 *)(p + 0xC) = *v;
+        break;
+    case 0:
+        *(u128_t *)(p + 0x40) = *(u128_t *)v;
+        break;
+    case 1:
+        *(u128_t *)(p + 0x50) = *(u128_t *)v;
+        break;
+    case 2:
+        *(f32 *)(p + 8) = *(f32 *)v;
+        break;
+    case 4:
+        *(s32 *)(p + 0x10) = *v;
+        break;
+    case 5:
+        *(s32 **)(p + 0x14) = v;
+        break;
+    case 6:
+        *(s32 *)(p + 0x18) = *v;
+        break;
+    }
+}
+/* localdecomp:end func_003A0178 */
 
 LINKER_REMNANT("asm/remnants", func_003A01F8);
 

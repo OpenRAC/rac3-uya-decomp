@@ -67,7 +67,7 @@ LABEL_RE = re.compile(r"^\s*([$.\w]+):")
 
 SIMPLE_OPS = re.compile(r"^(addu|addiu|subu|and|andi|or|ori|xor|xori|nor|slt|slti|sltu|sltiu|sll|srl|sra|sllv|srlv|srav|"
                         r"daddu|daddiu|dsubu|dsll|dsrl|dsra|dsll32|dsrl32|dsra32|move|negu|not|lui|"
-                        r"lb|lbu|lh|lhu|lw|lwu|ld|sb|sh|sw|sd|lwc1|swc1|lq|sq|"
+                        r"lb|lbu|lh|lhu|lw|lwu|ld|sb|sh|sw|sd|lwc1|swc1|l\.s|s\.s|lq|sq|"
                         r"add\.s|sub\.s|mul\.s|neg\.s|abs\.s|mov\.s|c\.\w+\.s|cvt\.\w+\.\w+|mtc1|mfc1|"
                         r"movz|movn|mult|multu|mult1|multu1|nop)$")
 

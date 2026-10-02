@@ -370,7 +370,7 @@
 0x003E3040     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E30B0     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003E30C8     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
-0x003E31A8     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
+0x003E31A8     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E3250     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E3320     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003E3330     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override

@@ -365,10 +365,20 @@ keep `sd $31`. On this compiler `-fopt-stack` only governs the **`$s` slots** (1
 `sq` without it, 8-byte `sd` with it), never `$ra` - which is why the layout the filter
 reproduces was never a flag away.
 
-Two caveats before this replaces anything. It is two functions, both thin wrappers, and
-both are already matched through `asm_filter`; nine of the 13 still have no C block at all.
-And most of the file still matches 3.01 at the project flags, so retail only **possibly**
-looks like an intermediate SN release - 2.95.3-era instruction selection with the older
-16-byte stack slots - rather than a mix of two packages. Writing C for more of the 13 and
-running the 2.0 package against them is the cheap next test; the compiler/flag matrix in
-`docs/compiler_matrix_findings.md` (15 builds) does not include this package.
+The same test on the two larger matched functions, `func_003AAF88` and `func_003C0B10`,
+splits the claim in two. 2.0 gets retail's **frame** right with no filter at all: same
+frame size, `$sN` in the 16-byte `sq` slot at `0x10*N`, `$ra` highest - where 3.01 needs
+`-fopt-stack` removed and the filter's rewrite to get there. But it does not emit them in
+retail's order: retail saves the registers ascending by slot, 2.0 descending (on
+`func_003AAF88`, 2.0 saves `$s3, $s1, $s0`, retail `$s3, $s0, $s1`). Those two bodies are
+the C that makes 3.01 match, so a compiler swap would mean re-tuning them, and re-tuning is
+what the filter avoids. 2.0 also emits the `lq $at` bodies above exactly as 3.01 does, so
+it does not explain that shape either.
+
+So the layout is a real version signature and the arithmetic is unsettled. It is four
+functions, and only the two wrappers are byte-exact; nine of the 13 still have no C block
+at all. Most of the file still matches 3.01 at the project flags, so retail only
+**possibly** looks like an intermediate SN release - 2.95.3-era instruction selection with
+the older 16-byte stack slots - rather than a mix of two packages. Writing C for more of the
+13 and running the 2.0 package against them is the cheap next test; the compiler/flag
+matrix in `docs/compiler_matrix_findings.md` (15 builds) does not include this package.

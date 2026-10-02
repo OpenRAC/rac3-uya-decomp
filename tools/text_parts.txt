@@ -340,6 +340,7 @@
 0x003DBEA0     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003DE3A8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003DE430     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003DE8F0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003DEEF0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003DEFB8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003DF038     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override

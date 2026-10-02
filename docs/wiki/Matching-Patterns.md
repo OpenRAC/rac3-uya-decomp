@@ -270,7 +270,6 @@ mul.s %0, %0, %2
 - **Pointer arithmetic order** (`func_003AAC70`): `(s32)((u8 *)b + 8 + b->f30)` gives `addiu` before `addu`; `(s32)b + b->f30 + 8` gives the opposite.
 - **Loop padding with a call in the body** (`func_003BD360`): `tools/asm_filter.py` now counts `jal`/`jalr` as one instruction when it pads short loops to 6.
 - **A call with no argument moves** (`func_003E11D0`, `func_003E5F00`): retail's `jal` follows the prologue with `$a0`/`$a1` untouched even though the callee takes them. The original called it with the incoming registers still live, so call it through a zero-argument declaration: `extern void *func_003E1150_003E11D0();` (alias symbol, K&R, no prototype) and write `func_003E1150_003E11D0()`. gcc then emits no `move $a0, $s1`.
-- **A jump to the same case labels from many `case` lines** only needs one real body per distinct case; see the switch bullet above.
 - **Boolean from a compare** (`func_003AAAC8`): `if (r < 0) return 0; return 1;`, not `return r >= 0;`.
 ### Declarations in text.c
 

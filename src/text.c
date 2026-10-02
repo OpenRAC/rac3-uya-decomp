@@ -13040,7 +13040,59 @@ extern f32 D_001D96EC;
 void func_003E1D50(f32 *a, f32 *b) { *a = D_001D96E8; *b = D_001D96EC; }
 /* localdecomp:end func_003E1D50 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1D68);
+/* localdecomp:start func_003E1D68 */
+__asm__(".extern D_001D96C8_003E1D68, 4");
+__asm__(".extern D_001D96CC_003E1D68, 4");
+__asm__(".extern D_001D96D0_003E1D68, 4");
+__asm__(".extern D_001D96D4_003E1D68, 4");
+__asm__(".extern D_001D96D8_003E1D68, 4");
+__asm__(".extern D_001D96DC_003E1D68, 4");
+__asm__(".extern D_001D96E0_003E1D68, 4");
+__asm__(".extern D_001D96E4_003E1D68, 4");
+__asm__(".extern D_001D96F0_003E1D68, 4");
+__asm__(".extern D_001D96F4_003E1D68, 4");
+extern f32 D_001D96C8_003E1D68;
+extern f32 D_001D96CC_003E1D68;
+extern s32 D_001D96D0_003E1D68;
+extern s32 D_001D96D4_003E1D68;
+extern f32 D_001D96D8_003E1D68;
+extern f32 D_001D96DC_003E1D68;
+extern f32 D_001D96E0_003E1D68;
+extern f32 D_001D96E4_003E1D68;
+extern f32 D_001D96F0_003E1D68;
+extern f32 D_001D96F4_003E1D68;
+extern void func_003E1D18_003E1D68();
+extern void func_0038C450_003E1D68(f32 *, f32 *, s32);
+void func_003E1D68(s32 mode) {
+    f32 v[2];
+    f32 w;
+    D_001D96C8_003E1D68 = 1.0f;
+    D_001D96CC_003E1D68 = 1.0f;
+    D_001D96D0_003E1D68 = 0;
+    D_001D96D4_003E1D68 = 0;
+    D_001D96D8_003E1D68 = 512.0f;
+    switch (mode) {
+    case 0:
+        w = 416.0f;
+        D_001D96E0_003E1D68 = 512.0f;
+        break;
+    case 1:
+        w = 448.0f;
+        D_001D96E0_003E1D68 = 512.0f;
+        break;
+    default:
+        goto skip;
+    }
+    D_001D96DC_003E1D68 = w;
+    D_001D96E4_003E1D68 = w;
+skip:
+    func_003E1D18_003E1D68();
+    v[1] = v[0] = 0.0f;
+    func_0038C450_003E1D68(v, v + 1, 1);
+    D_001D96F0_003E1D68 = v[0] / D_001D96DC_003E1D68;
+    D_001D96F4_003E1D68 = (v[1] + v[0] * 0.5f) / D_001D96DC_003E1D68;
+}
+/* localdecomp:end func_003E1D68 */
 
 /* localdecomp:start func_003E1E38 */
 extern s32 D_001D96F8;

@@ -4059,7 +4059,7 @@ s32 func_0039D5A8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
 INCLUDE_ASM("asm/nonmatchings/text", func_0039D5F8);
 
 /* localdecomp:start func_0039D668 */
-extern void func_0039D6C8(s32);
+extern s32 func_0039D6C8(s32);
 extern s32 func_0039D510(s32, s32, s32);
 s32 func_0039D668(s32 a, s32 b, s32 c) {
     s32 r;
@@ -4070,7 +4070,33 @@ s32 func_0039D668(s32 a, s32 b, s32 c) {
 }
 /* localdecomp:end func_0039D668 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039D6C8);
+/* localdecomp:start func_0039D6C8 */
+typedef struct { u8 pad[4]; s16 s; u8 pad2[0x10]; } S_39D6C8;
+extern S_39D6C8 D_1CCFD0_0039D6C8;
+extern void func_0039CEA8();
+extern void func_13CA28();
+extern void func_13B620();
+extern void func_13CA20();
+extern void func_00388418();
+s32 func_0039D6C8(s32 a) {
+    if (a) {
+        do {
+            func_0039CEA8();
+            func_13CA28();
+            func_13B620();
+            func_13CA20();
+            if (D_1CCFD0_0039D6C8.s == 0) break;
+            func_00388418(0x2710);
+        } while (D_1CCFD0_0039D6C8.s != 0);
+    } else {
+        func_0039CEA8();
+        func_13CA28();
+        func_13B620();
+        func_13CA20();
+    }
+    return D_1CCFD0_0039D6C8.s;
+}
+/* localdecomp:end func_0039D6C8 */
 
 /* localdecomp:start func_0039D770 */
 s32 func_0011F0A0_0039D770(s32);                       /* extern */
@@ -4506,7 +4532,7 @@ typedef struct { u8 pad[0x1284]; s32 f1284; u8 pad2[0xB0]; E_160C40 e[1]; } S_16
 extern S_225780 D_00225780_003A13B0;
 extern S_160C40 D_160C40_003A13B0;
 extern s32 func_0039D510(s32, s32, s32);
-extern void func_0039D6C8(s32);
+extern s32 func_0039D6C8(s32);
 s32 func_003A13B0(s32 a) {
     s32 idx = D_00225780_003A13B0.f30;
     s32 h = D_00225780_003A13B0.f6C;
@@ -6145,7 +6171,7 @@ extern void func_00121760(void *, void *);
 extern s32 func_0039D668();
 extern void func_003A6888(void *, s32, void *, s32);
 extern void func_0011F0A0(s32);
-extern void func_0039D6C8(s32);
+extern s32 func_0039D6C8(s32);
 extern void func_003A6790(void *);
 extern void func_003A9890(void *, void *, void *);
 extern s32 D_001D5C78;
@@ -7943,7 +7969,7 @@ INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003187C0);
 /* localdecomp:start func_003B0210 */
 extern s32 func_003E3040();
 extern void func_003B05D8(void);
-extern void func_0039D6C8(s32);
+extern s32 func_0039D6C8(s32);
 extern void func_003B43B0(void);
 void func_003B0210(void) {
     func_003E3040(0x10);

@@ -10281,13 +10281,32 @@ void func_003BFCE8(void *p) {
 
 LINKER_REMNANT("asm/remnants", func_003BFD08);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BFD10);
+/* localdecomp:start func_003BFD10 */
+extern s32 D_001D5BEC[];
+extern void func_003BFC18_003BFD10();
+extern void func_00388830(s32, s32, f32);
+void func_003BFD10(void *a0, f32 *out, f32 *in, f32 f) {
+    f32 v[4];
+    if (D_001D5BEC[0] == 0) {
+        out[2] = in[2] - f;
+    } else {
+        func_003BFC18_003BFD10(a0, v, 0);
+        func_00388830((s32)v, (s32)v, f);
+        __asm__ __volatile__(
+            "lqc2 $vf1, 0(%1)\n"
+            "lqc2 $vf2, 0(%2)\n"
+            "vadd.xyz $vf1, $vf1, $vf2\n"
+            "sqc2 $vf1, 0(%0)\n"
+            : : "r"(out), "r"(in), "r"(v) : "memory");
+    }
+}
+/* localdecomp:end func_003BFD10 */
 
 /* localdecomp:start func_003BFD90 */
-extern void func_003BFD10(void *);
+extern void func_003BFD10_003BFD90(void *);
  
 void func_003BFD90(void *p) {
-    func_003BFD10((u8 *)p + 0x10);
+    func_003BFD10_003BFD90((u8 *)p + 0x10);
 }
 /* localdecomp:end func_003BFD90 */
 

@@ -242,6 +242,24 @@ Thirteen retail functions (`func_003869E8`, `0038C888`, `0038C9D8`, `003A6C30`, 
 - `func_0038C888` and `func_0038C9D8` are done this way. `func_003A9E60` has the right slots and call; only its argument-copy registers differ (retail gives `$a0` the first temp, gcc gives it the last).
 - A 64-bit argument that is moved with `daddu` must be `long`, not `s64` (`s64` produced a 128-bit `por`).
 
+## Patterns from the third hand pass (2026-10, 13 functions)
+
+- **Read a struct-typed global through its fields, with locals for the early reads.** `func_003A13B0` only matched once the two reads of `D_00225780` (`f30`, `f6C`) were locals at the top and the indexed table was a struct array (`D_160C40.e[idx].v[a]`, entry type 0x14C bytes) instead of pointer arithmetic. Retail's base-register reuse (`$a1` holds one global, then the other) follows from that.
+- **Do not cache a field chain if retail re-reads it** (`func_003C0B10`): `obj->set->n` and `obj->set->arr[j]->e` written out each time matched; a local for `obj->set` did not.
+- **A base pointer that is hoisted to the top** (`addiu $a1, $a0, 0x70` before anything else) is a local `u8 *b = p->b;` declared first (`func_003932B0`).
+- **Assign first, then test** (`func_003932B0`): `p->f74 = t; if (a < t) p->f74 = a; else if (t < 0) p->f74 = 0;` puts the first store in the branch's delay slot the way retail has it. The if/else form with the store inside each arm does not.
+- **Boolean return from a comparison: write `if (r < 0) return 0; return 1;`** (`func_003AAAC8`). `return r >= 0;` (and `!(r < 0)`, `(r < 0) ^ 1`) compile to `nor`/`srl`, retail has `slti` + `xori 1`.
+- **Search loops** (`func_0038EC80`, `func_00395BC0`): `for (i = 0; i < N; i++) if (tab[i].k == key) break;` followed by `if (i == N) return;`/`if (i < N)` gives retail's rotated loop. They need a struct with the exact element stride; the function itself is easy once the stride is right.
+- **Loop over an index range** (`func_0039B0F8`): `for (i = lo; i < hi; i++) { dst[i].x = ...; }` with `lo`/`hi` read from a table matched; the pointer-walking version with `n = hi - lo` did not.
+- **Float immediates and `$gp` floats together** (`func_003A3028`): `@ps2as` plus `__asm__(".extern X, 4");` for each `$gp` float/pointer global; initialise a loop offset inside the `if` that guards the loop (`off = 0;` before the `if` moves the `move` above the branch).
+- **Typedef and extern names collide across a part.** A block's typedefs and `extern`s stay visible to every later block in the part, so give each function's types a suffix (`S_395BC0`) and its globals an alias symbol (`D_160C40_00395BC0` plus a line in `symbol_addrs_resolved.txt`) when another block declares the same global differently.
+- **VU0 code that is not a pure leaf** (`func_003BFD10`): C around one `__asm__` block with `lqc2`/`vadd.xyz`/`sqc2` matched in no-split mode; a callee that other matched code declares with fewer arguments needs an alias symbol (`func_003BFC18_003BFD10`).
+- **div.s with two `nop`s in front** (`func_00393380`) gets to 4 diffs with `__asm__ __volatile__(".set noreorder
+nop
+nop
+div.s %0, %0, %1
+mul.s %0, %0, %2
+.set reorder" : "+f"(t) : "f"(10.0f), "f"(48.0f));`; what is left is which of the two constants gets `$f1`.
 ### Declarations in text.c
 
 The full build compiles `text.c` in parts (`tools/text_parts.txt`), and a part only sees *declarations* from earlier parts, never definitions. So:

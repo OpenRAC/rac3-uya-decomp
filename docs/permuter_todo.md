@@ -172,3 +172,17 @@ Lessons from the two that matched:
 - Do not cache a field chain in a local if retail re-reads it: `func_003C0B10` only matched with `obj->set->n` and `obj->set->arr[j]->e` written out each time (a local `s` kept a different register assignment). The permuter found this by inlining the local.
 - A loop counter that retail keeps separate from the loop test needs its own variable (`j` for the first loop, `i` for the second).
 - `$fp` shows up in gcc's output as `$fp`, not `$30`, which `asm_filter` had to learn before the slot remap worked.
+
+## Near misses from the third hand pass (2026-10)
+
+| Function | Diffs | What is left |
+|---|---|---|
+| `func_0038E508` | 3 (S) | retail does not thread the `*st == 0xD` test into the `== 3` test (jumps to the second compare); gcc threads it |
+| `func_00385908` | 4 (S) | retail computes each loop base with `lui $s; addiu $s, $s` (two registers in sequence); gcc interleaves through temporaries |
+| `func_00393380` | 4 (S, `@ps2as`) | the `div.s` nops are done with inline asm; gcc gives the constants `$f2`/`$f1` where retail has `$f1`/`$f2` |
+| `func_0037F4F8` | 2 (S) | VU0 pointer: retail adds the base after the first `lqc2`, gcc before |
+| `func_003BFBA8` | 21 (S, `@ps2as`) | VU asm at the top of the function is scheduled above the register saves in retail |
+| `func_003C8CE0` | 20 (S, `@ps2as`) | store order of the `lui $at` macro stores |
+| `func_003C9AE0` | 23 (S) | nested table loops; counted inner loop form not found |
+| `func_003A5CA8` | 16 (N) | order of the byte stores at the end and where `lw $a0, 0x20($s0)` is placed |
+| `func_003B60F0` | 35 (S, `@ps2as`) | float clamp with two stores; retail uses `$f4`/`$f1` select form |

@@ -13959,7 +13959,29 @@ s32 func_003E38D0(s32 arg0, s32 arg1, s32 arg2) {
 }
 /* localdecomp:end func_003E38D0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E3988);
+/* localdecomp:start func_003E3988 */
+extern s32 func_003DFB40_003E3988();
+extern s32 func_0038E1E0_003E3988();
+extern s32 func_003E2B98_003E3988(s32, s32, s32);
+extern s32 func_003E2808_003E3988(s32, s32);
+extern s32 func_003E2C88_003E3988(s32, f32, f32);
+extern s32 func_003E1E50_003E3988(s32, f32, f32);
+extern s32 func_003E21F8_003E3988(s32, f32);
+s32 func_003E3988(s32 a, s32 b, s32 c, f32 x, f32 y, f32 z, f32 w, f32 u) {
+    s32 f = func_003DFB40_003E3988(a);
+    s32 ok = func_003E2B98_003E3988(a, func_0038E1E0_003E3988(), b) != 0;
+    s32 t;
+    if (!f) ok = 0;
+    t = func_003E2808_003E3988(a, c) != 0;
+    ok = ok & t;
+    t = func_003E2C88_003E3988(a, z, w) != 0;
+    ok = ok & t;
+    t = func_003E1E50_003E3988(a, x, y) != 0;
+    ok = ok & t;
+    t = func_003E21F8_003E3988(a, u) != 0;
+    return ok & t;
+}
+/* localdecomp:end func_003E3988 */
 
 /* localdecomp:start func_003E3A80 */
 extern s32 func_003DFE10_003E3A80();
@@ -14018,7 +14040,28 @@ s32 func_003E3D08(s32 a, s32 b, f32 x, f32 y, f32 z, f32 w, f32 u, f32 v) {
 }
 /* localdecomp:end func_003E3D08 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E3DF0);
+/* localdecomp:start func_003E3DF0 */
+extern s32 func_003E5210_003E3DF0();
+extern s32 func_003E1E50_003E3DF0(s32, f32, f32);
+extern s32 func_003E2808_003E3DF0(s32, s32);
+extern s32 func_003E2C88_003E3DF0(s32, f32, f32);
+extern s32 func_003E2728_003E3DF0(s32, s32);
+extern s32 func_003E2118_003E3DF0(s32, f32);
+s32 func_003E3DF0(s32 a, s32 b, s32 c, f32 x, f32 y, f32 z, f32 w, f32 u) {
+    s32 f = func_003E5210_003E3DF0(a);
+    s32 ok = func_003E1E50_003E3DF0(a, x, y) != 0;
+    s32 t;
+    if (!f) ok = 0;
+    t = func_003E2808_003E3DF0(a, c) != 0;
+    ok = ok & t;
+    t = func_003E2C88_003E3DF0(a, z, w) != 0;
+    ok = ok & t;
+    t = func_003E2728_003E3DF0(a, b) != 0;
+    ok = ok & t;
+    t = func_003E2118_003E3DF0(a, u) != 0;
+    return ok & t;
+}
+/* localdecomp:end func_003E3DF0 */
 
 /* localdecomp:start func_003E3EE8 */
 extern void func_003AFAA8();

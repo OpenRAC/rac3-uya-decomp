@@ -5,7 +5,7 @@ A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arse
 ## Where things stand
 
 - `src/text.c` holds every function in the `.text` section. Functions that are done are C. The rest are `INCLUDE_ASM(...)` stubs that pull in the retail assembly from `asm/nonmatchings/text/`.
-- As of 2026-09-27, 1,112 of the 1,846 functions are final source: 764 in C, plus 144 hand-written assembly functions (`ASM_FUNC`) and 204 linker remnants (`LINKER_REMNANT`). Run `python tools/pr_check.py` for the current count.
+- As of 2026-10-02, 1,411 of the 1,867 functions are final source: 1037 in C, plus 149 hand-written assembly functions (`ASM_FUNC`) and 225 linker remnants (`LINKER_REMNANT`). Run `python tools/pr_check.py` for the current count.
 - The toolchain is fully identified: SN Systems ee-gcc 2.95.3 v1.36, plus the right assembler per function. See [Toolchain and build](Toolchain-and-Build).
 - The level overlays are tracked for progress only. Nobody is working on them yet.
 

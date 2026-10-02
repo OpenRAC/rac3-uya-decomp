@@ -152,3 +152,23 @@ Matched by hand or by the permuter: see `Matching-Patterns.md`, "Patterns from t
 | `func_003EB6B0` | 12 | midpoint of a box; retail loads `b[0]` into `$f12` first and stores `sw 0x34` before `sb 0x30` |
 | `func_0037DFD8`, `func_0038E730`, `func_0038E6D0` | 12-19 | table lookups; retail peels the first loop iteration (0038E730), merges the final select with `movz` (0037DFD8) |
 | `func_003A9E60` | 19 diff (S, no `-fopt-stack`) | in `sq_ra_funcs.txt`; only the argument-copy registers differ (retail `$a0`->`$t5`, mine `$s1`) |
+
+## The `sq`-saving functions (`tools/sq_ra_funcs.txt`)
+
+`func_0038C888`, `0038C9D8`, `003AAF88` and `003C0B10` are matched. Status of the rest (C drafts are in `scratch/`, gitignored; each has a line in `tools/localdecomp_flags.txt` with the right flags):
+
+| Function | Status |
+|---|---|
+| `func_003A9E60` | 19 diffs (S, no `-fopt-stack`): only the argument-copy registers differ (retail `$a0`->`$t5`, mine `$s1`) |
+| `func_003B82C0` | 48 diffs (S, `@ps2as`): right code, `$s` registers allocated in a different order (retail `$s0..$s7` = a7, a6, a4, a5, a3, a2, a1, ctx); statement-order and expression variants and 10 minutes of permuter did not move it |
+| `func_003BA5B8` | 73 diffs (`@ps2as`): `a7` is spilled to `0x10($sp)` in retail but kept in `$fp` by gcc; the 128-bit copies and the `vadd.xyz` block are done |
+| `func_003D1B10` | 95 diffs (`@ps2as`): same instructions as retail modulo registers (a multiset check), only scheduling and allocation differ; locals for the three packed words change the frame (0x70 instead of 0x80), so do not use them |
+| `func_003D2370` | not started; sibling of `003D1B10` (same GIF packet style), m2c draft works |
+| `func_003B3DB8`, `func_003869E8` | not started; m2c drafts work (`003869E8` has VU0 code) |
+| `func_003C1130`, `func_003A6C30` | not started; m2c fails on them ("two delay slot instructions in a row") |
+
+Lessons from the two that matched:
+
+- Do not cache a field chain in a local if retail re-reads it: `func_003C0B10` only matched with `obj->set->n` and `obj->set->arr[j]->e` written out each time (a local `s` kept a different register assignment). The permuter found this by inlining the local.
+- A loop counter that retail keeps separate from the loop test needs its own variable (`j` for the first loop, `i` for the second).
+- `$fp` shows up in gcc's output as `$fp`, not `$30`, which `asm_filter` had to learn before the slot remap worked.

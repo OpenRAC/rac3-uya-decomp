@@ -6765,7 +6765,27 @@ s32 func_003AB100(s32 a0, s32 a1, s32 a2, s32 a3) {
 }
 /* localdecomp:end func_003AB100 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AB180);
+/* localdecomp:start func_003AB180 */
+extern void func_11F0A0();
+extern s32 func_11F1E0();
+extern s32 func_11F1C0();
+extern void func_13D180();
+void func_003AB180(u8 *o, s32 a, s32 b, s32 c) {
+    s32 s[4];
+    s32 h;
+    func_11F0A0(0);
+    s[0] = a;
+    s[1] = *(s32 *)(o + 0x48);
+    s[2] = b;
+    s[3] = 0;
+    do {
+        h = func_11F1E0(s, 1);
+    } while (h == 0);
+    do {
+    } while (func_11F1C0(h) >= 0);
+    func_13D180(b, c);
+}
+/* localdecomp:end func_003AB180 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AB220);
 

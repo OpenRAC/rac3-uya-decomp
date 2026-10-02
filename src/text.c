@@ -13021,7 +13021,18 @@ void func_003E1CE8(void) {
 
 LINKER_REMNANT("asm/remnants", func_003E1D08);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E1D18);
+/* localdecomp:start func_003E1D18 */
+extern f32 D_001D96D8_003E1D18;
+extern f32 D_001D96DC_003E1D18;
+extern f32 D_001D96E0_003E1D18;
+extern f32 D_001D96E4_003E1D18;
+extern f32 D_001D96E8_003E1D18;
+extern f32 D_001D96EC_003E1D18;
+void func_003E1D18(void) {
+    D_001D96E8_003E1D18 = D_001D96D8_003E1D18 / D_001D96E0_003E1D18;
+    D_001D96EC_003E1D18 = D_001D96DC_003E1D18 / D_001D96E4_003E1D18;
+}
+/* localdecomp:end func_003E1D18 */
 
 /* localdecomp:start func_003E1D50 */
 extern f32 D_001D96E8;

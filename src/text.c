@@ -728,7 +728,279 @@ INCLUDE_ASM("asm/nonmatchings/text", func_00383FD8);
 
 LINKER_REMNANT("asm/remnants", func_00384418);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00384420);
+/* localdecomp:start func_00384420 */
+__asm__(".extern D_001D58D0_00384420, 4");
+__asm__(".extern D_001D5884_00384420, 1");
+
+typedef int u128_00384420 __attribute__((mode(TI)));
+typedef struct { u8 pad[0x450]; s32 x450; u8 pad454[0xC]; } P_00384420;
+typedef struct { u8 pad0[4]; s16 x4; } C_00384420;
+typedef struct { u128_00384420 q[4]; } Q_00384420;
+
+extern C_00384420 *D_001DA670_00384420;
+extern s32 D_001D9C44_00384420;
+extern s32 D_001D9D9C_00384420;
+extern s32 D_001D9388_00384420;
+extern s32 D_001D938C_00384420;
+extern s32 D_001D9C90_00384420;
+extern s32 D_001D9C94_00384420;
+extern u8 D_001D58D0_00384420;
+extern s32 D_001D5B94_00384420;
+extern s32 D_001D9C88_00384420;
+extern s32 D_001D9C8C_00384420;
+extern s32 D_001D93A4_00384420;
+extern s32 D_001D93A8_00384420;
+extern s32 D_001D9CB8_00384420;
+extern volatile s32 D_001D9F40_00384420;
+extern s32 D_001D52F0_00384420;
+extern P_00384420 D_00222500_00384420[];
+extern u8 D_001D5780_00384420;
+extern u8 D_001D5781_00384420;
+extern u8 D_001D5782_00384420;
+extern u8 D_001D5783_00384420;
+extern f32 D_001D9C50_00384420;
+extern f32 D_001D9C58_00384420[2];
+extern s32 D_001D5B98_00384420;
+extern u8 D_001D5884_00384420;
+extern s32 D_001D58B8_00384420;
+extern u8 D_100AE0_00384420[];
+extern s32 D_00143950_00384420[];
+extern f32 D_001D9D90_00384420;
+extern s32 D_001D9DD0_00384420;
+extern u8 D_002F9C80_00384420[];
+extern u8 D_00302540_00384420[];
+extern Q_00384420 D_00225B20_00384420;
+extern Q_00384420 D_00330F00_00384420;
+
+extern void func_0038DB18_00384420(s32);
+extern void func_00381F18_00384420(void);
+extern void func_003BD8A0_00384420(void);
+extern void func_00382F40_00384420(void);
+extern void func_003838C0_00384420(void);
+extern void func_00388278_00384420(void);
+extern void func_003C9B80_00384420(void);
+extern void func_003A4720_00384420(s32);
+extern void func_003D47A0_00384420(void);
+extern void func_003A4188_00384420(void);
+extern void func_00384B68_00384420(s32);
+extern void func_00385750_00384420(void);
+extern void func_00384C98_00384420(void);
+extern void func_003A4128_00384420(void);
+extern void func_003D99D8_00384420(void);
+extern void func_00386608_00384420(u8 *);
+extern void func_003857C8_00384420(void);
+extern void func_00383FD8_00384420(void);
+extern void func_003BE340_00384420(void);
+extern void func_003856D8_00384420(void);
+extern void func_003A3EF0_00384420(s32, unsigned long);
+extern void func_00380D48_00384420(void);
+extern void func_00385980_00384420(void);
+extern void func_11F0A0_00384420(s32);
+extern void func_003C7E68_00384420(void);
+extern void func_00385890_00384420(void);
+extern void func_003D3050_00384420(s32);
+extern void func_003D30D0_00384420(void);
+extern void func_003D3CF0_00384420(s32);
+extern void func_00385908_00384420(void);
+extern void func_00381A50_00384420(s32);
+extern void func_0038DEB0_00384420(void);
+extern s32 func_0039BEA8_00384420(s32);
+extern void func_00386210_00384420(void);
+extern void func_003A4758_00384420(s32);
+extern void func_003AA0B8_00384420(void);
+extern void func_00391FD8_00384420(void);
+extern void func_003ADB40_00384420(void);
+extern void func_003ADBB0_00384420(s32);
+extern void func_003ADB78_00384420(void);
+extern void func_0037DD08_00384420(void);
+extern void func_00385E40_00384420(void);
+extern void func_003866E8_00384420(s32, s32, s32, s32);
+extern void func_00386488_00384420(void);
+extern void func_003A3A40_00384420(void *);
+extern void func_003A3DA0_00384420(s32);
+extern void func_003CAC10_00384420(void *);
+extern void func_003C9AE0_00384420(void);
+extern void func_003D8218_00384420(void);
+extern void func_003D46E0_00384420(void);
+extern void func_003DB5C0_00384420(void *);
+extern void func_003D98D0_00384420(void);
+extern void func_003BDC90_00384420(void);
+extern void func_003821E8_00384420(s32);
+
+void func_00384420(s32 arg0) {
+    s32 t;
+    s32 t2;
+    f32 d, n;
+    u128_00384420 *src, *dst;
+
+    if (D_001DA670_00384420 == 0 || D_001DA670_00384420->x4 != 0 || ((*(u8 *)&D_001D9C44_00384420 ^ 1) & 1)) {
+        func_0038DB18_00384420(0);
+    }
+    func_00381F18_00384420();
+    func_003BD8A0_00384420();
+    func_00382F40_00384420();
+    func_003838C0_00384420();
+    D_001D9D9C_00384420 = -1;
+    D_001D9388_00384420 = 0;
+    D_001D938C_00384420 = 0;
+    if (D_001DA670_00384420 != 0 && (D_001D9C44_00384420 & 1)) {
+        func_00388278_00384420();
+    }
+    if (D_001D9C44_00384420 & 2) {
+        func_003C9B80_00384420();
+    }
+    func_003A4720_00384420(0x2010000);
+    if (D_001D9C44_00384420 & 4) {
+        func_003D47A0_00384420();
+    }
+    func_003A4720_00384420(0x2020000);
+    if ((D_001D9C44_00384420 & 0x20) && D_001D9C90_00384420 != 0) {
+        func_003A4188_00384420();
+        func_00384B68_00384420(1);
+        func_00385750_00384420();
+        func_00384C98_00384420();
+        func_003A4128_00384420();
+    }
+    if (D_001D9C44_00384420 & 8) {
+        func_003D99D8_00384420();
+    }
+    func_003A4720_00384420(0x2040000);
+    if (D_001D58D0_00384420) {
+        func_00386608_00384420(&D_001D58D0_00384420);
+    }
+    if ((D_001D9C44_00384420 & 0x20) && D_001D9C94_00384420 != 0) {
+        func_003A4188_00384420();
+        func_00384B68_00384420(1);
+        func_003857C8_00384420();
+        func_00384C98_00384420();
+        func_003A4128_00384420();
+    }
+    if (D_001D9C44_00384420 & 0x10) {
+        if (D_001D5B94_00384420 == 2) {
+            func_00383FD8_00384420();
+        } else {
+            func_003BE340_00384420();
+        }
+    }
+    func_003A4720_00384420(0x2080000);
+    func_00384B68_00384420(0);
+    if (D_001D9C44_00384420 & 0x20) {
+        func_003A4188_00384420();
+        if (D_001D9C88_00384420 != 0) {
+            func_003856D8_00384420();
+        }
+        func_003A3EF0_00384420(0x42, 0x8000000048);
+        func_00380D48_00384420();
+        func_003A4188_00384420();
+        func_00385980_00384420();
+        func_003A3EF0_00384420(8, 5);
+        func_003A4188_00384420();
+        func_003A3EF0_00384420(0x47, 0x53001);
+        func_11F0A0_00384420(0);
+        func_003C7E68_00384420();
+        D_001D9D9C_00384420 = 9;
+        func_003A3EF0_00384420(0x47, 0x5360B);
+        if (D_001D9C8C_00384420 != 0) {
+            func_003A4188_00384420();
+            func_00385890_00384420();
+        }
+        func_00384C98_00384420();
+        if (D_001D9388_00384420 != 0) {
+            func_003D3050_00384420(0);
+            if (D_001D9388_00384420 != 0) {
+                func_003D30D0_00384420();
+            }
+        }
+        if (D_001D93A4_00384420 != 0) {
+            func_003D3CF0_00384420(0);
+        }
+        t2 = D_001D93A4_00384420;
+        D_001D93A4_00384420 = 0;
+        D_001D93A8_00384420 = t2;
+        func_00384B68_00384420(0);
+        if (D_001D9CB8_00384420 != 0) {
+            func_003A4188_00384420();
+            func_00385908_00384420();
+        }
+        func_003A3EF0_00384420(0x42, 0x8000000044);
+        func_00381A50_00384420(arg0);
+        func_00384C98_00384420();
+    }
+    func_0038DEB0_00384420();
+    func_00384B68_00384420(0);
+    func_003A4188_00384420();
+    if ((D_001D9C44_00384420 & 0x180) && func_0039BEA8_00384420(3) == 0) {
+        func_003A3EF0_00384420(0x47, 0x33001);
+        func_00386210_00384420();
+        if (D_001D9C44_00384420 & 0x80) {
+            func_003A4758_00384420(0);
+            func_003AA0B8_00384420();
+            t = D_001D9F40_00384420;
+            func_00391FD8_00384420();
+            D_001D9F40_00384420 = t;
+            func_003ADB40_00384420();
+            func_003ADBB0_00384420(D_001D52F0_00384420);
+            func_003ADB78_00384420();
+            func_0037DD08_00384420();
+        }
+    }
+    if (D_001D5B94_00384420 == 2) {
+        func_00385E40_00384420();
+    }
+    func_00384C98_00384420();
+    if (D_001D9C44_00384420 & 0x40) {
+        func_003A3EF0_00384420(0x42, 0x8000000044);
+        if (((P_00384420 *)((u8 *)D_00222500_00384420 + arg0 * sizeof(P_00384420)))->x450 != 0) {
+            func_003866E8_00384420(D_001D5780_00384420, D_001D5781_00384420, D_001D5782_00384420, D_001D5783_00384420);
+        }
+        if (D_001D9C50_00384420 > 0.0f && D_001D5B98_00384420 == 0) {
+            if (D_001D9C50_00384420 > 1.0f) {
+                D_001D9C50_00384420 = 1.0f;
+            }
+            func_003866E8_00384420(0, 0, 0, D_001D9C50_00384420 * 128.0f);
+        }
+        if (D_001D9C58_00384420[0] > 0.0f && D_001D5B98_00384420 == 0) {
+            if (D_001D9C58_00384420[0] > 1.0f) {
+                D_001D9C58_00384420[0] = 1.0f;
+            }
+            func_003866E8_00384420(0xFF, 0xFF, 0xFF, D_001D9C58_00384420[arg0] * 128.0f);
+        }
+        if (D_001D5884_00384420 && D_001D58B8_00384420 != 0) {
+            func_00386488_00384420();
+        }
+    }
+    func_003A3A40_00384420(D_100AE0_00384420);
+    func_11F0A0_00384420(0);
+    n = *(volatile u32 *)0x10000800;
+    D_001D9D90_00384420 = n / (D_00143950_00384420[0] != 0 ? 11520.0f : 9600.0f);
+    func_003A3DA0_00384420(2);
+    if (D_001D9C44_00384420 & 2) {
+        func_003CAC10_00384420(D_002F9C80_00384420);
+        func_003C9AE0_00384420();
+    }
+    func_003A3DA0_00384420(4);
+    if (D_001D9C44_00384420 & 4) {
+        src = (u128_00384420 *)&D_00225B20_00384420;
+        dst = (u128_00384420 *)&D_00330F00_00384420;
+        dst[0] = src[0];
+        dst[1] = src[-1];
+        dst[2] = src[2];
+        func_003D8218_00384420();
+        func_003D46E0_00384420();
+    }
+    func_003A3DA0_00384420(8);
+    if (D_001D9C44_00384420 & 8) {
+        func_003DB5C0_00384420(D_00302540_00384420);
+        func_003D98D0_00384420();
+    }
+    func_003A3DA0_00384420(0x10);
+    if (D_001D9C44_00384420 & 0x10) {
+        func_003BDC90_00384420();
+    }
+    func_003821E8_00384420(arg0);
+    D_001D9DD0_00384420 = 0;
+}
+/* localdecomp:end func_00384420 */
 
 LINKER_REMNANT("asm/remnants", func_00384B48);
 

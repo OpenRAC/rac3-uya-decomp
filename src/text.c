@@ -13816,7 +13816,25 @@ s32 func_003E38D0(s32 arg0, s32 arg1, s32 arg2) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E3988);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E3A80);
+/* localdecomp:start func_003E3A80 */
+extern s32 func_003DFE10_003E3A80();
+extern s32 func_003E2728_003E3A80(s32, s32);
+extern s32 func_003E2808_003E3A80(s32, s32);
+extern s32 func_003E2C88_003E3A80(s32, f32, f32);
+extern s32 func_003E1E50_003E3A80(s32, f32, f32);
+s32 func_003E3A80(s32 a, s32 b, s32 c, f32 x, f32 y, f32 z, f32 w) {
+    s32 f = func_003DFE10_003E3A80(a);
+    s32 ok = func_003E2728_003E3A80(a, b) != 0;
+    s32 t;
+    if (!f) ok = 0;
+    t = func_003E2808_003E3A80(a, c) != 0;
+    ok = ok & t;
+    t = func_003E2C88_003E3A80(a, z, w) != 0;
+    ok = ok & t;
+    t = func_003E1E50_003E3A80(a, x, y) != 0;
+    return ok & t;
+}
+/* localdecomp:end func_003E3A80 */
 
 /* localdecomp:start func_003E3B50 */
 extern s32 func_003E3A80(s32, s32, s32, f32, f32, f32, f32);

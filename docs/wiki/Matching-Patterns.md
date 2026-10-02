@@ -260,9 +260,11 @@ if your target's `.s` contains one of them, the C is not the problem.
   `func_00388E58` and `func_00388E38` - which `tools/triage.py` still lists as `plain`.
 - **`sq $31` / `lq $31` - a 128-bit save of `$ra` where this compiler emits `sd`/`ld`.**
   13 functions in the text range save `$ra` that way, and **none** of the 13 has a C block
-  in `src/text.c`, while their neighbours that save with `sd`/`ld` are matched.
-  Unaffected by `-O1/-O3/-Os`, `-fno-opt-stack`, `-mgp64`, `-mips3`, `-mips4`, `-G0/-G24`
-  and both assemblers.
+  in `src/text.c`, while their neighbours that save with `sd`/`ld` are matched. 3.01 does not
+  produce the form under any combination measured here: `-O1/-O2/-O3/-Os`, `-G0/-G8/-G16/-G24`,
+  `-mgp64`, `-mips3`, `-mips4`, `-fopt-stack` and `-fno-opt-stack`. On this compiler
+  `-fopt-stack` is about the **`$s` slots**, not `$ra`: without it the `$s` saves become
+  16-byte `sq` slots, with it they are 8-byte `sd`, and `$ra` is `sd` either way.
 - **`sq $zero` - a 128-bit zero store.** `*(u128_t *)p = 0;`, `(u128_t)0` and a named
   `register u128_t z = 0;` all compile to `por $2,$zero,$zero` followed by `sq $2,0($a0)`:
   the TImode zero is materialised in a register first, so retail's single `sq $zero` is out
@@ -282,21 +284,27 @@ arithmetic on it fails with `unsupported wide integer operation`), and the liter
 
 #### Where the `sq`/`lq` forms probably come from
 
-The 128-bit saves are a **compiler-version signature**, not evidence of a custom toolchain.
+The 128-bit saves are a **compiler-version signature**, not a flag or assembler effect.
 Two SN packages can be run side by side here, and they disagree exactly there:
 
-| compiler | `$ra` save | stack adjust |
+| compiler | `$ra` save | `$s` slots |
 |---|---|---|
-| SN ProDG 3.01 `ee-gcc2953.exe` (this repo) | `sd` / `ld` | `addiu $sp,$sp,-0x20` |
-| SN ProDG 2.0 `ee-gcc295.exe` | **`sq` / `lq`** | `subu $sp,$sp,32` |
-| retail | **`sq` / `lq`** | `addiu $sp,$sp,-0x20` |
+| SN ProDG 3.01 `ee-gcc2953.exe` (2.95.3, this repo) | `sd` / `ld` | 8-byte `sd` with `-fopt-stack`, 16-byte `sq` without |
+| SN ProDG 2.0 `ee-gcc295.exe` (2.95.2, SN build v2.73a) | **`sq` / `lq`** | 16-byte `sq` |
+| retail | **`sq` / `lq`** | 16-byte `sq` |
 
-Measured with the C bodies of `func_0038C888` and `func_0038C9D8`: 3.01 emits `sd`/`ld` under
-`-O1`, `-O2`, `-O3`, `-Os`, `-G0`, `-G8` and `-mgp64`; 2.0 emits `sq`/`lq` for both, but with
-the older `subu`/`j` spellings.
+Measured with the C bodies of `func_0038C888` and `func_0038C9D8`, **assembled and compared
+word for word** rather than read off the `.s`: 2.0's output for both is byte-identical to
+retail, the `jal` operand aside, while 3.01's differs in the two `$ra` accesses only. 2.0
+does not know `-fopt-stack` at all (`cc1.exe: Invalid option`), and its `subu $sp,$sp,N` /
+`j $31` spellings are assembler-source text: assembled, both packages give the `addiu
+$sp,$sp,-N` / `jr $31` words retail has.
 
-Retail therefore looks like an **intermediate SN release**: 2.95.3 instruction selection with
-the older 16-byte stack slots - the same 2.95.3 built without the stack-save change that
-`-fopt-stack` selects in the 3.01 package. Running other SN packages against these 13
-functions is the cheapest way to pin the exact build; if one of them also fixes the `$at`
-and `sq $zero` cases above, that is the compiler the game was built with.
+Retail therefore **possibly** looks like an intermediate SN release: 2.95.3-era
+instruction selection with the older 16-byte stack slots. Treat it as a lead from two
+functions, not a settled fact. Most of the file matches 3.01 at the project's flags, so if
+the same build produced these 13, flags alone do not explain them. The next step is to write
+C for more of the 13 and run other SN packages against them - a package that also fixes the
+`$at` and `sq $zero` cases above would be the compiler the game was built with. The
+compiler/flag matrix already run over the wider corpus lives in
+`docs/compiler_matrix_findings.md`; the 2.0 package is not among its 15 builds.

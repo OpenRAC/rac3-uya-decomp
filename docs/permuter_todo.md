@@ -189,7 +189,7 @@ Near misses from the `div.s` pass (the padding itself is solved, see `tools/divs
 | `func_003B6410`, `func_003B6368` | 4, 14 | `sll` for the index lands in the `beqz` delay slot in retail, `lui` in mine |
 | `func_003E1D68` etc. | matched | needed `@ps2as` plus `.extern X, 4` for the `$gp` floats |
 
-Large-function pass (2026-10-02, largest plain functions first). Matched: `func_0039DB38`, `func_003E3F08`, `func_003DF038`, `func_003DE8F0`, `func_00384420`. Parked, with drafts in `scratch/` (gitignored):
+Large-function pass (2026-10-02, largest plain functions first). Matched: `func_0039DB38`, `func_003E3F08`, `func_003DF038`, `func_003DE8F0`, `func_00384420`, `func_003CBE40` (`volatile` on `D_001D9384` keeps its load out of delay slots and loops). Parked, with drafts in `scratch/` (gitignored):
 
 | Function | Size | State | What is left |
 |---|---|---|---|
@@ -198,3 +198,7 @@ Large-function pass (2026-10-02, largest plain functions first). Matched: `func_
 | `func_003A8230` | 0x136C | every instruction right, 718 aligned diffs | register allocation only: retail keeps widget pointers in `$s0..$s7` in a reuse pattern a flat `s + off` source does not reproduce |
 | `func_003BC568` | 0xA3C | 250 aligned diffs | HUD layout; retail keeps `&D_002CE0E0` in `$s5` and rederives it later from `&D_002CE100 - 0x20` |
 | `func_003B3558` | 0x860 | not started | save-data serializer, 0xC00 frame, unaligned `ldl`/`ldr` copies |
+| `func_003B49E8` | 0x478 | 2 diffs (S, `@ps2as`) | `$a0`/`$a1` argument moves swapped before the `func_003E3A80` call. Keys found: `func_003E30C8` must return `s32`, and `func_003E3BD0` takes its `0` integer argument last (`(s32, u32, f32, f32, f32, f32, s32)`) |
+| `func_003D3428` | 0x358 | 2 diffs (S, `@ps2as`) | GS packet writer; two loop increments swapped. Retail's register increments need `long step` variables: `u += step; w += step2;` with `x2` taken from the second induction variable `w` |
+| `func_00384EC0` | 0x578 | 2 instructions short (S, `@ps2as`) | GS TEX0 builder, uses a `SCE_GS_SET_TEX0`-style macro. Packet pointer `D_001DA0D0` must be declared `[1]` so stores reload it. Left: retail stores `D_001D4BB0` before the bound check and puts `e->x0`'s `sd` in the delay slot |
+| `func_003B1EB0` | 0x410 | 45 diffs (S) | save-slot list; spilled induction variables and the slot base `&D_142430` reached two ways |

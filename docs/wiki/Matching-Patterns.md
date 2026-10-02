@@ -372,8 +372,9 @@ frame size, `$sN` in the 16-byte `sq` slot at `0x10*N`, `$ra` highest - where 3.
 retail's order: retail saves the registers ascending by slot, 2.0 descending (on
 `func_003AAF88`, 2.0 saves `$s3, $s1, $s0`, retail `$s3, $s0, $s1`). Those two bodies are
 the C that makes 3.01 match, so a compiler swap would mean re-tuning them, and re-tuning is
-what the filter avoids. 2.0 also emits the `lq $at` bodies above exactly as 3.01 does, so
-it does not explain that shape either.
+what the filter avoids. 2.0 also emits the `lq $at` bodies above exactly as 3.01 does, and
+the `sq $zero` body too (`por $2,$zero,$zero` + `sq $2,0($a0)`, unchanged), so the package
+is a stack-slot signature and nothing else.
 
 One of those tests is done: `func_003A9E60` (0x8C, reconstructed from its retail
 disassembly alone, flags `-O2 -G8 -mno-split-addresses -mno-check-zero-division` plus the

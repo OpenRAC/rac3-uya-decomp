@@ -12483,7 +12483,24 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003E09D8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003E0B78);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E0CC0);
+/* localdecomp:start func_003E0CC0 */
+typedef struct { u8 pad[0xDC]; s32 A[16]; s32 B[16]; } O_003E0CC0;
+extern s32 func_003E1A98_003E0CC0();
+s32 func_003E0CC0(O_003E0CC0 **pp, s32 b) {
+    s32 r = -1;
+    s32 i;
+    if (func_003E1A98_003E0CC0(b) == 0) {
+        for (i = 0; i < 16; i++) {
+            if ((*pp)->A[i] == 0 && (*pp)->B[i] == 0) {
+                (*pp)->B[i] = b;
+                r = i;
+                break;
+            }
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_003E0CC0 */
 
 /* localdecomp:start func_003E0D78 */
 typedef struct { u8 pad[0x11C]; s32 slots[36]; u8 used[1]; } T_3E0D78;

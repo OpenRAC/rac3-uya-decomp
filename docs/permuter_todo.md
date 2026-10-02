@@ -196,3 +196,14 @@ Lessons from the two that matched:
 | `func_003A3430` | 8 (S, `@ps2as`) | argument-to-`$s` register order (retail `$s0..$s4` = a..e) |
 | `func_003E0798` | 52 | singleton wrapper; retail keeps four `$s` registers (`o` distinct from `p`, `idx*4` saved) |
 | `func_003822C8` | 43 | three-level `u16` table lookup; gcc folds the `+4` into the base, retail keeps `l` and adds `4` per load |
+
+Near misses from the `div.s` pass (the padding itself is solved, see `tools/divs_nops.txt`):
+
+| Function | Diffs | What is left |
+|---|---|---|
+| `func_003A6640` | 3 (S) | retail loads `$a2`, then `sltu`, then `move $a3, $a2`; mine loads `$a3` and copies to `$a2` |
+| `func_003D3EE0` | 9 (S) | `$s1`/`$s2` swapped between the float source pointer and the quad source pointer |
+| `func_003B5AB0` | 61 | callee-saved float registers `$f20-$f23`: retail has 11.0, 0.49, 6.0 and the scale in that order |
+| `func_003BF910` | 36 | the `max(abs)` chain: retail keeps `abs.s` results in `$f1/$f0/$f2` and branches with `bc1tl` |
+| `func_003B6410`, `func_003B6368` | 4, 14 | `sll` for the index lands in the `beqz` delay slot in retail, `lui` in mine |
+| `func_003E1D68` etc. | matched | needed `@ps2as` plus `.extern X, 4` for the `$gp` floats |

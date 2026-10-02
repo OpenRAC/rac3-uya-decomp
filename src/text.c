@@ -10262,7 +10262,41 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BCFB0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BD0D8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BD360);
+/* localdecomp:start func_003BD360 */
+__asm__(".extern D_001DA520_003BD360, 16");
+__asm__(".extern D_001DA530_003BD360, 16");
+__asm__(".extern D_001DA534_003BD360, 16");
+__asm__(".extern D_001D9D80_003BD360, 16");
+typedef struct { u8 pad[0x20]; u8 b20; u8 pad21[0x33]; s32 f54; u8 pad58[0x10]; s32 f68; u8 pad6C[0x34]; s32 fA0; } O_3BD360;
+extern u32 D_001DA520_003BD360; 
+extern s32 D_001DA530_003BD360; 
+extern s32 D_001DA534_003BD360; 
+extern s32 D_001D9D80_003BD360; 
+extern void func_003C1F10();
+extern void func_003BD778();
+extern void func_003C23E8();
+void func_003BD360(s32 arg) {
+    O_3BD360 *o = (O_3BD360 *)arg;
+    s32 p;
+    if ((u32)o < D_001DA520_003BD360) {
+        o->b20 = 0xFD;
+    } else {
+        o->b20 = 0xFE;
+        p = o->f68;
+        if (p) {
+            if (p >= D_001DA530_003BD360 && p < D_001DA530_003BD360 + D_001DA534_003BD360 * 64) {
+                func_003C1F10(p);
+                o->f68 = 0;
+            }
+        }
+        while (o->f54) {
+            func_003BD778(o, o->f54);
+        }
+    }
+    o->fA0 = D_001D9D80_003BD360 + 2;
+    func_003C23E8(o, 0x80807F7F);
+}
+/* localdecomp:end func_003BD360 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BD428);
 

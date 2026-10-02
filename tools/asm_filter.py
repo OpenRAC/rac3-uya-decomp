@@ -81,6 +81,9 @@ def insn_count(lines):
         if not s or s.startswith(".") or LABEL_RE.match(l):
             continue
         m = re.match(r"([a-z0-9.]+)\s*(.*)", s)
+        if m and m.group(1) in ("jal", "jalr"):
+            n += 1  # a call is one word, its symbol operand is not a macro
+            continue
         if not m or not SIMPLE_OPS.match(m.group(1)):
             return None
         ops = m.group(2)

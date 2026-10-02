@@ -132,6 +132,8 @@
 0x0039A620     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0039B0F8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0039B198     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0039BD48     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x0039BE90     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0039BEA8     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x0039C170     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x0039C1C8     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override

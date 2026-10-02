@@ -29,7 +29,7 @@ tools/permuter_setup.py, so every path compiles C the same way:
     python tools/asm_filter.py part.s          # rewrites in place
     ee-gcc -c ... -o part.o part.s
 """
-import re, sys
+import os, re, sys
 
 REG = {**{"$%d" % i: i for i in range(32)},
        **{"$" + n: i for i, n in enumerate(
@@ -67,7 +67,7 @@ LABEL_RE = re.compile(r"^\s*([$.\w]+):")
 
 SIMPLE_OPS = re.compile(r"^(addu|addiu|subu|and|andi|or|ori|xor|xori|nor|slt|slti|sltu|sltiu|sll|srl|sra|sllv|srlv|srav|"
                         r"daddu|daddiu|dsubu|dsll|dsrl|dsra|dsll32|dsrl32|dsra32|move|negu|not|lui|"
-                        r"lb|lbu|lh|lhu|lw|lwu|ld|sb|sh|sw|sd|lwc1|swc1|lq|sq|"
+                        r"lb|lbu|lh|lhu|lw|lwu|ld|sb|sh|sw|sd|lwc1|swc1|l\.s|s\.s|lq|sq|"
                         r"add\.s|sub\.s|mul\.s|neg\.s|abs\.s|mov\.s|c\.\w+\.s|cvt\.\w+\.\w+|mtc1|mfc1|"
                         r"movz|movn|mult|multu|mult1|multu1|nop)$")
 
@@ -81,6 +81,16 @@ def insn_count(lines):
         if not s or s.startswith(".") or LABEL_RE.match(l):
             continue
         m = re.match(r"([a-z0-9.]+)\s*(.*)", s)
+        if m and (m.group(1) in ("jal", "jalr", "b", "j", "jr") or m.group(1) in TWO or m.group(1) in ONE
+                  or m.group(1) in REGIMM or m.group(1) in BC1 or m.group(1) in PSEUDO_Z):
+            n += 1  # a call or a branch is one word, its label operand is not a macro
+            continue
+        if m and m.group(1) == "li":
+            im = re.match(r"^\$\w+\s*,\s*(-?\d+|-?0x[0-9a-fA-F]+)\s*(#.*)?$", m.group(2))
+            if im and -0x8000 <= int(im.group(1), 0) <= 0xFFFF:
+                n += 1  # a small immediate is a single addiu/ori
+                continue
+            return None
         if not m or not SIMPLE_OPS.match(m.group(1)):
             return None
         ops = m.group(2)
@@ -94,8 +104,127 @@ def insn_count(lines):
     return n
 
 
+# 13 retail functions save $ra with `sq` (16-byte slot) where gcc 2.95.3 writes
+# `sd`, and the ones that also save $s registers lay the slots out ascending
+# ($s0 lowest, $ra highest) where gcc puts $ra lowest. No compiler or flag we
+# have produces that. The slot set and the frame size are the same, so for the
+# functions listed in tools/sq_ra_funcs.txt (compiled without -fopt-stack, which
+# already gives sq for the $s registers) every callee-saved save and restore is
+# rewritten to the slot retail uses. $ra is written as a raw word (sq =
+# 0x7FBF0000 | off, lq = 0x7BBF0000 | off, base $sp), like the retail .s files.
+SQ_RA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sq_ra_funcs.txt")
+SAVE_RE = re.compile(r"^(\s*)(sd|sq|ld|lq)\s+\$(1[6-9]|2[0-3]|30|31|fp),\s*(\d+)\(\$sp\)\s*(#.*)?$")
+SAVE_ORDER = [16, 17, 18, 19, 20, 21, 22, 23, 30, 31]
+
+
+def sq_ra_funcs():
+    try:
+        with open(SQ_RA_FILE) as f:
+            return {l.split("#")[0].strip() for l in f if l.split("#")[0].strip()}
+    except OSError:
+        return set()
+
+
+def sq_rewrite(lines):
+    """lines: one function's .s lines, from .ent to .end."""
+    saves = []  # (index, is_store, reg, offset, indent, line ending)
+    for i, l in enumerate(lines):
+        body = l.rstrip("\r\n")
+        m = SAVE_RE.match(body)
+        if m:
+            saves.append((i, m.group(2) in ("sd", "sq"), (30 if m.group(3) == "fp" else int(m.group(3))), int(m.group(4)),
+                          m.group(1), l[len(body):]))
+    regs = sorted({s[2] for s in saves}, key=SAVE_ORDER.index)
+    offs = sorted({s[3] for s in saves})
+    if not regs or len(regs) != len(offs):
+        return lines
+    new_off = dict(zip(regs, offs))
+    for i, store, reg, off, ind, nl in saves:
+        o = new_off[reg]
+        if reg == 31:
+            w = (0x7FBF0000 if store else 0x7BBF0000) | o
+            lines[i] = f"{ind}.word 0x{w:08X}  # {'sq' if store else 'lq'} $31,{o}($sp){nl}"
+        else:
+            lines[i] = f"{ind}{'sq' if store else 'lq'} {'$fp' if reg == 30 else '$' + str(reg)},{o}($sp){nl}"
+    return lines
+
+
+def sq_pass(text):
+    funcs = sq_ra_funcs()
+    if not funcs:
+        return text
+    out, buf, cur = [], [], None
+    for line in text.splitlines(True):
+        s = line.strip()
+        em = re.match(r"\.ent\s+(\S+)", s)
+        if cur is None and em and em.group(1) in funcs:
+            cur, buf = em.group(1), [line]
+            continue
+        if cur is not None:
+            buf.append(line)
+            if re.match(r"\.end\s", s):
+                out.extend(sq_rewrite(buf))
+                cur, buf = None, []
+            continue
+        out.append(line)
+    out.extend(buf)
+    return "".join(out)
+
+
+# Retail pads most div.s / sqrt.s with 0-3 nops, which neither gcc nor an assembler
+# in reorder mode keeps. tools/divs_nops.txt (tools/gen_divs_nops.py) lists, per
+# function, the count in front of each div.s/sqrt.s in order; they go back in as
+# raw .words. A function whose div.s/sqrt.s count differs from the table is left alone.
+DIVS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "divs_nops.txt")
+DIVS_RE = re.compile(r"^\s*(div\.s|sqrt\.s)\s")
+
+
+def divs_table():
+    try:
+        with open(DIVS_FILE) as f:
+            rows = [l.split("#")[0].split() for l in f]
+    except OSError:
+        return {}
+    return {r[0]: [int(x) for x in r[1:]] for r in rows if len(r) > 1}
+
+
+def divs_rewrite(lines, counts):
+    idx = [i for i, l in enumerate(lines) if DIVS_RE.match(l)]
+    if len(idx) != len(counts):
+        return lines
+    for i, n in reversed(list(zip(idx, counts))):
+        ind = re.match(r"\s*", lines[i]).group(0)
+        nl = lines[i][len(lines[i].rstrip("\r\n")):] or "\n"
+        lines[i:i] = [f"{ind}.word 0x00000000  # nop before div.s{nl}"] * n
+    return lines
+
+
+def divs_pass(text):
+    table = divs_table()
+    if not table:
+        return text
+    out, buf, cur = [], [], None
+    for line in text.splitlines(True):
+        s = line.strip()
+        em = re.match(r"\.ent\s+(\S+)", s)
+        if cur is None and em and em.group(1) in table:
+            cur, buf = em.group(1), [line]
+            continue
+        if cur is not None:
+            buf.append(line)
+            if re.match(r"\.end\s", s):
+                out.extend(divs_rewrite(buf, table[cur]))
+                cur, buf = None, []
+            continue
+        out.append(line)
+    out.extend(buf)
+    return "".join(out)
+
+
 def filter_asm(text):
     out, labels, noreorder, app = [], {}, False, False
+    text = sq_pass(text)
+    text = divs_pass(text)
     for line in text.splitlines(True):
         s = line.strip()
         if s.startswith("#APP"):

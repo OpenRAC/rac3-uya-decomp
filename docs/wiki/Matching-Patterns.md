@@ -209,9 +209,7 @@ m2c (`--target mipsee-gcc-c --valid-syntax`) gets the logic right for many funct
   Separate `t` and `v` are needed here: retail keeps the tested object in `$a0`.
 - **Pointer-count loops over a table of function pointers** keep one outer struct pointer: `p->q->fn[i]` rather than caching `p->q` (`func_003E15D8`).
 
-- **Loop padding no assembler mode reproduces** (retail has `jal; nop; nop; nop; bnez`): `do { r = f(); __asm__ volatile("nop
-	nop
-	nop"); } while (r);` (`func_003B6488`, `func_003AB100`). This is an inline-asm hack; revisit if a C-only form is found.
+- **Loop padding no assembler mode reproduces** (retail has `jal; nop; nop; nop; bnez`): `do { r = f(); __asm__ volatile("nop\n\tnop\n\tnop"); } while (r);` (`func_003B6488`, `func_003AB100`). This is an inline-asm hack. `tools/asm_filter.py` now counts `jal`/`jalr` when it pads short loops (see "Loop padding with a call in the body" below), so try the plain loop first; it may make the hack unnecessary.
 - **64-bit constants and `lwu`:** declare the callee parameter and the struct field as `unsigned long` (`func_00386608`, needs `@ps2as`).
 - **Under `@ps2as`, a scalar `extern s32 X;` gets the non-gp form** (`lui; lw`, or `lui $at; sw`). Add `__asm__(".extern X, 4");` only for symbols retail reaches through `$gp` (`func_003A3220`, `func_003D3C80`).
 - **Check the raw words for `lq`/`sq`** (`.word 0x78..`/`0x7C..`) before rewriting a copy loop (`func_0037F550`).
@@ -227,7 +225,7 @@ Each of these fixed a real near miss.
 - **Index first in an address sum.** `(i << 2) + (s32)base` gives `addu idx, base`, the order retail has; `base + i * 4` gives the other (`func_003E8EC8`, `func_00392108`).
 - **A callee that returns its argument.** Use the result (`b = f(b, 1)`), or the pointer needs its own callee-saved register (`func_003DFB40` family).
 - **Separate return variable, single return.** `func_003ABE98` and `func_003AD520` only match with one `return r;` at the end and no early return inside the else branch; early returns let gcc fold `r` to a constant and free the register.
-- **Hash-style update `off = (key & 1) + (off + 1)`** gets reassociated; a temporary (`t = off + 1; off = (key & 1) + t;`) keeps retail's order (`func_003E4890`, `func_003E5F00` and their siblings are within 60 to 120 of a match with it).
+- **Hash-style update `off = (key & 1) + (off + 1)`** gets reassociated; a temporary (`t = off + 1; off = (key & 1) + t;`) keeps retail's order. With it plus the init-order fix below, the lookups `func_003E4890`, `func_003E4918` and `func_003E4DA0` match; the inserts `func_003E5F00`, `func_003E6680` and `func_003E67B8` are still open (setup moves hoisted in a different order).
 - **Chains of `!= 0` tests combined with `&`** (`func_003E34F0`, `func_003E3580`, `func_003E3630`): `r = f(a, b) != 0; t = f(a, c) != 0; r = r & t; ...`. A single expression gives conditional moves instead.
 - **A switch whose table starts at 0** needs `case 0:` sharing the `default:` body (`func_003AE368`); without it gcc subtracts 1 and builds a shorter table.
 - **A reload that retail really performs** after a store to the same global needs `volatile` on that global (`func_00395FF0`, `D_001D4CEC`); a second alias symbol is scheduled above the store instead.
@@ -254,12 +252,7 @@ Thirteen retail functions (`func_003869E8`, `0038C888`, `0038C9D8`, `003A6C30`, 
 - **Float immediates and `$gp` floats together** (`func_003A3028`): `@ps2as` plus `__asm__(".extern X, 4");` for each `$gp` float/pointer global; initialise a loop offset inside the `if` that guards the loop (`off = 0;` before the `if` moves the `move` above the branch).
 - **Typedef and extern names collide across a part.** A block's typedefs and `extern`s stay visible to every later block in the part, so give each function's types a suffix (`S_395BC0`) and its globals an alias symbol (`D_160C40_00395BC0` plus a line in `symbol_addrs_resolved.txt`) when another block declares the same global differently.
 - **VU0 code that is not a pure leaf** (`func_003BFD10`): C around one `__asm__` block with `lqc2`/`vadd.xyz`/`sqc2` matched in no-split mode; a callee that other matched code declares with fewer arguments needs an alias symbol (`func_003BFC18_003BFD10`).
-- **(Old workaround, no longer needed: see the `div.s` entry below.) div.s with two `nop`s in front** (`func_00393380`) gets to 4 diffs with `__asm__ __volatile__(".set noreorder
-nop
-nop
-div.s %0, %0, %1
-mul.s %0, %0, %2
-.set reorder" : "+f"(t) : "f"(10.0f), "f"(48.0f));`; what is left is which of the two constants gets `$f1`.
+- **`div.s` with `nop`s in front** (`func_00393380`): matched as plain C once `tools/divs_nops.txt` handled the padding (see the `div.s` entry under Known open problems). Don't use the old inline-asm `nop; nop; div.s` workaround; it changes the register choice.
 ## More patterns from the third hand pass (switches, delay slots, aliasing)
 
 - **Switch functions work now.** Write the `switch`; the compiler emits its own jump table in `.rodata`, so delete the `INCLUDE_RODATA(... jtbl_XXXXXXXX)` line after the function (`func_003A0178`, `func_0039BD48`). Case numbers must follow the retail table, not the order of the code: read `asm/nonmatchings/text/rodata/jtbl_*.s`, find which index points at each body, and put the bodies in address order. gcc only builds a table when at least five non-merged case nodes exist and it deletes cases that lead to the same place as `default`; to get retail's long table add cases that `break` but are not adjacent (`case 0: case 2: case 4: case 18: break;`), which keeps a 19-entry table.
@@ -271,6 +264,24 @@ mul.s %0, %0, %2
 - **Loop padding with a call in the body** (`func_003BD360`): `tools/asm_filter.py` now counts `jal`/`jalr` as one instruction when it pads short loops to 6.
 - **A call with no argument moves** (`func_003E11D0`, `func_003E5F00`): retail's `jal` follows the prologue with `$a0`/`$a1` untouched even though the callee takes them. The original called it with the incoming registers still live, so call it through a zero-argument declaration: `extern void *func_003E1150_003E11D0();` (alias symbol, K&R, no prototype) and write `func_003E1150_003E11D0()`. gcc then emits no `move $a0, $s1`.
 - **Boolean from a compare** (`func_003AAAC8`): `if (r < 0) return 0; return 1;`, not `return r >= 0;`.
+
+## Patterns from the large-function pass (2026-10-02)
+
+Five functions between 0x600 and 0x96C bytes (`func_0039DB38`, `func_003E3F08`, `func_003DF038`, `func_003DE8F0`, `func_00384420`), all S mode with `@ps2as`.
+
+- **Small objects get the assembler's `la`, not gcc's split.** Under `@ps2as`, gcc treats an object of 8 bytes or less as small data and emits one `la`/`lw` macro, which Ps2EeAs expands to `lui`/`addiu` (adjacent, same register) when it has no `.extern` hint. A larger or unsized object gets gcc's split form instead (`lui` and `addiu` scheduled apart, `%hi` CSE'd). So when retail's `lui`/`addiu` for an address are adjacent, and the same address is rebuilt at every use instead of kept in a register, declare the object with its real small size: `extern s32 D_001DA868[2];` (an 8-byte buffer cleared with `func_00388440(p, 0, 8)`) or the 0x20-spaced hash tables at 0x1DA9C8 in `func_003E3F08`.
+- **Which addresses stay in `$s` registers is gcc's allocation priority.** In a long run of calls that reuse table addresses (`func_003E3F08`), each repeated address is one pseudo; the ones with many uses over a short span win the callee-saved registers and the rest are rebuilt with `lui`/`addiu` at each use. If the wrong ones are cached, look for an object that is really small data (previous point) before reordering calls.
+- **`volatile` on a global that is saved and restored around a call** (`t = D_001D9F40; f(); D_001D9F40 = t;` in `func_00384420`). Retail keeps both accesses out of the call delay slots, which only happens for a volatile access.
+- **A hardware register read with the full address in a register** (`lui; ori 0x800; lw 0($v0)`): `*(volatile u32 *)0x10000800`. Without `volatile` gcc folds the low half into the load offset.
+- **A byte constant address that must not land in a delay slot**: `*(u8 *)0x1D5477` instead of a declared global (`func_0039DB38`). A declared scalar is small data, so reorg puts its load in a delay slot and Ps2EeAs turns it into `$gp`.
+- **Loop-invariant copies come from member access in the loop.** Retail's `move $t0, $t2` before each loop (`func_0039DB38`) is loop.c hoisting `o + 0x38C` out of `o->an[o->idx][i]`. A local pointer (`an = o->an`) makes it disappear. Likewise a pointer that loop strength reduction creates (`lbu 4($a2)` with `$a2` stepping) comes from indexing (`raw[i + 4]`), not from a pointer variable in the source.
+- **One variable per loop counter.** A counter shared by a loop with calls and a loop without moves both into a callee-saved register; give each loop its own variable. The same goes for a temporary reused for unrelated values (a save/restore temp and a swap temp in `func_00384420`).
+- **Stores to one struct in retail's order A..J**: the "write B, C, ..., A" rotation applied to `func_0039DB38`'s ten stores only after a statement-order search; try permutations of the stores before anything else.
+- **`(x ^ 1) == 0` and `(x ^ 1) & 1`** give retail's `xori` test where `x == 1` or `!(x & 1)` give `li`/`bne` or `andi`/`bnez` (`func_003DE8F0`, `func_00384420`). Bit 0 of a flags word read with `lbu` is `*(u8 *)&flags`.
+- **Blocks of the same function with their own locals**: two branches that each pass `&w` to a callee use two stack slots in retail (`sp0`, `sp4`), so each branch declares its own `f32 w;` (`func_003DE8F0`).
+- **`div.s` right after `mtc1` under `@ps2as`**: Ps2EeAs adds its own `mtc1` hazard `nop`, so the `tools/divs_nops.txt` count for that `div.s` is one less than retail's `nop` count (`func_00384420`).
+- **`sqrt.s` that spimdisasm prints as `c1 0x504`** is missed by `gen_divs_nops.py`; check the table line has one count per `sqrt.s` too (`func_0038F3F8`, `func_00390730`). Write the `sqrt.s` as `__asm__("sqrt.s %0, %1" : "=f"(r) : "f"(sum));` with a separate input variable; `sqrtf()` adds an errno check and a call.
+
 ### Declarations in text.c
 
 The full build compiles `text.c` in parts (`tools/text_parts.txt`), and a part only sees *declarations* from earlier parts, never definitions. So:

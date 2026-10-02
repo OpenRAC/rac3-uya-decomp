@@ -2038,7 +2038,22 @@ void func_0038EC18(S_38EC18 *p) {
 }
 /* localdecomp:end func_0038EC18 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038EC80);
+/* localdecomp:start func_0038EC80 */
+typedef struct { s32 pad0; s32 f4; s32 pad8[7]; s32 f24; s32 pad28[15]; s32 id; s32 f68; s32 pad6C[9]; } S_38ED78;
+extern S_38ED78 D_0032DB20[];
+extern void func_0038EB10();
+s32 func_0038EC80(s32 id) {
+    s32 i;
+    for (i = 0; i < 13; i++) {
+        if (D_0032DB20[i].id == id) break;
+    }
+    if (i < 13) {
+        func_0038EB10(i, 0xFFFF, 0, 0, 0, 0, 0);
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_0038EC80 */
 
 /* localdecomp:start func_0038ED00 */
 typedef struct { u16 x0; u16 x2; u16 x4; u8 x6; u8 x7; } E_38ED00;
@@ -2057,8 +2072,6 @@ void func_0038ED00(S_38ED00 *d, s32 a) {
 /* localdecomp:end func_0038ED00 */
 
 /* localdecomp:start func_0038ED78 */
-typedef struct { s32 pad0; s32 f4; s32 pad8[7]; s32 f24; s32 pad28[15]; s32 id; s32 f68; s32 pad6C[9]; } S_38ED78;
-extern S_38ED78 D_0032DB20[];
 void func_0038ED78(s32 id, s32 v) {
     s32 i;
     for (i = 0; i < 13; i++) {

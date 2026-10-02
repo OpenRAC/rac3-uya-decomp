@@ -91,7 +91,7 @@ About 14 weeks remain. The compiled buckets (plain, switch, vu0, mmi, sys) are a
 3. **December: the long tail.**
    - The 20 plain functions over 0x400 bytes.
    - Register-allocation stragglers like `func_0039BEC0`.
-   - The open problems: the `lwc1`/`nop` load, 64-bit constants, and `div.s` padding (lead: Ps2EeAs's DIV padding).
+   - ~~The open problems: the `lwc1`/`nop` load, 64-bit constants, and `div.s` padding.~~ All three are solved (see the updates below and `Matching-Patterns.md`).
 
 Honest risk: the last 5 to 10% (large functions and register-allocation holdouts) is where schedules slip. Keep the build matching at every step, so a partial result is always usable.
 
@@ -129,7 +129,7 @@ Recommendation: make "100% C frontbin, byte-identical" plus "modified menu boots
 - **Bad splits 0x3CC880 to 0x3CD548 (done).** The range is one hand-written VU0 clipper (register calling convention through `jalr $9`, `$at` as data, shared labels across the splat "functions"). All 11 pieces are now `ASM_FUNC`. Re-splitting would only rename symbols, so the boundaries are left as splat found them.
 - **Trailing padding (done).** 17 functions are followed by more nops than gcc's 8-byte alignment adds. `TEXT_PADDING(N)` (include/include_asm.h) now sits after each of them in text.c and the extra nops were cut from their `.s`, so converting one to C needs nothing special. `python tools/trailing_padding.py` reports new cases, `--apply` fixes them. func_003ECDF0 (the last function, which ends in data) is not covered.
 - **Hand-written leaves (done).** 28 more functions moved to `asm/handwritten`: `$at` used as a data register (`mfc1 $at`, `qmtc2 $at`, `lw $at`, `dsrl32 $at`), `mtc1`/`ppacb`/`mul.s` in the `jr $ra` delay slot, `adda.s` rounding tricks, DMA/VIF wait loops. Also func_003BE3A0 was a remnant hand-typed as top-level asm; it is now a `LINKER_REMNANT`.
-- Retail's `lwc1 ...($gp)` then `nop` pattern (func_003882D0 and neighbours) sits between hand-written functions and is probably hand-written too. They match as C with one `nop`, so they stay C.
+- Retail's `lwc1 ...($gp)` then `nop` pattern (func_003882D0 and neighbours) sits between hand-written functions and is probably hand-written too. They match as C with one `nop`, so they stay C. (Superseded 2026-09-30: they are `ASM_FUNC` now.)
 
 ## Update 2026-09-27 (later): unsolved list #1 to #6
 
@@ -190,3 +190,11 @@ The permuter got none of the three in 25 minutes each. Matching-Patterns has the
 - **`lwc1 ($gp)` then `nop`: hand-written.** Retail has the same load-jump-use shape unpadded 19 times elsewhere; no compiler or assembler emits the `nop`. `func_003882D0`, `func_00388308`, `func_00388340`, `func_00388378` and `func_00388388` are now `ASM_FUNC` (149 hand-written functions).
 - **`div.s`/`sqrt.s` `nop`s: not a C problem; needs the asm_filter emulation.** All 207 retail cases measured (131 with 2 `nop`s, 58 with none, 16 with one). Ps2EeAs pads by itself but matches retail's count in about 26% of cases, and both assemblers delete an explicit `nop` in reorder mode, so the padding has to be emitted as a raw `.word` from a per-function table.
 - **Register allocation (`func_0039BEC0`): C-solvable in principle.** `tools/regalloc.py` shows gcc's priority order; two C changes reproduce retail's registers exactly (see Matching-Patterns), leaving a branch-shape difference (score 210).
+
+## Update 2026-10-02: where things stand
+
+`python tools/triage.py`: 464 functions (0x41B9C bytes) still `INCLUDE_ASM`: 371 plain (122 under 0x100 bytes), 26 switch, 53 vu0, 14 mmi.
+
+- All the toolchain-level open problems are solved: jump tables, remnants, hand-written asm, trailing padding, short-loop padding (including loops with a `jal`), `$ra` saved with `sq`, the `lwc1`/`nop` load, 64-bit constants and `div.s`/`sqrt.s` padding.
+- What blocks the rest is register allocation and scheduling near misses (`docs/permuter_todo.md`, status list at the top) and the volume of large functions.
+- The MMI bucket is still untested.

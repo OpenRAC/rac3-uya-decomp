@@ -165,7 +165,11 @@ def compile_c(src_path, flags, args, name=None):
     gcc = os.path.join(args.toolchain, "bin", "ee-gcc2953.exe")
     s_path = os.path.join(tmpdir, "t.s")
     base = ([args.runner] if args.runner else []) + [gcc, "-I", "include", "-I", "."] + expand(flags, args.toolchain)
-    cmd = base[:2] + ["-S"] + base[2:] + ["-o", s_path, c_path]
+    # Without --runner the compiler is base[0], not base[1]: inserting at a fixed
+    # index 2 swallowed "-S" as the argument of the preceding "-I" and gcc fell
+    # through to the link step (ld: built in linker script:1: parse error).
+    head = 2 if args.runner else 1
+    cmd = base[:head] + ["-S"] + base[head:] + ["-o", s_path, c_path]
     p = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
     if not p.returncode and os.path.exists(s_path):
         # retail's loop padding (tools/asm_filter.py), as in the full build
@@ -173,7 +177,7 @@ def compile_c(src_path, flags, args, name=None):
         import asm_filter
         filtered = asm_filter.filter_asm(open(s_path, newline="").read())
         open(s_path, "w", newline="").write(filtered)
-        cmd = base[:2] + ["-c"] + base[2:] + ["-o", o_path, s_path]
+        cmd = base[:head] + ["-c"] + base[head:] + ["-o", o_path, s_path]
         p2 = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
         p = subprocess.CompletedProcess(cmd, p2.returncode, p.stdout + p2.stdout, p.stderr + p2.stderr)
     if p.returncode or not os.path.exists(o_path):

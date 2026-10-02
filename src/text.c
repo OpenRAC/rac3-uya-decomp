@@ -7720,7 +7720,34 @@ void func_003AE098(void) {
 }
 /* localdecomp:end func_003AE098 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AE120);
+/* localdecomp:start func_003AE120 */
+__asm__(".extern D_001D545C_gp_003AE120, 4");
+extern s32 D_001425AC_003AE120[];
+extern s32 D_00143958_003AE120[];
+extern s32 D_001D545C_gp_003AE120;
+extern s32 D_001D545C_003AE120;
+extern u8 D_001D5571_003AE120;
+extern s32 D_001D5B74_003AE120;
+extern s32 D_001D9D84_003AE120;
+extern void func_0039ED50(void);
+extern s32 func_0039D6C8(s32);
+extern void func_0013BFE0_003AE120(s32);
+extern void func_003A3A00(void);
+void func_003AE120(void) {
+    s32 v;
+    D_001425AC_003AE120[0] = 1;
+    func_0039ED50();
+    func_0039D6C8(1);
+    func_0013BFE0_003AE120(D_00143958_003AE120[0] == 0);
+    v = D_001D545C_gp_003AE120;
+    if (D_001D545C_003AE120 < 2 && D_001D5571_003AE120 == 0) {
+        func_003A3A00();
+        return;
+    }
+    *(volatile s32 *)&D_001D5B74_003AE120 = 1;
+    *(volatile s32 *)&D_001D9D84_003AE120 = v;
+}
+/* localdecomp:end func_003AE120 */
 
 /* localdecomp:start func_003AE1A8 */
 extern void func_00396FD0();

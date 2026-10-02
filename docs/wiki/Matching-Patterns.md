@@ -333,7 +333,8 @@ function rather than rewriting the C.
 
 A third shape from the same pass, `sq $31` / `lq $31`, has a workaround rather than a dead
 end - list the function in `tools/sq_ra_funcs.txt` (*Functions that save `$ra` with `sq`*
-above). What the pass did settle is that no flag on this compiler produces it, which is
+above); `tools/pr_check.py` now warns when a function that is C in `text.c` has the
+signature in retail and is missing from that list. What the pass did settle is that no flag on this compiler produces it, which is
 what the next section is about.
 
 Reproduce any of them from the repo root:

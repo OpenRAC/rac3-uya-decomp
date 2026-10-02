@@ -405,6 +405,8 @@
 0x003E38A8     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003E38D0     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E3988     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
+0x003E3F08     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x003E4788     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003E5D08     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x003E5DE0     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x003E6538     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override

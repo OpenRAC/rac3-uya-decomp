@@ -260,6 +260,16 @@ nop
 div.s %0, %0, %1
 mul.s %0, %0, %2
 .set reorder" : "+f"(t) : "f"(10.0f), "f"(48.0f));`; what is left is which of the two constants gets `$f1`.
+## More patterns from the third hand pass (switches, delay slots, aliasing)
+
+- **Switch functions work now.** Write the `switch`; the compiler emits its own jump table in `.rodata`, so delete the `INCLUDE_RODATA(... jtbl_XXXXXXXX)` line after the function (`tools/place`-style: `func_003A0178`, `func_0039BD48`). Case numbers must follow the retail table, not the order of the code: read `asm/nonmatchings/text/rodata/jtbl_*.s`, find which index points at each body, and put the bodies in address order. gcc only builds a table when at least five non-merged case nodes exist and it deletes cases that lead to the same place as `default`; to get retail's long table add cases that `break` but are not adjacent (`case 0: case 2: case 4: case 18: break;`), which keeps a 19-entry table.
+- **A store that gcc pulls into a branch delay slot but retail does not** (`func_003ADBB0`): make that store volatile, `*(volatile s32 *)&D_001D9F40 = 0;`. Retail put the epilogue's first load there instead.
+- **A reload of a pointer global after every store** (`func_00385570`, `func_00387B10`, GIF packet writers): declare the pointer global `s32` and write through casts of it (`*(s32 *)(D + 0x64) = a;`). An `s32` store may alias an `s32` global, so gcc reloads it; a store through a typed struct pointer does not reload.
+- **Boolean ANDs of call results** (`func_003E3A80`): `t = f() != 0; ok = ok & t;` with a temporary matches `sltu` + `and`. Writing `ok &= f() != 0` makes gcc use `movz`.
+- **Two arms where retail's branch-likely goes to the later block** (`func_003AAC70`): put the `!=` case first (`if (b->f4 != 4) {A} else {B}`), and the arm that falls through first in the second `if`.
+- **Pointer arithmetic order** (`func_003AAC70`): `(s32)((u8 *)b + 8 + b->f30)` gives `addiu` before `addu`; `(s32)b + b->f30 + 8` gives the opposite.
+- **Loop padding with a call in the body** (`func_003BD360`): `tools/asm_filter.py` now counts `jal`/`jalr` as one instruction when it pads short loops to 6.
+- **Boolean from a compare** (`func_003AAAC8`): `if (r < 0) return 0; return 1;`, not `return r >= 0;`.
 ### Declarations in text.c
 
 The full build compiles `text.c` in parts (`tools/text_parts.txt`), and a part only sees *declarations* from earlier parts, never definitions. So:

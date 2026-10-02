@@ -189,3 +189,10 @@ Lessons from the two that matched:
 | `func_003B9B60`, `func_003BA2A8` | 6, 10 (S) | sibling init functions: retail puts `move $a1, $zero` in the first call's delay slot after the `lui $at` byte stores; gcc fills the slot with the last byte store instead. Same fix would do both |
 | `func_003E89F0` | 8 (N) | constructor on the `D_001DA9B8` singleton template; the vtable store is interleaved with the singleton address calculation in retail and `$v0`/`$v1` are swapped |
 | `func_0037E878` | 7 (N) | retail keeps the counter address in `$a0` (then `$s3`); gcc uses `$v1` |
+| `func_003E0478` | 4 (S) | the loop is right; `$s1`/`$s2` (`n - 1` and the next element pointer) are swapped |
+| `func_003BE418` | 4 (S) | min/clamp of two bytes: `$v0`/`$v1`/`$a1` assigned differently |
+| `func_003E5F00` | 5 (S) | hash insert with the zero-argument call and the `$gp` tombstone address; only the order of the four loop-setup moves differs |
+| `func_003BD428` | 6 (S, `@ps2as`) | `$v0`/`$v1` swapped between the end pointer and the copy of `p` |
+| `func_003A3430` | 8 (S, `@ps2as`) | argument-to-`$s` register order (retail `$s0..$s4` = a..e) |
+| `func_003E0798` | 52 | singleton wrapper; retail keeps four `$s` registers (`o` distinct from `p`, `idx*4` saved) |
+| `func_003822C8` | 43 | three-level `u16` table lookup; gcc folds the `+4` into the base, retail keeps `l` and adds `4` per load |

@@ -171,9 +171,60 @@ def sq_pass(text):
     return "".join(out)
 
 
+# Retail pads most div.s / sqrt.s with 0-3 nops, which neither gcc nor an assembler
+# in reorder mode keeps. tools/divs_nops.txt (tools/gen_divs_nops.py) lists, per
+# function, the count in front of each div.s/sqrt.s in order; they go back in as
+# raw .words. A function whose div.s/sqrt.s count differs from the table is left alone.
+DIVS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "divs_nops.txt")
+DIVS_RE = re.compile(r"^\s*(div\.s|sqrt\.s)\s")
+
+
+def divs_table():
+    try:
+        with open(DIVS_FILE) as f:
+            rows = [l.split("#")[0].split() for l in f]
+    except OSError:
+        return {}
+    return {r[0]: [int(x) for x in r[1:]] for r in rows if len(r) > 1}
+
+
+def divs_rewrite(lines, counts):
+    idx = [i for i, l in enumerate(lines) if DIVS_RE.match(l)]
+    if len(idx) != len(counts):
+        return lines
+    for i, n in reversed(list(zip(idx, counts))):
+        ind = re.match(r"\s*", lines[i]).group(0)
+        nl = lines[i][len(lines[i].rstrip("\r\n")):] or "\n"
+        lines[i:i] = [f"{ind}.word 0x00000000  # nop before div.s{nl}"] * n
+    return lines
+
+
+def divs_pass(text):
+    table = divs_table()
+    if not table:
+        return text
+    out, buf, cur = [], [], None
+    for line in text.splitlines(True):
+        s = line.strip()
+        em = re.match(r"\.ent\s+(\S+)", s)
+        if cur is None and em and em.group(1) in table:
+            cur, buf = em.group(1), [line]
+            continue
+        if cur is not None:
+            buf.append(line)
+            if re.match(r"\.end\s", s):
+                out.extend(divs_rewrite(buf, table[cur]))
+                cur, buf = None, []
+            continue
+        out.append(line)
+    out.extend(buf)
+    return "".join(out)
+
+
 def filter_asm(text):
     out, labels, noreorder, app = [], {}, False, False
     text = sq_pass(text)
+    text = divs_pass(text)
     for line in text.splitlines(True):
         s = line.strip()
         if s.startswith("#APP"):

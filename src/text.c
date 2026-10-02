@@ -3383,7 +3383,22 @@ INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318360);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318390);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003183C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00399660);
+/* localdecomp:start func_00399660 */
+extern u8 D_0032E3C8_00399660[];
+extern u8 D_0032E658_00399660[];
+extern s32 func_00399710();
+extern s32 func_00399830();
+void func_00399660(u8 *p) {
+    s32 i;
+    *(s32 *)p = func_00399710(D_0032E3C8_00399660);
+    *(s32 *)(p + 4) = func_00399710(D_0032E658_00399660);
+    p += 8;
+    p += func_00399830(p, 0, D_0032E3C8_00399660);
+    for (i = 0; i < 0x25; i++) {
+        p += func_00399830(p, i, D_0032E658_00399660);
+    }
+}
+/* localdecomp:end func_00399660 */
 
 LINKER_REMNANT("asm/remnants", func_00399708);
 
@@ -3402,7 +3417,25 @@ s32 func_00399710(s32 *p) {
 }
 /* localdecomp:end func_00399710 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00399748);
+/* localdecomp:start func_00399748 */
+extern u8 D_0032E3C8_00399748[];
+u16 func_00399748(u8 *p, u32 n) {
+    u8 *end;
+    s32 r;
+    s32 k;
+    if ((u32)func_00399710((s32 *)D_0032E3C8_00399748) < n) return 0;
+    end = p + n;
+    r = 0xEDB88320;
+    for (; p < end; p++) {
+        r ^= *p << 8;
+        for (k = 7; k >= 0; k--) {
+            if (r & 0x8000) r = (r << 1) ^ 0x1F45;
+            else r = r << 1;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_00399748 */
 
 /* localdecomp:start func_003997F0 */
 s32 func_00399748(void *, s32);

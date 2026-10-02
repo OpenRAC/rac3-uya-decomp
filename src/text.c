@@ -10231,7 +10231,14 @@ TEXT_PADDING(4);
 
 LINKER_REMNANT("asm/remnants", func_003BE688);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BE6A8);
+/* localdecomp:start func_003BE6A8 */
+extern f32 func_00388960(f32);
+f32 func_003BE6A8(f32 a, f32 b, f32 t) {
+    if (t == 0.0f) return a;
+    if (t == 1.0f) return b;
+    return a + (b - a) * ((1.0f - func_00388960(t * 3.14159274f)) * 0.5f);
+}
+/* localdecomp:end func_003BE6A8 */
 
 LINKER_REMNANT("asm/remnants", func_003BE740);
 

@@ -3854,9 +3854,80 @@ s32 func_0039BD40(void) {
 }
 /* localdecomp:end func_0039BD40 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BD48);
-INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318470);
-INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003184C0);
+/* localdecomp:start func_0039BD48 */
+extern s32 D_001D5B94_0039BD48;
+extern s32 D_001D5B90_0039BD48;
+extern s32 D_001D5B8C_0039BD48;
+extern s32 D_001D6D98_0039BD48;
+extern s32 D_001D6D9C_0039BD48;
+extern s32 D_001D6DA0_0039BD48;
+extern u8 *D_001D6DA8_0039BD48;
+extern f32 D_00225A30_0039BD48[];
+extern void func_003A3508(void);
+extern void func_0037E568(s32, s32, s32, f32, f32, f32, f32);
+extern void func_003830E8();
+extern void func_003A3368();
+extern void func_003ADC70();
+void func_0039BD48(void) {
+    s32 a = D_001D5B94_0039BD48;
+    s32 t;
+    u8 *v;
+    s32 s;
+    D_001D5B8C_0039BD48 = a;
+    if (D_001D5B90_0039BD48 == -2) return;
+    t = D_001D6D98_0039BD48;
+    if (t > 0) {
+        D_001D6D98_0039BD48 = t - 1;
+        return;
+    }
+    switch (a) {
+    case 1:
+        func_003A3508();
+        D_00225A30_0039BD48[0] = 0.62f;
+        func_0037E568(0, 0, 3, 1.1100293f, 0.005f, 0.2f, 0.0f);
+        func_003830E8();
+        break;
+    case 0:
+    case 2:
+    case 4:
+    case 18:
+        break;
+    }
+    switch (D_001D5B90_0039BD48) {
+    case 1:
+        func_003A3368(D_001D6DA0_0039BD48);
+        v = D_001D6DA8_0039BD48;
+        break;
+    case 18:
+        func_003ADC70(D_001D6D9C_0039BD48);
+    case 0:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+    default:
+        v = D_001D6DA8_0039BD48;
+        break;
+    }
+    if (v) *v = 1;
+    s = D_001D5B90_0039BD48;
+    D_001D5B90_0039BD48 = -2;
+    D_001D5B94_0039BD48 = s;
+    D_001D6DA8_0039BD48 = 0;
+}
+/* localdecomp:end func_0039BD48 */
 
 LINKER_REMNANT("asm/remnants", func_0039BE90);
 

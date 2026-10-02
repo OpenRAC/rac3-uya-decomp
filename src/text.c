@@ -12136,7 +12136,7 @@ s32 func_003E0D78(S_3E0D78 *s, s32 v) {
 LINKER_REMNANT("asm/remnants", func_003E0DF0);
 
 /* localdecomp:start func_003E0DF8 */
-extern void func_003E11D0(void *, s32, s32);
+extern s32 func_003E11D0();
  
 void func_003E0DF8(void **p, s32 a, s32 b) {
     func_003E11D0((u8 *)*p + 0x1C4, b, a);
@@ -12207,7 +12207,28 @@ void *func_003E1150(HT_400 *t, u32 key) {
 }
 /* localdecomp:end func_003E1150 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E11D0);
+/* localdecomp:start func_003E11D0 */
+extern void *func_003E1150_003E11D0();
+typedef struct { u32 key; void *val; } HE_3E11D0;
+typedef struct { s32 f0; s32 n; HE_3E11D0 e[0x400]; } HT_3E11D0;
+extern u8 D_001DAA88_003E11D0[];
+s32 func_003E11D0(HT_3E11D0 *t, u32 key, void *val) {
+    s32 i;
+    s32 h;
+    if (t->n >= 0x400) return 0;
+    if (((void *(*)(void))func_003E1150_003E11D0)()) return 0;
+    for (i = 0; i < 0x400; i++) {
+        h = ((key & 0x3FF) + ((key % 0x3FF) * i + i)) & 0x3FF;
+        if (t->e[h].val == 0 || t->e[h].val == D_001DAA88_003E11D0) {
+            t->e[h].val = val;
+            t->e[h].key = key;
+            t->n++;
+            return 1;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_003E11D0 */
 
 /* localdecomp:start func_003E12A8 */
 extern u8 D_001DAA88;

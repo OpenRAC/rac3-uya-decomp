@@ -1835,7 +1835,25 @@ ASM_FUNC("asm/handwritten", func_003893C8);
 
 ASM_FUNC("asm/handwritten", func_00389410);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389468);
+/* localdecomp:start func_00389468 */
+float func_00389468(float first, float second) {
+    register float difference __asm__("$f0");
+    register float pi __asm__("$f14");
+    register float doubled __asm__("$f1");
+
+    difference = first - second;
+    pi = 3.1415927f;
+    __asm__ volatile(".word 0" : "+f"(pi));
+    difference = __builtin_fabsf(difference);
+    if (difference < pi) {
+        goto done;
+    }
+    doubled = pi + pi;
+    difference = doubled - difference;
+done:
+    return difference;
+}
+/* localdecomp:end func_00389468 */
 
 ASM_FUNC("asm/handwritten", func_003894A0);
 

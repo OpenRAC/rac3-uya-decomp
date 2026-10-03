@@ -44,7 +44,24 @@ The same gates accept five further owners with complete declaration context:
 | `func_00514B70` | `func_003E3D08` | 232 | N/default |
 | `func_00519D48` | `func_003E8EC8` | 228 | N/default |
 
-Together these fourteen sources cover 3112 owned function bytes. The float function
+Eight more owners retain their observed integer/float interfaces and typed
+callee aliases; the DMA routine uses ordinary volatile EE register accesses:
+
+| Owner | Frontbin donor | Bytes | Existing compiler settings |
+|---|---|---:|---|
+| `func_005142D0` | `func_003E3630` | 208 | N/default |
+| `func_005148E8` | `func_003E3A80` | 208 | N/default |
+| `func_00511D38` | `func_003E17C0` | 204 | S/default |
+| `func_004478E0` | `func_003BF4F8` | 200 | S/Ps2EeAs |
+| `func_004C1AF0` | `func_003A3A40` | 188 | S/default |
+| `func_00511200` | `func_003E0CC0` | 180 | S/default |
+| `func_004CB610` | `func_003A7E80` | 180 | S/Ps2EeAs |
+| `func_004957A0` | `func_003B4F50` | 176 | S/default |
+
+Their 25 named calls are resolved individually, not masked. No callee gains
+C credit merely because one of these callers uses it.
+
+Together these twenty-two sources cover 4656 owned function bytes. The float function
 is still plain C: selecting the existing Ps2EeAs assembler is not inline ASM.
 Every source passes the same complete-size and raw/resolved-byte gates.
 

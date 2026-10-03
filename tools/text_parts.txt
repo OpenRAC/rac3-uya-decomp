@@ -34,6 +34,8 @@
 0x00388B98     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x00389240     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003892D8     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
+0x00389468     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x003894A0     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x0038C718     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0038C778     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division
 0x0038C840     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override

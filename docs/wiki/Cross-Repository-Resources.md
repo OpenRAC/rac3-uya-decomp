@@ -36,6 +36,31 @@ Passing the inputs as pointers describes a different ABI. Their observed `lq/sq`
 This is evidence for this function and toolchain, not a universal rule for vector arguments. Recheck argument placement and code generation for each target.
 The complete PR #5 also includes `0038E730` and `003AD650`: **324 newly matched C bytes** across three functions. Those two functions are not claimed as cross-game ports. No PS2/gameplay validation is claimed.
 
+## Verified frontend-to-level bridge
+
+The cross-game interpolation references now also lead to concrete singleplayer
+common-level implementations. At snapshot `df121cd88669b9de716e857336ad5c44d30ef438`,
+the opt-in [common C path][u-common-c] covers 33 canonical functions / 6060 bytes.
+Every body passes complete raw compiler/member/common equality and independently
+resolved retail equality, with zero masks and no unexpected allocated payload.
+Official objdiff reports every catalogued function at 100%. Count each common
+owner once, not once for each overlay; the canonical configuration is unchanged.
+
+- [Level vector interpolation][u-level-vector] at `00444F70` transfers the
+  verified U `003BEB58` implementation: 152 bytes, two aligned vectors passed
+  by value, and four fully resolved scalar calls to level `00444F60`.
+- [Level cosine interpolation][u-level-cosine] at `004421E8` transfers U
+  `003BE6A8`: 148 bytes, the explicit endpoint cases, and the actual level
+  cosine helper `0040C3C8`. P remains an algorithmic reference, not proof that
+  its `FastCos` implementation or structure layout is identical.
+- The quaternion caller in the same catalogue uses observed void-returning
+  pointer interfaces, rather than unprototyped integer-returning casts. Full
+  call resolution rejects a wrong alias even when raw size and bytes match.
+
+[PR #8][u-pr8] is a contribution awaiting maintainer review. These are verified
+UYA frontend-to-level transfers informed by the cross-game references, not
+new RAC1/RAC2 matches, merged upstream progress, or playable-level validation.
+
 ## Types, alignment, and resources in both directions
 
 - [L EE types][l-ee] declares four-float vectors, 4×4 matrices, and qword/TI storage aligned to 16 bytes; [U common][u-common] provides scalar types.
@@ -88,3 +113,7 @@ This note describes relationships and methods. It distributes no new shared impl
 
 [u-vector]: https://github.com/llesieur99/ratchet-uya-decomp/blob/d54228fd175d1bac62ff6fb959a3f5ad8ea2cbcd/src/text.c#L11436
 [u-pr5]: https://github.com/vetusmagnus/ratchet-uya-decomp/pull/5
+[u-common-c]: https://github.com/llesieur99/ratchet-uya-decomp/blob/df121cd88669b9de716e857336ad5c44d30ef438/docs/common_level_c.md
+[u-level-vector]: https://github.com/llesieur99/ratchet-uya-decomp/blob/df121cd88669b9de716e857336ad5c44d30ef438/src/levels/common/func_00444F70.c
+[u-level-cosine]: https://github.com/llesieur99/ratchet-uya-decomp/blob/df121cd88669b9de716e857336ad5c44d30ef438/src/levels/common/func_004421E8.c
+[u-pr8]: https://github.com/vetusmagnus/ratchet-uya-decomp/pull/8

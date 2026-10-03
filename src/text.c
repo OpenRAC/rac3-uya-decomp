@@ -12042,7 +12042,52 @@ void func_003C8C40(void) {
 
 LINKER_REMNANT("asm/remnants", func_003C8CD8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C8CE0);
+/* localdecomp:start func_003C8CE0 */
+typedef struct Config_003C8CE0 {
+    unsigned char padding[0xC];
+    short count;
+    unsigned char padding2[2];
+    unsigned char *buffer;
+} Config_003C8CE0;
+
+extern int D_001DA0D0_003C8CE0;
+extern Config_003C8CE0 *D_001DA670_003C8CE0;
+extern int D_001DA680_003C8CE0;
+extern int D_001D4BB4_003C8CE0;
+extern int D_001D4BB0_003C8CE0;
+extern int D_001D9C7C_003C8CE0;
+__asm__(".extern D_001D9C7C_003C8CE0, 4");
+
+void func_003C8CE0(void) {
+    register int old __asm__("$2");
+    register int index __asm__("$5");
+    register Config_003C8CE0 *config __asm__("$6");
+    register int saved __asm__("$3");
+    register int count __asm__("$4");
+
+    old = D_001DA0D0_003C8CE0;
+    index = 0;
+    config = D_001DA670_003C8CE0;
+    D_001DA680_003C8CE0 = old;
+    saved = D_001D4BB4_003C8CE0;
+    old += 0x10;
+    count = config->count;
+    D_001DA0D0_003C8CE0 = old;
+    D_001D4BB0_003C8CE0 = saved;
+    D_001D9C7C_003C8CE0 = 0;
+    if (count > 0) {
+        do {
+            old = (int)config->buffer;
+            saved = index * 0x10;
+            index++;
+            saved += old;
+            __asm__ volatile("" : "+r"(saved));
+            *(unsigned long *)saved = 0;
+            old = config->count;
+        } while (index < old);
+    }
+}
+/* localdecomp:end func_003C8CE0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C8D50);
 

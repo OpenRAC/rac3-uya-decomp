@@ -8120,7 +8120,33 @@ void func_003ADAA8(void) {
 }
 /* localdecomp:end func_003ADAA8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ADAE0);
+/* localdecomp:start func_003ADAE0 */
+extern u8 D_001D8880;
+extern void func_003E2D90();
+extern void *func_003E16B8();
+extern void func_003E1510();
+extern s32 func_003E0FC8();
+extern s32 func_003E19C8();
+void func_003ADAE0(void) {
+    register void *object __asm__("$2");
+    register void *base __asm__("$4");
+    register u8 *page __asm__("$3");
+    if (D_001D8880 == 0) {
+        func_003E2D90();
+        page = (u8 *)0x1E0000;
+        __asm__ volatile("" : "+r"(page));
+        base = page - 0x5648;
+        if (*(s32 *)((u8 *)base + 4) != 0) {
+            object = base;
+        } else {
+            object = func_003E16B8(base);
+        }
+        func_003E1510(object);
+        object = (void *)func_003E0FC8(0);
+        func_003E19C8(object, 0x14);
+    }
+}
+/* localdecomp:end func_003ADAE0 */
 
 /* localdecomp:start func_003ADB40 */
 extern u8 D_001DA9B8[];

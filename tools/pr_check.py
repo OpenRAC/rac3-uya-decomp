@@ -286,6 +286,56 @@ def check_status(defined, asm):
              f"{' ...' if len(missing) > 5 else ''}")
 
 
+def check_sq_ra(defined):
+    """A function that is C in text.c and whose retail body saves $ra with sq/lq
+    (the 16-byte slot layout; docs/wiki/Matching-Patterns.md, "Functions that
+    save $ra with sq") must be listed in tools/sq_ra_funcs.txt: asm_filter
+    rewrites those saves, and without the line the function keeps a
+    two-instruction diff that reads like a C mistake."""
+    path = os.path.join(ROOT, "frontbin.elf")
+    if not os.path.exists(path):
+        return
+    try:
+        from elftools.elf.elffile import ELFFile
+    except ImportError:
+        return
+    listed = set()
+    list_path = os.path.join(ROOT, "tools", "sq_ra_funcs.txt")
+    if os.path.exists(list_path):
+        for line in open(list_path):
+            f = line.split("#", 1)[0].split()
+            if f:
+                listed.add(f[0])
+    segs = [(s["p_vaddr"], s.data()) for s in ELFFile(open(path, "rb")).iter_segments()
+            if s["p_type"] == "PT_LOAD"]
+
+    def read(va, n):
+        for base, data in segs:
+            if base <= va < base + len(data):
+                return data[va - base:va - base + n]
+        return b""
+
+    missing = []
+    for name in sorted(defined):
+        if name in listed or not re.fullmatch(r"func_[0-9A-Fa-f]{8}", name):
+            continue
+        data = read(int(name[5:], 16), 0x100)
+        # retail words are little-endian; stop at the first jr $31 so the scan
+        # cannot walk into the next function
+        for i in range(0, len(data) - 3, 4):
+            w = int.from_bytes(data[i:i + 4], "little")
+            if w == 0x03E00008:
+                break
+            if (w >> 26) in (0x1E, 0x1F) and ((w >> 16) & 0x1F) == 31:
+                missing.append(name)
+                break
+    if missing:
+        warn(f"{len(missing)} function(s) in C save $ra with sq/lq in retail but are not in "
+             f"tools/sq_ra_funcs.txt: {', '.join(missing[:5])}"
+             f"{' ...' if len(missing) > 5 else ''}. Add them there (Matching-Patterns.md, "
+             "'Functions that save $ra with sq') or asm_filter leaves a 2-instruction diff")
+
+
 def check_git():
     try:
         out = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True, timeout=30)
@@ -328,6 +378,7 @@ def main():
     raw, code, asm, defined = check_text_c()
     check_parts(raw, code, asm, defined)
     check_status(defined, asm)
+    check_sq_ra(defined)
     if not args.no_git:
         check_git()
     if args.obj:

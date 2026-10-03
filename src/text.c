@@ -1112,7 +1112,30 @@ void func_00385890(void) {
 }
 /* localdecomp:end func_00385890 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00385908);
+/* localdecomp:start func_00385908 */
+extern int D_001D9CB8_00385908;
+extern void (*D_001D9C98[])(int);
+extern int D_001D9CA8[];
+
+void func_00385908(void) {
+    int index;
+    register void (**callbacks)(int) __asm__("$17");
+    register int *arguments __asm__("$18");
+
+    index = 0;
+    if (D_001D9CB8_00385908 > 0) {
+        arguments = D_001D9CA8;
+        __asm__ volatile("" : "+r"(arguments));
+        callbacks = D_001D9C98;
+        do {
+            index++;
+            (*callbacks)(*arguments);
+            callbacks++;
+            arguments++;
+        } while (index < D_001D9CB8_00385908);
+    }
+}
+/* localdecomp:end func_00385908 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00385980);
 
@@ -1835,7 +1858,25 @@ ASM_FUNC("asm/handwritten", func_003893C8);
 
 ASM_FUNC("asm/handwritten", func_00389410);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389468);
+/* localdecomp:start func_00389468 */
+float func_00389468(float first, float second) {
+    register float difference __asm__("$f0");
+    register float pi __asm__("$f14");
+    register float doubled __asm__("$f1");
+
+    difference = first - second;
+    pi = 3.1415927f;
+    __asm__ volatile(".word 0" : "+f"(pi));
+    difference = __builtin_fabsf(difference);
+    if (difference < pi) {
+        goto done;
+    }
+    doubled = pi + pi;
+    difference = doubled - difference;
+done:
+    return difference;
+}
+/* localdecomp:end func_00389468 */
 
 ASM_FUNC("asm/handwritten", func_003894A0);
 
@@ -2388,7 +2429,28 @@ void func_0038E728(s32 a) {
 }
 /* localdecomp:end func_0038E728 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E730);
+/* localdecomp:start func_0038E730 */
+typedef struct LookupEntry_38E730 {
+    u16 key;
+    u8 reserved[6];
+} LookupEntry_38E730;
+extern LookupEntry_38E730 *D_001D9F24_0038E730[];
+s32 func_0038E730(s32 key) {
+    LookupEntry_38E730 *entry = *D_001D9F24_0038E730;
+    s32 index = 0;
+    if (entry->key != 0xFFFF && entry->key != key) {
+        LookupEntry_38E730 *cursor = entry;
+        s32 current;
+        for (;;) {
+            cursor++;
+            current = cursor->key;
+            index++;
+            if (current == 0xFFFF || current == key) break;
+        }
+    }
+    return index <= 0x3FF ? index : -1;
+}
+/* localdecomp:end func_0038E730 */
 
 LINKER_REMNANT("asm/remnants", func_0038E788);
 
@@ -8017,7 +8079,33 @@ s32 func_003AD520(u8 *a, s32 sz, u8 *b, s32 off, u8 *src1, s32 len1, u8 *src2, s
 }
 /* localdecomp:end func_003AD520 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AD650);
+/* localdecomp:start func_003AD650 */
+typedef struct {
+    s32 stream;
+    u8 *entries;
+    s32 write_index;
+    s32 count;
+    s32 capacity;
+} Queue_003AD650;
+void func_003AD650(volatile Queue_003AD650 *queue, s32 stream, u8 *entries, s32 capacity) {
+    s32 index = 0;
+    s32 offset;
+    queue->count = 0;
+    queue->stream = stream;
+    queue->entries = entries;
+    queue->capacity = capacity;
+    queue->write_index = 0;
+    if (capacity > 0) {
+        offset = 0;
+        do {
+            *(s32 *)(offset + (s32)queue->entries) = 0;
+            *(s32 *)(offset + (s32)queue->entries + 4) = index;
+            index++;
+            offset += 0x27E40;
+        } while (index < capacity);
+    }
+}
+/* localdecomp:end func_003AD650 */
 
 /* localdecomp:start func_003AD6A8 */
 s32 func_003AD6A8(void) {
@@ -9363,7 +9451,28 @@ s32 func_003B1400(void) {
 }
 /* localdecomp:end func_003B1400 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B1430);
+/* localdecomp:start func_003B1430 */
+extern unsigned char D_001D5BDC_003B1430;
+extern int D_001D8AE4;
+extern int D_001D8A70_g;
+__asm__(".extern D_001D8AE4, 4");
+__asm__(".extern D_001D8A70_g, 4");
+extern void func_00396FD0(int, int, int);
+extern void func_003B11C0(void);
+extern void func_003B1210(void);
+extern void func_003B12C8(void);
+
+void func_003B1430(void) {
+    register int flag __asm__("$2");
+    flag = D_001D5BDC_003B1430;
+    if (flag != 0) {
+        func_00396FD0((int)func_003B11C0, D_001D8AE4, (int)func_003B1210);
+    } else {
+        func_00396FD0((int)func_003B11C0, D_001D8AE4, (int)func_003B12C8);
+    }
+    D_001D8A70_g = 1;
+}
+/* localdecomp:end func_003B1430 */
 
 /* localdecomp:start func_003B1490 */
 extern s32 D_001D8ACC;
@@ -10231,7 +10340,35 @@ void func_003B6358(s32 a0, long a1) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B6368);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B6410);
+/* localdecomp:start func_003B6410 */
+extern int D_001D8D10_003B6410;
+extern int D_001DA298[];
+extern int D_001DA2C0[];
+extern void func_13C230(int, int, int);
+
+void func_003B6410(float volume, int index) {
+    int sound;
+    register int offset __asm__("$3");
+    register int *indices __asm__("$2");
+    register int *sounds __asm__("$4");
+    register int invalid __asm__("$5");
+
+    if (index >= 0 && index < D_001D8D10_003B6410) {
+        offset = index * 4;
+        __asm__ volatile("" : "+r"(offset));
+        indices = D_001DA298;
+        offset += (int)indices;
+        __asm__ volatile("" : "+r"(offset));
+        sounds = D_001DA2C0;
+        __asm__ volatile("" : "+r"(sounds));
+        sound = sounds[*(int *)offset];
+        invalid = -1;
+        if (sound != invalid) {
+            func_13C230(sound, (int)(volume * 1024.0f), 0);
+        }
+    }
+}
+/* localdecomp:end func_003B6410 */
 
 /* localdecomp:start func_003B6488 */
 extern void func_0013CA20(void);
@@ -11134,7 +11271,31 @@ void func_003BD360(s32 arg) {
 }
 /* localdecomp:end func_003BD360 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BD428);
+/* localdecomp:start func_003BD428 */
+extern int D_001DA54C_003BD428;
+extern int D_001DA53C_003BD428;
+extern int D_001DA548_003BD428;
+extern int D_001DA540_003BD428;
+extern int D_001DA544_003BD428;
+__asm__(".extern D_001DA544_003BD428, 4");
+extern void func_00388440(void *, int, int);
+
+unsigned int func_003BD428(int count, int base) {
+    int size;
+    register int start __asm__("$3") = base;
+    register int end __asm__("$2");
+    size = count * 4;
+    end = start + size;
+
+    D_001DA54C_003BD428 = end;
+    D_001DA53C_003BD428 = start;
+    D_001DA548_003BD428 = start;
+    D_001DA540_003BD428 = 0;
+    D_001DA544_003BD428 = 0;
+    func_00388440((void *)start, 0, size);
+    return (D_001DA54C_003BD428 + 0x3F) & 0xFFFFFFC0;
+}
+/* localdecomp:end func_003BD428 */
 
 /* localdecomp:start func_003BD490 */
 typedef struct { u8 p0[0x48]; u8 *tbl[1]; } C_3BD490;
@@ -11322,7 +11483,23 @@ void func_003BE340(void) {
 
 LINKER_REMNANT("asm/remnants", func_003BE3A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BE3C0);
+/* localdecomp:start func_003BE3C0 */
+extern int D_001DA51C;
+extern int D_001DA524_003BE3C0;
+int func_003BE3C0(void) {
+    unsigned char *current = (unsigned char *)(*(volatile int *)&D_001DA51C);
+    unsigned char *end = (unsigned char *)(*(volatile int *)&D_001DA524_003BE3C0);
+    int result = (int)end;
+
+    if (current != end) {
+        do {
+            result = *(int *)(current + 0x24);
+            current += 0x100;
+        } while (current != end);
+    }
+    return result;
+}
+/* localdecomp:end func_003BE3C0 */
 
 LINKER_REMNANT("asm/remnants", func_003BE400);
 
@@ -11386,7 +11563,21 @@ f32 func_003BEB48(f32 a, f32 b, f32 t) {
 }
 /* localdecomp:end func_003BEB48 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BEB58);
+/* localdecomp:start func_003BEB58 */
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} __attribute__((aligned(16))) Vector_003BEB58;
+extern f32 func_003BEB48(f32, f32, f32);
+void func_003BEB58(Vector_003BEB58 *output, Vector_003BEB58 first, Vector_003BEB58 second, f32 fraction) {
+    output->x = func_003BEB48(first.x, second.x, fraction);
+    output->y = func_003BEB48(first.y, second.y, fraction);
+    output->z = func_003BEB48(first.z, second.z, fraction);
+    output->w = func_003BEB48(first.w, second.w, fraction);
+}
+/* localdecomp:end func_003BEB58 */
 
 LINKER_REMNANT("asm/remnants", func_003BEBF0);
 
@@ -11530,7 +11721,26 @@ void func_003BF778(void *a, f32 f) {
 
 LINKER_REMNANT("asm/remnants", func_003BF7C8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF7E8);
+/* localdecomp:start func_003BF7E8 */
+int func_003BF7E8(unsigned char *object) {
+    unsigned char *link;
+    int flags;
+
+    if (object != 0)
+        goto check_flags;
+failure:
+    return 0;
+check_flags:
+    flags = *(unsigned short *)(object + 0x34) & 0x20;
+    __asm__ volatile(".word 0");
+    if (flags == 0)
+        goto failure;
+    link = *(unsigned char **)(object + 0x68);
+    if (link == 0)
+        goto failure;
+    return *(int *)(link + 8);
+}
+/* localdecomp:end func_003BF7E8 */
 
 LINKER_REMNANT("asm/remnants", func_003BF820);
 
@@ -13638,7 +13848,44 @@ s32 func_003E1460(S_003E1460_outer *arg0, u32 arg1, s32 *arg2) {
 }
 /* localdecomp:end func_003E1460 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E14A8);
+/* localdecomp:start func_003E14A8 */
+typedef struct CallbackVtable_003E14A8 {
+    unsigned char padding[0x10];
+    void (*callback)(void *);
+} CallbackVtable_003E14A8;
+
+typedef struct Entry_003E14A8 {
+    unsigned char padding[4];
+    CallbackVtable_003E14A8 *vtable;
+} Entry_003E14A8;
+
+typedef struct Container_003E14A8 {
+    unsigned char padding[0x20];
+    Entry_003E14A8 *slots[12];
+} Container_003E14A8;
+
+typedef struct Root_003E14A8 {
+    unsigned char padding[4];
+    Container_003E14A8 *container;
+} Root_003E14A8;
+
+void func_003E14A8(void *argument) {
+    int index;
+    Root_003E14A8 *root = argument;
+    Entry_003E14A8 *entry;
+    register CallbackVtable_003E14A8 *vtable __asm__("$3");
+    register void (*callback)(void *) __asm__("$2");
+
+    for (index = 0; index < 12; index++) {
+        entry = root->container->slots[index];
+        if (entry != 0) {
+            vtable = entry->vtable;
+            callback = vtable->callback;
+            callback(entry);
+        }
+    }
+}
+/* localdecomp:end func_003E14A8 */
 
 /* localdecomp:start func_003E1510 */
 extern void func_003E09D8(void *);
@@ -17367,7 +17614,35 @@ s32 func_003E91C0(s32 p, s32 k) {
 
 LINKER_REMNANT("asm/remnants", func_003E91F0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E91F8);
+/* localdecomp:start func_003E91F8 */
+extern void func_003E8420(void);
+extern unsigned char D_001D9778[];
+
+void *func_003E91F8(unsigned char *object) {
+    register float half __asm__("$f0");
+    register float small __asm__("$f1");
+    register void *vtable __asm__("$4");
+    register void *result __asm__("$2");
+    register int color __asm__("$3");
+
+    func_003E8420();
+    half = 0.5f;
+    vtable = D_001D9778;
+    small = 0.01f;
+    color = 0x80F00000;
+    result = object;
+    __asm__ volatile("" : "+r"(result));
+    *(void **)(object + 8) = vtable;
+    *(int *)(object + 0x30) = color;
+    *(float *)(object + 0x18) = half;
+    *(float *)(object + 0x34) = small;
+    *(float *)(object + 0x1C) = half;
+    *(float *)(object + 0x38) = small;
+    *(int *)(object + 0x2C) = 0;
+    __asm__ volatile("" : "+r"(object));
+    return result;
+}
+/* localdecomp:end func_003E91F8 */
 
 /* localdecomp:start func_003E9260 */
 extern s32 D_001D9770_g;

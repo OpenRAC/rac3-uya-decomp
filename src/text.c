@@ -2379,7 +2379,46 @@ void func_0038E6B8(void) {
 
 LINKER_REMNANT("asm/remnants", func_0038E6C0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E6D0);
+/* localdecomp:start func_0038E6D0 */
+extern u8 D_001D5BDC_0038E6D0;
+extern s32 D_001D5C90;
+extern s32 D_0022760C;
+extern s32 D_001DA0D8;
+__asm__(".extern D_0022760C, 16");
+__asm__(".extern D_001DA0D8, 16");
+s32 func_0038E6D0(u32 value, s32 *result) {
+    register u32 amount __asm__("$6") = value;
+    register s32 page __asm__("$2");
+    register s32 base __asm__("$4");
+    register s32 total __asm__("$3");
+    if (amount > 0x40000) {
+        *result = 0;
+        return -1;
+    }
+    page = D_001D5BDC_0038E6D0;
+    if (page != 0) {
+        page = 0x220000;
+        goto calculate;
+    }
+    page = D_001D5C90;
+    if (page != 0) {
+        goto cached;
+    }
+    page = 0x220000;
+calculate:
+    base = D_001DA0D8;
+    __asm__ volatile("" : "+r"(base));
+    total = *(s32 *)(page + 0x760C);
+    total += base;
+    total -= amount;
+    *result = total;
+    goto done;
+cached:
+    *result = page;
+done:
+    return 0;
+}
+/* localdecomp:end func_0038E6D0 */
 
 /* localdecomp:start func_0038E728 */
 extern s32 D_001D5C90;

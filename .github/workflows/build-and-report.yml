@@ -26,7 +26,7 @@ jobs:
           if (-not (Test-Path "asm\header.s")) { throw "asm\header.s missing after copy" }
 
       # `make objdiff` runs the full build + MATCH check first, then produces
-      # build/objdiff/target/text.o and build/objdiff/base/text.o.
+      # one object per source file in build/objdiff/target/frontbin/ and build/objdiff/base/frontbin/
       - name: Build frontbin and objdiff inputs
         shell: pwsh
         run: |

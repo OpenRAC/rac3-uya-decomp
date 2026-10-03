@@ -5,7 +5,7 @@ How `make` turns the repo into a byte-identical `frontbin.elf`, and which files 
 ## Pipeline
 
 1. `asm/header.s` (the retail ELF header) and the data segments `asm/data/{lit,data_a,data_b,lvl_vtbl,lvl_camvtbl,lvl_sndvtbl}.data.s` are assembled with `bin/ee-as.exe`.
-2. `src/frontbin/*.c` (one file per original source file, listed in `tools/src_files.txt`) are built by `tools/build_text.py`. Each file is compiled with its flags from `tools/text_parts.txt` (in slices if some functions need other flags), giving one object per file in `build/src/frontbin/`, and the objects are joined with `ld -r` into `build/src/text.c.o`. See `docs/source_files.md`.
+2. `src/frontbin/*.c` (one file per original source file, listed in `tools/src_files.txt`) are built by `tools/build_text.py`. Each file is compiled with its flags from `tools/text_parts.txt` (in slices if some functions need other flags), giving one object per file in `build/src/frontbin/` (the per-slice objects go in `build/src/frontbin/slices/`), and the objects are joined with `ld -r` into `build/src/text.c.o`. See `docs/source_files.md`.
 3. `ee-ld.exe -T linker_scripts/frontbin.ld` places every section at its retail file offset. `INPUT(symbol_addrs_resolved.txt)` supplies the address of every external symbol. The `.data` output is `data_a` + `text.c.o(.rodata)` (all switch jump tables, in function order) + `data_b`, the same layout the original linker produced.
 4. `ee-objcopy -O binary` makes `build/frontbin.bin`, and `tools/check_match.py` compares its SHA-1 with the one in `frontbin.splat.yaml`. That is the `MATCH` line.
 
@@ -74,7 +74,7 @@ When the function matches, move its flags to a single-function override in `text
 
 ## Level overlays
 
-Level overlays are counted in progress reports through target objects made from your own unpacked overlays. They're derived from retail code, so they are never committed. Decompiling the levels hasn't started.
+Level overlays are counted in progress reports through target objects made from your own unpacked overlays. They're derived from retail code, so they are never committed. Decompiling them has started with a few shared functions in `src/levels/common/`, checked by the opt-in `tools/build_common_c.py` (not part of `make`; see `docs/common_level_c.md`).
 
 About 95% of the code in the 51 overlays is shared: the same function appears, at different addresses, in two or more of them. Reporting each overlay on its own made decomp.dev show about 100 MB of level code to decompile when only about 9.4 MB is distinct. So the report is split:
 

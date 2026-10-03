@@ -2,6 +2,8 @@
 
 Status on 2026-09-26. `python tools/triage.py` prints the current numbers.
 
+> **Note 2026-10-03:** `src/text.c` was split into one file per original source file in `src/frontbin/` ([source_files.md](source_files.md)). The dated entries below are a log and still say `text.c`; read it as "the sources".
+
 > **Update 2026-09-27:** the handwritten (100) and remnant (203) buckets are done: they moved to `asm/handwritten/` and `asm/remnants/`, included with `ASM_FUNC` / `LINKER_REMNANT`, and count as finished in objdiff. Current state: 763 functions in C, 303 assembly sources, 779 still to match (655 plain, 31 switch, 72 vu0, 14 mmi, 7 other). `python tools/triage.py` has live numbers.
 
 ## Where we are
@@ -41,7 +43,7 @@ gcc writes its tables with `.rdata` / `.align 4`, which the assembler files unde
 
 - the data blob is split into `data_a` and `data_b`;
 - `text.c.o(.rodata)` is linked between the two halves;
-- asm functions pull their tables into `text.c` with `INCLUDE_RODATA`.
+- asm functions pull their tables into their source file with `INCLUDE_RODATA`.
 
 Converting a function means deleting its `INCLUDE_ASM` and `INCLUDE_RODATA` lines together. Verified: full build `MATCH` with `func_003B0FC8` in C.
 
@@ -160,7 +162,7 @@ The 19 m2c drafts that were 1 to 5 instructions off went through the permuter an
 The permuter found only one of them (func_003997F0: load `arg0[0]` before the `if`). The rest came from fixing the draft, so check these before starting a permuter run:
 
 - **Pointer arithmetic on typed pointers.** m2c writes `D_X + 0x40` or `p->f4 + 0x20` where `D_X`/`f4` has a struct or `s32 *` type, so the offset gets scaled. Cast to `u8 *` or give the field a `u8 *` type (func_0039D510, func_003E16B8).
-- **Wrong callee prototype.** A per-function alias hides the prototype text.c already uses. func_003A3EF0 takes `unsigned long`; declaring it `(s32, s32)` leaves the constant load scheduled differently (func_003D47A0). A callee that takes one argument but is declared with three leaves extra argument moves (func_0037EAA0). Look up the real declaration in text.c first.
+- **Wrong callee prototype.** A per-function alias hides the prototype text.c already uses. func_003A3EF0 takes `unsigned long`; declaring it `(s32, s32)` leaves the constant load scheduled differently (func_003D47A0). A callee that takes one argument but is declared with three leaves extra argument moves (func_0037EAA0). Look up the real declaration in the sources (`src/frontbin/`) first.
 - **Base + index + field offset.** Retail often keeps `base + i * size` in a register and uses the field offset in the load (`lw 0x50($a0)`), where gcc folds `base + 0x50` into the `lui`/`addiu`. Take a pointer to the element first: `S *p = &D[i]; p->f50` (func_0037E7D8), `s32 **b = p->slots; slot = b + i;` (func_003E1460).
 - **Store order.** gcc emits the last of a run of stores to the same base first. To get retail's order A, B, C, D write B, C, D, A (func_003A61D0, func_003A6888). Trying every order of the stores with `try_func.py` takes seconds.
 - **`abs.s` that is not scheduled.** Where retail has `abs.s` right before `jr $ra` (not in the delay slot) or before a load, `fabsf()` doesn't match; `__asm__("abs.s %0, %1" : "=f"(r) : "f"(x))` does (func_003BEBF8, func_0037E920). SN's math header probably defined fabsf as inline asm.

@@ -76,6 +76,7 @@ If you used localdecomp's Save at score 0, this is done. By hand:
 
 2. If the function needs flags other than its range's, add a single-function override to `tools/text_parts.txt` (see [Toolchain and build](Toolchain-and-Build#text_partstxt)) and delete its line from `localdecomp_flags.txt`.
 3. If you declared a per-function alias such as `D_00142430_00396628`, add it to `symbol_addrs_resolved.txt` with the real address (`D_00142430_00396628 = 0x142430;`).
+4. If the block uses a prototype, typedef or extern that only another file declares, run `python tools/split_text.py --refresh`. It adds what the file needs to its "declarations from other files" section (localdecomp's Save does this for you). `pr_check.py` reports a file whose section is out of date.
 
 ## 5. Prove it
 
@@ -96,4 +97,5 @@ python tools/pr_check.py
 | `undefined reference to D_..._suffix` | Alias missing from `symbol_addrs_resolved.txt` | Add it with the base address |
 | `conflicting types for 'S_...'` | Two blocks define the same typedef name differently | Give one a unique name (e.g. suffix the function address) |
 | Ps2EeAs errors about `macro.inc` or unknown options | An `@ps2as` range contains an `INCLUDE_ASM` stub | Narrow the override to end after the C function |
+| `implicit declaration of function` or `'X' undeclared` in a file that used to build | The block uses something only another file declares | `python tools/split_text.py --refresh` |
 | `NO MATCH` with no compile error | A function compiled but doesn't match, often a partial saved from localdecomp | Rebuild each changed function in localdecomp or `try_func.py`; restore `INCLUDE_ASM` for any that aren't at 0 |

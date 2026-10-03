@@ -2388,7 +2388,28 @@ void func_0038E728(s32 a) {
 }
 /* localdecomp:end func_0038E728 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E730);
+/* localdecomp:start func_0038E730 */
+typedef struct LookupEntry_38E730 {
+    u16 key;
+    u8 reserved[6];
+} LookupEntry_38E730;
+extern LookupEntry_38E730 *D_001D9F24_0038E730[];
+s32 func_0038E730(s32 key) {
+    LookupEntry_38E730 *entry = *D_001D9F24_0038E730;
+    s32 index = 0;
+    if (entry->key != 0xFFFF && entry->key != key) {
+        LookupEntry_38E730 *cursor = entry;
+        s32 current;
+        for (;;) {
+            cursor++;
+            current = cursor->key;
+            index++;
+            if (current == 0xFFFF || current == key) break;
+        }
+    }
+    return index <= 0x3FF ? index : -1;
+}
+/* localdecomp:end func_0038E730 */
 
 LINKER_REMNANT("asm/remnants", func_0038E788);
 
@@ -8017,7 +8038,33 @@ s32 func_003AD520(u8 *a, s32 sz, u8 *b, s32 off, u8 *src1, s32 len1, u8 *src2, s
 }
 /* localdecomp:end func_003AD520 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AD650);
+/* localdecomp:start func_003AD650 */
+typedef struct {
+    s32 stream;
+    u8 *entries;
+    s32 write_index;
+    s32 count;
+    s32 capacity;
+} Queue_003AD650;
+void func_003AD650(volatile Queue_003AD650 *queue, s32 stream, u8 *entries, s32 capacity) {
+    s32 index = 0;
+    s32 offset;
+    queue->count = 0;
+    queue->stream = stream;
+    queue->entries = entries;
+    queue->capacity = capacity;
+    queue->write_index = 0;
+    if (capacity > 0) {
+        offset = 0;
+        do {
+            *(s32 *)(offset + (s32)queue->entries) = 0;
+            *(s32 *)(offset + (s32)queue->entries + 4) = index;
+            index++;
+            offset += 0x27E40;
+        } while (index < capacity);
+    }
+}
+/* localdecomp:end func_003AD650 */
 
 /* localdecomp:start func_003AD6A8 */
 s32 func_003AD6A8(void) {

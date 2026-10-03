@@ -35,6 +35,7 @@ The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in 
 |---|---|
 | `localdecomp/server.py` | Local web editor: build one function with its real flags and diff against retail |
 | `tools/try_func.py` | The same compile and diff from the command line (Windows, or Linux via wibo) |
+| `tools/build_common_c.py` | Opt-in common-level C build with canonical ownership and strict retail-byte gates; see [common-level C](docs/common_level_c.md) |
 | `tools/pr_check.py` | Catches the usual full-build failures before a PR |
 | `tools/build.py` | The Makefile's build for Linux and macOS |
 | `tools/triage.py` | Sorts the remaining functions into buckets (plain, switch, vu0, handwritten, remnant, ...) |

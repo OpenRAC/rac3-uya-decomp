@@ -1,0 +1,12 @@
+[
+  {
+    "name": "func_004D0538",
+    "source": "src/levels/common/func_004D0538.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D0538",
+    "size": 304,
+    "flags_from": "func_003ABC30",
+    "mode": "N",
+    "assembler": "default"
+  }
+]

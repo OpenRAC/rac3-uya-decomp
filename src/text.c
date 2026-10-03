@@ -1112,7 +1112,30 @@ void func_00385890(void) {
 }
 /* localdecomp:end func_00385890 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00385908);
+/* localdecomp:start func_00385908 */
+extern int D_001D9CB8_00385908;
+extern void (*D_001D9C98[])(int);
+extern int D_001D9CA8[];
+
+void func_00385908(void) {
+    int index;
+    register void (**callbacks)(int) __asm__("$17");
+    register int *arguments __asm__("$18");
+
+    index = 0;
+    if (D_001D9CB8_00385908 > 0) {
+        arguments = D_001D9CA8;
+        __asm__ volatile("" : "+r"(arguments));
+        callbacks = D_001D9C98;
+        do {
+            index++;
+            (*callbacks)(*arguments);
+            callbacks++;
+            arguments++;
+        } while (index < D_001D9CB8_00385908);
+    }
+}
+/* localdecomp:end func_00385908 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00385980);
 

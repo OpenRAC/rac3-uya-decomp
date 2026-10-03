@@ -10340,7 +10340,35 @@ void func_003B6358(s32 a0, long a1) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B6368);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B6410);
+/* localdecomp:start func_003B6410 */
+extern int D_001D8D10_003B6410;
+extern int D_001DA298[];
+extern int D_001DA2C0[];
+extern void func_13C230(int, int, int);
+
+void func_003B6410(float volume, int index) {
+    int sound;
+    register int offset __asm__("$3");
+    register int *indices __asm__("$2");
+    register int *sounds __asm__("$4");
+    register int invalid __asm__("$5");
+
+    if (index >= 0 && index < D_001D8D10_003B6410) {
+        offset = index * 4;
+        __asm__ volatile("" : "+r"(offset));
+        indices = D_001DA298;
+        offset += (int)indices;
+        __asm__ volatile("" : "+r"(offset));
+        sounds = D_001DA2C0;
+        __asm__ volatile("" : "+r"(sounds));
+        sound = sounds[*(int *)offset];
+        invalid = -1;
+        if (sound != invalid) {
+            func_13C230(sound, (int)(volume * 1024.0f), 0);
+        }
+    }
+}
+/* localdecomp:end func_003B6410 */
 
 /* localdecomp:start func_003B6488 */
 extern void func_0013CA20(void);

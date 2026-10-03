@@ -9363,7 +9363,28 @@ s32 func_003B1400(void) {
 }
 /* localdecomp:end func_003B1400 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B1430);
+/* localdecomp:start func_003B1430 */
+extern unsigned char D_001D5BDC_003B1430;
+extern int D_001D8AE4;
+extern int D_001D8A70_g;
+__asm__(".extern D_001D8AE4, 4");
+__asm__(".extern D_001D8A70_g, 4");
+extern void func_00396FD0(int, int, int);
+extern void func_003B11C0(void);
+extern void func_003B1210(void);
+extern void func_003B12C8(void);
+
+void func_003B1430(void) {
+    register int flag __asm__("$2");
+    flag = D_001D5BDC_003B1430;
+    if (flag != 0) {
+        func_00396FD0((int)func_003B11C0, D_001D8AE4, (int)func_003B1210);
+    } else {
+        func_00396FD0((int)func_003B11C0, D_001D8AE4, (int)func_003B12C8);
+    }
+    D_001D8A70_g = 1;
+}
+/* localdecomp:end func_003B1430 */
 
 /* localdecomp:start func_003B1490 */
 extern s32 D_001D8ACC;

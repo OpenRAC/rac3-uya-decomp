@@ -17192,7 +17192,54 @@ s32 func_003E6610(u8 *p, f32 a, f32 b) {
 }
 /* localdecomp:end func_003E6610 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E6680);
+/* localdecomp:start func_003E6680 */
+typedef struct {
+    u8 pad0[4];
+    s32 count;
+    struct { u32 key; void *value; } entries[3];
+} Table_003E6680;
+
+extern u8 D_001DAA8B_003E6680;
+extern void *func_003E4890(void *, u32);
+
+s32 func_003E6680(Table_003E6680 *input_table, u32 input_key, void *input_value) {
+    register Table_003E6680 *table __asm__("$17") = input_table;
+    register u32 key __asm__("$16") = input_key;
+    register void *value __asm__("$18") = input_value;
+
+    if (table->count < 3 && func_003E4890(table, key) == 0) {
+        register s32 iteration __asm__("$8") = 0;
+        register s32 divisor __asm__("$6") = 3;
+        register s32 parity __asm__("$11") = key & 1;
+        register u8 *value_base __asm__("$9") = (u8 *)table + 0xC;
+        register void *sentinel __asm__("$12") = &D_001DAA8B_003E6680;
+        register u8 *key_base __asm__("$10") = (u8 *)table + 8;
+        register s32 offset __asm__("$7") = 0;
+
+        do {
+            register s32 slot __asm__("$3") = ((key % divisor) + offset) % divisor;
+            register s32 byte_offset __asm__("$2") = slot << 3;
+            register void **selected __asm__("$5") = (void **)(value_base + byte_offset);
+            register void *current __asm__("$4") = *selected;
+            register s32 next_offset __asm__("$3");
+
+            __asm__ volatile("" : "+r"(selected));
+            if (current == 0) goto found;
+            if (current != sentinel) goto next;
+found:
+            *selected = value;
+            *(u32 *)(key_base + byte_offset) = key;
+            table->count++;
+            return 1;
+next:
+            iteration++;
+            next_offset = offset + 1;
+            offset = parity + next_offset;
+        } while (iteration < 3);
+    }
+    return 0;
+}
+/* localdecomp:end func_003E6680 */
 
 /* localdecomp:start func_003E6758 */
 extern s32 D_001D9800[];

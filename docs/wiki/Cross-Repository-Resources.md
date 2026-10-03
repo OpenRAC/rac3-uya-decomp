@@ -24,7 +24,7 @@ These references are not new progress gains. Floating-point evaluation order and
 ## A new match informed by the cross-game reference
 
 **U `func_003BEB58`: linear interpolation of four components.**
-The pinned [U text][u-text] still contains its `INCLUDE_ASM` and the C implementation of scalar `func_003BEB48`; the new local implementation is not part of that snapshot.
+The pinned [U text][u-text] still contains its `INCLUDE_ASM` and the C implementation of scalar `func_003BEB48`; the new local implementation is not part of that snapshot. (Both links point at the single `src/text.c` from before the 2026-10-03 split. On current `main`, `func_003BEB58`, `func_003BEB48` and `func_003BE6A8` are in `src/frontbin/3BDAC0.c`, and `func_00399748` is in `src/frontbin/3958F0.c`.)
 Local inspection of the generated target disassembly found two `lq` loads, two `sq` copies of 16-byte vectors, four calls to the scalar, and result stores at offsets `0/4/8/12`.
 This observation comes from local generated disassembly, not a published ASM file in the linked sources. No target bytes or derived listing are reproduced here.
 The useful sibling is therefore **U `003BEB48`**, with R `002AA140` as a cross-game reference. R's cubic interpolation `002A7AA8` implements a different algorithm.

@@ -27,7 +27,7 @@ Before the split, every build part was given every declaration from every earlie
 - If all functions in the file use the same flags, the file is compiled as it is, once.
 - If some functions only match with other flags (marked `# single-function override` in `text_parts.txt`), the file is compiled in slices, one per run of equal flags. Each slice gets the file's prelude and the declarations of the file's earlier functions, then its own functions.
 
-Every file ends up as one object, `build/src/frontbin/<file>.o`. They are linked into `build/src/text.c.o`, so the linker script is unchanged. objdiff has one unit per file (`frontbin/src/<file>`).
+Every file ends up as one object, `build/src/frontbin/<file>.o` (a sliced file's per-slice objects are in `build/src/frontbin/slices/`, so `build/src/frontbin/` and `build/objdiff/target/frontbin/` hold exactly one `.o` per source file). They are linked into `build/src/text.c.o`, so the linker script is unchanged. objdiff has one unit per file (`frontbin/src/<file>`).
 
 Most overrides are about the assembler. Retail was assembled by Ps2EeAs. Some functions only match with it, but it can't read the `INCLUDE_ASM` stubs, so a file that still has stubs uses `bin/ee-as.exe` and its Ps2EeAs functions become slices. As the stubs disappear, a file can switch to `@ps2as` as a whole and lose its slices.
 
@@ -48,4 +48,11 @@ These boundaries are only the best estimate so far. Moving one changes nothing i
 
 The split was done with `python tools/split_text.py --from src/text.c`. Merging functions that used to be compiled apart into one file exposed four prototype conflicts. Each was solved the usual way, with a per-function alias (`func_00399748_003997F0`, `func_0039C158_0039C170`, `func_003AC0D8_003ACED0`, `func_003BF5D0_003BF5E0`), plus `extern void func_0039C158();` where only its address is taken.
 
-A branch that still edits `src/text.c` can be carried over: put its `text.c` back temporarily and rerun the split with the same `tools/src_files.txt`.
+A branch that still edits `src/text.c` can be carried over: put its `text.c` back temporarily and rerun the split with the same `tools/src_files.txt`:
+
+1. Check out the branch's `src/text.c` (and its `tools/text_parts.txt` lines for the functions it adds) into a checkout of current `main`.
+2. `python tools/split_text.py --from src/text.c`, then delete `src/text.c`.
+3. `python tools/split_text.py --refresh`.
+4. Put the branch's flag lines for its new functions into `tools/text_parts.txt` as single-function overrides, then check with `python tools/pr_check.py` and `make`.
+
+The pull requests open at the time of the split were merged into `text.c` first and split together with it, so none of them needs this.

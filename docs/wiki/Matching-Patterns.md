@@ -89,7 +89,7 @@ A function's mode only shows when it touches a global. If the diff is all about 
 | `ee/bin/Ps2EeAs.exe` (SN ps2eeas 1.9.25) | `@ps2as` | Mixed gp/lui access (above); float constants built inline with `lui`/`ori`/`mtc1`; `mtc1` hazard `nop`s that depend on whether the next instruction uses the register |
 | `ee/bin/as.exe` (May 2001) | `@newas` | Rare; try it when both of the others are one instruction off |
 
-Ps2EeAs can't read the GNU `macro.inc`, so a range assembled with it must not contain any `INCLUDE_ASM` stub. Give the function its own single-function range (see [Toolchain and build](Toolchain-and-Build#text_partstxt)).
+Ps2EeAs can't read the GNU `macro.inc`, so a range assembled with it must not contain any `INCLUDE_ASM` stub. Give the function its own single-function range (the build then compiles it as a separate slice of its file) (see [Toolchain and build](Toolchain-and-Build#text_partstxt)).
 
 ## Floats
 
@@ -382,7 +382,7 @@ function rather than rewriting the C.
   (`*(u128_t *)` at 0x00/0x10/0x20) with the range's flags allocates `$2`, `$3`, `$6`;
   `$at` is not something this compiler hands to a value. In `frontbin.elf` the only
   files containing `lq $at` are the nine under `asm/handwritten/`, plus
-  `func_00388E58` and `func_00388E38` - both still `INCLUDE_ASM` in `src/text.c`.
+  `func_00388E58` and `func_00388E38` - both still `INCLUDE_ASM` in `src/frontbin/388B40.c`.
 - **`sq $zero` - a 128-bit zero store.** `*(u128_t *)p = 0;`, `(u128_t)0` and a named
   `register u128_t z = 0;` all compile to `por $2,$zero,$zero` followed by `sq $2,0($a0)`:
   the TImode zero is materialised in a register first, so retail's single `sq $zero` is out
@@ -390,7 +390,7 @@ function rather than rewriting the C.
 
 A third shape from the same pass, `sq $31` / `lq $31`, has a workaround rather than a dead
 end - list the function in `tools/sq_ra_funcs.txt` (*Functions that save `$ra` with `sq`*
-above); `tools/pr_check.py` now warns when a function that is C in `text.c` has the
+above); `tools/pr_check.py` now warns when a function that is C in `src/frontbin/` has the
 signature in retail and is missing from that list. What the pass did settle is that no flag on this compiler produces it, which is
 what the next section is about.
 

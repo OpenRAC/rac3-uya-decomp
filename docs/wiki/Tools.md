@@ -63,6 +63,7 @@ python tools/try_func.py scratch/f.c func_0039BEC0 --mode S --as ps2as
 - Relocations are filled in with real addresses, so a wrong symbol or two swapped stores show up as differences.
 - The source-file context is included by default. `--no-context` compiles your file alone.
 - `--flags "..."` appends extra compiler flags, for experiments.
+- `--early-extern-size SYMBOL=SIZE` (repeatable) is an experiment for Ps2EeAs `$gp` selection; the full build doesn't do this, so a function that only matches with it is not done. See [Matching patterns](Matching-Patterns#early-extern-sizes-for-ps2eeas).
 - On Linux, pass `--toolchain` and `--runner` (the path to wibo), or set `UYA_TOOLCHAIN` and `UYA_RUNNER`.
 
 Output is `func_X: MATCH` or `func_X: N diff` plus a side-by-side listing.
@@ -143,6 +144,7 @@ Catches the mistakes that break the full build, and names the line to fix:
 - missing symbol aliases;
 - orphaned `INCLUDE_RODATA` lines;
 - stale localdecomp scores;
+- C functions whose retail code saves `$ra` with `sq`/`lq` but that are missing from `tools/sq_ra_funcs.txt` (a warning; see [Matching patterns](Matching-Patterns));
 - retail files staged in git.
 
 ```
@@ -181,7 +183,13 @@ Both do the same four steps:
 
 ### build_text.py
 
-Called by the build; you don't run it yourself. It compiles each file in `tools/src_files.txt` with its flags from `tools/text_parts.txt`: as it is when all its functions share flags, otherwise in slices (each with the file's own declarations, nothing from other files). Every file becomes one object in `build/src/frontbin/`; they are linked into one `text.c.o`.
+Called by the build; you don't run it yourself. It compiles each file in `tools/src_files.txt` with its flags from `tools/text_parts.txt`: as it is when all its functions share flags, otherwise in slices (each with the file's own declarations, nothing from other files). Every file becomes one object in `build/src/frontbin/` (slice objects are kept apart in `build/src/frontbin/slices/`, so that folder holds exactly one `.o` per source file); they are linked into one `text.c.o`.
+
+Its `function_context` function is what gives localdecomp, `try_func.py` and `permuter_setup.py` the same declarations as the real build.
+
+### build_common_c.py
+
+The opt-in build for the level-code C in `src/levels/common/` (listed in `tools/common_c.json`). It compiles each function with its frontbin donor's flags and compares it byte for byte with the retail common-level object made from your own overlays. Not part of `make`. Usage and the checks it applies: `docs/common_level_c.md`.
 
 ### split_text.py
 
@@ -190,8 +198,6 @@ Called by the build; you don't run it yourself. It compiles each file in `tools/
 ### gen_objdiff_units.py
 
 Rewrites the frontbin units in `objdiff.json` from `tools/src_files.txt` (one unit per file). Run it after adding or renaming a file.
-
-Its `function_context` function is what gives localdecomp, `try_func.py` and `permuter_setup.py` the same declarations as the real build.
 
 ### asm_filter.py
 

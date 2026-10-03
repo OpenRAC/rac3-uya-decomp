@@ -6,7 +6,11 @@ This repo contains no game code or assets. To build it you need your own copy of
 
 ## Status
 
-1292 of 31316 functions (4.1%) are fully matched. `python tools/pr_check.py` prints the current count for frontbin (the file being worked on). 918 functions are matched fully in C with the rest matched being confirmed handwritten assembly as currently no known compiler or set of flags generates matching assembly.
+1441 of 31316 functions (4.6%) are fully matched (2026-10-03). `python tools/pr_check.py` prints the current count for frontbin (the file being worked on). 1067 functions are matched fully in C with the rest matched being confirmed handwritten assembly as currently no known compiler or set of flags generates matching assembly.
+
+frontbin's code is in `src/frontbin/`, one C file per original source file (see [`docs/source_files.md`](docs/source_files.md)). Until 2026-10-03 it was a single `src/text.c`; branches or notes that mention that file are older than the split.
+
+**Cloned before 2026-10-03?** The history of `main` was rewritten that day (commit messages only, no code). Run `git fetch` and `git reset --hard origin/main` on a clean `main`, or clone again, before starting new work. Rebase any open branch onto the new `main`.
 
 ## Quick start (Windows)
 

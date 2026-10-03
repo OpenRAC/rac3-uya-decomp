@@ -11715,7 +11715,16 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003C1950);
 
 LINKER_REMNANT("asm/remnants", func_003C1A28);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C1A40);
+/* localdecomp:start func_003C1A40 */
+unsigned long func_003C1A40(u8 *p, unsigned long a, unsigned long b, unsigned long c, unsigned long d) {
+    register unsigned long shifted __asm__("$5") = a << 32;
+    __asm__ volatile("" : "+r"(shifted));
+    c <<= 8;
+    d <<= 16;
+    __asm__ volatile("" : "+r"(d));
+    return *(unsigned long *)(p + 0x38) = shifted | b | c | d;
+}
+/* localdecomp:end func_003C1A40 */
 
 ASM_FUNC("asm/handwritten", func_003C1A60);
 

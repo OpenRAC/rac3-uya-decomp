@@ -2494,7 +2494,55 @@ void func_0038E410(s32 *p) {
 }
 /* localdecomp:end func_0038E410 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E440);
+/* localdecomp:start func_0038E440 */
+typedef struct {
+    u8 pad0[0x60];
+    s32 active;
+    u8 flag64;
+    u8 pad65[3];
+    s32 mode68;
+    u8 flag6C;
+} Object_0038E440;
+
+extern s32 D_001D5B94_0038E440;
+extern void func_0038E248(Object_0038E440 *, s32 *, s32 *);
+extern s32 func_0039BEC0(s32, s32, s32, s32, u8 *);
+extern void func_0038E360(s32 *);
+
+s32 func_0038E440(Object_0038E440 *object) {
+    register s32 result __asm__("$17");
+    s32 values[2];
+    s32 mode;
+
+    if (object->active == 0) {
+        goto inactive;
+    }
+    object->flag64 = 0;
+    object->flag6C = 1;
+    values[0] = 0;
+    result = 0;
+    values[1] = 0;
+    func_0038E248(object, &values[0], &values[1]);
+
+    mode = 1;
+    if ((u32)(D_001D5B94_0038E440 - 1) < 2) {
+        mode = 2;
+    }
+    object->mode68 = mode;
+
+    if (values[1] == 0) {
+        result = func_0039BEC0(1, mode, 0, values[0], 0);
+    } else if (values[1] == 1) {
+        result = func_0039BEC0(2, mode, values[0], 0, 0);
+    }
+    if (result < 0) {
+        func_0038E360((s32 *)object);
+    }
+    return result == 0;
+inactive:
+    return 0;
+}
+/* localdecomp:end func_0038E440 */
 
 /* localdecomp:start func_0038E508 */
 extern s32 func_00399F90();
@@ -9262,7 +9310,7 @@ void func_003AF250(void) {
 /* localdecomp:start func_003AF288 */
 extern u8 D_00227480[];
 extern s32 func_0038E2E8();
-extern void func_0038E440(void *);
+extern s32 func_0038E440(void *);
 void func_003AF288(void) {
     func_0038E2E8(D_00227480, 0x2B);
     func_0038E440(D_00227480);

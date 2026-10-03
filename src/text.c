@@ -2388,7 +2388,33 @@ void func_0038E728(s32 a) {
 }
 /* localdecomp:end func_0038E728 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E730);
+/* localdecomp:start func_0038E730 */
+extern u16 *D_001D9F24_0038E730;
+__asm__(".extern D_001D9F24_0038E730, 16");
+s32 func_0038E730(s32 target) {
+    register u16 *entry __asm__("$5") = D_001D9F24_0038E730;
+    register s32 sentinel __asm__("$3") = 0xFFFF;
+    register s32 current __asm__("$2") = *entry;
+    register s32 index __asm__("$6") = 0;
+    register u16 *scan __asm__("$3");
+    register s32 loop_sentinel __asm__("$5");
+    if (current == sentinel || current == target) {
+        goto done;
+    }
+    scan = entry;
+    loop_sentinel = 0xFFFF;
+    do {
+        scan = (u16 *)((u8 *)scan + 8);
+        current = *scan;
+        index++;
+        if (current == loop_sentinel) {
+            break;
+        }
+    } while (current != target);
+done:
+    return index < 0x400 ? index : -1;
+}
+/* localdecomp:end func_0038E730 */
 
 LINKER_REMNANT("asm/remnants", func_0038E788);
 

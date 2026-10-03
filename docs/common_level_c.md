@@ -10,15 +10,18 @@ and no inline assembly. The eight calls refer to the singleplayer executable's
 `0x0011A0B0`; this does not claim that a multiplayer address is an equivalent
 callee. Other placements and normalized hashes are only search candidates.
 
-The catalogue also contains three call-free Veldin owners:
+The catalogue also contains six call-free Veldin owners:
 
 | Owner | Frontbin donor | Bytes | Existing compiler settings |
 |---|---|---:|---|
 | `func_004CF578` | `func_003AAC70` | 208 | N/default |
 | `func_00495980` | `func_003B5128` | 196 | S/Ps2EeAs, inline float constants |
 | `func_004CF648` | `func_003AAD40` | 192 | N/default |
+| `func_004CF7D0` | `func_003AAEC8` | 192 | N/default |
+| `func_00495A48` | `func_003B51F0` | 156 | S/default |
+| `func_00417A30` | `func_0038E248` | 156 | N/default |
 
-Together these four sources cover 900 owned function bytes. The float function
+Together these seven sources cover 1404 owned function bytes. The float function
 is still plain C: selecting the existing Ps2EeAs assembler is not inline ASM.
 Every source passes the same complete-size and raw/resolved-byte gates.
 

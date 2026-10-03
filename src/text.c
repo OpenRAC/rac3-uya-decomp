@@ -8017,7 +8017,34 @@ s32 func_003AD520(u8 *a, s32 sz, u8 *b, s32 off, u8 *src1, s32 len1, u8 *src2, s
 }
 /* localdecomp:end func_003AD520 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AD650);
+/* localdecomp:start func_003AD650 */
+void func_003AD650(volatile s32 *state, s32 value, s32 *entries, s32 count) {
+    register s32 index __asm__("$8") = 0;
+    register s32 offset __asm__("$5");
+    register s32 stride __asm__("$6");
+    register s32 *first_ptr __asm__("$2");
+    register s32 *second_ptr __asm__("$3");
+    state[3] = 0;
+    state[0] = value;
+    state[1] = (s32)entries;
+    state[4] = count;
+    state[2] = 0;
+    if (count > 0) {
+        offset = 0;
+        stride = 0x27E40;
+        do {
+            first_ptr = (s32 *)(offset + state[1]);
+            __asm__ volatile("" : "+r"(first_ptr));
+            *first_ptr = 0;
+            second_ptr = (s32 *)(offset + state[1]);
+            __asm__ volatile("" : "+r"(second_ptr));
+            second_ptr[1] = index;
+            index++;
+            offset += stride;
+        } while (index < count);
+    }
+}
+/* localdecomp:end func_003AD650 */
 
 /* localdecomp:start func_003AD6A8 */
 s32 func_003AD6A8(void) {

@@ -11530,7 +11530,26 @@ void func_003BF778(void *a, f32 f) {
 
 LINKER_REMNANT("asm/remnants", func_003BF7C8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF7E8);
+/* localdecomp:start func_003BF7E8 */
+int func_003BF7E8(unsigned char *object) {
+    unsigned char *link;
+    int flags;
+
+    if (object != 0)
+        goto check_flags;
+failure:
+    return 0;
+check_flags:
+    flags = *(unsigned short *)(object + 0x34) & 0x20;
+    __asm__ volatile(".word 0");
+    if (flags == 0)
+        goto failure;
+    link = *(unsigned char **)(object + 0x68);
+    if (link == 0)
+        goto failure;
+    return *(int *)(link + 8);
+}
+/* localdecomp:end func_003BF7E8 */
 
 LINKER_REMNANT("asm/remnants", func_003BF820);
 

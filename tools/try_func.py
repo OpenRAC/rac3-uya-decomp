@@ -22,6 +22,8 @@ Options:
   --as default|ps2as|newas
                      assembler: bin/ee-as.exe (default), SN Ps2EeAs, ee/bin/as.exe
   --flags "..."      extra compiler flags (appended)
+  --early-extern-size SYMBOL=SIZE
+                     expose a matching compiler-emitted size before first use
   --all-modes        try S, S+ps2as, N, N+ps2as and print one line each
   --quiet            only print MATCH / N diff lines
 
@@ -149,6 +151,47 @@ def text_c_context(name, own_src):
     return ctx, bt.drop_repeated_typedefs(ctx, own_src)
 
 
+def early_extern_metadata(text, sizes):
+    if sizes is not None and not isinstance(sizes, dict):
+        raise ValueError("early extern metadata must be a symbol-to-size dictionary")
+    if not sizes:
+        return text
+    start = re.search(r"^\s*\.ent\s+\S+[^\n]*", text, re.M)
+    if not start:
+        raise ValueError("early extern metadata needs a compiler function entry")
+    require_names = {}
+    for symbol, size in sizes.items():
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", symbol) or type(size) is not int or size <= 0:
+            raise ValueError("early extern metadata needs an identifier and positive integer size")
+        require_names[symbol] = size
+    declarations = {}
+    pattern = re.compile(r"^\s*\.extern\s+([A-Za-z_][A-Za-z0-9_]*)\s*,\s*(0x[0-9A-Fa-f]+|[0-9]+)\s*(?:#.*)?$")
+    for line in text.splitlines():
+        match = pattern.fullmatch(line)
+        if match:
+            symbol, size_text = match.groups()
+            size = int(size_text, 16 if size_text.lower().startswith("0x") else 10)
+            if symbol in declarations and declarations[symbol] != size:
+                raise ValueError("conflicting compiler extern sizes for " + symbol)
+            declarations[symbol] = size
+    for symbol, size in require_names.items():
+        if declarations.get(symbol) != size:
+            raise ValueError("missing or different compiler-emitted extern size for " + symbol)
+    metadata = "".join(".extern %s, %d\n" % (symbol, size) for symbol, size in require_names.items())
+    return text[:start.start()] + metadata + text[start.start():]
+
+
+def parse_extern_size(value):
+    try:
+        symbol, size_text = value.split("=", 1)
+        size = int(size_text, 0)
+    except ValueError:
+        raise argparse.ArgumentTypeError("expected SYMBOL=SIZE")
+    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", symbol) or size <= 0:
+        raise argparse.ArgumentTypeError("expected an identifier and positive size")
+    return symbol, size
+
+
 def compile_c(src_path, flags, args, name=None):
     src = open(src_path).read()
     if name and not args.no_context:
@@ -175,7 +218,13 @@ def compile_c(src_path, flags, args, name=None):
         # retail's loop padding (tools/asm_filter.py), as in the full build
         sys.path.insert(0, os.path.join(ROOT, "tools"))
         import asm_filter
-        filtered = asm_filter.filter_asm(open(s_path, newline="").read())
+        assembly = open(s_path, newline="").read()
+        try:
+            assembly = early_extern_metadata(assembly, getattr(args, "early_extern_sizes", None))
+        except ValueError as error:
+            print("METADATA ERROR: " + str(error))
+            return None
+        filtered = asm_filter.filter_asm(assembly)
         open(s_path, "w", newline="").write(filtered)
         cmd = base[:head] + ["-c"] + base[head:] + ["-o", o_path, s_path]
         p2 = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
@@ -301,6 +350,8 @@ def main():
     ap.add_argument("--mode", choices=["S", "N"])
     ap.add_argument("--as", dest="asm", choices=["default", "ps2as", "newas"])
     ap.add_argument("--flags", default="")
+    ap.add_argument("--early-extern-size", action="append", type=parse_extern_size, default=[],
+                    help="promote a matching compiler-emitted extern size before its first use (SYMBOL=SIZE)")
     ap.add_argument("--all-modes", action="store_true")
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--no-context", action="store_true",
@@ -309,6 +360,11 @@ def main():
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--retail", default=os.path.join(ROOT, "frontbin.elf"))
     args = ap.parse_args()
+    args.early_extern_sizes = {}
+    for symbol, size in args.early_extern_size:
+        if symbol in args.early_extern_sizes and args.early_extern_sizes[symbol] != size:
+            ap.error("conflicting early extern sizes for " + symbol)
+        args.early_extern_sizes[symbol] = size
 
     src = open(args.file).read()
     names = args.names or list(dict.fromkeys(FUNC_DEF_RE.findall(src)))

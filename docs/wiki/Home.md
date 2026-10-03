@@ -16,6 +16,7 @@ A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arse
 | [Setup](Setup) | Toolchain, Python, your own copy of the game file, first build |
 | [Workflow](Workflow) | Picking a function, matching it in localdecomp or on the command line, putting it into `text.c` |
 | [Matching patterns](Matching-Patterns) | The rules and tricks that make this compiler produce retail code |
+| [Cross-repository resources](Cross-Repository-Resources) | Pinned RAC1, RAC2 and Lombyte references, ABI evidence, and limits of cross-game matching |
 | [Tools](Tools) | Every script in `tools/`, localdecomp and the Makefile: what each is for and when to use it |
 | [Toolchain and build](Toolchain-and-Build) | How the build works: `text_parts.txt`, assemblers, symbol files, objdiff |
 | [Pull requests](Pull-Requests) | What a PR must contain and the checklist a reviewer uses |

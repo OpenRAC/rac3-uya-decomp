@@ -11433,7 +11433,21 @@ f32 func_003BEB48(f32 a, f32 b, f32 t) {
 }
 /* localdecomp:end func_003BEB48 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BEB58);
+/* localdecomp:start func_003BEB58 */
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} __attribute__((aligned(16))) Vector_003BEB58;
+extern f32 func_003BEB48(f32, f32, f32);
+void func_003BEB58(Vector_003BEB58 *output, Vector_003BEB58 first, Vector_003BEB58 second, f32 fraction) {
+    output->x = func_003BEB48(first.x, second.x, fraction);
+    output->y = func_003BEB48(first.y, second.y, fraction);
+    output->z = func_003BEB48(first.z, second.z, fraction);
+    output->w = func_003BEB48(first.w, second.w, fraction);
+}
+/* localdecomp:end func_003BEB58 */
 
 LINKER_REMNANT("asm/remnants", func_003BEBF0);
 

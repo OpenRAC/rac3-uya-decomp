@@ -39,5 +39,6 @@ The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in 
 | `tools/pr_check.py` | Catches the usual full-build failures before a PR |
 | `tools/build.py` | The Makefile's build for Linux and macOS |
 | `tools/triage.py` | Sorts the remaining functions into buckets (plain, switch, vu0, handwritten, remnant, ...) |
-| `tools/build_text.py` | Builds `src/text.c` in address ranges with per-range flags (`tools/text_parts.txt`) |
+| `tools/build_text.py` | Builds `src/frontbin/*.c`, one object per source file, with per-function flags (`tools/text_parts.txt`) |
+| `tools/split_text.py` | Keeps each source file's declarations from other files up to date (`--refresh`) |
 | `tools/check_match.py` | Compares the built binary with retail |

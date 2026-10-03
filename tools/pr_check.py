@@ -9,10 +9,13 @@ Run from anywhere; paths are relative to the repo root.
 `make` (MATCH) is still the real test. These checks explain the usual
 reasons it fails, in terms of the line you need to fix:
 
+  files      every function sits in the file that owns its address
+             (tools/src_files.txt), at most once, and each file's
+             declarations from other files are up to date
   markers    every /* localdecomp:start X */ has a matching end and the block
              defines function X
   duplicates a function is not both INCLUDE_ASM and C
-  variables  no variable is *defined* in text.c (only `extern`); a definition
+  variables  no variable is *defined* in a source file (only `extern`); a definition
              creates .data/.sdata/.bss and breaks the layout or the link
   typedefs   a typedef name is not defined twice with different bodies
   aliases    every per-function alias (D_XXXXXXXX_suffix) has an address in
@@ -25,7 +28,7 @@ reasons it fails, in terms of the line you need to fix:
   overrides  tools/localdecomp_flags.txt entries for functions that are now
              C (move them into text_parts.txt)
   retail     no retail binaries are tracked by git
-  status     localdecomp's status.json agrees with text.c about what is C
+  status     localdecomp's status.json agrees with the sources about what is C
   --obj      the built text.c.o has no data sections
 
 Exit status 1 if any error was found. Warnings don't fail.
@@ -33,7 +36,13 @@ Exit status 1 if any error was found. Warnings don't fail.
 import argparse, os, re, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEXT_C = os.path.join(ROOT, "src", "text.c")
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import srcfiles as sf  # noqa: E402
+FILES = sf.read_file_list()
+
+
+def all_text():
+    return "\n".join(sf.read_source(rel) for rel, _ in FILES)
 
 errors, warnings = [], []
 
@@ -136,8 +145,46 @@ def is_variable_definition(stmt):
     return True
 
 
-def check_text_c():
-    raw = open(TEXT_C, encoding="utf-8", errors="replace").read().replace("\r\n", "\n")
+def check_sources():
+    """check_file() on every source file, plus the checks that span files."""
+    asm, defined = {}, {}
+    for rel, start in FILES:
+        raw = sf.read_source(rel)
+        _, _, a, d = check_file(raw, rel)
+        for name in a:
+            if name in asm:
+                err(f"{rel}: {name} is also INCLUDE_ASM in {asm[name][0]}")
+            asm[name] = (rel, a[name])
+        for name in d:
+            if name in defined:
+                err(f"{rel}: {name} is also defined in {defined[name][0]}")
+            defined[name] = (rel, d[name])
+        # every function in the file that owns its address
+        for name in list(a) + list(d):
+            want = sf.file_for_address(FILES, int(name[5:], 16))
+            if want != rel:
+                err(f"{rel}: {name} belongs in {want} (tools/src_files.txt address ranges)")
+    for name in sorted(set(asm) & set(defined)):
+        err(f"{defined[name][0]}: {name} is both C and INCLUDE_ASM ({asm[name][0]}); "
+            "remove the INCLUDE_ASM line")
+    # declarations from other files up to date (tools/split_text.py --refresh)
+    try:
+        import split_text, shutil, tempfile
+        tmp = tempfile.mkdtemp()
+        for rel, _ in FILES:
+            os.makedirs(os.path.dirname(os.path.join(tmp, rel)), exist_ok=True)
+            shutil.copy(os.path.join(ROOT, rel), os.path.join(tmp, rel))
+        stale = split_text.refresh(FILES, tmp)
+        shutil.rmtree(tmp)
+        for rel in stale:
+            err(f"{rel}: its declarations from other files are out of date; "
+                "run python tools/split_text.py --refresh")
+    except Exception as e:  # pragma: no cover
+        warn(f"could not check cross-file declarations: {e}")
+    return asm, defined
+
+
+def check_file(raw, label):
     code = strip_comments(raw)
     code_str = strip_comments(raw, keep_strings=True)
     macros = set(re.findall(r"^\s*#\s*define\s+(\w+)", raw, re.M))
@@ -148,23 +195,23 @@ def check_text_c():
     seen = set()
     for pos, name in starts:
         if name in seen:
-            err(f"text.c:{lineno(raw, pos)}: second localdecomp:start for {name}")
+            err(f"{label}:{lineno(raw, pos)}: second localdecomp:start for {name}")
         seen.add(name)
         end = ends.get(name)
         if end is None or end < pos:
-            err(f"text.c:{lineno(raw, pos)}: localdecomp:start {name} has no matching end marker")
+            err(f"{label}:{lineno(raw, pos)}: localdecomp:start {name} has no matching end marker")
             continue
         block = raw[pos:end]
         inner = re.search(r"/\* localdecomp:start (\w+) \*/", block[5:])
         if inner:
-            err(f"text.c:{lineno(raw, pos)}: block {name} contains another start marker ({inner.group(1)})")
+            err(f"{label}:{lineno(raw, pos)}: block {name} contains another start marker ({inner.group(1)})")
         if re.search(r"\.globa?l\s+%s\b" % re.escape(name), block):
-            warn(f"text.c:{lineno(raw, pos)}: {name} is written as inline asm, not C")
+            warn(f"{label}:{lineno(raw, pos)}: {name} is written as inline asm, not C")
         elif name not in [d.group(1) for d in DEF_RE.finditer(strip_comments(block))]:
-            err(f"text.c:{lineno(raw, pos)}: block {name} does not define {name}")
+            err(f"{label}:{lineno(raw, pos)}: block {name} does not define {name}")
     for name, pos in ends.items():
         if name not in seen:
-            err(f"text.c:{lineno(raw, pos)}: localdecomp:end {name} without a start marker")
+            err(f"{label}:{lineno(raw, pos)}: localdecomp:end {name} without a start marker")
 
     # duplicates
     asm = {m.group(1): m.start() for m in
@@ -172,11 +219,8 @@ def check_text_c():
     defined = {}
     for m in DEF_RE.finditer(code):
         if m.group(1) in defined:
-            err(f"text.c:{lineno(raw, m.start())}: {m.group(1)} is defined twice")
+            err(f"{label}:{lineno(raw, m.start())}: {m.group(1)} is defined twice")
         defined[m.group(1)] = m.start()
-    for name in sorted(set(asm) & set(defined)):
-        err(f"text.c:{lineno(raw, defined[name])}: {name} is both C and INCLUDE_ASM "
-            f"(line {lineno(raw, asm[name])}); remove the INCLUDE_ASM line")
 
     # jump tables: an INCLUDE_RODATA belongs right after its function's
     # INCLUDE_ASM. Left behind after the function became C, it duplicates the
@@ -186,7 +230,7 @@ def check_text_c():
         t = line.strip()
         if t.startswith("INCLUDE_RODATA(") and not prev.startswith(
                 ("INCLUDE_ASM(", "INCLUDE_RODATA(", "ASM_FUNC(", "LINKER_REMNANT(")):
-            err(f"text.c:{i}: {t} does not follow an INCLUDE_ASM; if its function is C now, delete this line")
+            err(f"{label}:{i}: {t} does not follow an INCLUDE_ASM; if its function is C now, delete this line")
         if t:
             prev = t
 
@@ -194,7 +238,7 @@ def check_text_c():
     for pos, stmt in top_level_statements(code):
         if is_variable_definition(stmt):
             one = re.sub(r"\s+", " ", stmt)[:90]
-            err(f"text.c:{lineno(raw, pos)}: defines a variable: `{one};` "
+            err(f"{label}:{lineno(raw, pos)}: defines a variable: `{one};` "
                 "declare it `extern` instead (retail data lives in the data segments)")
 
     # typedefs
@@ -214,10 +258,10 @@ def check_text_c():
         name = names[0]
         norm = re.sub(r"\s+", " ", td).strip()
         if name in bodies and bodies[name][1] != norm:
-            err(f"text.c:{lineno(raw, m.start())}: typedef {name} redefined with a different body "
+            err(f"{label}:{lineno(raw, m.start())}: typedef {name} redefined with a different body "
                 f"(first at line {lineno(raw, bodies[name][0])}); give one of them a unique name")
         elif name in bodies:
-            warn(f"text.c:{lineno(raw, m.start())}: typedef {name} repeated (identical); the second copy can go")
+            warn(f"{label}:{lineno(raw, m.start())}: typedef {name} repeated (identical); the second copy can go")
         else:
             bodies[name] = (m.start(), norm)
 
@@ -228,12 +272,12 @@ def check_text_c():
         if name not in known and name not in macros:
             m = re.search(r"\b%s\b" % name, code)
             addr = name[2:10]
-            err(f"text.c:{lineno(raw, m.start())}: alias {name} has no address; add "
+            err(f"{label}:{lineno(raw, m.start())}: alias {name} has no address; add "
                 f"`{name} = 0x{addr.upper()};` to symbol_addrs_resolved.txt")
     return raw, code, asm, defined
 
 
-def check_parts(raw, code, asm, defined):
+def check_parts(asm, defined):
     parts = []
     for line in open(os.path.join(ROOT, "tools", "text_parts.txt")):
         f = line.split("#", 1)[0].split()
@@ -253,7 +297,7 @@ def check_parts(raw, code, asm, defined):
         for line in open(ov):
             f = line.split("#", 1)[0].split()
             if f and f[0] in defined:
-                warn(f"localdecomp_flags.txt: {f[0]} is now C in text.c; move its flags into "
+                warn(f"localdecomp_flags.txt: {f[0]} is now C; move its flags into "
                      "text_parts.txt as a single-function override and delete this line")
 
 
@@ -270,7 +314,7 @@ def check_status(defined, asm):
     except (ValueError, OSError):
         warn(".localdecomp_work/status.json could not be read")
         return
-    text = open(TEXT_C, errors="replace").read()
+    text = all_text()
     nonmatching = set(re.findall(r'INCLUDE_ASM\("[^"]+",\s*(func_[0-9A-Fa-f]{8})\)', text))
     stale = sorted(n for n, v in status.items()
                    if isinstance(v, dict) and v.get("current_score") == 0 and n in nonmatching)
@@ -365,7 +409,7 @@ def check_obj(path):
            if s["sh_type"] in ("SHT_PROGBITS", "SHT_NOBITS")
            and s.name not in (".text", ".reginfo", ".mdebug", ".comment", ".pdr") and s["sh_size"] > 0]
     for name, size in bad:
-        err(f"{path}: section {name} has 0x{size:X} bytes; text.c must only produce .text "
+        err(f"{path}: section {name} has 0x{size:X} bytes; the sources must only produce .text "
             "(a variable was defined, or a string/float constant went to .rodata/.lit4)")
 
 
@@ -375,8 +419,8 @@ def main():
     ap.add_argument("--no-git", action="store_true", help="skip the git tracked-file check")
     args = ap.parse_args()
 
-    raw, code, asm, defined = check_text_c()
-    check_parts(raw, code, asm, defined)
+    asm, defined = check_sources()
+    check_parts(asm, defined)
     check_status(defined, asm)
     check_sq_ra(defined)
     if not args.no_git:
@@ -389,7 +433,7 @@ def main():
     for e in errors:
         print("error:", e)
     total = len(asm) + len(defined)
-    counts = {m: len(re.findall(r"^%s\(" % m, open(TEXT_C, errors="replace").read(), re.M))
+    counts = {m: len(re.findall(r"^%s\(" % m, all_text(), re.M))
               for m in ("ASM_FUNC", "LINKER_REMNANT")}
     if any(counts.values()):
         print(f"{counts['ASM_FUNC']} hand-written asm functions (ASM_FUNC), "
@@ -398,7 +442,7 @@ def main():
         total_entries = len(defined) + len(asm)
         print(f"done: {done} of {total_entries} entries ({100.0 * done / total_entries:.1f}%): C plus assembly sources")
     asm = {k: v for k, v in asm.items()
-           if re.search(r'INCLUDE_ASM\("[^"]+",\s*%s\)' % k, open(TEXT_C, errors="replace").read())}
+           if re.search(r'INCLUDE_ASM\("[^"]+",\s*%s\)' % k, all_text())}
     print(f"{len(defined)} functions in C, {len(asm)} INCLUDE_ASM"
           + (f" ({100.0 * len(defined) / total:.1f}% in C)" if total else ""))
     print("OK" if not errors else f"{len(errors)} error(s)")

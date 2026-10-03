@@ -32,7 +32,7 @@ Needs a host `gcc` (or `cpp`) for preprocessing and mips-linux-gnu-objdump
 WSL: the permuter itself is Linux-only.
 
 When it finds a score 0 variant (output-0-1/source.c), check it with
-tools/try_func.py before pasting it into src/text.c.
+tools/try_func.py before pasting it into its source file.
 """
 import argparse, os, re, shlex, subprocess, sys, tempfile, importlib.util
 

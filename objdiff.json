@@ -270,11 +270,715 @@
   ],
   "units": [
     {
-      "name": "frontbin/text",
-      "target_path": "build/objdiff/target/text.o",
-      "base_path": "build/objdiff/base/text.o",
+      "name": "frontbin/src/37D100",
+      "target_path": "build/objdiff/target/frontbin/37D100.o",
+      "base_path": "build/objdiff/base/frontbin/37D100.o",
       "metadata": {
-        "source_path": "src/text.c",
+        "source_path": "src/frontbin/37D100.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/37E0F0",
+      "target_path": "build/objdiff/target/frontbin/37E0F0.o",
+      "base_path": "build/objdiff/base/frontbin/37E0F0.o",
+      "metadata": {
+        "source_path": "src/frontbin/37E0F0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3882D0",
+      "target_path": "build/objdiff/target/frontbin/3882D0.o",
+      "base_path": "build/objdiff/base/frontbin/3882D0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3882D0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/388680",
+      "target_path": "build/objdiff/target/frontbin/388680.o",
+      "base_path": "build/objdiff/base/frontbin/388680.o",
+      "metadata": {
+        "source_path": "src/frontbin/388680.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/388770",
+      "target_path": "build/objdiff/target/frontbin/388770.o",
+      "base_path": "build/objdiff/base/frontbin/388770.o",
+      "metadata": {
+        "source_path": "src/frontbin/388770.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/388830",
+      "target_path": "build/objdiff/target/frontbin/388830.o",
+      "base_path": "build/objdiff/base/frontbin/388830.o",
+      "metadata": {
+        "source_path": "src/frontbin/388830.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/388960",
+      "target_path": "build/objdiff/target/frontbin/388960.o",
+      "base_path": "build/objdiff/base/frontbin/388960.o",
+      "metadata": {
+        "source_path": "src/frontbin/388960.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/388A28",
+      "target_path": "build/objdiff/target/frontbin/388A28.o",
+      "base_path": "build/objdiff/base/frontbin/388A28.o",
+      "metadata": {
+        "source_path": "src/frontbin/388A28.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/388B40",
+      "target_path": "build/objdiff/target/frontbin/388B40.o",
+      "base_path": "build/objdiff/base/frontbin/388B40.o",
+      "metadata": {
+        "source_path": "src/frontbin/388B40.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/389380",
+      "target_path": "build/objdiff/target/frontbin/389380.o",
+      "base_path": "build/objdiff/base/frontbin/389380.o",
+      "metadata": {
+        "source_path": "src/frontbin/389380.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/389468",
+      "target_path": "build/objdiff/target/frontbin/389468.o",
+      "base_path": "build/objdiff/base/frontbin/389468.o",
+      "metadata": {
+        "source_path": "src/frontbin/389468.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3894A0",
+      "target_path": "build/objdiff/target/frontbin/3894A0.o",
+      "base_path": "build/objdiff/base/frontbin/3894A0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3894A0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3896E8",
+      "target_path": "build/objdiff/target/frontbin/3896E8.o",
+      "base_path": "build/objdiff/base/frontbin/3896E8.o",
+      "metadata": {
+        "source_path": "src/frontbin/3896E8.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3934E8",
+      "target_path": "build/objdiff/target/frontbin/3934E8.o",
+      "base_path": "build/objdiff/base/frontbin/3934E8.o",
+      "metadata": {
+        "source_path": "src/frontbin/3934E8.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3958F0",
+      "target_path": "build/objdiff/target/frontbin/3958F0.o",
+      "base_path": "build/objdiff/base/frontbin/3958F0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3958F0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/39B198",
+      "target_path": "build/objdiff/target/frontbin/39B198.o",
+      "base_path": "build/objdiff/base/frontbin/39B198.o",
+      "metadata": {
+        "source_path": "src/frontbin/39B198.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/39B200",
+      "target_path": "build/objdiff/target/frontbin/39B200.o",
+      "base_path": "build/objdiff/base/frontbin/39B200.o",
+      "metadata": {
+        "source_path": "src/frontbin/39B200.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/39BC00",
+      "target_path": "build/objdiff/target/frontbin/39BC00.o",
+      "base_path": "build/objdiff/base/frontbin/39BC00.o",
+      "metadata": {
+        "source_path": "src/frontbin/39BC00.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/39DB38",
+      "target_path": "build/objdiff/target/frontbin/39DB38.o",
+      "base_path": "build/objdiff/base/frontbin/39DB38.o",
+      "metadata": {
+        "source_path": "src/frontbin/39DB38.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/39FFC8",
+      "target_path": "build/objdiff/target/frontbin/39FFC8.o",
+      "base_path": "build/objdiff/base/frontbin/39FFC8.o",
+      "metadata": {
+        "source_path": "src/frontbin/39FFC8.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3A4758",
+      "target_path": "build/objdiff/target/frontbin/3A4758.o",
+      "base_path": "build/objdiff/base/frontbin/3A4758.o",
+      "metadata": {
+        "source_path": "src/frontbin/3A4758.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3A53B0",
+      "target_path": "build/objdiff/target/frontbin/3A53B0.o",
+      "base_path": "build/objdiff/base/frontbin/3A53B0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3A53B0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3A5478",
+      "target_path": "build/objdiff/target/frontbin/3A5478.o",
+      "base_path": "build/objdiff/base/frontbin/3A5478.o",
+      "metadata": {
+        "source_path": "src/frontbin/3A5478.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3A6790",
+      "target_path": "build/objdiff/target/frontbin/3A6790.o",
+      "base_path": "build/objdiff/base/frontbin/3A6790.o",
+      "metadata": {
+        "source_path": "src/frontbin/3A6790.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3A7690",
+      "target_path": "build/objdiff/target/frontbin/3A7690.o",
+      "base_path": "build/objdiff/base/frontbin/3A7690.o",
+      "metadata": {
+        "source_path": "src/frontbin/3A7690.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3A9CF8",
+      "target_path": "build/objdiff/target/frontbin/3A9CF8.o",
+      "base_path": "build/objdiff/base/frontbin/3A9CF8.o",
+      "metadata": {
+        "source_path": "src/frontbin/3A9CF8.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3AAAA0",
+      "target_path": "build/objdiff/target/frontbin/3AAAA0.o",
+      "base_path": "build/objdiff/base/frontbin/3AAAA0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3AAAA0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3ABA48",
+      "target_path": "build/objdiff/target/frontbin/3ABA48.o",
+      "base_path": "build/objdiff/base/frontbin/3ABA48.o",
+      "metadata": {
+        "source_path": "src/frontbin/3ABA48.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3AD430",
+      "target_path": "build/objdiff/target/frontbin/3AD430.o",
+      "base_path": "build/objdiff/base/frontbin/3AD430.o",
+      "metadata": {
+        "source_path": "src/frontbin/3AD430.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3AD458",
+      "target_path": "build/objdiff/target/frontbin/3AD458.o",
+      "base_path": "build/objdiff/base/frontbin/3AD458.o",
+      "metadata": {
+        "source_path": "src/frontbin/3AD458.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3AD8A8",
+      "target_path": "build/objdiff/target/frontbin/3AD8A8.o",
+      "base_path": "build/objdiff/base/frontbin/3AD8A8.o",
+      "metadata": {
+        "source_path": "src/frontbin/3AD8A8.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3B1068",
+      "target_path": "build/objdiff/target/frontbin/3B1068.o",
+      "base_path": "build/objdiff/base/frontbin/3B1068.o",
+      "metadata": {
+        "source_path": "src/frontbin/3B1068.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3B1518",
+      "target_path": "build/objdiff/target/frontbin/3B1518.o",
+      "base_path": "build/objdiff/base/frontbin/3B1518.o",
+      "metadata": {
+        "source_path": "src/frontbin/3B1518.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3B46F0",
+      "target_path": "build/objdiff/target/frontbin/3B46F0.o",
+      "base_path": "build/objdiff/base/frontbin/3B46F0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3B46F0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3B5BF8",
+      "target_path": "build/objdiff/target/frontbin/3B5BF8.o",
+      "base_path": "build/objdiff/base/frontbin/3B5BF8.o",
+      "metadata": {
+        "source_path": "src/frontbin/3B5BF8.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3B8F50",
+      "target_path": "build/objdiff/target/frontbin/3B8F50.o",
+      "base_path": "build/objdiff/base/frontbin/3B8F50.o",
+      "metadata": {
+        "source_path": "src/frontbin/3B8F50.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3BDAC0",
+      "target_path": "build/objdiff/target/frontbin/3BDAC0.o",
+      "base_path": "build/objdiff/base/frontbin/3BDAC0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3BDAC0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3BF5D0",
+      "target_path": "build/objdiff/target/frontbin/3BF5D0.o",
+      "base_path": "build/objdiff/base/frontbin/3BF5D0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3BF5D0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3C0E08",
+      "target_path": "build/objdiff/target/frontbin/3C0E08.o",
+      "base_path": "build/objdiff/base/frontbin/3C0E08.o",
+      "metadata": {
+        "source_path": "src/frontbin/3C0E08.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3C1A60",
+      "target_path": "build/objdiff/target/frontbin/3C1A60.o",
+      "base_path": "build/objdiff/base/frontbin/3C1A60.o",
+      "metadata": {
+        "source_path": "src/frontbin/3C1A60.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3C79F0",
+      "target_path": "build/objdiff/target/frontbin/3C79F0.o",
+      "base_path": "build/objdiff/base/frontbin/3C79F0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3C79F0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3C7B98",
+      "target_path": "build/objdiff/target/frontbin/3C7B98.o",
+      "base_path": "build/objdiff/base/frontbin/3C7B98.o",
+      "metadata": {
+        "source_path": "src/frontbin/3C7B98.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3C8B28",
+      "target_path": "build/objdiff/target/frontbin/3C8B28.o",
+      "base_path": "build/objdiff/base/frontbin/3C8B28.o",
+      "metadata": {
+        "source_path": "src/frontbin/3C8B28.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3C9210",
+      "target_path": "build/objdiff/target/frontbin/3C9210.o",
+      "base_path": "build/objdiff/base/frontbin/3C9210.o",
+      "metadata": {
+        "source_path": "src/frontbin/3C9210.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3C9888",
+      "target_path": "build/objdiff/target/frontbin/3C9888.o",
+      "base_path": "build/objdiff/base/frontbin/3C9888.o",
+      "metadata": {
+        "source_path": "src/frontbin/3C9888.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3C9C58",
+      "target_path": "build/objdiff/target/frontbin/3C9C58.o",
+      "base_path": "build/objdiff/base/frontbin/3C9C58.o",
+      "metadata": {
+        "source_path": "src/frontbin/3C9C58.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3CB5A0",
+      "target_path": "build/objdiff/target/frontbin/3CB5A0.o",
+      "base_path": "build/objdiff/base/frontbin/3CB5A0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3CB5A0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3CB890",
+      "target_path": "build/objdiff/target/frontbin/3CB890.o",
+      "base_path": "build/objdiff/base/frontbin/3CB890.o",
+      "metadata": {
+        "source_path": "src/frontbin/3CB890.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3CC198",
+      "target_path": "build/objdiff/target/frontbin/3CC198.o",
+      "base_path": "build/objdiff/base/frontbin/3CC198.o",
+      "metadata": {
+        "source_path": "src/frontbin/3CC198.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3CC838",
+      "target_path": "build/objdiff/target/frontbin/3CC838.o",
+      "base_path": "build/objdiff/base/frontbin/3CC838.o",
+      "metadata": {
+        "source_path": "src/frontbin/3CC838.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3CC880",
+      "target_path": "build/objdiff/target/frontbin/3CC880.o",
+      "base_path": "build/objdiff/base/frontbin/3CC880.o",
+      "metadata": {
+        "source_path": "src/frontbin/3CC880.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3CD710",
+      "target_path": "build/objdiff/target/frontbin/3CD710.o",
+      "base_path": "build/objdiff/base/frontbin/3CD710.o",
+      "metadata": {
+        "source_path": "src/frontbin/3CD710.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3CD830",
+      "target_path": "build/objdiff/target/frontbin/3CD830.o",
+      "base_path": "build/objdiff/base/frontbin/3CD830.o",
+      "metadata": {
+        "source_path": "src/frontbin/3CD830.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3CE740",
+      "target_path": "build/objdiff/target/frontbin/3CE740.o",
+      "base_path": "build/objdiff/base/frontbin/3CE740.o",
+      "metadata": {
+        "source_path": "src/frontbin/3CE740.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3D14B0",
+      "target_path": "build/objdiff/target/frontbin/3D14B0.o",
+      "base_path": "build/objdiff/base/frontbin/3D14B0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3D14B0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3D48D8",
+      "target_path": "build/objdiff/target/frontbin/3D48D8.o",
+      "base_path": "build/objdiff/base/frontbin/3D48D8.o",
+      "metadata": {
+        "source_path": "src/frontbin/3D48D8.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3D97C8",
+      "target_path": "build/objdiff/target/frontbin/3D97C8.o",
+      "base_path": "build/objdiff/base/frontbin/3D97C8.o",
+      "metadata": {
+        "source_path": "src/frontbin/3D97C8.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3D9A40",
+      "target_path": "build/objdiff/target/frontbin/3D9A40.o",
+      "base_path": "build/objdiff/base/frontbin/3D9A40.o",
+      "metadata": {
+        "source_path": "src/frontbin/3D9A40.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3DBDF0",
+      "target_path": "build/objdiff/target/frontbin/3DBDF0.o",
+      "base_path": "build/objdiff/base/frontbin/3DBDF0.o",
+      "metadata": {
+        "source_path": "src/frontbin/3DBDF0.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3E0190",
+      "target_path": "build/objdiff/target/frontbin/3E0190.o",
+      "base_path": "build/objdiff/base/frontbin/3E0190.o",
+      "metadata": {
+        "source_path": "src/frontbin/3E0190.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3E1150",
+      "target_path": "build/objdiff/target/frontbin/3E1150.o",
+      "base_path": "build/objdiff/base/frontbin/3E1150.o",
+      "metadata": {
+        "source_path": "src/frontbin/3E1150.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3E1C38",
+      "target_path": "build/objdiff/target/frontbin/3E1C38.o",
+      "base_path": "build/objdiff/base/frontbin/3E1C38.o",
+      "metadata": {
+        "source_path": "src/frontbin/3E1C38.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3E1E38",
+      "target_path": "build/objdiff/target/frontbin/3E1E38.o",
+      "base_path": "build/objdiff/base/frontbin/3E1E38.o",
+      "metadata": {
+        "source_path": "src/frontbin/3E1E38.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3E5378",
+      "target_path": "build/objdiff/target/frontbin/3E5378.o",
+      "base_path": "build/objdiff/base/frontbin/3E5378.o",
+      "metadata": {
+        "source_path": "src/frontbin/3E5378.c",
+        "progress_categories": [
+          "frontend"
+        ]
+      }
+    },
+    {
+      "name": "frontbin/src/3ECC70",
+      "target_path": "build/objdiff/target/frontbin/3ECC70.o",
+      "base_path": "build/objdiff/base/frontbin/3ECC70.o",
+      "metadata": {
+        "source_path": "src/frontbin/3ECC70.c",
         "progress_categories": [
           "frontend"
         ]

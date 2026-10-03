@@ -249,7 +249,10 @@ class Project:
         self.gp_value = gp_value
         self.target_elf = root / "frontbin.elf"
         self.asm_dir = root / "asm" / "nonmatchings"
-        self.src_file = root / "src" / "text.c"
+        # .text sources: one C file per original source file, listed in link
+        # order in tools/src_files.txt (see tools/srcfiles.py).
+        self.src_dir = root / "src" / "frontbin"
+        self._srcfiles = None
         self.work_dir = root / ".localdecomp_work"
         self.work_dir.mkdir(exist_ok=True)
         self.symbol_addrs_path = root / "symbol_addrs.txt"
@@ -262,7 +265,7 @@ class Project:
         # Canonical per-function source of truth: the FULL editor contents
         # (externs, helper decls, and the function body together) for each
         # function this tool has touched, plus its last known score. Never
-        # try to regex-extract "just the function" back out of src/text.c --
+        # try to regex-extract "just the function" back out of its source file --
         # that silently drops externs/helpers on every save/reload cycle.
         self.funcs_dir = self.work_dir / "funcs"
         self.funcs_dir.mkdir(exist_ok=True)
@@ -272,6 +275,44 @@ class Project:
             raise SystemExit(f"Target ELF not found: {self.target_elf}")
         if not self.asm_dir.exists():
             raise SystemExit(f"asm/nonmatchings not found under: {root}")
+
+    def srcfiles(self):
+        """tools/srcfiles.py, loaded from the project."""
+        if self._srcfiles is None:
+            tools = str(self.root / "tools")
+            if tools not in sys.path:
+                sys.path.insert(0, tools)
+            import srcfiles
+            self._srcfiles = srcfiles
+        return self._srcfiles
+
+    def src_files(self):
+        sf = self.srcfiles()
+        return [self.root / rel for rel, _ in sf.read_file_list(str(self.root / "tools" / "src_files.txt"))]
+
+    def all_src_text(self) -> str:
+        """Every source file, concatenated in link order (for searches)."""
+        return "\n".join(p.read_text(errors="replace") for p in self.src_files() if p.exists())
+
+    def src_file_for(self, name: str) -> Path:
+        """The source file that holds (or, for a new address, should hold) `name`."""
+        sf = self.srcfiles()
+        files = sf.read_file_list(str(self.root / "tools" / "src_files.txt"))
+        found = sf.find_function(name, files, str(self.root))
+        if found:
+            return self.root / found[0]
+        m = re.search(r"func_([0-9A-Fa-f]{8})", name)
+        return self.root / sf.file_for_address(files, int(m.group(1), 16) if m else 0)
+
+    def refresh_declarations(self, path: Path):
+        """Update a file's declarations from other files after a save
+        (tools/split_text.py --refresh, for this one file)."""
+        tools = str(self.root / "tools")
+        if tools not in sys.path:
+            sys.path.insert(0, tools)
+        import split_text
+        rel = str(path.relative_to(self.root)).replace("\\", "/")
+        split_text.refresh_one(rel, None, str(self.root))
 
     def load_status(self):
         if not self.status_path.exists():
@@ -289,7 +330,7 @@ class Project:
     def flags_for(self, name: str):
         """Compiler flags for a function, from tools/text_parts.txt.
 
-        text.c is built in address ranges with per-range flags (see
+        the sources are built with with per-range flags (see
         tools/build_text.py). Each line of text_parts.txt is
         `<start address> <flags...>` and applies up to the next line's start.
         localdecomp uses the same table so a function is always test-built
@@ -300,7 +341,7 @@ class Project:
         if not m or not path.exists():
             return default
         addr = int(m.group(1), 16)
-        # Work-in-progress overrides for functions still INCLUDE_ASM in text.c
+        # Work-in-progress overrides for functions still INCLUDE_ASM in the source files
         # (text_parts.txt can't carry @ps2as for them: the asm needs macro.inc).
         # tools/localdecomp_flags.txt lines: `func_XXXXXXXX <flags...>`
         ov = self.root / "tools" / "localdecomp_flags.txt"
@@ -347,17 +388,17 @@ class Project:
         (/* FILEOFF VADDR WORDHEX */). Match status comes from status.json
         (the real score from the last Build through this tool) when present.
 
-        A function that already has real C in src/text.c (not an
+        A function that already has real C in its source file (not an
         INCLUDE_ASM(...) stub) but has never been Built through this tool --
         e.g. splat itself wrote a trivial `{}` body for a tiny function
-        during the initial split, or you edited src/text.c by some other
+        during the initial split, or you edited its source file by some other
         means -- is reported as "unverified" rather than "none", so it isn't
         silently downgraded from however it looked before this tool existed.
         Build it once to get a real "perfect"/"partial" verdict.
         """
         funcs = []
         status = self.load_status()
-        text_c = self.src_file.read_text() if self.src_file.exists() else ""
+        text_c = self.all_src_text()
         # Functions whose .s now lives in asm/handwritten or asm/remnants are
         # listed from there (below). A stale copy left in asm/nonmatchings
         # would otherwise show up a second time, as "unverified".
@@ -374,7 +415,7 @@ class Project:
             m_name = re.search(r"^glabel\s+(\S+)", content, re.MULTILINE)
             if not m_name:
                 # splat disassembles a few functions (COP0 code, the last one)
-                # as data; list them only when text.c includes them as code.
+                # as data; list them only when the sources include them as code.
                 m_name = re.search(r"^dlabel\s+(func_[0-9A-Fa-f]{8})\b", content, re.MULTILINE)
                 if m_name and not re.search(
                         rf'INCLUDE_ASM\([^)]*,\s*{m_name.group(1)}\s*\)', text_c):
@@ -394,7 +435,7 @@ class Project:
                 rf'INCLUDE_ASM\([^)]*,\s*{re.escape(name)}\s*\)', text_c
             ) is not None
             if not is_stub:
-                # Real C in text.c (not an INCLUDE_ASM stub): `make` only prints MATCH when every
+                # Real C in the source files (not an INCLUDE_ASM stub): `make` only prints MATCH when every
                 # such function is byte-identical, so it is done. This also covers functions
                 # matched through another server or by hand, and stale partial scores left in
                 # status.json from earlier attempts (those used to show up as "partial").
@@ -458,19 +499,20 @@ class Project:
 
     def _extract_marked_block(self, name: str):
         """
-        Pull a function's body straight out of src/text.c by its
+        Pull a function's body straight out of its source file by its
         localdecomp:start/end markers, if present. Returns None if there's
         no marker pair for this function (still an INCLUDE_ASM stub, or was
         never saved through this tool). This is the recovery path for when
         funcs/<name>.c is missing but the real code already lives in
-        src/text.c -- e.g. the .localdecomp_work cache was deleted, never
-        existed for an older save, or drifted from src/text.c some other
+        its source file -- e.g. the .localdecomp_work cache was deleted, never
+        existed for an older save, or drifted from its source file some other
         way. Without this, get_function_c would silently hand back a blank
         `// TODO` template for a function that's actually already written.
         """
-        if not self.src_file.exists():
+        src = self.src_file_for(name)
+        if not src.exists():
             return None
-        text_c = self.src_file.read_text()
+        text_c = src.read_text()
         start_marker = f"/* localdecomp:start {name} */"
         end_marker = f"/* localdecomp:end {name} */"
         if start_marker not in text_c or end_marker not in text_c:
@@ -480,7 +522,7 @@ class Project:
         if end < start:
             return None
         block = text_c[start:end].strip("\n") + "\n"
-        # text.c declares each typedef once (a repeat is a compile error) and
+        # a source file declares each typedef once (a repeat is a compile error) and
         # some blocks rely on externs/typedefs written in earlier blocks.
         # Prepend whatever earlier declarations this block needs, repeating
         # until nothing new is pulled in, so the block compiles on its own.
@@ -490,9 +532,10 @@ class Project:
         return block
 
     def _block_in(self, name: str, cached: str) -> bool:
-        """True if the text.c block for `name` appears (whitespace-insensitive)
+        """True if the source-file block for `name` appears (whitespace-insensitive)
         in `cached`."""
-        text_c = self.src_file.read_text() if self.src_file.exists() else ""
+        src = self.src_file_for(name)
+        text_c = src.read_text() if src.exists() else ""
         a = text_c.find(f"/* localdecomp:start {name} */")
         b = text_c.find(f"/* localdecomp:end {name} */")
         if a < 0 or b < a:
@@ -509,7 +552,7 @@ class Project:
         Preferred source is this tool's own store (funcs/<name>.c), since
         that's the one place externs/helpers are guaranteed intact. But if
         that cache entry is missing -- lost, cleared, or never written by an
-        older version of this tool -- and src/text.c already has a marked
+        older version of this tool -- and its source file already has a marked
         block for this function (proof real work was saved at some point),
         recover the body from there instead of showing a blank template,
         and re-populate the cache so this recovery only has to happen once.
@@ -518,10 +561,10 @@ class Project:
         recovered = self._extract_marked_block(name)
         if store_path.exists():
             cached = store_path.read_text()
-            # src/text.c is the source of truth once a function is saved there.
+            # its source file is the source of truth once a function is saved there.
             # If its block was changed outside this tool (a merge, a fix-up
             # script, a hand edit), the cached editor copy is stale; building
-            # or saving it would put the old version back into text.c.
+            # or saving it would put the old version back into the source file.
             if recovered is None or self._block_in(name, cached):
                 return cached
             store_path.write_text(recovered)
@@ -531,9 +574,9 @@ class Project:
             store_path.write_text(recovered)
             return recovered
 
-        # Final assembly (ASM_FUNC / LINKER_REMNANT in src/text.c) has no C
+        # Final assembly (ASM_FUNC / LINKER_REMNANT in its source file) has no C
         # to write. Say so instead of offering a blank TODO template.
-        text_c = self.src_file.read_text() if self.src_file.exists() else ""
+        text_c = self.all_src_text()
         m_src = re.search(
             rf'^(ASM_FUNC|LINKER_REMNANT)\("([^"]+)",\s*{re.escape(name)}\s*\);',
             text_c, re.MULTILINE)
@@ -546,7 +589,7 @@ class Project:
                 why = ("hand-written assembly in the original game, so its .s file\n"
                        " * is the source.")
             return (f"/* {name} is done: it is {why}\n"
-                    f" *\n * Built from {folder}/{name}.s via {macro}(...) in src/text.c.\n"
+                    f" *\n * Built from {folder}/{name}.s via {macro}(...) in {self.src_file_for(name).relative_to(self.root).as_posix()}.\n"
                     f" * Nothing to decompile here. */\n")
 
         return f"s32 {name}(void) {{\n    // TODO\n}}\n"
@@ -554,24 +597,25 @@ class Project:
     def save_function_c(self, name: str, c_source: str):
         """
         Persist the full editor content for `name` in this tool's own store
-        (funcs/<name>.c), AND write it into the real project's src/text.c so
+        (funcs/<name>.c), AND write it into the function's source file in src/frontbin/ so
         the full-project build/splat workflow picks it up too -- replacing
         either the INCLUDE_ASM(...) stub (first save) or a previously-saved
         body for this function (subsequent saves).
         """
-        if self.src_file.exists() and re.search(
+        src = self.src_file_for(name)
+        if src.exists() and re.search(
                 rf'^(?:ASM_FUNC|LINKER_REMNANT)\([^)]*,\s*{re.escape(name)}\s*\);',
-                self.src_file.read_text(), re.MULTILINE):
+                src.read_text(), re.MULTILINE):
             raise BuildError("save", f"{name} is final assembly (ASM_FUNC / LINKER_REMNANT); "
                              "there is no C to save for it")
         self._func_store_path(name).write_text(c_source)
 
-        if not self.src_file.exists():
-            raise BuildError("save", f"{self.src_file} does not exist")
-        text_c = self.src_file.read_text()
+        if not src.exists():
+            raise BuildError("save", f"{src} does not exist")
+        text_c = src.read_text()
         body = c_source.strip() + "\n"
         # The editor copy may carry typedefs that were prepended from earlier
-        # blocks (see _prelude_for). text.c may only define each typedef once,
+        # blocks (see _prelude_for). a source file may only define each typedef once,
         # so drop any that already appear before this function's position.
         pos = text_c.find(f"/* localdecomp:start {name} */")
         if pos < 0:
@@ -597,7 +641,8 @@ class Project:
         if include_pat.search(text_c):
             wrapped = f"{start_marker}\n{body}{end_marker}"
             new_text_c = include_pat.sub(lambda _m: wrapped, text_c, count=1)
-            self.src_file.write_text(new_text_c)
+            src.write_text(new_text_c)
+            self.refresh_declarations(src)
             return
 
         # Already saved before, with markers -- replace the whole marked
@@ -607,7 +652,8 @@ class Project:
             start = text_c.index(start_marker)
             end = text_c.index(end_marker) + len(end_marker)
             new_text_c = text_c[:start] + start_marker + "\n" + body + end_marker + text_c[end:]
-            self.src_file.write_text(new_text_c)
+            src.write_text(new_text_c)
+            self.refresh_declarations(src)
             return
 
         # Legacy fallback: a body was saved by an older version of this tool
@@ -636,14 +682,15 @@ class Project:
             if end is not None:
                 wrapped = f"{start_marker}\n{body}{end_marker}"
                 new_text_c = text_c[:start] + wrapped + text_c[end:]
-                self.src_file.write_text(new_text_c)
+                src.write_text(new_text_c)
+                self.refresh_declarations(src)
                 return
 
         raise BuildError(
             "save",
             f"Could not find INCLUDE_ASM({name}), a previous localdecomp "
             f"save-marker, or an existing function body for {name} in "
-            f"{self.src_file} -- nothing to replace.",
+            f"{src} -- nothing to replace.",
         )
 
     def sync_function_to_git(self, name: str) -> "GitSyncResult":
@@ -660,7 +707,7 @@ class Project:
         if not entry or entry.get("current_score") != 0:
             return GitSyncResult(False, True, "not a perfect match yet")
 
-        paths = [self.src_file, self._func_store_path(name)]
+        paths = [self.src_file_for(name), self._func_store_path(name)]
         return git_commit_and_push(self.root, name, paths)
 
     def find_referenced_symbols(self, asm_text: str, c_source: str):
@@ -766,15 +813,14 @@ def _text_c_context(project, func_name, c_source):
             "build_text", str(project.root / "tools" / "build_text.py"))
         bt = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(bt)
-        text = project.src_file.read_text(errors="replace").replace("\r\n", "\n")
         parts = bt.read_parts(str(project.root / "tools" / "text_parts.txt"))
-        ctx = bt.function_context(text, parts, func_name)
+        ctx = bt.function_context(None, parts, func_name, own_src=c_source)
         c_source = bt.drop_repeated_typedefs(ctx, c_source)
     except Exception as e:  # never block a build on this
-        return f"/* text.c context unavailable: {e} */\n", c_source
+        return f"/* source file context unavailable: {e} */\n", c_source
     ctx = "\n".join(l for l in ctx.split("\n")
                     if not re.match(r'\s*#\s*include\s+"(common|include_asm)\.h"', l))
-    return "/* ---- src/text.c context (declarations only) ---- */\n" + ctx + "\n/* ---- function ---- */\n", c_source
+    return "/* ---- source file context (declarations only) ---- */\n" + ctx + "\n/* ---- function ---- */\n", c_source
 
 
 def build_and_diff(project: Project, func_name: str, c_source: str, extra_cflags=None):
@@ -1250,10 +1296,16 @@ def _matched_by_unit(report):
     """{unit name: set of function names at 100%} plus overall measures."""
     units = {}
     for u in report.get("units", []):
-        units[u.get("name")] = {
+        name = u.get("name") or ""
+        # frontbin's .text was one unit (frontbin/text) and is one unit per
+        # source file now (frontbin/src/<file>); compare them as one pool so
+        # moving a function between files is not reported as lost.
+        if name == "frontbin/text" or name.startswith("frontbin/src/"):
+            name = "frontbin/text"
+        units.setdefault(name, set()).update(
             f.get("name") for f in u.get("functions", [])
             if float(f.get("fuzzy_match_percent", 0) or 0) == 100.0
-        }
+        )
     return units
 
 
@@ -1487,7 +1539,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             name = body.get("name")
             c_source = body.get("c", "")
             try:
-                # Only perfect matches go into src/text.c: a non-matching body
+                # Only perfect matches go into its source file: a non-matching body
                 # there breaks the full build for everyone. Keep work in
                 # progress in the editor (it is cached) instead.
                 if not body.get("force"):
@@ -1495,12 +1547,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     score = diff.get("current_score") if isinstance(diff, dict) else None
                     if score != 0:
                         raise BuildError("save", f"{name} does not match yet (score {score}); "
-                                         "only perfect matches are saved into src/text.c, "
+                                         "only perfect matches are saved into the source files, "
                                          "because anything else breaks the full build. "
                                          "Your code is kept in the editor.")
                 self.project.save_function_c(name, c_source)
                 git_result = self.project.sync_function_to_git(name)
-                self._send_json({"ok": True, "git": git_result.to_json()})
+                src_rel = self.project.src_file_for(name).relative_to(self.project.root).as_posix()
+                self._send_json({"ok": True, "git": git_result.to_json(), "file": src_rel})
             except BuildError as e:
                 self._send_json({"ok": False, "stage": e.stage, "message": e.message})
             except Exception as e:

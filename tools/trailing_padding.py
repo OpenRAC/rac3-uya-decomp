@@ -9,7 +9,7 @@ INCLUDE_ASM but vanish as soon as the function becomes C, shifting every
 address after it.
 
 The fix is TEXT_PADDING(N) (include/include_asm.h) right after the function in
-src/text.c: N zero words, where N = trailing words minus the alignment nop.
+the source file: N zero words, where N = trailing words minus the alignment nop.
 
     python tools/trailing_padding.py            # report
     python tools/trailing_padding.py --apply    # insert TEXT_PADDING(N) after each
@@ -23,7 +23,8 @@ such a function to C needs nothing special: the TEXT_PADDING line stays.
 import os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEXT_C = os.path.join(ROOT, "src", "text.c")
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import srcfiles  # noqa: E402
 ENTRY = re.compile(
     r'(?:/\* localdecomp:start (func_[0-9A-F]{8}) \*/)'
     r'|(?:^(INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\("([^"]+)",\s*(func_[0-9A-F]{8})\);)', re.M)
@@ -67,29 +68,38 @@ def scan(text):
 
 def main():
     apply = "--apply" in sys.argv
-    text = open(TEXT_C, newline="").read()
+    text = srcfiles.read_all(ROOT)
     found = scan(text)
     for name, folder, extra, tail_nops, gap, m in found:
         print(f"{name}: {gap} words before the next function, TEXT_PADDING({extra})")
     print(f"{len(found)} functions need TEXT_PADDING")
     if not apply:
         return
-    nl = "\r\n" if "\r\n" in text else "\n"
-    for name, folder, extra, tail_nops, gap, m in reversed(found):
-        # skip the INCLUDE_RODATA lines that belong to this function
-        after = text[m.end():]
-        rm = re.match(r'[^\n]*\n(?:INCLUDE_RODATA\([^\n]*\n)*', after)
-        pos = m.end() + (rm.end() if rm else len(after))
-        if re.match(r'[ \t\r\n]*TEXT_PADDING\(', text[pos:]):
-            continue
-        text = text[:pos] + f"TEXT_PADDING({extra});{nl}" + text[pos:]
+    pads = {name: extra for name, folder, extra, tail_nops, gap, m in found}
+
+    def insert(text):
+        nl = "\r\n" if "\r\n" in text else "\n"
+        for m in reversed(list(ENTRY.finditer(text))):
+            name = m.group(4)
+            if m.group(2) != "INCLUDE_ASM" or name not in pads:
+                continue
+            # skip the INCLUDE_RODATA lines that belong to this function
+            after = text[m.end():]
+            rm = re.match(r'[^\n]*\n(?:INCLUDE_RODATA\([^\n]*\n)*', after)
+            pos = m.end() + (rm.end() if rm else len(after))
+            if re.match(r'[ \t\r\n]*TEXT_PADDING\(', text[pos:]):
+                continue
+            text = text[:pos] + f"TEXT_PADDING({pads[name]});{nl}" + text[pos:]
+        return text
+
+    srcfiles.transform_all(insert, ROOT)
+    for name, folder, extra, tail_nops, gap, m in found:
         path = os.path.join(ROOT, folder, name + ".s")
         src = open(path, newline="").read()
         head, tail = src.split("endlabel " + name, 1)
         first_nl = tail.find("\n")
         rest = [l for l in tail[first_nl + 1:].splitlines(True) if not NOP.match(l)]
         open(path, "w", newline="").write(head + "endlabel " + name + tail[:first_nl + 1] + "".join(rest))
-    open(TEXT_C, "w", newline="").write(text)
     print("applied")
 
 

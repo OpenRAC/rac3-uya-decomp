@@ -2,13 +2,14 @@
 """try_in_context.py: test a function exactly as the full build compiles it.
 
 try_func.py compiles your file on its own. The real build compiles the
-function inside its text_parts.txt range, after every declaration text.c
-makes before it. That context can change gcc's output (instruction
+function inside its source file (src/frontbin/), after the file's own
+declarations and the earlier functions of the file. That context can change gcc's output (instruction
 scheduling around $gp, see the wiki's known open problems), so a function can
 MATCH alone and still break the build. This script puts FILE.c into a copy of
-src/text.c in place of the function's INCLUDE_ASM (or its current block),
-builds only that function's part the way tools/build_text.py does, and diffs
-the function against retail.
+the function's source file in place of its INCLUDE_ASM (or its current
+block), builds that file (or the slice holding the function, for a file with
+mixed flags) the way tools/build_text.py does, and diffs the function
+against retail.
 
     python tools/try_in_context.py scratch/func_003AED08.c
     python tools/try_in_context.py scratch/f.c func_003AED08 --mode N --as ps2as
@@ -37,7 +38,7 @@ def substitute(text, name, body):
         return pat.sub(lambda m: block, text, count=1)
     pat = re.compile(r'^INCLUDE_ASM\("[^"]*",\s*%s\);[^\n]*\n(?:INCLUDE_RODATA\([^)]*\);[^\n]*\n)*' % name, re.M)
     if not pat.search(text):
-        sys.exit(f"{name}: neither INCLUDE_ASM nor a localdecomp block found in src/text.c")
+        sys.exit(f"{name}: neither INCLUDE_ASM nor a localdecomp block found in its source file")
     return pat.sub(lambda m: block, text, count=1)
 
 
@@ -59,37 +60,43 @@ def main():
         sys.exit("no func_XXXXXXXX definition found; pass the function name")
     addr = int(name[5:], 16)
 
-    text = substitute(open(os.path.join(ROOT, "src", "text.c"), errors="replace").read(), name, body)
+    import srcfiles as sf
+    import split_text
+    files = sf.read_file_list()
+    found = sf.find_function(name, files)
+    rel = found[0] if found else sf.file_for_address(files, addr)
+    text = substitute(sf.read_source(rel), name, body)
+    # declarations from other files as `split_text.py --refresh` would set them
+    prelude, _, chunks = sf.split_file(text)
+    need = set()
+    for _, _, b in chunks:
+        need |= sf.used_names(b)
+    ext = split_text.external_declarations(split_text.earlier_statements(rel, files), need)
+    text = split_text.render(ext, chunks, prelude)
+    prelude, _, chunks = sf.split_file(text)
     parts = bt.read_parts(os.path.join(ROOT, "tools", "text_parts.txt"))
-    pi = bt.part_index(parts, addr)
+    slices = bt.file_slices(chunks, parts)
+    idx = next(i for i, (a, _, b) in enumerate(chunks) if sf.is_own_chunk(b, name))
+    k = next(n for n, (_, ids) in enumerate(slices) if idx in ids)
+    src = text if len(slices) == 1 else bt.slice_source(rel, prelude, chunks, slices[k][1])
 
-    chunks, assigned, pending = bt.split_chunks(text), [], []
-    for a, line, b in chunks:
-        if a is None:
-            pending.append((line, b)); continue
-        idx = bt.part_index(parts, a)
-        assigned += [(idx, pl, pb) for pl, pb in pending] + [(idx, line, b)]
-        pending = []
-    out = []
-    for i, line, b in assigned:
-        if i < pi:
-            d = bt.declarations_only(b)
-            if d:
-                out.append(d + "\n")
-        elif i == pi:
-            out.append(f'#line {line} "src/text.c"\n{b}')
-
-    flags = tf.apply_overrides(parts[pi][1], args.mode, args.asm)
-    print("part 0x%08X flags: %s" % (parts[pi][0], " ".join(flags)))
+    flags = tf.apply_overrides(slices[k][0], args.mode, args.asm)
+    print("%s%s flags: %s" % (rel, "" if len(slices) == 1 else " (slice %d)" % k, " ".join(flags)))
     cflags = list(CFLAGS)
     if "@ps2as" in flags:
         cflags = [f for f in cflags if not f.startswith("-Wa,")]
     tmp = tempfile.mkdtemp(prefix="ctx_")
-    cpath, opath = os.path.join(tmp, "part.c"), os.path.join(tmp, "part.o")
-    open(cpath, "w").write("".join(out))
+    cpath, spath, opath = (os.path.join(tmp, "file" + e) for e in (".c", ".s", ".o"))
+    open(cpath, "w").write(src)
     gcc = os.path.join(args.toolchain, "bin", "ee-gcc2953.exe")
-    cmd = ([args.runner] if args.runner else []) + [gcc, "-c"] + cflags + tf.expand(flags, args.toolchain) + ["-o", opath, cpath]
-    p = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+    base = ([args.runner] if args.runner else []) + [gcc]
+    fl = cflags + tf.expand(flags, args.toolchain)
+    p = subprocess.run(base + ["-S"] + fl + ["-o", spath, cpath], cwd=ROOT, capture_output=True, text=True)
+    if not p.returncode:
+        import asm_filter
+        st = open(spath, newline="").read()
+        open(spath, "w", newline="").write(asm_filter.filter_asm(st))
+        p = subprocess.run(base + ["-c"] + fl + ["-o", opath, spath], cwd=ROOT, capture_output=True, text=True)
     if p.returncode or not os.path.exists(opath):
         errs = [l for l in (p.stdout + p.stderr).splitlines() if "error" in l or ": " in l and "warning" not in l]
         sys.exit("COMPILE ERROR\n" + "\n".join(errs[-15:]))

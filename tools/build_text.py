@@ -1,31 +1,41 @@
 #!/usr/bin/env python3
-"""Build src/text.c as several parts with per-range compiler flags.
+"""Build frontbin's .text from the per-file sources in src/frontbin/.
 
-Retail frontbin was built from many source files, and some of them used
-different flags (currently: -mno-split-addresses). text.c stays the one file
-everyone edits; this script cuts it at the addresses listed in
-tools/text_parts.txt, compiles each part with that range's flags, and links
-the parts back into a single relocatable object (ld -r). The result is a
-drop-in replacement for the old single-compile text.c.o, so the linker
-script and objdiff setup don't change.
+The sources are one C file per original source file, listed in link order in
+tools/src_files.txt (see tools/srcfiles.py). Compiler and assembler flags come
+from tools/text_parts.txt, by function address.
 
-Each part file contains:
-  * everything text.c declares before that part (typedefs, externs,
-    #defines, global register vars) -- so every function still sees exactly
-    what it saw in the single-file build -- but none of the earlier code;
-  * then the part's own functions and INCLUDE_ASM stubs, with #line
-    directives so compiler errors point at src/text.c.
+  * A file whose functions all use the same flags is compiled as it is, once.
+  * A file that mixes flags (some functions only match with a different
+    assembler or address mode) is compiled in slices, one per run of equal
+    flags. Each slice is the file's own prelude (includes and its
+    declarations from other files) plus the declarations of the file's
+    earlier functions, then the slice's functions, with #line directives so
+    errors point at the real file. Nothing from other files is replayed.
+
+Every object goes through tools/asm_filter.py between gcc -S and the
+assembler (retail's short-loop and div.s padding). Each source file ends up
+as <workdir>/<file>.o (objdiff compares these, one unit per file; slice
+objects are kept apart in <workdir>/slices/), and all of them are linked into
+one relocatable object (ld -r) for the linker script.
 
 Usage (from the repo root, normally via the Makefile):
   python tools/build_text.py --cc CC --ld LD --cflags "..." -o build/src/text.c.o [--base]
 """
-import argparse, os, re, subprocess, sys, shlex
-
-FUNC_RE = re.compile(r'func_([0-9A-Fa-f]{8})')
-
+import argparse
+import os
+import re
+import shlex
+import subprocess
+import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import asm_filter  # noqa: E402
+import srcfiles as sf  # noqa: E402
+from srcfiles import strip_comments, declarations_only, EXTERN_HINT_RE  # noqa: E402,F401
+
+FUNC_RE = re.compile(r'func_([0-9A-Fa-f]{8})')
+_EXTERN_HINT_RE = EXTERN_HINT_RE
 
 
 def read_parts(path):
@@ -45,11 +55,11 @@ def read_parts(path):
 def expand_flags(flags, cc):
     """Expand text_parts.txt pseudo-flags that depend on the toolchain path.
 
-    @ps2as  assemble this range with SN's own assembler (ee/bin/Ps2EeAs.exe)
-            instead of the default bin/ee-as.exe. gcc looks for
-            "<prefix>as.exe"; Windows file names are case-insensitive, so the
-            prefix ".../ee/bin/Ps2Ee" finds Ps2EeAs.exe. gcc uses the last -B,
-            so these are placed after the Makefile's CFLAGS.
+    @ps2as  assemble with SN's own assembler (ee/bin/Ps2EeAs.exe) instead of
+            the default bin/ee-as.exe. gcc looks for "<prefix>as.exe"; Windows
+            file names are case-insensitive, so the prefix ".../ee/bin/Ps2Ee"
+            finds Ps2EeAs.exe. gcc uses the last -B, so these are placed after
+            the Makefile's CFLAGS.
     @newas  use ee/bin/as.exe (May 2001), the one gcc picks without any -B."""
     root = os.path.dirname(os.path.dirname(os.path.abspath(cc)))
     out = []
@@ -72,125 +82,10 @@ def part_index(parts, addr):
     return idx
 
 
-def strip_comments(s):
-    out, i, n = [], 0, len(s)
-    while i < n:
-        c = s[i]
-        if c == '"' or c == "'":
-            j = i + 1
-            while j < n and s[j] != c:
-                j += 2 if s[j] == '\\' else 1
-            out.append(s[i:j + 1]); i = j + 1
-        elif s.startswith('/*', i):
-            j = s.find('*/', i + 2); j = n if j < 0 else j + 2
-            out.append('\n' * s.count('\n', i, j)); i = j
-        elif s.startswith('//', i):
-            j = s.find('\n', i); j = n if j < 0 else j
-            i = j
-        else:
-            out.append(c); i += 1
-    return ''.join(out)
+def flags_for(parts, addr):
+    return parts[part_index(parts, addr)][1]
 
 
-def declarations_only(chunk, dropped=None):
-    """Top-level declarations of a chunk: preprocessor lines, typedefs,
-    extern declarations, prototypes and global register variables. Function
-    bodies, top-level asm and anything that would allocate storage are left
-    out (they belong only to the part that owns them)."""
-    s = strip_comments(chunk)
-    keep, stmt, depth, i, n = [], [], 0, 0, len(s)
-    aggregate = False
-    while i < n:
-        c = s[i]
-        if depth == 0 and not ''.join(stmt).strip() and c == '#':
-            j = i
-            while True:  # preprocessor line with continuations
-                k = s.find('\n', j); k = n if k < 0 else k
-                if k > 0 and s[k - 1] == '\\':
-                    j = k + 1; continue
-                break
-            keep.append(s[i:k].strip()); i = k + 1; stmt = []; continue
-        if c == '"' or c == "'":
-            j = i + 1
-            while j < n and s[j] != c:
-                j += 2 if s[j] == '\\' else 1
-            stmt.append(s[i:j + 1]); i = j + 1; continue
-        stmt.append(c)
-        if c == '{':
-            if depth == 0:
-                head = ''.join(stmt)[:-1]
-                aggregate = bool(re.search(r'\b(struct|union|enum)\b[\w\s]*$', head)) or '=' in head
-            depth += 1
-        elif c == '}':
-            depth -= 1
-            if depth == 0 and not aggregate:
-                stmt = []  # end of a function definition
-        elif c == ';' and depth == 0:
-            text = ''.join(stmt).strip()
-            stmt = []
-            if not text:
-                pass
-            elif text.startswith(('INCLUDE_ASM', 'INCLUDE_RODATA', 'ASM_FUNC', 'LINKER_REMNANT',
-                                  'TEXT_PADDING', '__asm__', 'asm(', 'asm (')):
-                pass
-            elif text.startswith(('extern', 'typedef', 'register')) or \
-                    (re.match(r'^(struct|union|enum)\b[^=]*$', text)) or \
-                    (re.search(r'\)\s*;?$', text) and '=' not in text and '(' in text):
-                keep.append(text)  # declaration or prototype
-            elif dropped is not None:
-                dropped.append(text)
-        i += 1
-    return '\n'.join(k for k in keep if k)
-
-
-# TEXT_PADDING(N) right after a function belongs to that function's chunk.
-_PAD = r'(?:[ \t\r\n]*^TEXT_PADDING\(\w+\);[^\n]*\n?)?'
-
-
-def split_chunks(text):
-    """Split text.c into (addr_or_None, start_line, chunk_text) in file order.
-
-    A chunk is one localdecomp block or INCLUDE_ASM line (addr = its function)
-    or the free-standing text between them (addr = None). INCLUDE_RODATA lines
-    right after an INCLUDE_ASM (its jump tables) stay with that function's
-    part, so .rdata keeps function order and never lands in an @ps2as part."""
-    pat = re.compile(
-        r'(/\* localdecomp:start (func_[0-9A-Fa-f]{8}) \*/.*?/\* localdecomp:end \2 \*/\n?' + _PAD + ')'
-        r'|(^(?:INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\("[^"]*",\s*(func_[0-9A-Fa-f]{8})\);[^\n]*\n?'
-        r'(?:INCLUDE_RODATA\("[^"]*",\s*\w+\);[^\n]*\n?)*' + _PAD + ')', re.S | re.M)
-    chunks, pos = [], 0
-    for m in pat.finditer(text):
-        if m.start() > pos:
-            chunks.append((None, text.count('\n', 0, pos) + 1, text[pos:m.start()]))
-        name = m.group(2) or m.group(4)
-        chunks.append((int(name[5:], 16), text.count('\n', 0, m.start()) + 1, m.group(0)))
-        pos = m.end()
-    if pos < len(text):
-        chunks.append((None, text.count('\n', 0, pos) + 1, text[pos:]))
-    return chunks
-
-
-def assign_parts(text, parts):
-    """[(part index, start line, chunk text)] in file order, the way main()
-    distributes text.c over the parts: free-standing text goes with the next
-    function after it."""
-    assigned, pending = [], []
-    for addr, line, body in split_chunks(text):
-        if addr is None:
-            pending.append((line, body))
-            continue
-        idx = part_index(parts, addr)
-        for pl, pb in pending:
-            assigned.append((idx, pl, pb))
-        pending = []
-        assigned.append((idx, line, body))
-    last = assigned[-1][0] if assigned else 0
-    for pl, pb in pending:
-        assigned.append((last, pl, pb))
-    return assigned
-
-
-_EXTERN_HINT_RE = re.compile(r'^\s*__asm__\s*\(\s*"\s*\.extern\s[^"]*"\s*\)\s*;', re.M)
 _TYPEDEF_NAME_RE = re.compile(r'\btypedef\b[^;{]*?(?:\{(?:[^{}]|\{[^{}]*\})*\})?[^;{]*?\b(\w+)\s*(?:\[[^\]]*\])?\s*;', re.S)
 
 
@@ -200,48 +95,93 @@ def typedef_names(src):
 
 
 def drop_repeated_typedefs(context, src):
-    """`src` without the typedefs that `context` already defines identically.
-
-    The full build keeps the first definition; localdecomp's editor copy of a
-    block often repeats typedefs from earlier blocks, and C forbids defining
-    one twice. A typedef with the same name but a different body is left in:
-    that is a real conflict, and the compiler should report it."""
+    """`src` without the typedefs that `context` already defines identically
+    (C forbids defining one twice). A typedef with the same name but a
+    different body is left in: that is a real conflict."""
     norm = lambda t: re.sub(r'\s+', ' ', t).strip()
     have = {m.group(1): norm(m.group(0)) for m in _TYPEDEF_NAME_RE.finditer(strip_comments(context))}
     return _TYPEDEF_NAME_RE.sub(
         lambda m: '' if have.get(m.group(1)) == norm(m.group(0)) else m.group(0), src)
 
 
-def function_context(text, parts, name, drop_typedefs=()):
-    """What the full build compiles in front of function `name`, minus code.
+def file_slices(chunks, parts):
+    """[(flags, [chunk indices])]: runs of consecutive chunks with equal flags."""
+    out = []
+    for i, (addr, _, _) in enumerate(chunks):
+        fl = flags_for(parts, addr)
+        if out and out[-1][0] == fl:
+            out[-1][1].append(i)
+        else:
+            out.append((fl, [i]))
+    return out
 
-    The part file for a function starts with the declarations of every
-    earlier part, then its own part's text up to the function. From the own
-    part only declarations and top-level `.extern` size hints are kept: those
-    change code generation (a #define that rewrites a name, a prototype whose
-    return type decides register use, a hint that makes Ps2EeAs use $gp) but
-    emit no bytes. localdecomp and tools/try_func.py compile a function after
-    this, so a single-function build sees what the real build sees.
+
+def prelude_lines(prelude):
+    return prelude.count('\n')
+
+
+def slice_source(rel, prelude, chunks, idxs):
+    """C text for one slice of a mixed-flag file."""
+    path = rel.replace('\\', '/')
+    out = ['#line 1 "%s"\n' % path, prelude]
+    first = idxs[0]
+    for addr, line, body in chunks[:first]:
+        decl = declarations_only(body)
+        if decl:
+            out.append('#line %d "%s"\n%s\n' % (line, path, decl))
+    for i in idxs:
+        addr, line, body = chunks[i]
+        out.append('#line %d "%s"\n%s' % (line, path, body))
+    return ''.join(out)
+
+
+def function_context(text_unused, parts, name, drop_typedefs=(), own_src=None):
+    """What the build compiles in front of function `name`, minus code: the
+    file's prelude (includes, declarations from other files), the
+    declarations of the file's earlier functions, and the top-level `.extern`
+    size hints of earlier functions compiled in the same slice (they change
+    which globals Ps2EeAs reaches through $gp). localdecomp and
+    tools/try_func.py compile a function after this, so a single-function
+    build sees what the real build sees.
 
     Typedefs named in `drop_typedefs` are removed (the function's own block
-    defines them; C forbids repeating a typedef)."""
-    assigned = assign_parts(text, parts)
+    defines them; C forbids repeating a typedef). The first argument is
+    ignored (it used to be the text of src/text.c).
+
+    With `own_src` (the code about to be tested), declarations from earlier
+    files that it needs and its file doesn't have yet are added after the
+    prelude, as `tools/split_text.py --refresh` will add them on save."""
+    files = sf.read_file_list()
+    found = sf.find_function(name, files)
+    if not found:
+        return ''
+    rel, text, _, _ = found
+    prelude, _, chunks = sf.split_file(text)
     target = None
-    for n, (idx, line, body) in enumerate(assigned):
-        if re.search(r'\b%s\s*\(' % re.escape(name), strip_comments(body)) and (
-                'localdecomp:start ' + name in body or re.search(r'INCLUDE_ASM\([^)]*\b%s\)' % re.escape(name), body)):
+    for n, (addr, line, body) in enumerate(chunks):
+        if sf.is_own_chunk(body, name):
             target = n
             break
     if target is None:
         return ''
-    pi = assigned[target][0]
-    out = []
-    for idx, line, body in assigned[:target]:
+    own = flags_for(parts, chunks[target][0])
+    same = True
+    out = [strip_comments(prelude)]
+    if own_src:
+        import split_text
+        out.extend(split_text.extra_declarations(rel, own_src, files))
+    # walk back to see which earlier chunks share this function's slice
+    in_slice = [False] * target
+    for n in range(target - 1, -1, -1):
+        if flags_for(parts, chunks[n][0]) != own:
+            break
+        in_slice[n] = True
+    for n, (addr, line, body) in enumerate(chunks[:target]):
         decl = declarations_only(body)
         if decl:
             out.append(decl)
-        if idx == pi:
-            out.extend(m.group(0).strip() for m in _EXTERN_HINT_RE.finditer(strip_comments(body)))
+        if in_slice[n]:
+            out.extend(m.group(0).strip() for m in EXTERN_HINT_RE.finditer(strip_comments(body)))
     ctx = '\n'.join(out) + '\n'
     drop = set(drop_typedefs)
     if drop:
@@ -249,9 +189,31 @@ def function_context(text, parts, name, drop_typedefs=()):
     return ctx
 
 
+def compile_one(cc, flags, cflags, cpath, spath, opath, label):
+    pflags = expand_flags(flags, cc)
+    asflags = [f for f in pflags if f.startswith('-B')]
+    pflags = [f for f in pflags if not f.startswith('-B')]
+    pcflags = cflags
+    if '@ps2as' in flags:
+        # Ps2EeAs rejects the GNU as options (-mips3, -mcpu=5900, ...)
+        pcflags = [f for f in cflags if not f.startswith('-Wa,')]
+    cmd = [cc, '-S'] + pflags + pcflags + asflags + ['-o', spath, cpath]
+    print(' '.join(cmd), flush=True)
+    if subprocess.run(cmd).returncode != 0:
+        sys.exit(f'build_text: {label} failed to compile')
+    with open(spath, newline='') as f:
+        stext = f.read()
+    with open(spath, 'w', newline='') as f:
+        f.write(asm_filter.filter_asm(stext))
+    cmd = [cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, spath]
+    print(' '.join(cmd), flush=True)
+    if subprocess.run(cmd).returncode != 0:
+        sys.exit(f'build_text: {label} failed to assemble')
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--src', default='src/text.c')
+    ap.add_argument('--files', default=sf.FILES_LIST)
     ap.add_argument('--parts', default='tools/text_parts.txt')
     ap.add_argument('--cc', required=True)
     ap.add_argument('--ld', required=True)
@@ -262,61 +224,45 @@ def main():
     a = ap.parse_args()
 
     parts = read_parts(a.parts)
-    text = open(a.src).read()
-    assigned = assign_parts(text, parts)
-
-    header_end = 0
-    workdir = a.workdir or os.path.join(os.path.dirname(a.output) or '.', 'parts' + ('_base' if a.base else ''))
+    files = sf.read_file_list(a.files)
+    workdir = a.workdir or os.path.join(os.path.dirname(a.output) or '.', 'frontbin')
     os.makedirs(workdir, exist_ok=True)
-    src_abs = a.src.replace('\\', '/')
     cflags = shlex.split(a.cflags, posix=False)
     if a.base:
         cflags.append('-DOBJDIFF_BASE')
     objs = []
-    used = sorted(set(i for i, _, _ in assigned))
-    for pi in used:
-        out = []
-        for i, line, body in assigned:
-            if i < pi:
-                decl = declarations_only(body)
-                if decl:
-                    out.append(decl + '\n')
-            elif i == pi:
-                out.append(f'#line {line} "{src_abs}"\n{body}')
-        cpath = os.path.join(workdir, f'text_p{pi:02d}.c')
-        opath = os.path.join(workdir, f'text_p{pi:02d}.o')
-        with open(cpath, 'w') as f:
-            f.write(''.join(out))
-        pflags = expand_flags(parts[pi][1], a.cc)
-        asflags = [f for f in pflags if f.startswith('-B')]
-        pflags = [f for f in pflags if not f.startswith('-B')]
-        # gcc uses the LAST -B, so the range's assembler choice goes after cflags
-        pcflags = cflags
-        if '@ps2as' in parts[pi][1]:
-            # Ps2EeAs rejects the GNU as options (-mips3, -mcpu=5900, ...)
-            pcflags = [f for f in cflags if not f.startswith('-Wa,')]
-        # compile to assembly, apply the loop-padding filter (tools/asm_filter.py:
-        # retail's assembler padded short loops differently from ours), assemble
-        spath = os.path.join(workdir, f'text_p{pi:02d}.s')
-        cmd = [a.cc, '-S'] + pflags + pcflags + asflags + ['-o', spath, cpath]
-        print(' '.join(cmd), flush=True)
-        r = subprocess.run(cmd)
-        if r.returncode != 0:
-            sys.exit(f'build_text: part {pi} (0x{parts[pi][0]:08X}) failed to compile')
-        with open(spath, newline='') as f:
-            stext = f.read()
-        with open(spath, 'w', newline='') as f:
-            f.write(asm_filter.filter_asm(stext))
-        cmd = [a.cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, spath]
-        print(' '.join(cmd), flush=True)
-        r = subprocess.run(cmd)
-        if r.returncode != 0:
-            sys.exit(f'build_text: part {pi} (0x{parts[pi][0]:08X}) failed to assemble')
+    for rel, _ in files:
+        text = sf.read_source(rel)
+        prelude, _, chunks = sf.split_file(text)
+        stem = os.path.splitext(os.path.basename(rel))[0]
+        slices = file_slices(chunks, parts)
+        if len(slices) == 1:
+            # the file as it is, once
+            spath = os.path.join(workdir, stem + '.s')
+            opath = os.path.join(workdir, stem + '.o')
+            compile_one(a.cc, slices[0][0], cflags, rel, spath, opath, rel)
+            objs.append(opath)
+            continue
+        sobjs = []
+        # slices go in their own folder, so workdir holds one .o per file
+        sdir = os.path.join(workdir, 'slices')
+        os.makedirs(sdir, exist_ok=True)
+        for k, (fl, idxs) in enumerate(slices):
+            cpath = os.path.join(sdir, '%s.%d.c' % (stem, k))
+            spath = os.path.join(sdir, '%s.%d.s' % (stem, k))
+            opath = os.path.join(sdir, '%s.%d.o' % (stem, k))
+            with open(cpath, 'w', newline='\n') as f:
+                f.write(slice_source(rel, prelude, chunks, idxs))
+            compile_one(a.cc, fl, cflags, cpath, spath, opath, '%s (slice %d)' % (rel, k))
+            sobjs.append(opath)
+        # one object per source file (objdiff compares file by file)
+        opath = os.path.join(workdir, stem + '.o')
+        if subprocess.run([a.ld, '-r', '-o', opath] + sobjs).returncode != 0:
+            sys.exit(f'build_text: ld -r of {rel} failed')
         objs.append(opath)
     cmd = [a.ld, '-r', '-o', a.output] + objs
-    print(' '.join(cmd), flush=True)
-    r = subprocess.run(cmd)
-    if r.returncode != 0:
+    print('%s -r -o %s (%d objects)' % (a.ld, a.output, len(objs)), flush=True)
+    if subprocess.run(cmd).returncode != 0:
         sys.exit('build_text: ld -r failed')
 
 

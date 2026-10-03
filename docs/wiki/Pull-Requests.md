@@ -11,7 +11,7 @@
 
 Usually just:
 
-- `src/text.c`: the new blocks, each replacing its `INCLUDE_ASM` line, inside `localdecomp:start/end` markers.
+- `src/frontbin/*.c`: the new blocks, each replacing its `INCLUDE_ASM` line, inside `localdecomp:start/end` markers. If a new block uses another file's prototype, run `python tools/split_text.py --refresh` (localdecomp does this when it saves).
 - `tools/text_parts.txt`: single-function overrides, only if a function needs non-default flags.
 - `symbol_addrs_resolved.txt`: addresses for any new aliases.
 

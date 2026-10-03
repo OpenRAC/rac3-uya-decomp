@@ -41,7 +41,7 @@ What this script does:
      to be split back into two INPUT() files or used as one.
 
 Usage:
-    python reconcile.py undefined_funcs_auto.txt undefined_syms_auto.txt text.c
+    python reconcile.py undefined_funcs_auto.txt undefined_syms_auto.txt src
 """
 
 import re
@@ -116,7 +116,7 @@ def hex_variants(prefix: str, addr: int) -> set:
 
 def main(argv):
     if len(argv) != 4:
-        print(f"usage: {argv[0]} undefined_funcs_auto.txt undefined_syms_auto.txt text.c", file=sys.stderr)
+        print(f"usage: {argv[0]} undefined_funcs_auto.txt undefined_syms_auto.txt src", file=sys.stderr)
         return 2
 
     funcs_path = Path(argv[1])
@@ -144,7 +144,14 @@ def main(argv):
 
     # Scan text.c for extern declarations and find any name we can't
     # already resolve.
-    text_c = text_c_path.read_text(encoding="utf-8", errors="surrogateescape")
+    if text_c_path.is_dir() or text_c_path.suffix == ".txt":
+        # a directory (src/) or the file list: read every source file
+        import os as _os
+        sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__))))
+        import srcfiles
+        text_c = srcfiles.read_all()
+    else:
+        text_c = text_c_path.read_text(encoding="utf-8", errors="surrogateescape")
     extern_names = set(m.group("name") for m in EXTERN_RE.finditer(text_c))
 
     unresolved = []

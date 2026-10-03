@@ -6,7 +6,7 @@ for systems where make.exe's cmd.exe syntax doesn't work, running the Windows
 toolchain through wibo (https://github.com/decompals/wibo):
 
   1. assemble asm/header.s and the data segments (bin/ee-as.exe)
-  2. build src/text.c with tools/build_text.py (per-range flags)
+  2. build src/frontbin/*.c with tools/build_text.py (per-file, per-function flags)
   3. link with linker_scripts/frontbin.ld, objcopy to a flat binary
   4. tools/check_match.py: prints MATCH or the first differing offsets
 

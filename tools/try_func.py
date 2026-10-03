@@ -145,9 +145,8 @@ def text_c_context(name, own_src):
     spec = importlib.util.spec_from_file_location("build_text", os.path.join(ROOT, "tools", "build_text.py"))
     bt = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(bt)
-    text = open(os.path.join(ROOT, "src", "text.c"), errors="replace").read().replace("\r\n", "\n")
     parts = bt.read_parts(os.path.join(ROOT, "tools", "text_parts.txt"))
-    ctx = bt.function_context(text, parts, name)
+    ctx = bt.function_context(None, parts, name, own_src=own_src)
     return ctx, bt.drop_repeated_typedefs(ctx, own_src)
 
 
@@ -198,7 +197,7 @@ def compile_c(src_path, flags, args, name=None):
         # Compile in the same context as the full build: earlier #defines,
         # prototypes and .extern hints change code generation.
         ctx, src = text_c_context(name, src)
-        src = '#line 1 "<text.c context>"\n' + ctx + '#line 1 "%s"\n' % src_path + src
+        src = '#line 1 "<source file context>"\n' + ctx + '#line 1 "%s"\n' % src_path + src
     if "common.h" not in src:
         src = '#include "common.h"\n' + src
     tmpdir = tempfile.mkdtemp(prefix="try_func_")
@@ -231,9 +230,9 @@ def compile_c(src_path, flags, args, name=None):
         p = subprocess.CompletedProcess(cmd, p2.returncode, p.stdout + p2.stdout, p.stderr + p2.stderr)
     if p.returncode or not os.path.exists(o_path):
         print("COMPILE ERROR\n" + " ".join(cmd) + "\n" + (p.stdout + p.stderr)[-3000:])
-        if "<text.c context>" in p.stdout + p.stderr:
-            print("(an error in <text.c context> means your file conflicts with an earlier "
-                  "declaration in src/text.c; the full build would fail the same way. "
+        if "<source file context>" in p.stdout + p.stderr:
+            print("(an error in <source file context> means your file conflicts with an earlier "
+                  "declaration in its source file (src/frontbin/); the full build would fail the same way. "
                   "--no-context compiles the file alone.)")
         return None
     return o_path
@@ -355,7 +354,7 @@ def main():
     ap.add_argument("--all-modes", action="store_true")
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--no-context", action="store_true",
-                    help="compile the file alone, without the declarations src/text.c puts in front of it")
+                    help="compile the file alone, without the declarations its source file (src/frontbin/) puts in front of it")
     ap.add_argument("--toolchain", default=DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--retail", default=os.path.join(ROOT, "frontbin.elf"))

@@ -11369,7 +11369,23 @@ void func_003BE340(void) {
 
 LINKER_REMNANT("asm/remnants", func_003BE3A0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BE3C0);
+/* localdecomp:start func_003BE3C0 */
+extern int D_001DA51C;
+extern int D_001DA524_003BE3C0;
+int func_003BE3C0(void) {
+    unsigned char *current = (unsigned char *)(*(volatile int *)&D_001DA51C);
+    unsigned char *end = (unsigned char *)(*(volatile int *)&D_001DA524_003BE3C0);
+    int result = (int)end;
+
+    if (current != end) {
+        do {
+            result = *(int *)(current + 0x24);
+            current += 0x100;
+        } while (current != end);
+    }
+    return result;
+}
+/* localdecomp:end func_003BE3C0 */
 
 LINKER_REMNANT("asm/remnants", func_003BE400);
 

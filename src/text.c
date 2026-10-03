@@ -6330,7 +6330,59 @@ u8 *func_003A5C70(u8 *p) {
 }
 /* localdecomp:end func_003A5C70 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A5CA8);
+/* localdecomp:start func_003A5CA8 */
+typedef struct {
+    u8 pad0[4];
+    f32 *values;
+    u8 pad8[0x18];
+    s32 source;
+    u8 pad24[4];
+    s32 *first;
+    s32 *second;
+    u8 pad30[8];
+    u8 flag38;
+    u8 flag39;
+    u8 flag3A;
+} Object_003A5CA8;
+
+extern void func_003A5A90();
+extern void *func_003A6910();
+extern s32 func_003ECDC0(s32, s32);
+
+void func_003A5CA8(Object_003A5CA8 *object) {
+    s32 *allocation;
+    s32 source;
+    register f32 *values __asm__("$3");
+
+    func_003A5A90(object);
+    if (object->source != 0) {
+        allocation = (s32 *)func_003ECDC0(0x10, (s32)func_003A6910(object->source));
+        source = object->source;
+        object->first = allocation;
+        allocation[1] = 0;
+        allocation[2] = 0;
+        allocation[3] = 0;
+        allocation[0] = 0;
+
+        allocation = (s32 *)func_003ECDC0(0x10, (s32)func_003A6910(source));
+        values = object->values;
+        object->second = allocation;
+        allocation[1] = 0;
+        allocation[2] = 0;
+        allocation[3] = 0;
+        allocation[0] = 0;
+
+        values[0] = 1.0f;
+        object->values[1] = 1.0f;
+        object->values[2] = 1.0f;
+        object->flag3A = 0;
+    } else {
+        object->flag3A = 0;
+    }
+    object->flag39 = 0;
+    object->flag38 = 0;
+}
+/* localdecomp:end func_003A5CA8 */
 
 LINKER_REMNANT("asm/remnants", func_003A5D58);
 

@@ -281,7 +281,7 @@ async function doSave() {
       statusEl.textContent = "Save failed at stage: " + data.stage + " - " + data.message;
       return;
     }
-    statusEl.textContent = "Saved " + currentFunc + " to src/text.c" + (data.git && data.git.message ? " (" + data.git.message + ")" : "");
+    statusEl.textContent = "Saved " + currentFunc + " to " + (data.file || "its source file") + (data.git && data.git.message ? " (" + data.git.message + ")" : "");
     await loadFunctions();
   } catch (e) {
     statusEl.textContent = "Save request failed: " + e;

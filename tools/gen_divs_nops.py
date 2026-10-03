@@ -15,7 +15,6 @@ import glob, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ASM = os.path.join(ROOT, "asm", "nonmatchings", "text")
-TEXT = os.path.join(ROOT, "src", "text.c")
 OUT = os.path.join(ROOT, "tools", "divs_nops.txt")
 
 INSN = re.compile(r"/\*[^*]*\*/\s+([a-z][a-z0-9.]*)\b")
@@ -46,7 +45,9 @@ def counts(path):
 
 def main():
     allf = "--all" in sys.argv
-    text = open(TEXT, errors="replace").read()
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import srcfiles
+    text = srcfiles.read_all(ROOT)
     todo = set(re.findall(r'INCLUDE_ASM\("asm/nonmatchings/text",\s*(func_[0-9A-Fa-f]+)\)', text))
     keep = {}
     if os.path.exists(OUT):

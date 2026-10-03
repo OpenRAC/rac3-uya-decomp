@@ -5,7 +5,7 @@ For a leaf function that was assembly in the original (VU0 vector math, EE
 128-bit MMI code), the matching C is one __asm__ block holding retail's own
 instructions. This transcribes them, decoding the raw `.word` lines that
 tools/fix_quadword_ops.py wrote back into real lqc2/sqc2/lq/sq instructions,
-and reuses the function's existing `extern` prototype from src/text.c when
+and reuses the function's existing `extern` prototype from the sources when
 there is one.
 
     python tools/gen_asm_func.py scratch func_003886B0 func_00388B40 ...
@@ -27,7 +27,10 @@ normal one at the end.
 import re,sys,os
 import os.path
 S=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/'
-text=open(S+'src/text.c').read()
+import sys as _sys, os as _os
+_sys.path.insert(0, _os.path.join(S, 'tools'))
+import srcfiles
+text=srcfiles.read_all(S.rstrip('/'))
 RN=['zero','at','v0','v1','a0','a1','a2','a3','t0','t1','t2','t3','t4','t5','t6','t7','s0','s1','s2','s3','s4','s5','s6','s7','t8','t9','k0','k1','gp','sp','fp','ra']
 def dec(w):
     op=w>>26; rs=(w>>21)&31; rt=(w>>16)&31; imm=w&0xFFFF

@@ -36,7 +36,8 @@ import os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "asm", "data", "data.data.s")
 RODIR = os.path.join(ROOT, "asm", "nonmatchings", "text", "rodata")
-TEXT_C = os.path.join(ROOT, "src", "text.c")
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import srcfiles  # noqa: E402
 SYMS = os.path.join(ROOT, "symbol_addrs_resolved.txt")
 
 
@@ -100,15 +101,20 @@ def main():
     if missing:
         sys.exit(f"tables with no user: {sorted(missing)}")
 
-    src = open(TEXT_C, newline="").read()
-    nl = "\r\n" if "\r\n" in src else "\n"  # keep text.c's line endings
+    allsrc = srcfiles.read_all(ROOT)
     for func, ts in users.items():
-        pat = re.compile(r'(INCLUDE_ASM\("asm/nonmatchings/text",\s*%s\);)' % func)
-        if not pat.search(src):
-            sys.exit(f"{func} uses {ts} but is not INCLUDE_ASM in text.c; add its table by hand")
-        inc = "".join(f'{nl}INCLUDE_RODATA("asm/nonmatchings/text/rodata", {t});' for t in ts)
-        src = pat.sub(lambda m: m.group(1) + inc, src, count=1)
-    open(TEXT_C, "w", newline="").write(src)
+        if not re.search(r'INCLUDE_ASM\("asm/nonmatchings/text",\s*%s\);' % func, allsrc):
+            sys.exit(f"{func} uses {ts} but is not INCLUDE_ASM in the sources; add its table by hand")
+
+    def add_tables(src):
+        nl = "\r\n" if "\r\n" in src else "\n"  # keep the file's line endings
+        for func, ts in users.items():
+            pat = re.compile(r'(INCLUDE_ASM\("asm/nonmatchings/text",\s*%s\);)' % func)
+            inc = "".join(f'{nl}INCLUDE_RODATA("asm/nonmatchings/text/rodata", {t});' for t in ts)
+            src = pat.sub(lambda m: m.group(1) + inc, src, count=1)
+        return src
+
+    srcfiles.transform_all(add_tables, ROOT)
 
     syms = [l for l in open(SYMS).read().split("\n") if not re.match(r"\s*jtbl_\w+\s*=", l)]
     open(SYMS, "w").write("\n".join(syms))

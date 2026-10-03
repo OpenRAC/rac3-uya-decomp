@@ -13,7 +13,8 @@ after pulling if the build says an asm/ file is missing; it is safe to repeat.
 What it does, in order (a plain `splat split` is NOT enough, see 3 and 6):
 
   1. checks frontbin.elf (sha1 3bc94ee895e4b4af9b5602a229af599c1103b542);
-  2. saves src/text.c and the two tracked splat side files
+  2. writes a temporary src/text.c (all of src/frontbin/ concatenated, for splat)
+     and saves the two tracked splat side files
      (undefined_funcs_auto.txt, undefined_syms_auto.txt), which splat overwrites;
   3. splat only writes a .s for functions that are INCLUDE_ASM in src/text.c, so it
      temporarily turns the ASM_FUNC / LINKER_REMNANT entries back into INCLUDE_ASM
@@ -39,7 +40,13 @@ import hashlib, os, re, shutil, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SHA1 = "3bc94ee895e4b4af9b5602a229af599c1103b542"
 GP = "0x1DC8B0"
+# splat's yaml has one `c` subsegment named text, so splat reads src/text.c to see
+# which functions are still INCLUDE_ASM. The sources are one file per original
+# source file now (src/frontbin/, tools/src_files.txt); a temporary src/text.c
+# with all of them concatenated stands in while splat runs, then is deleted.
 TEXT_C = os.path.join(ROOT, "src", "text.c")
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import srcfiles  # noqa: E402
 SIDE = ["undefined_funcs_auto.txt", "undefined_syms_auto.txt"]
 
 
@@ -132,7 +139,9 @@ def main():
     if os.path.isdir(asm):
         shutil.rmtree(asm)
 
-    text = rd(TEXT_C)
+    if os.path.exists(TEXT_C):
+        sys.exit("src/text.c exists; the sources live in src/frontbin/ now (remove the stale file first)")
+    text = srcfiles.read_all(ROOT).encode("utf-8", "surrogateescape")
     saved = {n: rd(os.path.join(ROOT, n)) for n in SIDE if os.path.exists(os.path.join(ROOT, n))}
     macro_rx = re.compile(rb'(?:ASM_FUNC|LINKER_REMNANT)\("(asm/(?:handwritten|remnants))",')
     final_src = re.findall(rb'(?:ASM_FUNC|LINKER_REMNANT)\("(asm/[a-z]+)",\s*(func_[0-9A-Fa-f]{8})\)', text)
@@ -165,7 +174,8 @@ def main():
         wr(TEXT_C, macro_rx.sub(b'INCLUDE_ASM("asm/nonmatchings/text",', text) + c_stubs)
         run(py, "-m", "splat", "split", "frontbin.setup.yaml")
     finally:
-        wr(TEXT_C, text)
+        if os.path.exists(TEXT_C):
+            os.remove(TEXT_C)
         for n, b in saved.items():
             wr(os.path.join(ROOT, n), b)
         for t in (extra, tmp_yaml):
@@ -201,7 +211,8 @@ def main():
         wr(TEXT_C, re.sub(rb"(?m)^[ \t]*TEXT_PADDING\(\d+\);?[ \t]*\r?\n", b"", text))
         run(py, "tools/trailing_padding.py", "--apply")
     finally:
-        wr(TEXT_C, text)      # the TEXT_PADDING lines are already in src/text.c
+        if os.path.exists(TEXT_C):
+            os.remove(TEXT_C)      # the TEXT_PADDING lines are already in src/text.c
     normalize_data_words()
     split_data()
     print("done. Now build: make (Windows) or python3 tools/build.py (Linux/macOS).")

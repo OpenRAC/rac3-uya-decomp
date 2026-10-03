@@ -33,9 +33,9 @@ python localdecomp/server.py
 - **Function list:** every function with its status: perfect, partial, not started. Hand-written functions and linker remnants show as perfect because they are final assembly; opening one explains that there is no C to write for it.
 - **Editor and Build:**
   - Compiles your C with the flags of the function's address range (see [`text_parts.txt`](#text_partstxt-and-localdecomp_flagstxt)).
-  - Puts the same `text.c` declarations in front of it that the full build does.
+  - Puts the same declarations in front of it that the full build does: its file's declarations from other files and its file's earlier declarations.
   - Shows a side-by-side diff. A score of 0 is a match.
-- **Save:** writes the function into `src/text.c` between `/* localdecomp:start */` and `/* localdecomp:end */` markers, replacing its `INCLUDE_ASM` line. Saving is refused for functions that can't be C: `ASM_FUNC`/`LINKER_REMNANT` entries, and functions that don't start on an 8-byte boundary.
+- **Save:** writes the function into its source file in `src/frontbin/` between `/* localdecomp:start */` and `/* localdecomp:end */` markers, replacing its `INCLUDE_ASM` line. Saving is refused for functions that can't be C: `ASM_FUNC`/`LINKER_REMNANT` entries, and functions that don't start on an 8-byte boundary.
 - **Full check:** runs the same steps as CI (full build, MATCH, objdiff report) and compares the result with your last push. Push is only enabled after a passing check.
 
 Useful options:
@@ -61,7 +61,7 @@ python tools/try_func.py scratch/f.c func_0039BEC0 --mode S --as ps2as
 ```
 
 - Relocations are filled in with real addresses, so a wrong symbol or two swapped stores show up as differences.
-- The `text.c` context is included by default. `--no-context` compiles your file alone.
+- The source-file context is included by default. `--no-context` compiles your file alone.
 - `--flags "..."` appends extra compiler flags, for experiments.
 - On Linux, pass `--toolchain` and `--runner` (the path to wibo), or set `UYA_TOOLCHAIN` and `UYA_RUNNER`.
 
@@ -69,7 +69,7 @@ Output is `func_X: MATCH` or `func_X: N diff` plus a side-by-side listing.
 
 ### try_in_context.py
 
-Puts your snippet into a copy of `src/text.c` in place of the function, builds only that function's part the way the real build does, and diffs it. Use it when something matches in `try_func.py` but not in `make`.
+Puts your snippet into a copy of the function's source file in place of the function, builds that file (or the slice holding the function) the way the real build does, and diffs it. Use it when something matches in `try_func.py` but not in `make`.
 
 ```
 python tools/try_in_context.py scratch/func_003AED08.c
@@ -84,7 +84,7 @@ python3 tools/permuter_setup.py scratch/func_0037DF98.c
 python3 ../decomp-permuter/permuter.py nonmatchings/func_0037DF98 -j4 --stop-on-zero
 ```
 
-It writes `nonmatchings/<func>/` (gitignored), with the function's real flags, the `text.c` context and the retail target. `--mode S|N` and `--as ps2as` override the address mode or assembler. The permuter runs on Linux or WSL only. Full instructions: `docs/permuter.md`.
+It writes `nonmatchings/<func>/` (gitignored), with the function's real flags, its source-file context and the retail target. `--mode S|N` and `--as ps2as` override the address mode or assembler. The permuter runs on Linux or WSL only. Full instructions: `docs/permuter.md`.
 
 ### regalloc.py
 
@@ -137,7 +137,8 @@ Catches the mistakes that break the full build, and names the line to fix:
 
 - unbalanced localdecomp markers;
 - a function that is both C and `INCLUDE_ASM`;
-- variables *defined* in `text.c` (only `extern` is allowed);
+- variables *defined* in a source file (only `extern` is allowed);
+- functions in the wrong file for their address, or a file whose declarations from other files are out of date;
 - duplicate typedefs;
 - missing symbol aliases;
 - orphaned `INCLUDE_RODATA` lines;
@@ -174,13 +175,21 @@ python3 tools/build.py --toolchain ~/sn --runner ~/bin/wibo
 Both do the same four steps:
 
 1. Assemble the header and data.
-2. Build `text.c` with `build_text.py`.
+2. Build `src/frontbin/*.c` with `build_text.py`.
 3. Link.
 4. Compare with `check_match.py`.
 
 ### build_text.py
 
-Called by the build; you don't run it yourself. It cuts `src/text.c` at the addresses in `tools/text_parts.txt` and compiles each part with that range's flags. Each part gets all the declarations from earlier in the file. The parts are then linked back into one `text.c.o`.
+Called by the build; you don't run it yourself. It compiles each file in `tools/src_files.txt` with its flags from `tools/text_parts.txt`: as it is when all its functions share flags, otherwise in slices (each with the file's own declarations, nothing from other files). Every file becomes one object in `build/src/frontbin/`; they are linked into one `text.c.o`.
+
+### split_text.py
+
+`python tools/split_text.py --refresh` updates the "declarations from other files" section at the top of every source file (localdecomp does it for the file it saves into). `--from src/text.c` was the one-time split of the old single file. See `docs/source_files.md`.
+
+### gen_objdiff_units.py
+
+Rewrites the frontbin units in `objdiff.json` from `tools/src_files.txt` (one unit per file). Run it after adding or renaming a file.
 
 Its `function_context` function is what gives localdecomp, `try_func.py` and `permuter_setup.py` the same declarations as the real build.
 
@@ -248,7 +257,7 @@ After `--apply`, a function can be converted to C with no extra step. See `docs/
 
 ### migrate_jtbls.py
 
-Moves each `switch` jump table from the data blob into `text.c` as an `INCLUDE_RODATA` line right after its function's `INCLUDE_ASM`. That lets a C `switch` put its table in the right place. When you convert such a function, delete its `INCLUDE_ASM` and `INCLUDE_RODATA` lines together.
+Moves each `switch` jump table from the data blob into the sources as an `INCLUDE_RODATA` line right after its function's `INCLUDE_ASM`. That lets a C `switch` put its table in the right place. When you convert such a function, delete its `INCLUDE_ASM` and `INCLUDE_RODATA` lines together.
 
 ### fix_reg_names.py, fix_quadword_ops.py, fix_short_loops.py
 

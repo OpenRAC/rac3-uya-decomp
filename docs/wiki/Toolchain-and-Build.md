@@ -5,11 +5,11 @@ How `make` turns the repo into a byte-identical `frontbin.elf`, and which files 
 ## Pipeline
 
 1. `asm/header.s` (the retail ELF header) and the data segments `asm/data/{lit,data_a,data_b,lvl_vtbl,lvl_camvtbl,lvl_sndvtbl}.data.s` are assembled with `bin/ee-as.exe`.
-2. `src/text.c` is built by `tools/build_text.py`, which cuts it into parts at the addresses in `tools/text_parts.txt`, compiles each part with that range's flags, and joins them with `ld -r` into `build/src/text.c.o`.
+2. `src/frontbin/*.c` (one file per original source file, listed in `tools/src_files.txt`) are built by `tools/build_text.py`. Each file is compiled with its flags from `tools/text_parts.txt` (in slices if some functions need other flags), giving one object per file in `build/src/frontbin/`, and the objects are joined with `ld -r` into `build/src/text.c.o`. See `docs/source_files.md`.
 3. `ee-ld.exe -T linker_scripts/frontbin.ld` places every section at its retail file offset. `INPUT(symbol_addrs_resolved.txt)` supplies the address of every external symbol. The `.data` output is `data_a` + `text.c.o(.rodata)` (all switch jump tables, in function order) + `data_b`, the same layout the original linker produced.
 4. `ee-objcopy -O binary` makes `build/frontbin.bin`, and `tools/check_match.py` compares its SHA-1 with the one in `frontbin.splat.yaml`. That is the `MATCH` line.
 
-`make objdiff` also builds the objdiff inputs: `build/objdiff/target/text.o` (the full build) and `build/objdiff/base/text.o` (the same text.c with every `INCLUDE_ASM` compiled away), so objdiff reports decompiled/total.
+`make objdiff` also builds the objdiff inputs, one unit per source file: `build/objdiff/target/frontbin/<file>.o` (the full build) and `build/objdiff/base/frontbin/<file>.o` (the same file with every `INCLUDE_ASM` compiled away), so objdiff reports decompiled/total per file.
 
 `tools/build.py` runs steps 1 to 4 on Linux and macOS through wibo.
 
@@ -33,20 +33,20 @@ One line per range: a start address, then the flags used from there up to the ne
 0x0037D200     -O2 -G8 -fopt-stack -mno-check-zero-division
 ```
 
-A **single-function override** is two lines: one at the function's address with its flags, and one at the next function's address that restores the surrounding range's flags. Mark the first with `# single-function override`.
+Every source file starts with a line at its first function's address: those are the file's flags. A **single-function override** is two lines: one at the function's address with its flags, and one at the next function's address that restores the file's flags. Mark the first with `# single-function override`. The build compiles such a file in slices (see `docs/source_files.md`).
 
 Pseudo-flags, expanded by `build_text.py`, localdecomp and `try_func.py`:
 
 | Flag | Effect |
 |---|---|
-| `@ps2as` | Assemble with `ee/bin/Ps2EeAs.exe`. Adds `-DNO_MACRO_INC` and drops `-Wa,` options, which Ps2EeAs doesn't understand. The range must contain no `INCLUDE_ASM`. |
+| `@ps2as` | Assemble with `ee/bin/Ps2EeAs.exe`. Adds `-DNO_MACRO_INC` and drops `-Wa,` options, which Ps2EeAs doesn't understand. The range (file or slice) must contain no `INCLUDE_ASM`. |
 | `@newas` | Assemble with `ee/bin/as.exe` (May 2001). |
 
 gcc uses the last `-B` on its command line, so a range's assembler choice wins over the Makefile default.
 
 ## localdecomp_flags.txt
 
-`tools/localdecomp_flags.txt` gives a **work-in-progress** function its own flags in localdecomp and `try_func.py` while it is still `INCLUDE_ASM` in `text.c` (an `@ps2as` range can't contain the asm stub, so `text_parts.txt` can't hold it yet):
+`tools/localdecomp_flags.txt` gives a **work-in-progress** function its own flags in localdecomp and `try_func.py` while it is still `INCLUDE_ASM` in its source file (an `@ps2as` range can't contain the asm stub, so `text_parts.txt` can't hold it yet):
 
 ```
 func_0039BEC0 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as

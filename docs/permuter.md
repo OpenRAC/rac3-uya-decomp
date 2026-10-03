@@ -18,12 +18,12 @@ export UYA_RUNNER=/path/to/wibo
 1. Write your closest attempt as a snippet, the same format `tools/try_func.py` takes (externs, typedefs, the function).
 2. `python3 tools/permuter_setup.py scratch/func_XXXXXXXX.c`
    This writes `nonmatchings/func_XXXXXXXX/` (gitignored) with:
-   - `base.c`: your snippet after the declarations `text.c` puts in front of it, preprocessed;
+   - `base.c`: your snippet after the declarations its source file puts in front of it, preprocessed;
    - `target.o`: the retail `.s` assembled, with bare `$gp` offsets turned into named relocations so both sides score alike;
    - `compile.sh`: the function's real flags from `tools/text_parts.txt` / `tools/localdecomp_flags.txt`, including `@ps2as`;
    - `prelude.c`: `.extern` size hints, which the permuter's C parser can't read.
 3. `python3 ../decomp-permuter/permuter.py nonmatchings/func_XXXXXXXX -j$(nproc) --stop-on-zero`
-4. Improvements are written to `nonmatchings/func_XXXXXXXX/output-<score>-<n>/source.c`. Copy the function out of the best one, check it with `tools/try_func.py`, then paste it into `src/text.c` as usual.
+4. Improvements are written to `nonmatchings/func_XXXXXXXX/output-<score>-<n>/source.c`. Copy the function out of the best one, check it with `tools/try_func.py`, then paste it into its source file as usual.
 
 Pass `--mode S|N` or `--as ps2as` to `permuter_setup.py` to try another address mode or assembler than the range's default.
 

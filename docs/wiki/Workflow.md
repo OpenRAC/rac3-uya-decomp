@@ -1,10 +1,10 @@
 # Workflow
 
-The loop for one function: pick it, read its assembly, write C until it matches, put it into `src/text.c`, and prove the full build still matches.
+The loop for one function: pick it, read its assembly, write C until it matches, put it into its source file, and prove the full build still matches.
 
 ## 1. Pick a function
 
-Every not-yet-decompiled function is an `INCLUDE_ASM("asm/nonmatchings/text", func_XXXXXXXX);` line in `src/text.c`, and its retail assembly is `asm/nonmatchings/text/func_XXXXXXXX.s`. The header line gives the size: `nonmatching func_0037D100, 0x20`.
+Every not-yet-decompiled function is an `INCLUDE_ASM("asm/nonmatchings/text", func_XXXXXXXX);` line in one of the source files in `src/frontbin/` (the one whose address range in `tools/src_files.txt` contains it), and its retail assembly is `asm/nonmatchings/text/func_XXXXXXXX.s`. The header line gives the size: `nonmatching func_0037D100, 0x20`.
 
 `python tools/triage.py --tsv remaining.tsv` sorts every remaining function into a bucket (plain, switch, vu0, mmi, handwritten, remnant, ...) with its size. Pick from **plain**, smallest first, or from **switch** and **vu0** once you know those patterns.
 
@@ -15,7 +15,7 @@ Good first functions:
 
 Not for C:
 
-- **Already done, not C:** `ASM_FUNC(...)` lines in `text.c` are functions that were hand-written assembly in the original (their `.s` in `asm/handwritten/` is the source), and `LINKER_REMNANT(...)` lines are the leftover words of functions the original linker stripped (`asm/remnants/`). Both count as finished, including in objdiff. See [Matching patterns](Matching-Patterns#not-everything-is-c).
+- **Already done, not C:** `ASM_FUNC(...)` lines in the source files are functions that were hand-written assembly in the original (their `.s` in `asm/handwritten/` is the source), and `LINKER_REMNANT(...)` lines are the leftover words of functions the original linker stripped (`asm/remnants/`). Both count as finished, including in objdiff. See [Matching patterns](Matching-Patterns#not-everything-is-c).
 - **odd:** probably a bad split. Report it; don't write C for it yet.
 - Functions listed in [Matching patterns: known open problems](Matching-Patterns#known-open-problems).
 
@@ -34,7 +34,7 @@ Start the server (`python localdecomp/server.py --project . --no-git-sync`) and 
 
 - The left pane is your C. It should hold the externs and typedefs the function needs, then the function. Types like `s32`, `u8` and `f32` come from `common.h` automatically.
 - **Build** compiles with the flags of that function's address range (from `tools/text_parts.txt`, or `tools/localdecomp_flags.txt` if the function has an entry there) and shows the diff. A score of 0 is a match.
-- **Save** stores your draft and **also writes it into `src/text.c`**, replacing the `INCLUDE_ASM` line. Only save at score 0, or you will break the full build. If you saved a partial by mistake, put the `INCLUDE_ASM` line back before committing.
+- **Save** stores your draft and **also writes it into its source file**, replacing the `INCLUDE_ASM` line. Only save at score 0, or you will break the full build. If you saved a partial by mistake, put the `INCLUDE_ASM` line back before committing.
 - Functions that are already C show "unverified" until you Build them once.
 - If a function needs a different assembler or address mode than its range while you're still working on it, add a line to `tools/localdecomp_flags.txt`:
 
@@ -58,7 +58,7 @@ It prints `func_X: MATCH` or `func_X: N diff` with a side-by-side listing (left 
 
 `--all-modes` is the fastest way to find out whether a function needs non-default flags. Run it whenever a function is close but the global accesses don't line up.
 
-## 4. Put it into text.c
+## 4. Put it into its source file
 
 If you used localdecomp's Save at score 0, this is done. By hand:
 
@@ -90,7 +90,7 @@ python tools/pr_check.py
 
 | Error | Cause | Fix |
 |---|---|---|
-| `multiple definition of D_...` | A variable was defined in `text.c` (no `extern`) | Make it `extern`. Never define. |
+| `multiple definition of D_...` | A variable was defined in a source file (no `extern`) | Make it `extern`. Never define. |
 | `relocation truncated to fit: R_MIPS_GPREL16 D_...` | Declared sized, so it went through `$gp`, but the address isn't in `$gp` range | Retail uses `lui`: declare it `extern T D_X[];` |
 | `relocation truncated to fit: R_MIPS_LITERAL lit4` | A float constant went to the `.lit4` pool | Retail builds it inline: needs `@ps2as` |
 | `undefined reference to D_..._suffix` | Alias missing from `symbol_addrs_resolved.txt` | Add it with the base address |

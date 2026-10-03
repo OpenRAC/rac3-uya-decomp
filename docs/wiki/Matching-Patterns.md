@@ -53,7 +53,7 @@ The alias needs an address in `symbol_addrs_resolved.txt` (`D_001D4CE8_g = 0x1D4
 
 ## Per-function aliases
 
-`text.c` is one file, so every block sees every earlier declaration. When a function needs a variable declared differently from how an earlier block declared it (a different struct type, sized vs unsized), don't change the shared declaration. Declare a per-function alias named after the function address instead:
+A source file is one translation unit, so every block sees every earlier declaration in its file, plus the declarations from other files at the top. When a function needs a variable declared differently from how an earlier block declared it (a different struct type, sized vs unsized), don't change the shared declaration. Declare a per-function alias named after the function address instead:
 
 ```c
 typedef struct { u8 pad[0x18]; u16 h18; ... } S_3969B8;
@@ -66,7 +66,7 @@ Name typedefs uniquely the same way (`S_3969B8`, `S_142430x`). Two blocks defini
 
 ## Never define variables
 
-`text.c` must only produce `.text`. Every variable is `extern`:
+The source files must only produce `.text`. Every variable is `extern`:
 
 - `s32 D_X;`, `static s32 D_X = 3;` and `void (*D_X)(void);` without `extern` are definitions. They create `.data`, `.sdata` or `.bss`, which shifts the retail layout or fails the link with `multiple definition`.
 - String literals and float constants that the compiler puts in `.rodata` or `.lit4` have the same problem. See floats below.
@@ -139,7 +139,7 @@ A few such loads reach below 0x1D5680, into the main executable's small data; de
 
 ## Switch statements
 
-`switch` works in C. The jump tables used to sit inside the data blob; since `tools/migrate_jtbls.py` they come from `text.c`, in function order, exactly where retail has them (the start of `.data`). Each asm function with a table has an `INCLUDE_RODATA(...)` line right after its `INCLUDE_ASM`. When you convert the function, delete both lines: gcc's table takes the same place. `pr_check.py` catches a leftover `INCLUDE_RODATA`.
+`switch` works in C. The jump tables used to sit inside the data blob; since `tools/migrate_jtbls.py` they come from the source files, in function order, exactly where retail has them (the start of `.data`). Each asm function with a table has an `INCLUDE_RODATA(...)` line right after its `INCLUDE_ASM`. When you convert the function, delete both lines: gcc's table takes the same place. `pr_check.py` catches a leftover `INCLUDE_RODATA`.
 
 Getting the table to start at the right index: if retail's table has entries for 0 and 1 that go to the default code, list them with the default at the end, as in `func_003B0FC8`:
 
@@ -182,7 +182,7 @@ Most VU0 functions are pure assembly leaves: a few `lqc2` loads, vector math, an
 - **Trailing padding is part of the layout.** A function's `.s` file also holds the padding words that follow it (`func_0039BD08` is 0x24 bytes with 5 `nop`s after it, because the next function starts at 0x39BD40). Converting such a function to C drops that padding and shifts everything after it, which changes every `jal` target in the build even though the function itself is byte-exact and `try_func.py` says MATCH. Before converting, check the gap to the next function's address; if there is one, the padding has to be reproduced or the function left as asm.
 - **Linker remnants** (the `remnant` bucket in `triage.py`, about 200 entries). Retail has about 620 single instructions, each followed by a `nop`, between functions. Nothing references them, and 449 of them are `addiu $sp, $sp, N`, a function epilogue. They are what the original linker left behind when it stripped unused functions: the final odd instruction plus its alignment `nop`. They are not source code: they live in `asm/remnants/` and are included with `LINKER_REMNANT(...)`. Don't write C for them.
 
-  A C function whose whole body is one `asm volatile("addiu $sp, $sp, 0x50")` looks like a match in localdecomp but is not one: gcc still appends `j $31` and a `nop`, which shifts every later function. 26 of these were scored 0 before localdecomp stopped trimming real instructions past the target size; `pr_check.py` now warns when its count runs ahead of text.c.
+  A C function whose whole body is one `asm volatile("addiu $sp, $sp, 0x50")` looks like a match in localdecomp but is not one: gcc still appends `j $31` and a `nop`, which shifts every later function. 26 of these were scored 0 before localdecomp stopped trimming real instructions past the target size; `pr_check.py` now warns when its count runs ahead of the sources.
 - **Handwritten assembly** (the `handwritten` bucket, 100 functions). spimdisasm flags them (`addi`, `$at`, unusual registers). The original was a `.s` file, so their `.s` in `asm/handwritten/` is the source, included with `ASM_FUNC(...)`. The same goes for VU0 leaves whose last instruction sits in the `jr $ra` delay slot after a dependent instruction (`mtc1 $4, $f0` after `qmfc2 $4`, `ppacb` after `ppach`): neither assembler nor gcc will put it there, even when gcc emits the `mtc1` itself, so the original wrote the whole function, `jr` included, in assembly.
 
 ## Codegen tricks that matter
@@ -192,7 +192,7 @@ When the instructions are right but their order or registers aren't:
 - **Independent stores get rotated by the scheduler.** gcc emits the last store of a run to the same base first. For retail's order A, B, C, D write B, C, D, A (`func_003A61D0`, `func_003A6888`). The scheduler issues at most one memory access per cycle; between equal priorities it prefers the instruction with more dependents, then the one that frees a register, then source order (found by [rac1-decomp](https://github.com/Lynder063/rac1-decomp/blob/main/docs/DECOMP_PROGRESS.md)).
 - **`addu` operand order is picked by the access form, not by the order you write the `+`.** gcc canonicalises the addition. `p = (u8 *)T + i * 4` and `b = table + i` give index first; `T[i].field`, `S.arr[i]` and `table[i]` give base first (rac1-decomp). A field at a fixed offset from an indexed table (`sw $a0, 0x34($v0)` after `addu base, idx`) is an array member of a struct: `extern T D_X; D_X.arr[i] = v;` (`func_00395958`).
 - **Two registers holding the same pointer.** Retail computing `base + i * 4` into one register and copying it to another before the second store (`addu $v0, $a0, $a1; move $a0, $v0`) is two arrays in one struct: `s->a[i] = x; s->b[i] = y;` (`func_003A7FC8`). Pointer variables, `volatile` and return tricks don't produce it.
-- **Callee prototypes decide argument code.** Use the declaration text.c already has instead of an alias with guessed types. A `long` / `unsigned long` parameter builds its constant as one macro that can move (`func_003A3EF0`, `func_003D47A0`); a callee declared with too many arguments leaves extra `move`s (`func_0037EAA0`). A function that ignores its argument in retail may still be called with one: `func_003E16B8(&D_001DA9B8)` is what keeps the pointer in `$v0` in `func_003E2D90`.
+- **Callee prototypes decide argument code.** Use the declaration the sources already have instead of an alias with guessed types. A `long` / `unsigned long` parameter builds its constant as one macro that can move (`func_003A3EF0`, `func_003D47A0`); a callee declared with too many arguments leaves extra `move`s (`func_0037EAA0`). A function that ignores its argument in retail may still be called with one: `func_003E16B8(&D_001DA9B8)` is what keeps the pointer in `$v0` in `func_003E2D90`.
 - **`volatile` pins accesses.** reorg never moves a volatile access into a delay slot, and volatile stores keep their order against the epilogue (rac1-decomp). Try it before an `__asm__` fence when retail leaves a slot empty.
 - **`fabsf` that isn't scheduled.** When retail's `abs.s` sits before `jr $ra` instead of in its delay slot, write `__asm__("abs.s %0, %1" : "=f"(r) : "f"(x))` (`func_003BEBF8`, `func_0037E920`).
 - **Check m2c's pointer arithmetic.** It writes `D_X + 0x40` or `p->f4 + 0x20` on struct or `s32 *` types, which scales the offset. Cast to `u8 *` first (`func_0039D510`, `func_003E16B8`).
@@ -339,12 +339,12 @@ including padding, all branches and fully resolved relocations, against retail.
 Never remove an errno/libm call by relabeling it as a native instruction or
 replace square root with an approximate routine to obtain a match.
 
-### Declarations in text.c
+### Declarations in the source files
 
-The full build compiles `text.c` in parts (`tools/text_parts.txt`), and a part only sees *declarations* from earlier parts, never definitions. So:
+A function sees the declarations at the top of its file (from earlier files), every earlier block of its own file, and nothing from later files. A file with mixed flags is compiled in slices, and a slice only sees the *declarations* of the file's earlier blocks, never their definitions. So:
 
-- A call to a function that is only *defined* earlier still needs its own `extern`.
-- An `extern` in your block must agree with that function's definition if both end up in the same part. When they differ, use the definition's types and cast at the call, or align the other `extern` lines to yours (callers that ignore the result are unaffected when the return type changes from `void` to `s32`).
+- A call to a function that is defined in another file, or in another slice of the same file, still needs its own `extern`.
+- An `extern` in your block must agree with that function's definition if both end up in the same file (or slice). When they differ, use the definition's types and cast at the call, or align the other `extern` lines to yours (callers that ignore the result are unaffected when the return type changes from `void` to `s32`).
 - A K&R declaration `extern s32 f();` followed by a prototyped definition with `u8` or `s16` parameters is a conflict; use a prototype.
 - A function called with a different argument count than its existing prototype needs a cast call: `((s32 (*)())f)(a, b)`.
 

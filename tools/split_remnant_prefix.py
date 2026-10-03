@@ -19,7 +19,8 @@ The bytes built are identical.
 import os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEXT_C = os.path.join(ROOT, "src", "text.c")
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import srcfiles  # noqa: E402
 NM = os.path.join(ROOT, "asm", "nonmatchings", "text")
 REM = os.path.join(ROOT, "asm", "remnants")
 INS = re.compile(r'^\s*/\* [0-9A-F]+ ([0-9A-F]{8}) ([0-9A-F]{8}) \*/\s*(.*)$')
@@ -57,8 +58,8 @@ def prefix_pairs(ins):
 
 def main():
     apply = "--apply" in sys.argv
-    text = open(TEXT_C, newline="").read()
-    nl = "\r\n" if "\r\n" in text else "\n"
+    text = srcfiles.read_all(ROOT)
+    edits = []
     names = re.findall(r'^INCLUDE_ASM\("asm/nonmatchings/text", (func_[0-9A-F]{8})\);', text, re.M)
     todo = []
     for n in names:
@@ -96,10 +97,17 @@ def main():
         open(os.path.join(REM, n + ".s"), "w", newline="").write(rem)
         open(os.path.join(NM, new + ".s"), "w", newline="").write(fn)
         os.remove(os.path.join(NM, n + ".s"))
-        text = text.replace(f'INCLUDE_ASM("asm/nonmatchings/text", {n});',
-                            f'LINKER_REMNANT("asm/remnants", {n});{nl}{nl}'
-                            f'INCLUDE_ASM("asm/nonmatchings/text", {new});', 1)
-    open(TEXT_C, "w", newline="").write(text)
+        edits.append((n, new))
+
+    def edit(text):
+        nl = "\r\n" if "\r\n" in text else "\n"
+        for n, new in edits:
+            text = text.replace(f'INCLUDE_ASM("asm/nonmatchings/text", {n});',
+                                f'LINKER_REMNANT("asm/remnants", {n});{nl}{nl}'
+                                f'INCLUDE_ASM("asm/nonmatchings/text", {new});', 1)
+        return text
+
+    srcfiles.transform_all(edit, ROOT)
     print("applied")
 
 

@@ -34,7 +34,7 @@ TARGET_BIN := $(BUILD_DIR)/frontbin.bin
 # per-function) should ever get that addressing mode. Matches the flags
 # already proven correct by every localdecomp single-function build today.
 #
-# -Wa,-I,include: text.c's INCLUDE_ASM(...) stubs pull in per-function .s
+# -Wa,-I,include: the INCLUDE_ASM(...) stubs in src/frontbin/*.c pull in per-function .s
 # files that themselves `.include "macro.inc"` with no path prefix --
 # same issue as the standalone data-segment .s files (see ASFLAGS below),
 # but here it's GCC's own internal assembler pass doing the .include, so
@@ -51,6 +51,10 @@ TARGET_BIN := $(BUILD_DIR)/frontbin.bin
 CFLAGS := -I include -I . -Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi -DINCLUDE_ASM_USE_MACRO_INC=1 -B$(TOOLBIN)/ee-
 PYTHON ?= python
 TEXT_PARTS := tools/text_parts.txt
+# .text sources: one C file per original source file, in link order in
+# tools/src_files.txt (see tools/srcfiles.py and tools/build_text.py).
+SRC_FILES := $(wildcard src/frontbin/*.c) tools/src_files.txt
+TEXT_DEPS := $(SRC_FILES) $(TEXT_PARTS) tools/build_text.py tools/srcfiles.py tools/asm_filter.py tools/divs_nops.txt
 
 # --- data segments: splat's whole-segment disassembly, one .o each -------
 # data is split around the jump-table block (tools/migrate_jtbls.py); text.c.o(.rodata) goes between.
@@ -60,10 +64,10 @@ DATA_OBJS := $(patsubst %,$(BUILD_DIR)/asm/data/%.data.s.o,$(DATA_SEGMENTS))
 # --- header segment: raw ELF header + padding, see asm/header.s ----------
 HEADER_OBJ := $(BUILD_DIR)/asm/header.s.o
 
-# --- code: text.c contains both real decompiled C and INCLUDE_ASM(...)
-# stubs for everything splat hasn't been hand-decompiled yet; the assembler
-# resolves each stub's .include at compile time, so this is ONE compile
-# step producing text.c.o with everything in it.
+# --- code: src/frontbin/*.c contain both real decompiled C and INCLUDE_ASM(...)
+# stubs for everything not decompiled yet; the assembler resolves each stub's
+# .include at compile time. build_text.py compiles each file (one object per
+# file in build/src/frontbin/) and links them into one text.c.o.
 TEXT_OBJ := $(BUILD_DIR)/src/text.c.o
 
 .PHONY: all clean check objdiff
@@ -88,7 +92,7 @@ $(HEADER_OBJ): asm/header.s
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
 	"$(AS)" $(ASFLAGS) -o "$@" "$<"
 
-$(TEXT_OBJ): src/text.c $(TEXT_PARTS) tools/build_text.py
+$(TEXT_OBJ): $(TEXT_DEPS)
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
 	$(PYTHON) tools/build_text.py --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
 
@@ -108,10 +112,12 @@ clean:
 	@if exist "$(subst /,\,$(BUILD_DIR))" rmdir /s /q "$(subst /,\,$(BUILD_DIR))"
 
 # --- objdiff progress report inputs ---------------------------------------
-# target: the full-build text.c.o. Only copied after `check` has confirmed
-#         MATCH, so every function in it (asm or C) is proven retail-exact.
-# base:   the same text.c compiled with -DOBJDIFF_BASE, which makes every
-#         INCLUDE_ASM expand to nothing (see include/include_asm.h). It holds
+# One objdiff unit per source file (tools/gen_objdiff_units.py writes them).
+# target: the full build's per-file objects (build/src/frontbin/*.o). Only
+#         copied after `check` has confirmed MATCH, so every function in them
+#         (asm or C) is proven retail-exact.
+# base:   the same files compiled with -DOBJDIFF_BASE, which makes every
+#         INCLUDE_ASM expand to nothing (see include/include_asm.h). They hold
 #         only the decompiled C functions, so objdiff reports
 #         "decompiled / total" instead of 100%.
 OBJDIFF_TARGET := $(BUILD_DIR)/objdiff/target/text.o
@@ -120,9 +126,10 @@ OBJDIFF_BASE   := $(BUILD_DIR)/objdiff/base/text.o
 objdiff: check $(OBJDIFF_TARGET) $(OBJDIFF_BASE)
 
 $(OBJDIFF_TARGET): $(TEXT_OBJ) $(TARGET_BIN)
-	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
+	@if not exist "$(subst /,\,$(dir $@))frontbin" mkdir "$(subst /,\,$(dir $@))frontbin"
 	copy /Y "$(subst /,\,$(TEXT_OBJ))" "$(subst /,\,$@)" >nul
+	copy /Y "$(subst /,\,$(BUILD_DIR))\src\frontbin\*.o" "$(subst /,\,$(dir $@))frontbin" >nul
 
-$(OBJDIFF_BASE): src/text.c include/include_asm.h $(TEXT_PARTS) tools/build_text.py
+$(OBJDIFF_BASE): $(TEXT_DEPS) include/include_asm.h
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
 	$(PYTHON) tools/build_text.py --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"

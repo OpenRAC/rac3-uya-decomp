@@ -4,7 +4,7 @@
     python tools/triage.py                 # summary
     python tools/triage.py --tsv docs/remaining_functions.tsv
 
-Reads only src/text.c and asm/nonmatchings/text/*.s. Each remaining function
+Reads only the sources in src/frontbin/ and asm/nonmatchings/text/*.s. Each remaining function
 gets one bucket, the first that applies:
 
   remnant      Only [instruction, nop] pairs and no return: the last 8 bytes of
@@ -29,7 +29,7 @@ gets one bucket, the first that applies:
 Floats loaded through $gp are small-data globals and count as "plain":
 declare them sized (`extern f32 D_001D950C;`).
 """
-import argparse, collections, os, re
+import argparse, collections, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GP = 0x1DC8B0
@@ -114,7 +114,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--tsv", help="write name, address, size, bucket to this file")
     args = ap.parse_args()
-    text = open(os.path.join(ROOT, "src", "text.c"), errors="ignore").read()
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import srcfiles
+    text = srcfiles.read_all(ROOT)
     names = re.findall(r'INCLUDE_ASM\("[^"]+",\s*(func_[0-9A-Fa-f]{8})\)', text)
     rows = [(n,) + classify(n) for n in names]
     count, size = collections.Counter(), collections.Counter()

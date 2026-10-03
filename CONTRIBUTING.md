@@ -11,4 +11,4 @@ Hard rules:
 
 - Never commit `frontbin.elf`, level overlays, disc images, or anything generated from them.
 - The full build must match byte for byte.
-- Variables in `src/text.c` are always `extern`, never defined.
+- Variables in `src/frontbin/*.c` are always `extern`, never defined.

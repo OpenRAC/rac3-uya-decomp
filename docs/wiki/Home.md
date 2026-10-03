@@ -4,7 +4,7 @@ A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arse
 
 ## Where things stand
 
-- `src/text.c` holds every function in the `.text` section. Functions that are done are C. The rest are `INCLUDE_ASM(...)` stubs that pull in the retail assembly from `asm/nonmatchings/text/`.
+- `src/frontbin/*.c` hold every function in the `.text` section, one file per original source file (`tools/src_files.txt`, see [docs/source_files.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/source_files.md)). Functions that are done are C. The rest are `INCLUDE_ASM(...)` stubs that pull in the retail assembly from `asm/nonmatchings/text/`.
 - As of 2026-10-02, 1,411 of the 1,867 functions are final source: 1037 in C, plus 149 hand-written assembly functions (`ASM_FUNC`) and 225 linker remnants (`LINKER_REMNANT`). Run `python tools/pr_check.py` for the current count.
 - The toolchain is fully identified: SN Systems ee-gcc 2.95.3 v1.36, plus the right assembler per function. See [Toolchain and build](Toolchain-and-Build).
 - The level overlays are tracked for progress only. Nobody is working on them yet.
@@ -14,7 +14,7 @@ A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arse
 | Page | What it covers |
 |---|---|
 | [Setup](Setup) | Toolchain, Python, your own copy of the game file, first build |
-| [Workflow](Workflow) | Picking a function, matching it in localdecomp or on the command line, putting it into `text.c` |
+| [Workflow](Workflow) | Picking a function, matching it in localdecomp or on the command line, putting it into its source file |
 | [Matching patterns](Matching-Patterns) | The rules and tricks that make this compiler produce retail code |
 | [Cross-repository resources](Cross-Repository-Resources) | Pinned RAC1, RAC2 and Lombyte references, ABI evidence, and limits of cross-game matching |
 | [Tools](Tools) | Every script in `tools/`, localdecomp and the Makefile: what each is for and when to use it |
@@ -25,5 +25,5 @@ A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arse
 
 1. **Never commit retail files.** Not `frontbin.elf`, not level overlays, not objects generated from them, not disc images. They are copyrighted. You supply your own copy locally; `.gitignore` already covers the usual names.
 2. **The full build must print `MATCH`.** A function that only matches in localdecomp is not done until `make` matches too.
-3. **Declare, never define, variables in `text.c`.** Retail data lives in the data segments. Details in [Matching patterns](Matching-Patterns#never-define-variables).
+3. **Declare, never define, variables in the source files.** Retail data lives in the data segments. Details in [Matching patterns](Matching-Patterns#never-define-variables).
 4. **Plain C first.** Inline `__asm__` and `$gp` register hacks produce the right bytes but aren't the original source. Use them only when documented as the only option, and say so in the PR.

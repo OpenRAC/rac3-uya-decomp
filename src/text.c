@@ -2496,7 +2496,55 @@ void func_0038E410(s32 *p) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038E440);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E508);
+/* localdecomp:start func_0038E508 */
+extern s32 func_00399F90();
+
+void func_0038E508(s32 *input_ptr) {
+    s32 *value_ptr = input_ptr;
+    register u8 *page_temp __asm__("$2") = (u8 *)0x140000;
+    register u8 *page __asm__("$17");
+    register u8 *late_base __asm__("$3");
+    register s32 output __asm__("$2");
+    u8 *base;
+    u8 flags;
+    s32 value;
+
+    __asm__ volatile("" : "+r"(page_temp));
+    base = page_temp + 0x26E0;
+    page = page_temp;
+    flags = base[0x82];
+
+    if ((flags & 1) == 0) {
+        value = *value_ptr;
+    } else {
+        if (base[0x14] != 0) {
+            value = *value_ptr;
+            if (value == 3) {
+                goto evaluate;
+            }
+            base[0x82] = flags & 0xFE;
+            func_00399F90();
+        }
+        value = *value_ptr;
+    }
+
+evaluate:
+    if (value == 0xD && *(u8 *)0x1D5587 == 0) {
+        output = 0x17;
+    } else {
+        if (value != 3) {
+            return;
+        }
+        late_base = page + 0x26E0;
+        __asm__ volatile("" : "+r"(late_base));
+        if ((late_base[0x82] & 1) == 0) {
+            return;
+        }
+        output = 6;
+    }
+    *value_ptr = output;
+}
+/* localdecomp:end func_0038E508 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038E5B8);
 

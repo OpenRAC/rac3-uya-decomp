@@ -2419,7 +2419,38 @@ void func_0038EA58(void) {
 }
 /* localdecomp:end func_0038EA58 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038EA88);
+/* localdecomp:start func_0038EA88 */
+__asm__(".extern D_001D9F18, 16");
+__asm__(".extern D_001D9F1C, 16");
+s32 func_0038EA88(s32 size) {
+    register s32 amount __asm__("$16") = size;
+    register s32 current __asm__("$4");
+    register s32 result __asm__("$2");
+    if (D_001D9F18 == 0) {
+        func_0038EA58();
+    }
+    result = D_001D9F1C;
+    current = D_001D9F18;
+    if (amount > result - current) {
+        goto failure;
+    }
+    {
+        register u32 mask __asm__("$3") = 0xfffffff0U;
+        register s32 rounded __asm__("$5") = amount + 0xF;
+        result = current;
+        amount = rounded & mask;
+        current += amount;
+        D_001D9F18 = current;
+        __asm__ volatile("" : : : "memory");
+    }
+    goto done;
+failure:
+    result = 0;
+    __asm__ volatile("");
+done:
+    return result;
+}
+/* localdecomp:end func_0038EA88 */
 TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038EB10);

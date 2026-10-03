@@ -80,7 +80,28 @@ references the real `D_001DFBC0`; ordinary GNU assembly needs no early-extern
 metadata option. Raw compiler/member/common equality and fully linked retail
 equality are separate gates, both satisfied without rewriting an instruction.
 
-Together these twenty-five sources cover 4828 owned function bytes. The float function
+Eight additional owners include the by-value vector interpolation from the
+verified frontbin contribution, cosine interpolation, quaternion composition,
+typed state/property operations and a float-output record reader:
+
+| Owner | Frontbin donor | Bytes | Existing compiler settings |
+|---|---|---:|---|
+| `func_00514220` | `func_003E3580` | 176 | N/default |
+| `func_00510B80` | `func_003E06D0` | 160 | S/default |
+| `func_00444F70` | `func_003BEB58` | 152 | S/default |
+| `func_00450FE0` | `func_003C0D70` | 152 | S/Ps2EeAs |
+| `func_0051AAD0` | `func_003E9C50` | 152 | N/default |
+| `func_004421E8` | `func_003BE6A8` | 148 | S/Ps2EeAs |
+| `func_00443FD8` | `func_003BEA80` | 148 | S/default |
+| `func_00440CF8` | `func_0037E4B8` | 144 | S/default |
+
+Quaternion helpers use actual void-returning pointer interfaces, rather than
+unprototyped integer-returning casts. Both quaternion and by-value vector
+storage retain their observed 16-byte alignment. Complete call resolution
+caught and rejected two initially mistranscribed quaternion aliases; fixing
+only their names leaves the raw body unchanged and proves the real targets.
+
+Together these thirty-three sources cover 6060 owned function bytes. The float function
 is still plain C: selecting the existing Ps2EeAs assembler is not inline ASM.
 Every source passes the same complete-size and raw/resolved-byte gates.
 

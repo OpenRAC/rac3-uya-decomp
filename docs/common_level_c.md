@@ -61,7 +61,18 @@ callee aliases; the DMA routine uses ordinary volatile EE register accesses:
 Their 25 named calls are resolved individually, not masked. No callee gains
 C credit merely because one of these callers uses it.
 
-Together these twenty-two sources cover 4656 owned function bytes. The float function
+Two further call-free owners use the same gates:
+
+| Owner | Frontbin donor | Bytes | Existing compiler settings |
+|---|---|---:|---|
+| `func_004CB788` | `func_003A7FE8` | 64 | N/default |
+| `func_00490B98` | `func_003AEF70` | 64 | N/default |
+
+They retain byte/float state updates and the observed word-field setter layout.
+The ring-view candidate `func_004D06F8` is excluded: resolved retail equality
+alone does not excuse a different raw object encoding.
+
+Together these twenty-four sources cover 4784 owned function bytes. The float function
 is still plain C: selecting the existing Ps2EeAs assembler is not inline ASM.
 Every source passes the same complete-size and raw/resolved-byte gates.
 

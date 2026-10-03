@@ -280,7 +280,35 @@ Five functions between 0x600 and 0x96C bytes (`func_0039DB38`, `func_003E3F08`, 
 - **`(x ^ 1) == 0` and `(x ^ 1) & 1`** give retail's `xori` test where `x == 1` or `!(x & 1)` give `li`/`bne` or `andi`/`bnez` (`func_003DE8F0`, `func_00384420`). Bit 0 of a flags word read with `lbu` is `*(u8 *)&flags`.
 - **Blocks of the same function with their own locals**: two branches that each pass `&w` to a callee use two stack slots in retail (`sp0`, `sp4`), so each branch declares its own `f32 w;` (`func_003DE8F0`).
 - **`div.s` right after `mtc1` under `@ps2as`**: Ps2EeAs adds its own `mtc1` hazard `nop`, so the `tools/divs_nops.txt` count for that `div.s` is one less than retail's `nop` count (`func_00384420`).
-- **`sqrt.s` that spimdisasm prints as `c1 0x504`** is missed by `gen_divs_nops.py`; check the table line has one count per `sqrt.s` too (`func_0038F3F8`, `func_00390730`). Write the `sqrt.s` as `__asm__("sqrt.s %0, %1" : "=f"(r) : "f"(sum));` with a separate input variable; `sqrtf()` adds an errno check and a call.
+- **`sqrt.s` that spimdisasm prints as `c1 0x504`** is missed by `gen_divs_nops.py`; check the table line has one count per `sqrt.s` too (`func_0038F3F8`, `func_00390730`). With the default flags, `sqrtf()` adds an errno check and a fallback call. The existing inline form is `__asm__("sqrt.s %0, %1" : "=f"(r) : "f"(sum));` with a separate input variable. For a plain-C candidate, see the native compiler probe below before adding assembly.
+
+### Native single-precision square root
+
+SN ee-gcc 2.95.3 v1.36 can emit `sqrt.s` from plain C. An isolated probe on
+2026-10-03 compiled `sqrtf(value)` and `__builtin_sqrtf(value)` with the existing
+`-O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division` flags:
+
+| Additional flags | Function size | Native `sqrt.s` | Calls in that function |
+|---|---:|---:|---:|
+| none | 44 bytes | 1 | 1, errno/fallback path |
+| `-ffast-math` | 12 bytes | 1 | 0 |
+| `-O3 -ffast-math` | 12 bytes | 1 | 0 |
+
+The source used a correctly typed `extern f32 sqrtf(f32);` declaration and no
+inline assembly, forced register or approximation. The correctly typed double
+`sqrt` probe still needed conversions/calls, not the same single-precision leaf.
+The spelling `__builtin_sqrt` remained an undefined symbol in a separate probe;
+no supported double-precision builtin ABI is inferred from that result.
+`-fno-math-errno` is not accepted by this
+compiler's `cc1`.
+
+This proves compiler capacity, **not** a matching game function or numerical
+equivalence for arbitrary inputs. `-ffast-math` may also alter surrounding
+floating-point evaluation and NaN/unordered comparisons. Try it only as a
+scoped candidate configuration; compare the complete compiled function,
+including padding, all branches and fully resolved relocations, against retail.
+Never remove an errno/libm call by relabeling it as a native instruction or
+replace square root with an approximate routine to obtain a match.
 
 ### Declarations in text.c
 

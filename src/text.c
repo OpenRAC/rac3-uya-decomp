@@ -7057,7 +7057,15 @@ LINKER_REMNANT("asm/remnants", func_003A9DE0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9E00);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9E60);
+/* localdecomp:start func_003A9E60 */
+extern void func_003A6C30();
+__asm__(".extern D_001D5C78, 16");
+void func_003A9E60(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, u8 a9) {
+    if (D_001D5C78 != 0) {
+        func_003A6C30(D_001D5C78 + 0x1FCA8, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9);
+    }
+}
+/* localdecomp:end func_003A9E60 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A9EF0);
 

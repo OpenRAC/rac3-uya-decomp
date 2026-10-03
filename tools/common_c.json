@@ -218,5 +218,25 @@
     "flags_from": "func_003B4F50",
     "mode": "S",
     "assembler": "default"
+  },
+  {
+    "name": "func_004CB788",
+    "source": "src/levels/common/func_004CB788.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CB788",
+    "size": 64,
+    "flags_from": "func_003A7FE8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490B98",
+    "source": "src/levels/common/func_00490B98.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490B98",
+    "size": 64,
+    "flags_from": "func_003AEF70",
+    "mode": "N",
+    "assembler": "default"
   }
 ]

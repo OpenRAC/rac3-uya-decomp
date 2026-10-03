@@ -72,7 +72,15 @@ They retain byte/float state updates and the observed word-field setter layout.
 The ring-view candidate `func_004D06F8` is excluded: resolved retail equality
 alone does not excuse a different raw object encoding.
 
-Together these twenty-four sources cover 4784 owned function bytes. The float function
+`func_003C5640` adds a newly reconstructed 44-byte state transition, not a
+frontbin body transfer. Its `flags_from=func_003C5098` is only an existing
+compiler-profile anchor (S/default). The unused first argument's spelling does
+not establish a semantic type for that slot. Its one GPREL16 load at body +0x14
+references the real `D_001DFBC0`; ordinary GNU assembly needs no early-extern
+metadata option. Raw compiler/member/common equality and fully linked retail
+equality are separate gates, both satisfied without rewriting an instruction.
+
+Together these twenty-five sources cover 4828 owned function bytes. The float function
 is still plain C: selecting the existing Ps2EeAs assembler is not inline ASM.
 Every source passes the same complete-size and raw/resolved-byte gates.
 

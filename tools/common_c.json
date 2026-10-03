@@ -238,5 +238,15 @@
     "flags_from": "func_003AEF70",
     "mode": "N",
     "assembler": "default"
+  },
+  {
+    "name": "func_003C5640",
+    "source": "src/levels/common/func_003C5640.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003C5640",
+    "size": 44,
+    "flags_from": "func_003C5098",
+    "mode": "S",
+    "assembler": "default"
   }
 ]

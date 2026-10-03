@@ -314,3 +314,81 @@ Leave these for now, or open an issue if you crack one:
 - **Init order before a loop:** loop-invariant constants gcc hoists (a divisor `3`, a `&symbol`) land between the loop variable's init and the other inits. To reproduce retail's order, name them as locals and assign in retail's order (`i = 0; three = 3; sent = &sym; off = 0;`, then `for (; i < 3; i++)`). Matched the three 3-slot hash lookups func_003E4890/4918/4DA0.
 - **A quad store that the scheduler moves behind a narrow store:** make that one `sq` store volatile (`*(volatile u128_t *)(d + 0) = ...`) and keep the narrow stores plain; retail's `sq, sb, sh` order then holds (`func_0037FEE8`). Also: a down-counting `n` that retail keeps in the callee-saved register ahead of a copy of `q + 0x41DC` wants `n--` in the loop instead of `m = n - 1; n = m` (`func_003E0478`). A `do { h = f(&s, 1); } while (h == 0);` poll loop followed by `do {} while (g(h) >= 0);` matches the retail pair of raw-branch loops (`func_003AB180`).
 - **`D[idx].field` against a cached pointer:** `&D[idx].f380` folds the field offset into the symbol (`lui; addiu D+0x380; addu idx*size`), while `p + 0x380` from a cached `p = &D[idx]` adds it to the register. When retail shows an extra copy of the element address, or an argument built as `(D + off) + idx*size`, write that access as `D[idx]...` with a struct type for the element instead of reusing `p` (`func_003809F0`; also matched with `u128_t` fields for the `lq`/`sq` pairs). A 16-byte struct of `u8[16]` assigned through a local gives the `ldl/ldr, sdl/sdr` pairs (`func_003E0930`). Passing the callee's float arguments before its integer ones in the prototype moved a `mov.s` into the right slot (`func_0038CA08`).
+
+### Forms this compiler has never been seen to produce (2026-10)
+
+Two shapes showed up while trying to match the smallest functions still filed as `plain`.
+Neither is a C problem: if your target's `.s` contains one of them, move on to another
+function rather than rewriting the C.
+
+- **`lq $at` - `$at` as a data register.** Compiling the same three-quadword copy
+  (`*(u128_t *)` at 0x00/0x10/0x20) with the range's flags allocates `$2`, `$3`, `$6`;
+  `$at` is not something this compiler hands to a value. In `frontbin.elf` the only
+  files containing `lq $at` are the nine under `asm/handwritten/`, plus
+  `func_00388E58` and `func_00388E38` - both still `INCLUDE_ASM` in `src/text.c`.
+- **`sq $zero` - a 128-bit zero store.** `*(u128_t *)p = 0;`, `(u128_t)0` and a named
+  `register u128_t z = 0;` all compile to `por $2,$zero,$zero` followed by `sq $2,0($a0)`:
+  the TImode zero is materialised in a register first, so retail's single `sq $zero` is out
+  of reach from C here.
+
+A third shape from the same pass, `sq $31` / `lq $31`, has a workaround rather than a dead
+end - list the function in `tools/sq_ra_funcs.txt` (*Functions that save `$ra` with `sq`*
+above); `tools/pr_check.py` now warns when a function that is C in `text.c` has the
+signature in retail and is missing from that list. What the pass did settle is that no flag on this compiler produces it, which is
+what the next section is about.
+
+Reproduce any of them from the repo root:
+
+```
+python tools/try_func.py <your attempt>.c func_XXXXXXXX      # the ordinary judge
+python tools/try_func.py <your attempt>.c func_XXXXXXXX --all-modes   # 4 flag/assembler combos
+```
+
+Two more things worth knowing before a long session: `sizeof(long)` is 8 here, so the
+64-bit type is `unsigned long` (`long long`, and therefore `u64`, is 16 bytes and any
+arithmetic on it fails with `unsupported wide integer operation`), and the literal suffix
+`ULL` is rejected by this compiler - use `UL` or a cast.
+
+#### The SN ProDG 2.0 package emits the `sq`/`lq` saves natively
+
+The `sq $31` layout is not only reachable through `asm_filter`: the **SN ProDG 2.0**
+package's `ee-gcc295.exe` (gcc 2.95.2, SN build v2.73a - a separate download, not the
+3.01 package this repo builds with) emits `sq $31` / `lq $31` by default, puts `$ra` in
+the highest callee-saved slot with `$s0` lowest, and does not know `-fopt-stack` at all
+(`cc1.exe: Invalid option`).
+
+Measured on the C bodies of `func_0038C888` and `func_0038C9D8`, **assembled and compared
+word for word** rather than read off the `.s`: 2.0's output for both is byte-identical to
+retail, the `jal` operand aside, while 3.01 at the project flags differs in the two `$ra`
+accesses only. Nothing in 3.01's flag space moves those two: `-O1/-O2/-O3/-Os`,
+`-G0/-G8/-G16/-G24`, `-mgp64`, `-mips3`, `-mips4` and `-fopt-stack`/`-fno-opt-stack` all
+keep `sd $31`. On this compiler `-fopt-stack` only governs the **`$s` slots** (16-byte
+`sq` without it, 8-byte `sd` with it), never `$ra` - which is why the layout the filter
+reproduces was never a flag away.
+
+The same test on the two larger matched functions, `func_003AAF88` and `func_003C0B10`,
+splits the claim in two. 2.0 gets retail's **frame** right with no filter at all: same
+frame size, `$sN` in the 16-byte `sq` slot at `0x10*N`, `$ra` highest - where 3.01 needs
+`-fopt-stack` removed and the filter's rewrite to get there. But it does not emit them in
+retail's order: retail saves the registers ascending by slot, 2.0 descending (on
+`func_003AAF88`, 2.0 saves `$s3, $s1, $s0`, retail `$s3, $s0, $s1`). Those two bodies are
+the C that makes 3.01 match, so a compiler swap would mean re-tuning them, and re-tuning is
+what the filter avoids. 2.0 also emits the `lq $at` bodies above exactly as 3.01 does, and
+the `sq $zero` body too (`por $2,$zero,$zero` + `sq $2,0($a0)`, unchanged), so the package
+is a stack-slot signature and nothing else.
+
+One of those tests is done: `func_003A9E60` (0x8C, reconstructed from its retail
+disassembly alone, flags `-O2 -G8 -mno-split-addresses -mno-check-zero-division` plus the
+unsized `D_001D5C78[]` declaration the range needs) comes out with retail's frame and slots
+under 2.0 and with 3.01's layout under 3.01 - but both compilers leave the **same 22 of 35
+words** different, all of them the argument-copy registers (`a0` lands in `$s1` where retail
+uses `$t5`, and the `lui` takes `$2` where retail takes `$12`). So 2.0 does not fix this
+one's schedule either; that half looks like allocation, not a compiler version.
+
+So the layout is a real version signature and the arithmetic is unsettled. It is four
+functions, and only the two wrappers are byte-exact; nine of the 13 still have no C block
+at all. Most of the file still matches 3.01 at the project flags, so retail only
+**possibly** looks like an intermediate SN release - 2.95.3-era instruction selection with
+the older 16-byte stack slots - rather than a mix of two packages. Writing C for more of the
+13 and running the 2.0 package against them is the cheap next test; the compiler/flag
+matrix in `docs/compiler_matrix_findings.md` (15 builds) does not include this package.

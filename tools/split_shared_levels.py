@@ -40,7 +40,7 @@ Usage:
     python tools/split_shared_levels.py IN OUT --objdiff objdiff.json
 Needs pyelftools.
 """
-import argparse, glob, hashlib, json, os, re, struct, sys
+import argparse, glob, hashlib, io, json, os, re, struct, sys
 import numpy as np
 from elftools.elf.elffile import ELFFile
 
@@ -69,7 +69,7 @@ class Level:
         self.path = path
         self.no = level_no(path)
         self.raw = bytearray(open(path, "rb").read())
-        elf = ELFFile(open(path, "rb"))
+        elf = ELFFile(io.BytesIO(self.raw))
         self.ehdr = bytes(self.raw[:EHDR.size])
         self.shoff, self.shentsize = elf["e_shoff"], elf["e_shentsize"]
         text = elf.get_section_by_name(".text")

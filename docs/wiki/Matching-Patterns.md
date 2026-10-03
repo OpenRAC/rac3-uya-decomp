@@ -93,6 +93,35 @@ Ps2EeAs can't read the GNU `macro.inc`, so a range assembled with it must not co
 
 ## Floats
 
+### Early extern sizes for Ps2EeAs
+
+Ps2EeAs can select `lui/lo` instead of `$gp` when GCC places its scalar
+`.extern symbol, size` declaration after the first access. An isolated probe
+with four real four-byte scalars and a float constant demonstrated both
+`GPREL16` access and inline constants once the same size metadata was made
+visible early. Alignment attributes alone did not change that result.
+
+For a scoped candidate, `tools/try_func.py` accepts repeated
+`--early-extern-size SYMBOL=SIZE` options, for example:
+
+```text
+python tools/try_func.py scratch/candidate.c --mode N --as ps2as --early-extern-size D_001DB6DC=4
+```
+
+The helper requires a positive size exactly present in the compiler's own
+generated assembly. It duplicates only those declarations immediately before
+the first `.ent`, preserving the initial header, instructions, and late
+declarations. Missing symbols, different/conflicting sizes, malformed requests
+and missing function entries are rejected. No source inline ASM, register
+constraint, storage or instruction substitution is introduced.
+
+This is an opt-in compiler-metadata experiment, not a matching result. Recheck
+the full function's symbol type/size, payload, all resolved retail bytes and
+raw object encoding. The current full-project builder does not automatically
+enable this command-line option; successful candidates need a reproducible
+build integration before promotion. Never guess a different data width merely
+to influence GP selection.
+
 - `li.s` constants: retail usually builds them inline (`lui $at, 0x3f80` / `ori` / `mtc1`). Only Ps2EeAs does that. With the default assembler, the constant goes to a `.lit4` pool and the link fails with `R_MIPS_LITERAL lit4`. Use `@ps2as`.
 - Read the constant's value from the asm: `lui $at, 0x3f46` + `ori $at, $at, 0x6666` is `0x3F466666`, which is `0.775f`. Write it with enough digits that it rounds to the same bits.
 - Float arguments need prototypes. Without one, a `float` argument is promoted to `double` (you'll see `cvt.d.s` and the wrong registers). Declare it (`extern f32 func_00388A28(f32, f32);`) or cast at the call (`((void (*)(void *, f32))func_00388830)(a, f)`).

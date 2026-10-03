@@ -1,4 +1,4 @@
-# Common-level C: first verified source and opt-in build
+# Common-level C: verified sources and opt-in build
 
 `src/levels/common/func_004D0538.c` is a C implementation of the canonical
 Veldin function at `0x004D0538`, 304 bytes. Its source is adapted from this
@@ -9,6 +9,18 @@ The first catalogue entry uses the existing SN compiler, N/default settings,
 and no inline assembly. The eight calls refer to the singleplayer executable's
 `0x0011A0B0`; this does not claim that a multiplayer address is an equivalent
 callee. Other placements and normalized hashes are only search candidates.
+
+The catalogue also contains three call-free Veldin owners:
+
+| Owner | Frontbin donor | Bytes | Existing compiler settings |
+|---|---|---:|---|
+| `func_004CF578` | `func_003AAC70` | 208 | N/default |
+| `func_00495980` | `func_003B5128` | 196 | S/Ps2EeAs, inline float constants |
+| `func_004CF648` | `func_003AAD40` | 192 | N/default |
+
+Together these four sources cover 900 owned function bytes. The float function
+is still plain C: selecting the existing Ps2EeAs assembler is not inline ASM.
+Every source passes the same complete-size and raw/resolved-byte gates.
 
 ## Private inputs
 

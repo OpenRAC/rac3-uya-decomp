@@ -17442,7 +17442,35 @@ s32 func_003E91C0(s32 p, s32 k) {
 
 LINKER_REMNANT("asm/remnants", func_003E91F0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E91F8);
+/* localdecomp:start func_003E91F8 */
+extern void func_003E8420(void);
+extern unsigned char D_001D9778[];
+
+void *func_003E91F8(unsigned char *object) {
+    register float half __asm__("$f0");
+    register float small __asm__("$f1");
+    register void *vtable __asm__("$4");
+    register void *result __asm__("$2");
+    register int color __asm__("$3");
+
+    func_003E8420();
+    half = 0.5f;
+    vtable = D_001D9778;
+    small = 0.01f;
+    color = 0x80F00000;
+    result = object;
+    __asm__ volatile("" : "+r"(result));
+    *(void **)(object + 8) = vtable;
+    *(int *)(object + 0x30) = color;
+    *(float *)(object + 0x18) = half;
+    *(float *)(object + 0x34) = small;
+    *(float *)(object + 0x1C) = half;
+    *(float *)(object + 0x38) = small;
+    *(int *)(object + 0x2C) = 0;
+    __asm__ volatile("" : "+r"(object));
+    return result;
+}
+/* localdecomp:end func_003E91F8 */
 
 /* localdecomp:start func_003E9260 */
 extern s32 D_001D9770_g;

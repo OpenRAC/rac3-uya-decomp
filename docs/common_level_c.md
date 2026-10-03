@@ -21,7 +21,20 @@ The catalogue also contains six call-free Veldin owners:
 | `func_00495A48` | `func_003B51F0` | 156 | S/default |
 | `func_00417A30` | `func_0038E248` | 156 | N/default |
 
-Together these seven sources cover 1404 owned function bytes. The float function
+Two additional Veldin owners use explicit callee aliases derived from their
+owning overlay, rather than a global address delta:
+
+| Owner | Frontbin donor | Bytes | Existing compiler settings |
+|---|---|---:|---|
+| `func_00495868` | `func_003B5018` | 268 | S/default |
+| `func_00514C58` | `func_003E3DF0` | 248 | N/default |
+
+Their named R26 relocations have zero addends. Every call is resolved for the
+complete retail-byte comparison; aliases do not change the C instruction body.
+The second function retains the observed three-integer/five-float interface,
+not the decompiler's guessed mixed-register argument list.
+
+Together these nine sources cover 1920 owned function bytes. The float function
 is still plain C: selecting the existing Ps2EeAs assembler is not inline ASM.
 Every source passes the same complete-size and raw/resolved-byte gates.
 

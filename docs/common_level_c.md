@@ -34,7 +34,17 @@ complete retail-byte comparison; aliases do not change the C instruction body.
 The second function retains the observed three-integer/five-float interface,
 not the decompiler's guessed mixed-register argument list.
 
-Together these nine sources cover 1920 owned function bytes. The float function
+The same gates accept five further owners with complete declaration context:
+
+| Owner | Frontbin donor | Bytes | Existing compiler settings |
+|---|---|---:|---|
+| `func_005147F0` | `func_003E3988` | 248 | N/default |
+| `func_004CD018` | `func_003A95A0` | 244 | N/default |
+| `func_005143A0` | `func_003E3700` | 240 | N/default |
+| `func_00514B70` | `func_003E3D08` | 232 | N/default |
+| `func_00519D48` | `func_003E8EC8` | 228 | N/default |
+
+Together these fourteen sources cover 3112 owned function bytes. The float function
 is still plain C: selecting the existing Ps2EeAs assembler is not inline ASM.
 Every source passes the same complete-size and raw/resolved-byte gates.
 

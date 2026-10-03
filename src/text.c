@@ -17809,7 +17809,25 @@ s32 func_003EB620(u8 *arg0, s32 arg1, s32 arg2) {
 }
 /* localdecomp:end func_003EB620 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003EB6B0);
+/* localdecomp:start func_003EB6B0 */
+extern void func_003E8600(void *, f32, f32);
+void func_003EB6B0(u8 *object, f32 *bounds) {
+    register f32 x __asm__("$f12") = bounds[0];
+    register f32 half __asm__("$f2") = 0.5f;
+    register f32 temp __asm__("$f1") = bounds[2];
+    register f32 y __asm__("$f13") = bounds[1];
+    register f32 other __asm__("$f0") = bounds[3];
+    temp -= x;
+    other -= y;
+    temp *= half;
+    x += temp;
+    temp = other * half;
+    y += temp;
+    func_003E8600(object, x, y);
+    *(volatile s32 *)(object + 0x34) = 0;
+    *(volatile u8 *)(object + 0x30) = 0;
+}
+/* localdecomp:end func_003EB6B0 */
 
 /* localdecomp:start func_003EB710 */
 void func_003EB710(void *a0, s32 a1) {

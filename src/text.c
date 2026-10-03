@@ -11181,7 +11181,31 @@ void func_003BD360(s32 arg) {
 }
 /* localdecomp:end func_003BD360 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BD428);
+/* localdecomp:start func_003BD428 */
+extern int D_001DA54C_003BD428;
+extern int D_001DA53C_003BD428;
+extern int D_001DA548_003BD428;
+extern int D_001DA540_003BD428;
+extern int D_001DA544_003BD428;
+__asm__(".extern D_001DA544_003BD428, 4");
+extern void func_00388440(void *, int, int);
+
+unsigned int func_003BD428(int count, int base) {
+    int size;
+    register int start __asm__("$3") = base;
+    register int end __asm__("$2");
+    size = count * 4;
+    end = start + size;
+
+    D_001DA54C_003BD428 = end;
+    D_001DA53C_003BD428 = start;
+    D_001DA548_003BD428 = start;
+    D_001DA540_003BD428 = 0;
+    D_001DA544_003BD428 = 0;
+    func_00388440((void *)start, 0, size);
+    return (D_001DA54C_003BD428 + 0x3F) & 0xFFFFFFC0;
+}
+/* localdecomp:end func_003BD428 */
 
 /* localdecomp:start func_003BD490 */
 typedef struct { u8 p0[0x48]; u8 *tbl[1]; } C_3BD490;

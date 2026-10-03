@@ -10762,7 +10762,53 @@ void func_003B9B38(void) {
 }
 /* localdecomp:end func_003B9B38 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B9B60);
+/* localdecomp:start func_003B9B60 */
+extern u8 D_001DA390;
+extern u8 D_001DA391;
+extern s32 D_001D8E20;
+extern s32 D_001D8E24;
+extern void *D_002F8CC0;
+extern void func_003B6528(s32, s32);
+extern void func_003B6F28();
+extern void func_003B87B8(s32, s32 *, s32);
+extern s32 func_003B8840(void);
+extern void func_003B8928(s32);
+extern void func_003B9DA8(void);
+extern void func_003B9BE8();
+extern void func_003B8E10(void *);
+extern void func_003B8D00(s32);
+__asm__(".extern D_001DA390, 16");
+__asm__(".extern D_001DA391, 16");
+__asm__(".extern D_001D8E24, 16");
+__asm__(".extern D_002F8CC0, 16");
+s32 func_003B9B60(void) {
+    register s32 first __asm__("$4") = 0;
+    D_001DA390 = 0;
+    D_001DA391 = 0;
+    __asm__ volatile("" : : : "memory");
+    {
+        register s32 second __asm__("$5") = 0;
+        func_003B6528(first, second);
+    }
+    func_003B6F28(4, &D_001D8E20);
+    func_003B87B8(3, &D_001D8E24, D_001D8E20);
+    func_003B8928(func_003B8840());
+    {
+        register u8 *callback __asm__("$2") = (u8 *)0x3C0000;
+        register u8 *slot_base __asm__("$3") = (u8 *)0x300000;
+        register u8 *handler __asm__("$4");
+        __asm__ volatile("" : "+r"(callback), "+r"(slot_base));
+        callback -= 0x6258;
+        handler = (u8 *)0x3C0000;
+        __asm__ volatile("" : "+r"(handler));
+        *(void **)(slot_base - 0x7340) = callback;
+        handler -= 0x6418;
+        func_003B8E10(handler);
+    }
+    func_003B8D00(1);
+    return 1;
+}
+/* localdecomp:end func_003B9B60 */
 
 /* localdecomp:start func_003B9BE8 */
 typedef struct { u8 pad[0x34]; u16 h34; u8 pad2[0x74]; s16 hAA; } S_3B9BE8;

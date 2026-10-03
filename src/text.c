@@ -240,10 +240,32 @@ s32 func_0037DF98(s32 id) {
 }
 /* localdecomp:end func_0037DF98 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0037DFD8);
+/* localdecomp:start func_0037DFD8 */
+__asm__(".extern D_001D9A20, 16");
+__asm__(".extern D_001D52FC, 16");
+extern void *D_001D52FC;
+s32 func_0037DFD8(fallback)
+s32 fallback;
+{
+    s32 index = func_0037DF28(fallback);
+    register s32 value __asm__("$4") = *(s16 *)((u8 *)D_001D9A20 + (index * 0x10) + 0xC);
+    register s32 result __asm__("$2") = fallback;
+    if (value > 0) {
+        register u8 flag __asm__("$3");
+        result = (s32)D_001D52FC;
+        flag = *(volatile u8 *)(result + 0x550);
+        result = value;
+        __asm__ volatile("" : "+r"(result));
+        if (flag == 0) {
+            result = fallback;
+        }
+    }
+    return result;
+}
+/* localdecomp:end func_0037DFD8 */
 
 /* localdecomp:start func_0037E030 */
-extern s32 func_0037DFD8(void);
+extern s32 func_0037DFD8();
 void func_0037E030(void) {
     func_0037DF98(func_0037DFD8());
 }

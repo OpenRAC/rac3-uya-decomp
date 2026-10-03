@@ -88,5 +88,55 @@
     "flags_from": "func_003E3DF0",
     "mode": "N",
     "assembler": "default"
+  },
+  {
+    "name": "func_005147F0",
+    "source": "src/levels/common/func_005147F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005147F0",
+    "size": 248,
+    "flags_from": "func_003E3988",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CD018",
+    "source": "src/levels/common/func_004CD018.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CD018",
+    "size": 244,
+    "flags_from": "func_003A95A0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005143A0",
+    "source": "src/levels/common/func_005143A0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005143A0",
+    "size": 240,
+    "flags_from": "func_003E3700",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00514B70",
+    "source": "src/levels/common/func_00514B70.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00514B70",
+    "size": 232,
+    "flags_from": "func_003E3D08",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519D48",
+    "source": "src/levels/common/func_00519D48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519D48",
+    "size": 228,
+    "flags_from": "func_003E8EC8",
+    "mode": "N",
+    "assembler": "default"
   }
 ]

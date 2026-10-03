@@ -34,10 +34,31 @@ import argparse, collections, os, re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GP = 0x1DC8B0
 LIT_START = 0x1D5680
-VU = re.compile(r"^(v[a-z0-9]+(\.[xyzw]+)?|lqc2|sqc2|qmtc2.*|qmfc2.*|cfc2.*|ctc2.*|vcallms.*|bc2[ft]l?)$")
-MMI = re.compile(r"^(p(?!ref)[a-z0-9]+(\.[a-z]+)?|lq|sq|qfsrv|mtsab|mtsah|pmfhl.*|plzcw)$")
-SYS = re.compile(r"^(mfc0|mtc0|ei|di|sync.*|cache|syscall|eret|bc0[ft])$")
+VU = re.compile(r"^(v[a-z0-9]+(\.[xyzw]+)?|cop2|lqc2|sqc2|qmtc2.*|qmfc2.*|cfc2.*|ctc2.*|vcallms.*|bc2[ft]l?)$")
+MMI = re.compile(r"^(p(?!ref)[a-z0-9]+(\.[a-z]+)?|special2|lq|sq|qfsrv|mtsab|mtsah|pmfhl.*|plzcw)$")
+SYS = re.compile(r"^(cop0|mfc0|mtc0|ei|di|sync.*|cache|syscall|eret|bc0[ft])$")
 INS = re.compile(r"/\*\s*[0-9A-Fa-f]+\s+([0-9A-Fa-f]{8})\s+([0-9A-Fa-f]{8})\s*\*/\s+(\S+)\s*([^\n]*)")
+
+
+def raw_instruction(word, operands):
+    annotated = re.search(r"/\*\s*([a-z][a-z0-9.]*)\b([^*]*)\*/", operands)
+    if annotated and annotated.group(1) != "invalid":
+        return annotated.group(1), annotated.group(2).strip()
+    opcode = word >> 26
+    if opcode == 0x10:
+        return "cop0", ""
+    if opcode == 0x12:
+        return "cop2", ""
+    if opcode == 0x1E:
+        return "lq", ""
+    if opcode == 0x1F:
+        return "sq", ""
+    if opcode == 0x1C and word & 0x3F in (0x04, 0x08, 0x09, 0x28, 0x29, 0x30, 0x31,
+                                         0x34, 0x36, 0x37, 0x3C, 0x3E, 0x3F):
+        return "special2", ""
+    if opcode == 0 and word & 0x3F == 0x0F:
+        return "sync", ""
+    return ".word", ""
 
 
 def classify(name):
@@ -46,7 +67,11 @@ def classify(name):
     for line in s.splitlines():
         m = INS.search(line)
         if m:  # the comment holds the word's bytes in file (little-endian) order
-            ins.append((int.from_bytes(bytes.fromhex(m.group(2)), "little"), m.group(3), m.group(4)))
+            word = int.from_bytes(bytes.fromhex(m.group(2)), "little")
+            mnemonic, operands = m.group(3), m.group(4)
+            if mnemonic == ".word":
+                mnemonic, operands = raw_instruction(word, operands)
+            ins.append((word, mnemonic, operands))
             continue
         w = re.match(r"\s*\.word\s+(0x[0-9A-Fa-f]+)", line)
         if w:  # raw words (short-loop branches, undecodable opcodes)
@@ -55,8 +80,9 @@ def classify(name):
             # tools/fix_quadword_ops.py writes lq/sq/lqc2/sqc2 that way, and a
             # function whose only 128-bit ops are raw words was landing in
             # "plain" because the op read ".word" here.
-            c = re.search(r"/\*\s*([a-z][a-z0-9.]*)", line)
-            ins.append((int(w.group(1), 16), c.group(1) if c else ".word", ""))
+            word = int(w.group(1), 16)
+            mnemonic, operands = raw_instruction(word, line[w.end():])
+            ins.append((word, mnemonic, operands))
     m = re.search(r"nonmatching \w+, (0x[0-9A-Fa-f]+)", s)
     size = int(m.group(1), 16) if m else 4 * len(ins)
     words = [w for w, _, _ in ins]

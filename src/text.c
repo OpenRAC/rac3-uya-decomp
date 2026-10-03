@@ -13731,7 +13731,44 @@ s32 func_003E1460(S_003E1460_outer *arg0, u32 arg1, s32 *arg2) {
 }
 /* localdecomp:end func_003E1460 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E14A8);
+/* localdecomp:start func_003E14A8 */
+typedef struct CallbackVtable_003E14A8 {
+    unsigned char padding[0x10];
+    void (*callback)(void *);
+} CallbackVtable_003E14A8;
+
+typedef struct Entry_003E14A8 {
+    unsigned char padding[4];
+    CallbackVtable_003E14A8 *vtable;
+} Entry_003E14A8;
+
+typedef struct Container_003E14A8 {
+    unsigned char padding[0x20];
+    Entry_003E14A8 *slots[12];
+} Container_003E14A8;
+
+typedef struct Root_003E14A8 {
+    unsigned char padding[4];
+    Container_003E14A8 *container;
+} Root_003E14A8;
+
+void func_003E14A8(void *argument) {
+    int index;
+    Root_003E14A8 *root = argument;
+    Entry_003E14A8 *entry;
+    register CallbackVtable_003E14A8 *vtable __asm__("$3");
+    register void (*callback)(void *) __asm__("$2");
+
+    for (index = 0; index < 12; index++) {
+        entry = root->container->slots[index];
+        if (entry != 0) {
+            vtable = entry->vtable;
+            callback = vtable->callback;
+            callback(entry);
+        }
+    }
+}
+/* localdecomp:end func_003E14A8 */
 
 /* localdecomp:start func_003E1510 */
 extern void func_003E09D8(void *);

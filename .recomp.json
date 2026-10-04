@@ -8,7 +8,7 @@
   "project": "R&C: UYA Decompilation",
   "status": "in-progress",
   "targets": ["Windows"],
-  "toolchain": "N64recomp",
+  "toolchain": "eegcc_2.95.3_sn_v1.36",
   "approach": "Byte matching decompilation.",
   "maintainers": [{ "name": "vetusmagnus", "link": "https://github.com/vetusmagnus" }],
   "links": [{ "label": "Discord", "url": "https://discord.gg/jH6YBbCShV" }, { "label": "Website", "url": "https://openrac.dev" } ],

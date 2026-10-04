@@ -67,14 +67,14 @@ void *func_003A6880(void *p) {
 /* localdecomp:end func_003A6880 */
 
 /* localdecomp:start func_003A6888 */
-void func_00116F98_003A6888(void *, s32, void *);
+void func_00116F98(void *, s32, void *);
 extern u8 D_001D82D8[];
 extern u8 D_001D82F8[];
 typedef struct { s32 f0; s32 f4; u32 f8; s32 fC; s32 f10; s32 f14; } S_003A6888;
 
 void func_003A6888(S_003A6888 *arg0, u32 arg1, s32 arg2, s32 arg3) {
     if (arg1 < 4U) {
-        func_00116F98_003A6888(D_001D82D8, 0x26, D_001D82F8);
+        func_00116F98(D_001D82D8, 0x26, D_001D82F8);
     }
     arg0->f0 = arg2;
     arg0->f4 = arg3;
@@ -88,7 +88,7 @@ void func_003A6888(S_003A6888 *arg0, u32 arg1, s32 arg2, s32 arg3) {
 LINKER_REMNANT("asm/remnants", func_003A6908);
 
 /* localdecomp:start func_003A6910 */
-void func_00116F98_003A6910(void *, s32, void *);
+void func_00116F98(void *, s32, void *);
 extern u8 D_001D82D8[];
 extern u8 D_001D8320[];
 typedef struct { u8 *base; u32 size; s32 elem; u32 used; s32 count; void **free; } S_003A6910;
@@ -107,7 +107,7 @@ void *func_003A6910(S_003A6910 *pool) {
     used = pool->used;
     next = used + pool->elem;
     if (pool->size < next) {
-        func_00116F98_003A6910(D_001D82D8, 0x54, D_001D8320);
+        func_00116F98(D_001D82D8, 0x54, D_001D8320);
         return 0;
     }
     { u8 *r = pool->base + used; pool->used = next; pool->count++; return r; }

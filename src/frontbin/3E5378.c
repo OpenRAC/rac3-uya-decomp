@@ -6,32 +6,93 @@ extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern s32 func_003ECDB8();
-extern s32 func_003E1BC8();
 extern void **func_003ECC40(void **);
-extern char D_001D96B0[];
-extern void func_003E8568(void *p, s32, s32);
-extern void *func_003E4DA0();
+void func_003EA930(void *, s32);
 extern void func_003EAA80(void *p, f32, f32);
 extern void func_003EAA38(u8 *p, u8, s32);
 extern void func_003E8BF8(void *p, s32, s32);
 extern s32 func_003EB620(u8 *arg0, s32, s32);
+extern s32 func_003E67B8(void *, s32, void *);
+extern s32 func_003E5378(u8 *p, f32 a, f32 b);
+extern s32 func_003E54B0(u8 *p, s32 a, s32 b);
+extern s32 func_003E55E8(u8 *p, s32 a);
+extern s32 func_003E5708(u8 *p, f32 a, f32 b);
+extern s32 func_003E5770(u8 *p, s32 a);
+extern s32 func_003E5890(u8 *p, s32 a, s32 b);
+extern s32 func_003E59C8(u8 *p, s32 a, u8 *out);
+extern s32 func_003E5B00(u8 *p, s32 a, s32 b);
+extern s32 func_003E5B68(u8 *p, s32 a, s32 b);
+extern s32 func_003E5CA0(u8 *p, f32 a, f32 b);
+extern s32 func_003E5D08(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4);
+extern s32 func_003E5EB0(u8 *p, s32 a);
+extern s32 func_003E5FD8(u8 *p, f32 a, f32 b);
+extern s32 func_003E6048(u8 *p, s32 a, s32 b);
+extern s32 func_003E60B0(u8 *p, s32 a);
+extern s32 func_003E6108(u8 *p, s32 a, s16 b, s16 c, s32 d);
+extern s32 func_003E6268(u8 *p, f32 a, f32 b);
+extern s32 func_003E62D8(u8 *p, s32 a);
+extern s32 func_003E6330(u8 *p, s32 a, s32 b);
+extern s32 func_003E6398(u8 *p, s32 a, u8 *out);
+extern s32 func_003E6400(u8 *p, s32 a, s32 b);
+extern s32 func_003E6468(u8 *p, s32 a, s32 b);
+extern s32 func_003E64D0(u8 *p, f32 a, f32 b);
+extern s32 func_003E6538(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4);
+extern s32 func_003E6610(u8 *p, f32 a, f32 b);
+extern s32 func_003E6758(u8 *p, f32 a);
+extern s32 func_003E6890(u8 *p, f32 a);
+extern s32 func_003E68F0(u8 *p, f32 a, f32 b);
+extern s32 func_003E6960(u8 *p, s32 a);
+extern s32 func_003E6A88(u8 *p, s32 a, s32 b);
+extern s32 func_003E6AF0(u8 *p, s32 a);
+extern s32 func_003E6B48(u8 *p, f32 a, f32 b);
+extern s32 func_003E6BB0(u8 *p, s32 a, s32 b);
+extern s32 func_003E6C18(u8 *p, f32 a, f32 b);
+extern s32 func_003E6C80();
+extern s32 func_003E6CE8();
+extern s32 func_003E6D48(u8 *p, s32 a, s32 b);
+extern s32 func_003E6DB0(u8 *p, s32 a, u8 *out);
+extern s32 func_003E6E18(u8 *p, s32 a, s32 b);
+extern s32 func_003E6E80(u8 *p, s32 a, s32 b);
+extern s32 func_003E6EE8(u8 *p, f32 a, f32 b);
+extern s32 func_003E6F50(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4);
+extern s32 func_003E7028(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+extern s32 func_003E7180(u8 *p, f32 a);
+extern s32 func_003E72A8(u8 *p, f32 a, f32 b);
+extern s32 func_003E7310(u8 *p, s32 a, s32 b);
+extern s32 func_003E7378(u8 *p, f32 a, f32 b);
+extern s32 func_003E73E0(u8 *p, s32 a);
+extern s32 func_003E7430(u8 *p, s32 a, s32 b);
+extern s32 func_003E7498(u8 *p, s32 a, u8 *out);
+extern s32 func_003E7500(u8 *p, s32 a, s32 b);
+extern s32 func_003E7568(u8 *p, s32 a, s32 b);
+extern s32 func_003E75D0(u8 *p, f32 a, f32 b);
+extern s32 func_003E7638(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4);
+extern s32 func_003E7710(u8 *p, f32 a, f32 b);
+extern s32 func_003E7778(u8 *p, f32 a, f32 b);
+extern s32 func_003E77E0(u8 *p, s32 a, s32 b);
+extern s32 func_003E7848(u8 *p, f32 a, f32 b);
+extern s32 func_003E78B0(u8 *p, s32 a);
+extern s32 func_003E7900();
+extern s32 func_003E7A30(u8 *p, s32 a, s32 b);
+extern s32 func_003E7A98(u8 *p, s32 a, u8 *out);
+extern s32 func_003E7B00(u8 *p, s32 a, s32 b);
+extern s32 func_003E7B68(u8 *p, s32 a, s32 b);
+extern s32 func_003E7BD0(u8 *p, f32 a, f32 b);
+extern s32 func_003E7C38(u8 *p, f32 a);
+extern s32 func_003E7C90(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4);
+extern s32 func_003E7D68(void *arg0, f32 fparg0, f32 fparg1, f32 fparg2, f32 fparg3);
+extern s32 func_003E7EC8();
+extern s32 func_003E7F20();
+extern s32 func_003E8040(u8 *p, s32 a, s32 b);
+extern s32 func_003E80A8(u8 *p, s32 a, u8 *out);
+extern s32 func_003E8110(u8 *p, s32 a, s32 b);
+extern s32 func_003E8178(u8 *p, s32 a, s32 b);
+extern s32 func_003E81E0(u8 *p, f32 a, f32 b);
+extern s32 func_003E8248(u8 *p, f32 a, f32 b);
+extern s32 func_003E82B8(u8 *p, s32 a, s32 b);
+extern s32 func_003E8320(u8 *p, f32 a, f32 b);
 typedef struct { u32 key; void *val; } HE_8;
 typedef struct { s32 f0; s32 n; HE_8 e[8]; } HT_8;
-extern u8 D_001DAA89;
-extern u8 D_001DAA8A;
-extern u8 D_001DAA8D;
-extern u8 D_001DAA8E;
-extern u8 D_001DAA8F;
-extern u8 D_001DAA90;
-extern u8 D_001DAA91;
-extern u8 D_001DAA92;
-extern u8 D_001DAA93;
-extern u8 D_001DAA94;
-extern u8 D_001DAA96;
-extern u8 D_001DAA97;
-extern u8 D_001DAA98;
-extern u8 D_001DAA99;
-extern u8 D_001DAA9A;
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003E5378 */
@@ -354,7 +415,7 @@ typedef struct {
     } entries[3];
 } Table_003E5F00;
 
-extern u8 D_001DAA95_003E5F00;
+extern u8 D_001DAA95;
 extern void *func_003E4DA0(void *, u32);
 
 s32 func_003E5F00(Table_003E5F00 *input_table, u32 input_key, void *input_value) {
@@ -367,7 +428,7 @@ s32 func_003E5F00(Table_003E5F00 *input_table, u32 input_key, void *input_value)
         register s32 divisor __asm__("$6") = 3;
         register s32 parity __asm__("$11") = key & 1;
         register u8 *value_base __asm__("$9") = (u8 *)table + 0xC;
-        register void *sentinel __asm__("$12") = &D_001DAA95_003E5F00;
+        register void *sentinel __asm__("$12") = &D_001DAA95;
         register u8 *key_base __asm__("$10") = (u8 *)table + 8;
         register s32 offset __asm__("$7") = 0;
 
@@ -470,10 +531,10 @@ s32 func_003E6198(HT_8 *t, u32 key, void *val) {
 /* localdecomp:end func_003E6198 */
 
 /* localdecomp:start func_003E6268 */
-extern s32 D_001D9800_003E6268[];
+extern s32 D_001D9800[];
 extern void func_003E8628(void *, f32, f32);
 s32 func_003E6268(u8 *p, f32 a, f32 b) {
-    if ((*(VT_E **)(p + 8))->isA(p, D_001D9800_003E6268[0])) {
+    if ((*(VT_E **)(p + 8))->isA(p, D_001D9800[0])) {
         func_003E8628(p, a, b);
         return 1;
     }
@@ -556,12 +617,12 @@ s32 func_003E64D0(u8 *p, f32 a, f32 b) {
 /* localdecomp:start func_003E6538 */
 typedef struct { u8 b[16]; } V16_003E6538;
 extern s32 D_001D9800_003E6538;
-extern V16_003E6538 D_001D9700_003E6538;
+extern V16_003E6538 D_001D9700;
 s32 func_003E6538(void *arg0, f32 *arg1, f32 *arg2, f32 *arg3, f32 *arg4) {
     V16_003E6538 v;
     f32 out[4];
     if ((*(s32 (**)(void *, s32))((u8 *)(*(void **)((u8 *)arg0 + 8)) + 0x10))(arg0, D_001D9800_003E6538) != 0) {
-        v = D_001D9700_003E6538;
+        v = D_001D9700;
         (*(s32 (**)(void *, void *, f32 *, s32))((u8 *)(*(void **)((u8 *)arg0 + 8)) + 0x20))(arg0, &v, out, 1);
         *arg1 = out[0];
         *arg2 = out[1];
@@ -592,7 +653,7 @@ typedef struct {
     struct { u32 key; void *value; } entries[3];
 } Table_003E6680;
 
-extern u8 D_001DAA8B_003E6680;
+extern u8 D_001DAA8B;
 extern void *func_003E4890(void *, u32);
 
 s32 func_003E6680(Table_003E6680 *input_table, u32 input_key, void *input_value) {
@@ -605,7 +666,7 @@ s32 func_003E6680(Table_003E6680 *input_table, u32 input_key, void *input_value)
         register s32 divisor __asm__("$6") = 3;
         register s32 parity __asm__("$11") = key & 1;
         register u8 *value_base __asm__("$9") = (u8 *)table + 0xC;
-        register void *sentinel __asm__("$12") = &D_001DAA8B_003E6680;
+        register void *sentinel __asm__("$12") = &D_001DAA8B;
         register u8 *key_base __asm__("$10") = (u8 *)table + 8;
         register s32 offset __asm__("$7") = 0;
 
@@ -1968,25 +2029,25 @@ s32 func_003EB178(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003EB180);
 
 /* localdecomp:start func_003EB358 */
-s32 *func_003E16B8_003EB358(s32 *);                  /* extern */
-void **func_003E1770_003EB358(s32 *, s32);           /* extern */
+s32 *func_003E16B8(s32 *);                  /* extern */
+void **func_003E1770(s32 *, s32);           /* extern */
 void func_003ECDB8_003EB358(void *);
 extern u8 D_001D96B0_003EB358;
 extern u8 D_001D9808;
 typedef struct { u8 pad0[0x4]; s32 f4; } S_001DA9B8_003EB358;
-extern S_001DA9B8_003EB358 D_001DA9B8_003EB358[];
+extern S_001DA9B8_003EB358 D_001DA9B8[];
 
 void func_003EB358(void *arg0, s32 arg1) {
     s32 *var_v0;
     void **temp_v0;
 
     (*(s32 **)((u8 *)(arg0) + 8)) = (s32 *)&D_001D9808;
-    if (D_001DA9B8_003EB358->f4 != 0) {
-        var_v0 = (s32 *)D_001DA9B8_003EB358;
+    if (D_001DA9B8->f4 != 0) {
+        var_v0 = (s32 *)D_001DA9B8;
     } else {
-        var_v0 = func_003E16B8_003EB358((s32 *)D_001DA9B8_003EB358);
+        var_v0 = func_003E16B8((s32 *)D_001DA9B8);
     }
-    temp_v0 = func_003E1770_003EB358(var_v0, 1);
+    temp_v0 = func_003E1770(var_v0, 1);
     if (temp_v0 != 0) {
         (*(s32 (**)(void **, s32))((u8 *)(*temp_v0) + 0xC))(temp_v0, (*(s32 *)((u8 *)(arg0) + 0x2C)));
         (*(s32 *)((u8 *)(arg0) + 0x2C)) = 0;

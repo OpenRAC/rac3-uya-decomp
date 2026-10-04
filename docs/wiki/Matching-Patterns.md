@@ -51,16 +51,22 @@ extern s32 D_001D4CE8_g;       /* $gp writes */
 
 The alias needs an address in `symbol_addrs_resolved.txt` (`D_001D4CE8_g = 0x1D4CE8;`) or the link fails.
 
-## Per-function aliases
+## Plain names first, per-function aliases only when needed
 
-A source file is one translation unit, so every block sees every earlier declaration in its file, plus the declarations from other files at the top. When a function needs a variable declared differently from how an earlier block declared it (a different struct type, sized vs unsized), don't change the shared declaration. Declare a per-function alias named after the function address instead:
+Use the plain name (`D_00142430`, `func_003E8320`). A source file is one translation unit: every block sees the earlier blocks' declarations in its file, plus, at the top, the declarations from earlier files of names the file uses without declaring them itself. Other files' declarations never reach a file that declares the name itself.
+
+An alias is needed only when two blocks **in the same file** need different types for one symbol (a different struct type, sized vs unsized, a function used once as an array to take its address), or as one of the code-generation techniques on this page (a second symbol at the same address to get `lui` where the plain name gets `$gp`, and the like). Then don't change the shared declaration; declare a per-function alias named after the function address:
 
 ```c
 typedef struct { u8 pad[0x18]; u16 h18; ... } S_3969B8;
 extern S_3969B8 D_00142430_003969B8[];
 ```
 
-and add `D_00142430_003969B8 = 0x142430;` to `symbol_addrs_resolved.txt`. `pr_check.py` flags any alias without an address.
+and add `D_00142430_003969B8 = 0x142430;` to `symbol_addrs_resolved.txt` (and a `D_00142430 = 0x142430;` line for the plain name if it's the first use of the address). `pr_check.py` flags any alias without an address, and `try_in_context.py` / `pr_check.py` report a clash that needs one.
+
+Until 2026-10-04 aliases were the default, a leftover of the single `text.c`, where every declaration stayed in scope to the end. That day 646 of the 941 were renamed back to plain names; the 295 left are the ones where a block in the same file really uses another type, or where the alias changes the generated code.
+
+To pass a function's address, use the function's own name (`func_003E8320`), declared the way the sources already declare it, not an `extern u8 func_003E8320_x[];` array alias.
 
 Name typedefs uniquely the same way (`S_3969B8`, `S_142430x`). Two blocks defining the same typedef name with different bodies is the most common full-build error.
 
@@ -279,7 +285,7 @@ Thirteen retail functions (`func_003869E8`, `0038C888`, `0038C9D8`, `003A6C30`, 
 - **Search loops** (`func_0038EC80`, `func_00395BC0`): `for (i = 0; i < N; i++) if (tab[i].k == key) break;` followed by `if (i == N) return;`/`if (i < N)` gives retail's rotated loop. They need a struct with the exact element stride; the function itself is easy once the stride is right.
 - **Loop over an index range** (`func_0039B0F8`): `for (i = lo; i < hi; i++) { dst[i].x = ...; }` with `lo`/`hi` read from a table matched; the pointer-walking version with `n = hi - lo` did not.
 - **Float immediates and `$gp` floats together** (`func_003A3028`): `@ps2as` plus `__asm__(".extern X, 4");` for each `$gp` float/pointer global; initialise a loop offset inside the `if` that guards the loop (`off = 0;` before the `if` moves the `move` above the branch).
-- **Typedef and extern names collide across a part.** A block's typedefs and `extern`s stay visible to every later block in the part, so give each function's types a suffix (`S_395BC0`) and its globals an alias symbol (`D_160C40_00395BC0` plus a line in `symbol_addrs_resolved.txt`) when another block declares the same global differently.
+- **Typedef and extern names collide within a file.** A block's typedefs and `extern`s stay visible to every later block in the same source file, so give each function's types a suffix (`S_395BC0`), and give a global an alias symbol (`D_160C40_00395BC0` plus a line in `symbol_addrs_resolved.txt`) only when another block of the file declares it differently.
 - **VU0 code that is not a pure leaf** (`func_003BFD10`): C around one `__asm__` block with `lqc2`/`vadd.xyz`/`sqc2` matched in no-split mode; a callee that other matched code declares with fewer arguments needs an alias symbol (`func_003BFC18_003BFD10`).
 - **`div.s` with `nop`s in front** (`func_00393380`): matched as plain C once `tools/divs_nops.txt` handled the padding (see the `div.s` entry under Known open problems). Don't use the old inline-asm `nop; nop; div.s` workaround; it changes the register choice.
 ## More patterns from the third hand pass (switches, delay slots, aliasing)

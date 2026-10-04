@@ -14,10 +14,10 @@ extern N_3C7AE8 *func_003C1FE0();
 extern void func_003C1A90();
 extern void func_003C26C8();
 extern u8 D_001DA52C[];
-extern N_3C7AE8 *D_001DA528_003C7AE8;
+extern N_3C7AE8 *D_001DA528;
 void func_003C7AE8(void) {
     N_3C7AE8 *n;
-    n = D_001DA528_003C7AE8 = func_003C1FE0(D_001DA52C);
+    n = D_001DA528 = func_003C1FE0(D_001DA52C);
     while (n != 0) {
         if (n->f20 >= 0) {
             if ((n->h34 & 0x40) == 0) {

@@ -85,12 +85,12 @@ LINKER_REMNANT("asm/remnants", func_00395358);
 
 /* localdecomp:start func_00395360 */
 typedef struct { u8 p0[0x64C]; s32 f64C; u8 p650[0x668 - 0x650]; s32 f668; s32 f66C; } S_395360;
-extern S_395360 D_00160C40_00395360;
+extern S_395360 D_00160C40;
 extern s32 *D_001D4B50_00395360;
 extern u8 D_01FF7FF0[];
 extern s32 func_0039D5F8();
 s32 func_00395360(void) {
-    S_395360 *s = &D_00160C40_00395360;
+    S_395360 *s = &D_00160C40;
     u32 x;
     s32 *p;
     x = ((s->f66C << 11) + 0x1057) & 0xFFFFF000;
@@ -120,16 +120,16 @@ typedef struct {
     u32 slots[1];
 } T_958A0;
 
-extern T_958A0 D_00225780_003958A0[];
-extern u32 D_00227610_003958A0[];
-extern u32 D_001DA0D8_003958A0;
+extern T_958A0 D_00225780[];
+extern u32 D_00227610[];
+extern u32 D_001DA0D8;
 extern void func_00395648(void);
 
 void func_003958A0(s32 a0) {
-    u32 value = D_00225780_003958A0[0].slots[a0];
+    u32 value = D_00225780[0].slots[a0];
 
-    D_00225780_003958A0[0].f6C = value;
+    D_00225780[0].f6C = value;
     func_00395648();
-    D_00225780_003958A0[0].f6C = D_00227610_003958A0[0] + D_001DA0D8_003958A0;
+    D_00225780[0].f6C = D_00227610[0] + D_001DA0D8;
 }
 /* localdecomp:end func_003958A0 */

@@ -1,19 +1,10 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
-extern void func_003ADC80(void *);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern void func_00396F18();
-extern s32 func_0039D6C8(s32);
-extern void func_0039ED50(void);
-extern void func_0013BFE0(s32);
-extern void func_003A3A00(void);
-extern void func_00396FD0();
-extern s32 func_00397258(void);
-extern s32 D_001D8A70_g;
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003B1068 */
@@ -66,7 +57,7 @@ extern s32 D_001D8ACC;
 extern s32 D_001D8AE4;
 extern u8 D_001D8AE9;
 extern s32 D_001D545C[];
-extern u8 D_001D5571_003B11C0[];
+extern u8 D_001D5571[];
 extern void func_00399660(s32);
 extern void func_003970D0(s16);
 void func_003B11C0(void)
@@ -78,7 +69,7 @@ void func_003B11C0(void)
   v = new_var;
   if (D_001D545C[new_var] < 2)
   {
-    new_var = D_001D5571_003B11C0[0] == new_var;
+    new_var = D_001D5571[0] == new_var;
     v = new_var;
   }
   D_001D8AE9 = v;
@@ -88,52 +79,52 @@ void func_003B11C0(void)
 
 /* localdecomp:start func_003B1210 */
 __asm__(".extern D_001D545C_gp_003B1210, 4");
-__asm__(".extern D_001D8ACC_003B1210, 4");
+__asm__(".extern D_001D8ACC, 4");
 __asm__(".extern D_001D8A70_003B1210, 4");
-extern s32 D_001425AC_003B1210[];
-extern s32 D_00143958_003B1210[];
+extern s32 D_001425AC[];
+extern s32 D_00143958[];
 extern s32 D_001D545C_gp_003B1210;
 extern s32 D_001D545C_003B1210;
 extern u8 D_001D5571_003B1210;
-extern s32 D_001D5B74_003B1210;
-extern s32 D_001D9D84_003B1210;
-extern u8 D_001D5638_003B1210;
-extern s32 D_00229010_003B1210[];
-extern s32 D_001D8ACC_003B1210;
+extern s32 D_001D5B74;
+extern s32 D_001D9D84;
+extern u8 D_001D5638;
+extern s32 D_00229010[];
+extern s32 D_001D8ACC;
 extern s32 D_001D8A70_003B1210;
 extern s32 func_00397258();
 extern void func_003972A0();
 extern void func_0039ED50(void);
 extern s32 func_0039D6C8(s32);
-extern void func_0013BFE0_003B1210(s32);
+extern void func_0013BFE0(s32);
 extern void func_003A3A00(void);
 void func_003B1210(void) {
     s32 v;
     if (func_00397258()) {
-        func_003972A0(D_001D8ACC_003B1210);
+        func_003972A0(D_001D8ACC);
         D_001D8A70_003B1210 = 5;
         return;
     }
-    D_001425AC_003B1210[0] = 1;
+    D_001425AC[0] = 1;
     func_0039ED50();
     func_0039D6C8(1);
-    func_0013BFE0_003B1210(D_00143958_003B1210[0] == 0);
+    func_0013BFE0(D_00143958[0] == 0);
     v = D_001D545C_gp_003B1210;
     if (D_001D545C_003B1210 < 2 && D_001D5571_003B1210 == 0) {
         func_003A3A00();
     } else {
-        *(volatile s32 *)&D_001D5B74_003B1210 = 1;
-        *(volatile s32 *)&D_001D9D84_003B1210 = v;
+        *(volatile s32 *)&D_001D5B74 = 1;
+        *(volatile s32 *)&D_001D9D84 = v;
     }
-    D_001D5638_003B1210 = 1;
-    D_00229010_003B1210[0] = 0;
+    D_001D5638 = 1;
+    D_00229010[0] = 0;
 }
 /* localdecomp:end func_003B1210 */
 
 /* localdecomp:start func_003B12C8 */
-__asm__(".extern D_001D8ACC_003B12C8, 4");
+__asm__(".extern D_001D8ACC, 4");
 __asm__(".extern D_001D8A70_003B12C8, 4");
-__asm__(".extern D_001D8AE9_003B12C8, 1");
+__asm__(".extern D_001D8AE9, 1");
 __asm__(".extern D_001D545C_003B12C8, 4");
 extern s32 func_00397258(void);
 extern void func_003972A0(s32);
@@ -141,32 +132,32 @@ extern void func_003B5BF8(void);
 extern void func_003B5C08(s32);
 extern void func_0039ED50(void);
 extern void func_0013BFE0(s32);
-extern s32 D_001D8ACC_003B12C8;
+extern s32 D_001D8ACC;
 extern s32 D_001D8A70_003B12C8;
-extern u8 D_001D8AE9_003B12C8;
+extern u8 D_001D8AE9;
 extern s32 D_001D545C_003B12C8;
-extern s32 D_001425AC_003B12C8[];
-extern s32 D_00143958_003B12C8[];
+extern s32 D_001425AC[];
+extern s32 D_00143958[];
 extern s8 D_001D5638_003B12C8;
-extern s32 D_00229010_003B12C8[];
+extern s32 D_00229010[];
 void func_003B12C8(void) {
     if (func_00397258() != 0) {
-        func_003972A0(D_001D8ACC_003B12C8);
+        func_003972A0(D_001D8ACC);
         D_001D8A70_003B12C8 = 5;
         return;
     }
-    D_001425AC_003B12C8[0] = 1;
+    D_001425AC[0] = 1;
     func_0039ED50();
     ((s32 (*)(s32))func_0039D6C8)(1);
-    func_0013BFE0(D_00143958_003B12C8[0] == 0);
-    if (D_001D8AE9_003B12C8 != 0) {
+    func_0013BFE0(D_00143958[0] == 0);
+    if (D_001D8AE9 != 0) {
         func_003B5BF8();
     } else {
         func_003B5C08(D_001D545C_003B12C8);
     }
     D_001D8A70_003B12C8 = 6;
     D_001D5638_003B12C8 = 1;
-    D_00229010_003B12C8[0] = 0;
+    D_00229010[0] = 0;
 }
 /* localdecomp:end func_003B12C8 */
 
@@ -222,7 +213,7 @@ s32 func_003B1400(void) {
 /* localdecomp:end func_003B1400 */
 
 /* localdecomp:start func_003B1430 */
-extern unsigned char D_001D5BDC_003B1430;
+extern unsigned char D_001D5BDC;
 extern int D_001D8AE4;
 extern int D_001D8A70_g;
 __asm__(".extern D_001D8AE4, 4");
@@ -234,7 +225,7 @@ extern void func_003B12C8(void);
 
 void func_003B1430(void) {
     register int flag __asm__("$2");
-    flag = D_001D5BDC_003B1430;
+    flag = D_001D5BDC;
     if (flag != 0) {
         func_00396FD0((int)func_003B11C0, D_001D8AE4, (int)func_003B1210);
     } else {

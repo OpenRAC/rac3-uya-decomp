@@ -2,19 +2,14 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_0039BEC0(s32, s32, s32, s32, u8 *);
-extern void func_00388440();
-extern void func_00388550();
+extern s32 func_0039BEA8(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern void func_13CA28(void);
-extern void func_13B620(void);
 extern void func_0039D4D0(void);
 extern void func_0039CBA0(void);
 extern s32 func_0039D5F8();
-extern s32 D_001D4CEC[];
-extern void func_00388550(u8 *, u8 *, s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_0039BC00 */
@@ -69,12 +64,12 @@ s32 func_0039BD40(void) {
 /* localdecomp:start func_0039BD48 */
 extern s32 D_001D5B94_0039BD48;
 extern s32 D_001D5B90_0039BD48;
-extern s32 D_001D5B8C_0039BD48;
-extern s32 D_001D6D98_0039BD48;
+extern s32 D_001D5B8C;
+extern s32 D_001D6D98;
 extern s32 D_001D6D9C_0039BD48;
 extern s32 D_001D6DA0_0039BD48;
 extern u8 *D_001D6DA8_0039BD48;
-extern f32 D_00225A30_0039BD48[];
+extern f32 D_00225A30[];
 extern void func_003A3508(void);
 extern void func_0037E568(s32, s32, s32, f32, f32, f32, f32);
 extern void func_003830E8();
@@ -85,17 +80,17 @@ void func_0039BD48(void) {
     s32 t;
     u8 *v;
     s32 s;
-    D_001D5B8C_0039BD48 = a;
+    D_001D5B8C = a;
     if (D_001D5B90_0039BD48 == -2) return;
-    t = D_001D6D98_0039BD48;
+    t = D_001D6D98;
     if (t > 0) {
-        D_001D6D98_0039BD48 = t - 1;
+        D_001D6D98 = t - 1;
         return;
     }
     switch (a) {
     case 1:
         func_003A3508();
-        D_00225A30_0039BD48[0] = 0.62f;
+        D_00225A30[0] = 0.62f;
         func_0037E568(0, 0, 3, 1.1100293f, 0.005f, 0.2f, 0.0f);
         func_003830E8();
         break;
@@ -203,11 +198,11 @@ extern s32 func_0039C158_0039C170();
 extern void func_0013BAB8(s32, s32, void *, unsigned long, s32);
 typedef struct { u8 p0[0x79A4]; s32 f79A4; u8 p1[0x10]; s32 f79B8; } S_C170a;
 typedef struct { u8 p0[0x90]; u32 f90; } S_C170b;
-extern S_C170a D_00160C40_0039C170[];
+extern S_C170a D_00160C40[];
 extern S_C170b D_001A30B0_0039C170[];
 void func_0039C170(void) {
     D_001A30B0_0039C170[0].f90 = 0xFFFFFFFF;
-    func_0013BAB8(D_00160C40_0039C170[0].f79B8 + D_00160C40_0039C170[0].f79A4, 0, &func_0039C158_0039C170, (unsigned long) ((long) &D_001A30B0_0039C170[0].f90 << 0x20) >> 0x20, D_00160C40_0039C170[0].f79A4);
+    func_0013BAB8(D_00160C40[0].f79B8 + D_00160C40[0].f79A4, 0, &func_0039C158_0039C170, (unsigned long) ((long) &D_001A30B0_0039C170[0].f90 << 0x20) >> 0x20, D_00160C40[0].f79A4);
 }
 /* localdecomp:end func_0039C170 */
 
@@ -399,24 +394,24 @@ s32 func_0039D5A8(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4) {
 /* localdecomp:end func_0039D5A8 */
 
 /* localdecomp:start func_0039D5F8 */
-__asm__(".extern D_001D4D04_0039D5F8, 4");
+__asm__(".extern D_001D4D04, 4");
 typedef struct { u8 b[4]; } B4_0039D5F8;
-extern B4_0039D5F8 D_001CD010_0039D5F8[];
-extern u8 D_001D52E0_0039D5F8;
-extern s32 D_001D4D00_0039D5F8;
-extern s32 D_001D4D04_0039D5F8;
-extern void func_0013CD28_0039D5F8();
-extern void func_0013CA28_0039D5F8();
-extern void func_0013B620_0039D5F8();
+extern B4_0039D5F8 D_001CD010[];
+extern u8 D_001D52E0;
+extern s32 D_001D4D00;
+extern s32 D_001D4D04;
+extern void func_0013CD28();
+extern void func_0013CA28();
+extern void func_0013B620();
 s32 func_0039D5F8(s32 a, s32 b, s32 c) {
     B4_0039D5F8 buf;
-    buf = D_001CD010_0039D5F8[0];
-    buf.b[1] = D_001D52E0_0039D5F8;
-    D_001D4D00_0039D5F8 = 0;
-    D_001D4D04_0039D5F8 = 0;
-    func_0013CD28_0039D5F8(b, c, a, &buf);
-    func_0013CA28_0039D5F8();
-    func_0013B620_0039D5F8();
+    buf = D_001CD010[0];
+    buf.b[1] = D_001D52E0;
+    D_001D4D00 = 0;
+    D_001D4D04 = 0;
+    func_0013CD28(b, c, a, &buf);
+    func_0013CA28();
+    func_0013B620();
     return 1;
 }
 /* localdecomp:end func_0039D5F8 */
@@ -462,7 +457,7 @@ s32 func_0039D6C8(s32 a) {
 /* localdecomp:end func_0039D6C8 */
 
 /* localdecomp:start func_0039D770 */
-s32 func_0011F0A0_0039D770(s32);                       /* extern */
+s32 func_0011F0A0(s32);                       /* extern */
 s32 func_13CEF8();                                  /* extern */
 typedef struct { s32 x0; s16 h4; u8 b6; u8 b7; u8 pad[0x10]; void *f18; s32 f1C; } S_39D770;
 extern S_39D770 D_001CCFD0_0039D770[];
@@ -482,7 +477,7 @@ void func_0039D770(s32 arg0) {
             D_001CCFD0_0039D770->h4 = 2;
             return;
         }
-        func_0011F0A0_0039D770(0);
+        func_0011F0A0(0);
         temp_v1 = (s32 (*)(s32, s32))D_001CCFD0_0039D770->f18;
         D_001CCFD0_0039D770->h4 = 0;
         temp_a1 = D_001CCFD0_0039D770->b6 == 0;

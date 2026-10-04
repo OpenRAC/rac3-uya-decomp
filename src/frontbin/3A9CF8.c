@@ -2,11 +2,11 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 D_001D5C78;
+extern void func_003AA0B8(void);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern void func_11EB50(s32, s32);
 extern void func_11F940(s32);
 extern f32 func_003A9CF8(f32, f32, f32, f32, f32);
 /* --- end of declarations from other files --- */
@@ -97,13 +97,13 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003AA828);
 
 /* localdecomp:start func_003AAA00 */
 typedef struct { u8 pad[0xB0]; s32 wB0; } S_AAA00;
-extern void *D_001DA11C_003AAA00;
-extern void *D_001DA108_003AAA00;
-extern void *D_001DA148_003AAA00;
-extern S_AAA00 *D_001DA134_003AAA00;
+extern void *D_001DA11C;
+extern void *D_001DA108;
+extern void *D_001DA148;
+extern S_AAA00 *D_001DA134;
 extern void *D_001DA138_003AAA00;
-extern void *D_001DA130_003AAA00;
-extern u8 D_0013D208_003AAA00[];
+extern void *D_001DA130;
+extern u8 D_0013D208[];
 extern s32 func_003ABD78();
 extern s32 func_003AD6A8();
 extern void func_11EC70(void *);
@@ -114,16 +114,16 @@ extern s32 func_003AD040();
 extern s32 func_003AAB60();
 extern s32 func_003ABE70();
 void func_003AAA00(void) {
-    ((void (*)(void *))func_003ABD78)(D_001DA11C_003AAA00);
-    ((void (*)(void *))func_003AD6A8)(D_001DA108_003AAA00);
-    func_11EC70(D_001DA148_003AAA00);
-    func_11EC30(D_001DA148_003AAA00);
+    ((void (*)(void *))func_003ABD78)(D_001DA11C);
+    ((void (*)(void *))func_003AD6A8)(D_001DA108);
+    func_11EC70(D_001DA148);
+    func_11EC30(D_001DA148);
     ((s32 (*)(s32))func_11F940)(2);  /* s32 return matters: keeps $v0 live */
-    func_11EB50(2, D_001DA134_003AAA00->wB0);
-    func_12D4D8(D_0013D208_003AAA00);
-    ((void (*)(void *))func_003AD040)(D_001DA134_003AAA00);
+    func_11EB50(2, D_001DA134->wB0);
+    func_12D4D8(D_0013D208);
+    ((void (*)(void *))func_003AD040)(D_001DA134);
     ((void (*)(void *))func_003AAB60)(D_001DA138_003AAA00);
-    ((void (*)(void *))func_003ABE70)(D_001DA130_003AAA00);
+    ((void (*)(void *))func_003ABE70)(D_001DA130);
     *(u32 *)0x1000E000 &= ~2;
 }
 /* localdecomp:end func_003AAA00 */

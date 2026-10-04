@@ -72,10 +72,8 @@ def main():
     text = substitute(sf.read_source(rel), name, body)
     # declarations from other files as `split_text.py --refresh` would set them
     prelude, _, chunks = sf.split_file(text)
-    need = set()
-    for _, _, b in chunks:
-        need |= sf.used_names(b)
-    ext = split_text.external_declarations(split_text.earlier_statements(rel, files), need)
+    ext = split_text.external_declarations(split_text.earlier_statements(rel, files),
+                                           split_text.file_needs(chunks))
     text = split_text.render(ext, chunks, prelude)
     prelude, _, chunks = sf.split_file(text)
     parts = bt.read_parts(os.path.join(ROOT, "tools", "text_parts.txt"))

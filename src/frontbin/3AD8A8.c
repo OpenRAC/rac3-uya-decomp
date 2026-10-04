@@ -1,33 +1,18 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
-extern void func_003934E8(s32, s32);
-extern void func_003B62D0(s32);
 extern void func_003ADC80(void *);
 extern s32 func_0039BEC0(s32, s32, s32, s32, u8 *);
-extern s32 func_003E1A50(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
+extern void func_003ADB40(void);
+extern void func_003ADBB0(s32);
+extern void func_003ADB78(void);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern s32 func_00392108();
 void func_0039B760(u8 *, u32);
-typedef struct {
-    u8 pad0[0x10];
-    s32 f10;
-    u8 pad1[0x150];
-    s32 f164;
-    s32 f168;
-    u8 pad2[0x10];
-    s32 f17c;
-} S_142430;
-extern S_142430 D_00142430;
-extern void func_00396F18();
-extern void func_003830E8();
 extern void func_003ADC70();
-extern s32 func_0039D510(s32, s32, s32);
 extern s32 func_0039D6C8(s32);
-void func_003830E8();
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AD8A8);
@@ -103,25 +88,25 @@ void func_003ADB78(void) {
 /* localdecomp:end func_003ADB78 */
 
 /* localdecomp:start func_003ADBB0 */
-__asm__(".extern D_001D8881_003ADBB0, 1");
+__asm__(".extern D_001D8881, 1");
 extern void func_003A4758();
 extern void func_003E18C0_003ADBB0();
 extern void func_003E1668();
 extern void *func_003E16B8();
-extern s32 D_001D9F40_003ADBB0;
-extern s32 D_001D9C5C_003ADBB0;
-extern u8 D_001D8881_003ADBB0;
+extern s32 D_001D9F40;
+extern s32 D_001D9C5C;
+extern u8 D_001D8881;
 typedef struct { s32 f0; s32 f4; s32 f8[4]; } S_003ADBB0;
 extern S_003ADBB0 D_001DA9B8_003ADBB0;
 void func_003ADBB0(s32 a) {
     S_003ADBB0 *q;
     void *base;
-    if (D_001D9F40_003ADBB0 || D_001D9C5C_003ADBB0) {
-        *(volatile s32 *)&D_001D9F40_003ADBB0 = 0;
+    if (D_001D9F40 || D_001D9C5C) {
+        *(volatile s32 *)&D_001D9F40 = 0;
         return;
     }
     func_003A4758(1);
-    if (D_001D8881_003ADBB0) return;
+    if (D_001D8881) return;
     q = &D_001DA9B8_003ADBB0;
     if (q->f4 != 0) base = q; else base = func_003E16B8(q);
     func_003E18C0_003ADBB0(base, a);
@@ -158,17 +143,17 @@ void func_003ADC88(void) {
 
 /* localdecomp:start func_003ADCB0 */
 typedef struct { u8 pad0[0x18]; u16 h18; u8 pad1a[0x12E]; s32 f148; u8 pad14c[0x18]; s32 f164; s32 f168; u8 pad16c[8]; s32 f174; } S_003ADCB0;
-extern S_003ADCB0 D_00142430_003ADCB0;
-extern u8 D_001D4BE0_003ADCB0;
+extern S_003ADCB0 D_00142430;
+extern u8 D_001D4BE0;
 extern u8 D_001D4BE0_b_003ADCB0;
-extern void func_0012BE28_003ADCB0();
-extern void func_0013AD58_003ADCB0();
-extern void func_00399660_003ADCB0();
+extern void func_0012BE28();
+extern void func_0013AD58();
+extern void func_00399660();
 void func_003ADCB0(void *a, s32 b) {
-    S_003ADCB0 *e = &D_00142430_003ADCB0;
-    func_0012BE28_003ADCB0(&D_001D4BE0_003ADCB0);
-    func_0013AD58_003ADCB0(&D_001D4BE0_b_003ADCB0);
-    func_00399660_003ADCB0(a);
+    S_003ADCB0 *e = &D_00142430;
+    func_0012BE28(&D_001D4BE0);
+    func_0013AD58(&D_001D4BE0_b_003ADCB0);
+    func_00399660(a);
     e->f174 = (s32)a;
     e->h18 = b;
     e->f148 = 0;
@@ -180,26 +165,26 @@ void func_003ADCB0(void *a, s32 b) {
 /* localdecomp:end func_003ADCB0 */
 
 /* localdecomp:start func_003ADD30 */
-__asm__(".extern D_001D888C_003ADD30, 4");
-extern s32 D_001D888C_003ADD30;
-extern void (*D_001DA180_003ADD30)();
+__asm__(".extern D_001D888C, 4");
+extern s32 D_001D888C;
+extern void (*D_001DA180)();
 extern void func_0039BF98(s32, s32);
 extern void func_003AE430(void);
 void func_003ADD30(void) {
-    s32 t = D_001D888C_003ADD30;
+    s32 t = D_001D888C;
     switch (t) {
     case 0:
-        if (D_001DA180_003ADD30 != 0) {
-            D_001DA180_003ADD30();
-            D_001DA180_003ADD30 = 0;
+        if (D_001DA180 != 0) {
+            D_001DA180();
+            D_001DA180 = 0;
         }
         func_0039BF98(0, 0);
-        t = D_001D888C_003ADD30;
+        t = D_001D888C;
         t += 1;
-        D_001D888C_003ADD30 = t;
+        D_001D888C = t;
         break;
     case 1:
-        D_001D888C_003ADD30 = 2;
+        D_001D888C = 2;
         break;
     case 2:
         func_003AE430();
@@ -210,7 +195,7 @@ void func_003ADD30(void) {
 
 /* localdecomp:start func_003ADDD0 */
 extern s32 D_001D888C;
-extern s8 D_001DA020_003ADDD0[];
+extern s8 D_001DA020[];
 void func_003ADDD0(void) {
     s32 temp_3;
 
@@ -218,7 +203,7 @@ void func_003ADDD0(void) {
     switch (temp_3) {                               /* irregular */
     case 0:
         func_00397080();
-        D_001DA020_003ADDD0[0] = 1;
+        D_001DA020[0] = 1;
         /* fallthrough */
     case 1:
         func_0039BEC0(4, 1, 1, 0, 0);
@@ -274,36 +259,35 @@ void func_003ADEF8(void) {
 /* localdecomp:end func_003ADEF8 */
 
 /* localdecomp:start func_003ADF88 */
-__asm__(".extern D_001D888C_003ADF88, 4");
-__asm__(".extern D_001D8894_003ADF88, 4");
+__asm__(".extern D_001D888C, 4");
+__asm__(".extern D_001D8894, 4");
 extern void func_00396F18();
 extern void func_003AE430(void);
 extern void func_003AE438();
 extern void func_003AE8A8(void);
 extern void func_0013D3C0(s32);
-extern u8 func_003ADC88_003ADF88[];
-extern s32 D_001D888C_003ADF88;
-extern s32 D_001D8894_003ADF88;
-extern s32 D_001D4CE8_003ADF88;
+extern s32 D_001D888C;
+extern s32 D_001D8894;
+extern s32 D_001D4CE8;
 void func_003ADF88(void) {
     s32 t;
     s32 v;
-    switch (D_001D888C_003ADF88) {
+    switch (D_001D888C) {
     case 0:
-        func_00396F18((void *)func_003ADC88_003ADF88, 0, 0);
+        func_00396F18((void *)func_003ADC88, 0, 0);
         func_003AE438();
-        D_001D8894_003ADF88 = 0x1E;
-        D_001D888C_003ADF88 = D_001D888C_003ADF88 + 1;
+        D_001D8894 = 0x1E;
+        D_001D888C = D_001D888C + 1;
         break;
     case 1:
         func_003AE438();
-        v = D_001D8894_003ADF88;
-        if (v > 0) { v = v - 1; D_001D8894_003ADF88 = v; }
-        D_001D8894_003ADF88 = v;
+        v = D_001D8894;
+        if (v > 0) { v = v - 1; D_001D8894 = v; }
+        D_001D8894 = v;
         if (v == 0) func_003AE8A8();
         break;
     case 2:
-        t = D_001D4CE8_003ADF88;
+        t = D_001D4CE8;
         if (t == 1 || t == 0x12) func_0013D3C0(1);
         func_003AE430();
         break;
@@ -325,23 +309,23 @@ void func_003AE068(void) {
 /* localdecomp:end func_003AE068 */
 
 /* localdecomp:start func_003AE098 */
-extern s32 D_001425AC_003AE098[];
-extern s32 D_00143958_003AE098[];
+extern s32 D_001425AC[];
+extern s32 D_00143958[];
 extern s32 D_001D545C_gp_003AE098;
-extern s32 D_001D545C_003AE098;
-extern u8 D_001D5571_003AE098;
+extern s32 D_001D545C;
+extern u8 D_001D5571;
 extern s32 func_0039BEC0(s32, s32, s32, s32, u8 *);
 extern void func_0039ED50(void);
 extern void func_0013BFE0(s32);
 extern void func_003A3A00(void);
 void func_003AE098(void) {
-    D_001425AC_003AE098[0] = 1;
+    D_001425AC[0] = 1;
     func_0039ED50();
     ((s32 (*)(s32))func_0039D6C8)(1);
-    func_0013BFE0(D_00143958_003AE098[0] == 0);
+    func_0013BFE0(D_00143958[0] == 0);
     {
     s32 v = D_001D545C_gp_003AE098;
-    if (D_001D545C_003AE098 < 2 && D_001D5571_003AE098 == 0) {
+    if (D_001D545C < 2 && D_001D5571 == 0) {
         func_003A3A00();
         return;
     }
@@ -352,30 +336,30 @@ void func_003AE098(void) {
 
 /* localdecomp:start func_003AE120 */
 __asm__(".extern D_001D545C_gp_003AE120, 4");
-extern s32 D_001425AC_003AE120[];
-extern s32 D_00143958_003AE120[];
+extern s32 D_001425AC[];
+extern s32 D_00143958[];
 extern s32 D_001D545C_gp_003AE120;
-extern s32 D_001D545C_003AE120;
-extern u8 D_001D5571_003AE120;
-extern s32 D_001D5B74_003AE120;
-extern s32 D_001D9D84_003AE120;
+extern s32 D_001D545C;
+extern u8 D_001D5571;
+extern s32 D_001D5B74;
+extern s32 D_001D9D84;
 extern void func_0039ED50(void);
 extern s32 func_0039D6C8(s32);
-extern void func_0013BFE0_003AE120(s32);
+extern void func_0013BFE0(s32);
 extern void func_003A3A00(void);
 void func_003AE120(void) {
     s32 v;
-    D_001425AC_003AE120[0] = 1;
+    D_001425AC[0] = 1;
     func_0039ED50();
     func_0039D6C8(1);
-    func_0013BFE0_003AE120(D_00143958_003AE120[0] == 0);
+    func_0013BFE0(D_00143958[0] == 0);
     v = D_001D545C_gp_003AE120;
-    if (D_001D545C_003AE120 < 2 && D_001D5571_003AE120 == 0) {
+    if (D_001D545C < 2 && D_001D5571 == 0) {
         func_003A3A00();
         return;
     }
-    *(volatile s32 *)&D_001D5B74_003AE120 = 1;
-    *(volatile s32 *)&D_001D9D84_003AE120 = v;
+    *(volatile s32 *)&D_001D5B74 = 1;
+    *(volatile s32 *)&D_001D9D84 = v;
 }
 /* localdecomp:end func_003AE120 */
 
@@ -455,8 +439,8 @@ void func_003AE300(void) {
 /* localdecomp:end func_003AE300 */
 
 /* localdecomp:start func_003AE368 */
-__asm__(".extern D_001D8888_003AE368, 4");
-extern s32 D_001D8888_003AE368;
+__asm__(".extern D_001D8888, 4");
+extern s32 D_001D8888;
 extern void func_003ADEF8(void);
 extern void func_003ADE68(void);
 extern void func_003AE1A8(void);
@@ -467,7 +451,7 @@ extern void func_003ADDD0(void);
 extern void func_003ADD30(void);
 extern void func_0039BF98(s32, s32);
 void func_003AE368(void) {
-    switch (D_001D8888_003AE368) {
+    switch (D_001D8888) {
     case 1:
         func_003ADEF8();
         break;
@@ -575,14 +559,14 @@ s32 *func_003AEDC8(void) {
 
 /* localdecomp:start func_003AEDF8 */
 typedef struct { u8 b[0x14]; } E_3AEDF8;
-extern E_3AEDF8 D_0023CB20_003AEDF8[];
-extern s32 D_001DA1B0_003AEDF8;
+extern E_3AEDF8 D_0023CB20[];
+extern s32 D_001DA1B0;
 extern void **func_003AF0A0(void **);
 s32 *func_003AEDF8(s32 idx) {
     s32 i;
     E_3AEDF8 *p;
-    if (D_001DA1B0_003AEDF8 == 0) {
-        p = D_0023CB20_003AEDF8;
+    if (D_001DA1B0 == 0) {
+        p = D_0023CB20;
         i = 3;
         do {
             func_003AF0A0((void **)p);
@@ -590,9 +574,9 @@ s32 *func_003AEDF8(s32 idx) {
             __asm__ volatile("nop");
             p++;
         } while (i != -1);
-        D_001DA1B0_003AEDF8 = 1;
+        D_001DA1B0 = 1;
     }
-    return (s32 *)&D_0023CB20_003AEDF8[idx];
+    return (s32 *)&D_0023CB20[idx];
 }
 /* localdecomp:end func_003AEDF8 */
 
@@ -959,7 +943,7 @@ typedef struct {
     u8 pad1[0x6F30 - 0x4958];
     u8 f6F30[1];
 } S_3B0580;
-extern S_3B0580 D_00160C40_003B0580[];
+extern S_3B0580 D_00160C40[];
 extern void *D_001D8A00;
 extern void *D_001D8A04;
 extern void *func_003AFA90(s32);
@@ -968,7 +952,7 @@ extern s32 func_003AEF70(void *, s32, s32, s32, s32);
 void func_003B0580(void) {
     D_001D8A00 = func_003AFA90(0);
     D_001D8A04 = func_003AFA90(2);
-    func_003AEF70(func_003AED40(0), (s32)D_001D8A00, (s32)D_001D8A04, D_00160C40_003B0580->f4954, (s32)D_00160C40_003B0580->f6F30);
+    func_003AEF70(func_003AED40(0), (s32)D_001D8A00, (s32)D_001D8A04, D_00160C40->f4954, (s32)D_00160C40->f6F30);
 }
 /* localdecomp:end func_003B0580 */
 
@@ -1064,10 +1048,10 @@ s32 func_003B0D88(void) {
 /* localdecomp:start func_003B0DA0 */
 typedef struct { u8 p0[0x18]; u8 *f18; } O_3B0DA0;
 typedef struct { u8 p0[0x2C]; s32 f2C; } Z_3B0DA0;
-extern O_3B0DA0 D_00227600_003B0DA0;
-extern u8 D_00143A07_003B0DA0[];
-extern Z_3B0DA0 D_00318CC0_003B0DA0;
-extern s32 *D_001D9A20_003B0DA0;
+extern O_3B0DA0 D_00227600;
+extern u8 D_00143A07[];
+extern Z_3B0DA0 D_00318CC0;
+extern s32 *D_001D9A20;
 extern void func_0039B760();
 extern s32 func_0037DF98();
 extern void func_003E2728_003B0DA0();
@@ -1088,8 +1072,8 @@ void func_003B0DA0(void)
   f32 new_var3;
   f32 w;
   off = 0;
-  base = D_00227600_003B0DA0.f18 + 0x400000;
-  switch (D_00143A07_003B0DA0[0])
+  base = D_00227600.f18 + 0x400000;
+  switch (D_00143A07[0])
   {
     case 0:
 
@@ -1115,13 +1099,13 @@ void func_003B0DA0(void)
 
   }
 
-  func_0039B760(off, D_00227600_003B0DA0.f18);
-  q = (s32 *) D_00227600_003B0DA0.f18;
-  D_00318CC0_003B0DA0.f2C = ((u32) q[0]) >> 4;
-  D_001D9A20_003B0DA0 = q;
+  func_0039B760(off, D_00227600.f18);
+  q = (s32 *) D_00227600.f18;
+  D_00318CC0.f2C = ((u32) q[0]) >> 4;
+  D_001D9A20 = q;
   p = q;
   new_var2 = 0;
-  for (i = 0; i < D_00318CC0_003B0DA0.f2C; i++)
+  for (i = 0; i < D_00318CC0.f2C; i++)
   {
     p[new_var2] = p[new_var2] + ((s32) q);
     p += 4;

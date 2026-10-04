@@ -1,13 +1,11 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
-extern f32 func_0037E250(f32, f32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern void func_003BFEF0(void *, s32, f32, f32);
-extern void func_003886E8(f32 *, void *, f32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003BF5D0 */
@@ -18,11 +16,11 @@ s32 func_003BF5D0(s32 arg0) {
 
 /* localdecomp:start func_003BF5E0 */
 extern s32 func_003BF5D0_003BF5E0(s16);
-extern u32 D_001DA51C_003BF5E0[];
+extern u32 D_001DA51C[];
 extern u32 D_001DA524[];
 s32 func_003BF5E0(u32 arg0) {
     if (arg0 == 0) return 0;
-    if (arg0 < D_001DA51C_003BF5E0[0]) return 0;
+    if (arg0 < D_001DA51C[0]) return 0;
     if (D_001DA524[0] >= arg0) {
         return func_003BF5D0_003BF5E0(*(s16 *)((u8 *)arg0 + 0xAA)) != 0;
     }

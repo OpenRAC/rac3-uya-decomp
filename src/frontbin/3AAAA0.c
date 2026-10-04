@@ -5,10 +5,7 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern void func_11F0A0();
-extern void func_0011F0A0(s32);
 extern s32 func_003AAE00();
-extern s32 D_001DA138[];
 extern s32 func_003AAB60();
 /* --- end of declarations from other files --- */
 
@@ -298,14 +295,14 @@ ASM_FUNC("asm/handwritten", func_003AB9A8);
 
 /* localdecomp:start func_003AB9E8 */
 extern s32 func_12C908(s32);
-extern s32 D_001D5520_003AB9E8;
+extern s32 D_001D5520;
 extern volatile s32 D_001DA150_003AB9E8[];
-extern volatile s32 D_001DA154_003AB9E8[];
+extern volatile s32 D_001DA154[];
 void func_003AB9E8(s32 a) {
-    while (func_12C908(0) == a && D_001D5520_003AB9E8 == 0) {
+    while (func_12C908(0) == a && D_001D5520 == 0) {
     }
     D_001DA150_003AB9E8[0] = 1;
-    D_001DA154_003AB9E8[0] = 0;
+    D_001DA154[0] = 0;
 }
 /* localdecomp:end func_003AB9E8 */
 

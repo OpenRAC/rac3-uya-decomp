@@ -48,13 +48,13 @@ typedef struct Config_003C8CE0 {
     unsigned char *buffer;
 } Config_003C8CE0;
 
-extern int D_001DA0D0_003C8CE0;
+extern int D_001DA0D0;
 extern Config_003C8CE0 *D_001DA670_003C8CE0;
-extern int D_001DA680_003C8CE0;
-extern int D_001D4BB4_003C8CE0;
-extern int D_001D4BB0_003C8CE0;
-extern int D_001D9C7C_003C8CE0;
-__asm__(".extern D_001D9C7C_003C8CE0, 4");
+extern int D_001DA680;
+extern int D_001D4BB4;
+extern int D_001D4BB0;
+extern int D_001D9C7C;
+__asm__(".extern D_001D9C7C, 4");
 
 void func_003C8CE0(void) {
     register int old __asm__("$2");
@@ -63,16 +63,16 @@ void func_003C8CE0(void) {
     register int saved __asm__("$3");
     register int count __asm__("$4");
 
-    old = D_001DA0D0_003C8CE0;
+    old = D_001DA0D0;
     index = 0;
     config = D_001DA670_003C8CE0;
-    D_001DA680_003C8CE0 = old;
-    saved = D_001D4BB4_003C8CE0;
+    D_001DA680 = old;
+    saved = D_001D4BB4;
     old += 0x10;
     count = config->count;
-    D_001DA0D0_003C8CE0 = old;
-    D_001D4BB0_003C8CE0 = saved;
-    D_001D9C7C_003C8CE0 = 0;
+    D_001DA0D0 = old;
+    D_001D4BB0 = saved;
+    D_001D9C7C = 0;
     if (count > 0) {
         do {
             old = (int)config->buffer;

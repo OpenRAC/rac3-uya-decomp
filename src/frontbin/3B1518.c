@@ -1,15 +1,11 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
-extern s32 func_003E1A50(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
-extern void *D_001D52FC;
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern void func_00389920(s32);
-extern void func_003866E8();
-extern s32 D_001D4CE8[];
 extern s32 func_0039D6C8(s32);
 extern s32 func_003B2AA0(void);
 extern s32 func_003E3040();
@@ -18,12 +14,6 @@ extern s32 func_0037DCE8(void);
 extern void func_003B43C0();
 extern void *func_003AED40(s32);
 extern s32 func_003E24B0(s32 arg0, s32 arg1);
-extern s32 D_001D8A48;
-extern s32 D_001D8A70_g;
-extern s32 D_001D8AD8;
-extern s32 D_001D8ACC;
-extern void func_00399660(s32);
-extern int D_001D8A70_g;
 extern void func_003B3558(s32);
 /* --- end of declarations from other files --- */
 
@@ -93,13 +83,13 @@ extern void func_003B13A8(void);
 extern void func_003B13D0(void);
 extern void func_003B1400(void);
 extern s32 D_001D8A48;
-extern s8 D_001DA020_003B2640;
-extern s32 D_001D8A70_003B2640;
+extern s8 D_001DA020;
+extern s32 D_001D8A70;
 extern s32 D_001D4CE8[];
 void func_003B2640(void) {
     s32 t5 = D_001D8A48;
     s32 t4 = D_001D4CE8[0];
-    D_001DA020_003B2640 = (t5 == 1);
+    D_001DA020 = (t5 == 1);
     if (t4 == 0xB || ((u32)(t4 - 6) < 2U && t5 == 1)) {
         func_003B13A8();
     } else if ((u32)(t4 - 6) < 2U) {
@@ -107,7 +97,7 @@ void func_003B2640(void) {
     } else if (t4 == 0xE && t5 != 1 && (t5 == 0 || t5 == 3)) {
         func_003B1400();
     }
-    D_001D8A70_003B2640 = 2;
+    D_001D8A70 = 2;
 }
 /* localdecomp:end func_003B2640 */
 
@@ -123,12 +113,12 @@ void func_003B26E8(s32 a) {
 /* localdecomp:end func_003B26E8 */
 
 /* localdecomp:start func_003B2720 */
-extern s32 D_001D8A70_003B2720;
+extern s32 D_001D8A70;
 extern s32 D_001D4CE8[];
 void func_003B2720(void) {
     s32 temp_3;
 
-    if (D_001D8A70_003B2720 == 0) {
+    if (D_001D8A70 == 0) {
         temp_3 = D_001D4CE8[0];
         switch (temp_3) {                           /* irregular */
         case 18:
@@ -140,7 +130,7 @@ void func_003B2720(void) {
         default:
             func_003E24B0(0x4C003C, 0);
             func_003E24B0(0xD000B, 0);
-            D_001D8A70_003B2720 = 1;
+            D_001D8A70 = 1;
             break;
         }
     }
@@ -152,11 +142,11 @@ INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318840);
 
 /* localdecomp:start func_003B2958 */
 typedef struct { s32 p0; void *vt; } O_B2958;
-extern s32 D_001D8AD0_003B2958;
-extern s32 D_001D8AD4_003B2958;
-extern s32 D_001D8ADC_003B2958;
-extern s32 D_001D8B68_003B2958[2];
-extern u8 D_001D5BDC_003B2958[];
+extern s32 D_001D8AD0;
+extern s32 D_001D8AD4;
+extern s32 D_001D8ADC;
+extern s32 D_001D8B68[2];
+extern u8 D_001D5BDC[];
 void func_003B2958(void) {
     s32 i;
     s32 j;
@@ -169,13 +159,13 @@ void func_003B2958(void) {
         (*(void (**)(O_B2958 *))((u8 *)o->vt + 0xC))(o);
     }
     func_0039D6C8(1);
-    func_003B5F88(D_001D8AD0_003B2958);
+    func_003B5F88(D_001D8AD0);
     for (j = 0; j < 4; j++) {
-        func_003B5F88(D_001D8B68_003B2958[j]);
+        func_003B5F88(D_001D8B68[j]);
     }
-    if (D_001D5BDC_003B2958[0] == 0) {
-        func_003B5F88(D_001D8ADC_003B2958);
-        func_003B5F88(D_001D8AD4_003B2958);
+    if (D_001D5BDC[0] == 0) {
+        func_003B5F88(D_001D8ADC);
+        func_003B5F88(D_001D8AD4);
     }
     func_00389920(0);
     func_0038E728(0);
@@ -249,15 +239,15 @@ s32 func_003B41F0(void) {
 /* localdecomp:end func_003B41F0 */
 
 /* localdecomp:start func_003B41F8 */
-extern s32 D_001D8C04_003B41F8;
-extern s32 D_001D8C08_003B41F8;
+extern s32 D_001D8C04;
+extern s32 D_001D8C08;
 void func_003B41F8(s32 a0, s32 a1) {
-    D_001D8C04_003B41F8 = 0x40;
-    D_001D8C08_003B41F8 = 0x10;
+    D_001D8C04 = 0x40;
+    D_001D8C08 = 0x10;
     if (a0 != 0xFFFF) {
-        D_001D8C04_003B41F8 = a0;
+        D_001D8C04 = a0;
     }
-    D_001D8C08_003B41F8 = a1;
+    D_001D8C08 = a1;
 }
 /* localdecomp:end func_003B41F8 */
 

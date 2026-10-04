@@ -449,3 +449,17 @@ at all. Most of the file still matches 3.01 at the project flags, so retail only
 the older 16-byte stack slots - rather than a mix of two packages. Writing C for more of the
 13 and running the 2.0 package against them is the cheap next test; the compiler/flag
 matrix in `docs/compiler_matrix_findings.md` (15 builds) does not include this package.
+
+## Patterns from the first agent batches (2026-10-03)
+
+Each was confirmed by a function that now matches in the full build.
+
+- **Pass the incoming parameter to a K&R call that doesn't need it.** In `func_003B7568`, `cb(a)` instead of `cb()` raises the parameter's priority, which flips which of two saved registers it gets.
+- **Two loops, two counters.** Reusing one `i` for both loops of `func_003B2958` swapped `$s0`/`$s1`. A separate `j` for the second loop, indexing a `[2]`-sized `$gp` array as `D_arr[j]`, gives retail's pointer plus count-down loop (`bgezl`).
+- **Table walk with an end marker:** `for (p = arr; *p >= 0; p++)` gives `move; lw; bgez; addiu` with the increment in the delay slot (`func_003D46E0`). A do-while with `v = *p++` doesn't.
+- **`lui $v0; lh $v1, %lo(X)($v0)`** (the load into a different register than the `lui`) comes from reading through an unsized array alias, `X[0]`, not a raw `*(s16 *)0x1CD018` (`func_003A3430`).
+- **Reuse the incoming pointer as the walking pointer** (`arg += 8; ... func(arg, arg + b, ...)`) instead of new `p`/`q` locals, which add a `move` and change register numbers (`func_003972A0`).
+- **A select assigned to a new local** (`q2 = q - w`) changes which instruction fills the `jal` delay slot (`func_003ABB60`).
+- **Two reads of the same `lui` global around calls** need a scalar `extern s32 X;` under `@ps2as`; an unsized array shares one `lui` across the calls (`func_003ABB60`).
+- **`(flag >> 24)`** gives a bare `sra` where retail has one; the callee's parameter order sets the order of float register setup (`func_003A4DC8`).
+- **Declaring a callee `s32` instead of `void`** changes the `$v0`/`$v1` choice around the call; a K&R zero-argument declaration leaves the argument registers untouched (`func_003B8968`).

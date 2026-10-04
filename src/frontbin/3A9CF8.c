@@ -15,7 +15,17 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A9CF8);
 
 LINKER_REMNANT("asm/remnants", func_003A9DE0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9E00);
+/* localdecomp:start func_003A9E00 */
+extern void func_003A9AC0(void *, s32);
+void func_003A9E00(void) {
+    s32 i;
+    if (D_001D5C78 != 0) {
+        for (i = 0; i < 1; i++) {
+            func_003A9AC0((void *)(D_001D5C78 + 0x1FCA8), i);
+        }
+    }
+}
+/* localdecomp:end func_003A9E00 */
 
 /* localdecomp:start func_003A9E60 */
 extern void func_003A6C30();

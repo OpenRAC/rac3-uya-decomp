@@ -1,6 +1,10 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_00226880[])(s32);
+extern void (*D_00226C80[])(s32);
+extern void (*D_00226E80[])(s32);
+extern void (*D_00226A80[])(s32);
 extern u32 *D_001DA0D0_g;
 /* --- end of declarations from other files --- */
 
@@ -108,6 +112,19 @@ void func_003A4A20(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A4A78);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A4DC8);
+/* localdecomp:start func_003A4DC8 */
+typedef struct { u8 p0[0xC]; f32 fC; } O_A4DC8;
+extern void func_00388B68();
+extern void func_003A4E70(O_A4DC8 *, f32, f32, s32, f32, f32 *);
+void func_003A4DC8(O_A4DC8 *o, s32 flag, f32 a, f32 b, f32 c, f32 d, f32 e) {
+    f32 m[16];
+    if ((flag >> 24) != 0) {
+        func_00388B68(m);
+        m[0] = c * o->fC;
+        m[10] = d * o->fC;
+        func_003A4E70(o, a, b, flag, e, m);
+    }
+}
+/* localdecomp:end func_003A4DC8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A4E70);

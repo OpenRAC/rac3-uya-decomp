@@ -14,11 +14,13 @@ Files are named after their first function's address (`src/frontbin/3E1CC8.c`) u
 
 ## Declarations from other files
 
-`python tools/split_text.py --refresh` recomputes that section for every file: each statement from an earlier file (in link order) that declares a name the file uses, plus whatever those statements need in turn (a typedef's struct, a macro's expansion). localdecomp runs it for the file it saves into. `pr_check.py` reports a file whose section is out of date.
+`python tools/split_text.py --refresh` recomputes that section for every file: each statement from an earlier file (in link order) that declares a name the file uses before declaring it itself, plus whatever those statements need in turn (a typedef's struct, a macro's expansion). A name the file declares itself is never copied in, so a file's own declaration can't clash with another file's. localdecomp runs it for the file it saves into. `pr_check.py` reports a file whose section is out of date.
 
 `try_func.py`, `try_in_context.py`, the permuter and localdecomp compile a function with its file's declarations, the declarations of the earlier functions in the same file, and anything from earlier files the new code needs that the file doesn't declare yet.
 
-Before the split, every build part was given every declaration from every earlier part, up to 2,700 lines and 110 KB in front of the last parts. Now the whole tree has about 460 lines of cross-file declarations, at most 30 in one file.
+Before the split, every build part was given every declaration from every earlier part, up to 2,700 lines and 110 KB in front of the last parts. Now the whole tree has about 390 lines of cross-file declarations.
+
+Because files no longer share declarations by default, most per-function aliases (`D_00317968_003E3F08`) aren't needed any more: see Matching-Patterns, "Plain names first". On 2026-10-04, 646 of the 941 were renamed back to plain names, checked by a full build; the 295 that remain clash with another block of the same file or change the generated code.
 
 ## How a file is built
 

@@ -49,11 +49,11 @@ typedef struct {
     s32 delay;
 } Pad_39DB38;
 
-extern s32 D_001D5B94_0039DB38;
+extern s32 D_001D5B94;
 extern u8 D_001D5477[];
-extern f32 func_003887A0_0039DB38(f32 *);
-extern f32 func_00388A28_0039DB38(f32, f32);
-extern f32 func_00389468_0039DB38(f32, f32);
+extern f32 func_003887A0(f32 *);
+extern f32 func_00388A28(f32, f32);
+extern f32 func_00389468(f32, f32);
 
 #define SWAP_LR(x) \
     if ((x) & 0x8000) { (x) = ((x) & ~0x8000) | 0x2000; } \
@@ -106,7 +106,7 @@ void func_0039DB38(Pad_39DB38 *o, u8 *raw, s32 len) {
         }
         o->btn2[o->idx] = o->btn[o->idx];
     }
-    if (D_001D5B94_0039DB38 == 7) {
+    if (D_001D5B94 == 7) {
         if (o->an[o->idx][2] < 0.0f) {
             o->btn[o->idx] |= 0x8000;
         }
@@ -193,8 +193,8 @@ void func_0039DB38(Pad_39DB38 *o, u8 *raw, s32 len) {
     }
     v2[0] = o->cur[2];
     v2[1] = o->cur[3];
-    m = func_003887A0_0039DB38(v2);
-    a = func_00388A28_0039DB38(v2[0], v2[1]);
+    m = func_003887A0(v2);
+    a = func_00388A28(v2[0], v2[1]);
     o->mag[o->head] = m;
     o->ang[o->head] = a;
     if (m > 0.9f) {
@@ -210,14 +210,14 @@ void func_0039DB38(Pad_39DB38 *o, u8 *raw, s32 len) {
         }
         if (!(o->x1A4 & 0x10000)) {
             for (n = 1; n < 5; n++) {
-                if (func_00389468_0039DB38(o->ang[(o->head - n + 30) % 30], a) > 0.959931076f) {
+                if (func_00389468(o->ang[(o->head - n + 30) % 30], a) > 0.959931076f) {
                     o->x1A4 |= 0x10000;
                     break;
                 }
             }
         }
     }
-    if (D_001D5B94_0039DB38 != -1) {
+    if (D_001D5B94 != -1) {
         o->hist[o->head] = o->x1A4;
         o->head = (o->head + 1) % 30;
         if (++o->cnt > 30) {
@@ -327,13 +327,13 @@ void func_0039FB08(u32 i) {
 typedef struct { u8 pad[0x1200]; s32 x1200; u8 pad2[0x25C0 - 0x1204]; s32 x25C0; } S_39FB60;
 typedef struct { u8 pad[0x50]; u8 b50; u8 pad2[0x2F]; } S2_39FB60;
 extern S_39FB60 D_001A4BE0[];
-extern S2_39FB60 D_001A30B0_0039FB60[];
+extern S2_39FB60 D_001A30B0[];
 s32 func_0039FB60(s32 id) {
     s32 n = 0x34;
     s32 i;
     if (id == 0 || (D_001A4BE0[0].x25C0 != id && D_001A4BE0[0].x1200 != id)) n = 0x2A;
     for (i = 0; i < n; i++) {
-        if (D_001A30B0_0039FB60[i + 1].b50 == 0) break;
+        if (D_001A30B0[i + 1].b50 == 0) break;
     }
     if (i == n) return -1;
     return i;
@@ -345,8 +345,8 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039FBD8);
 /* localdecomp:start func_0039FE80 */
 typedef struct { u8 pad[0xD]; u8 bD; u8 pad2[0x1A]; s32 f28; } O_39FE80;
 typedef struct { u8 pad[0x24]; O_39FE80 *o; } P_39FE80;
-extern u8 D_1A30B0_0039FE80[];
-extern s32 func_0039FBD8_0039FE80();
+extern u8 D_1A30B0[];
+extern s32 func_0039FBD8();
 s32 func_0039FE80(s32 a, s32 b, P_39FE80 *p) {
     O_39FE80 *o;
     s32 r;
@@ -356,9 +356,9 @@ s32 func_0039FE80(s32 a, s32 b, P_39FE80 *p) {
     if (o == 0) return -1;
     if (o->f28 == 0) return -1;
     if (a >= o->bD) return -1;
-    r = func_0039FBD8_0039FE80(o->f28 + a * 32, b, p, 0, 0x400);
+    r = func_0039FBD8(o->f28 + a * 32, b, p, 0, 0x400);
     if (r >= 0) {
-        e = D_1A30B0_0039FE80 + r * 128;
+        e = D_1A30B0 + r * 128;
         *(s32 *)(e + 0xDC) = (s32)p;
         *(s16 *)(e + 0xCA) = a;
         *(s32 *)(e + 0x108) = -1;
@@ -368,18 +368,18 @@ s32 func_0039FE80(s32 a, s32 b, P_39FE80 *p) {
 /* localdecomp:end func_0039FE80 */
 
 /* localdecomp:start func_0039FF28 */
-extern s32 D_001D9DAC_0039FF28;
-extern s32 D_001D5B9C_0039FF28;
-extern u8 D_1A30B0_0039FF28[];
-extern s32 func_0039FBD8_0039FF28();
+extern s32 D_001D9DAC;
+extern s32 D_001D5B9C;
+extern u8 D_1A30B0[];
+extern s32 func_0039FBD8();
 s32 func_0039FF28(s32 a, s32 b, s32 c) {
     s32 r;
     u8 *e;
-    if (D_001D9DAC_0039FF28 == 0) return -1;
-    if (a >= D_001D5B9C_0039FF28) return -1;
-    r = func_0039FBD8_0039FF28(D_001D9DAC_0039FF28 + a * 32, b, c, 0, 0x400);
+    if (D_001D9DAC == 0) return -1;
+    if (a >= D_001D5B9C) return -1;
+    r = func_0039FBD8(D_001D9DAC + a * 32, b, c, 0, 0x400);
     if (r >= 0) {
-        e = D_1A30B0_0039FF28 + r * 128;
+        e = D_1A30B0 + r * 128;
         *(s32 *)(e + 0xDC) = c;
         *(s16 *)(e + 0xCA) = a;
     }

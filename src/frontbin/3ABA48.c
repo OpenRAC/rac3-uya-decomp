@@ -5,9 +5,6 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern s32 func_13CEB0(void);
-s32 func_13CD28(s32, s32, s32, void *);
-extern void func_11F0A0();
 extern s32 func_003ABD78();
 extern s32 func_003AD040();
 extern s32 func_003ABE70();
@@ -17,7 +14,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003ABA48);
 
 /* localdecomp:start func_003ABB60 */
 typedef struct { u8 p0[8]; u32 f8; s32 fC; } O_ABB60;
-extern s32 D_001DA138_003ABB60;
+extern s32 D_001DA138;
 extern s32 func_003ABC30();
 s32 func_003ABB60(s32 unused, O_ABB60 *obj, u8 *buf) {
     s32 v[4];
@@ -32,13 +29,13 @@ s32 func_003ABB60(s32 unused, O_ABB60 *obj, u8 *buf) {
     w = end - p;
     w = (q < w) ? q : w;
     q2 = q - w;
-    func_003AAC70(D_001DA138_003ABB60, v, &v[1], &v[2], &v[3]);
+    func_003AAC70(D_001DA138, v, &v[1], &v[2], &v[3]);
     a1 = v[1];
     a0 = v[0];
     a2 = v[2];
     a3 = v[3];
     res = func_003ABC30(a0, a1, a2, a3, p, w, buf, q2);
-    func_003AAD40(D_001DA138_003ABB60, res);
+    func_003AAD40(D_001DA138, res);
     return res > 0;
 }
 /* localdecomp:end func_003ABB60 */
@@ -140,11 +137,11 @@ s32 func_003ABE70(void) {
 /* localdecomp:end func_003ABE70 */
 
 /* localdecomp:start func_003ABE98 */
-__asm__(".extern D_001D87E0_003ABE98, 4");
-extern s32 D_001D87E0_003ABE98;
+__asm__(".extern D_001D87E0, 4");
+extern s32 D_001D87E0;
 typedef struct { u8 p0[8]; s32 f8; } P_3ABE98;
-extern char D_001D87E8_003ABE98[];
-extern char D_001D8800_003ABE98[];
+extern char D_001D87E8[];
+extern char D_001D8800[];
 extern void func_11F0A0();
 extern s32 func_12BC00();
 extern void func_11AF48();
@@ -153,15 +150,15 @@ s32 func_003ABE98(P_3ABE98 *p, s32 b, s32 c) {
     s32 r;
     u8 buf[3];
     r = 0;
-    if (D_001D87E0_003ABE98 != 0) {
+    if (D_001D87E0 != 0) {
         func_11F0A0(2);
         if (((s32 (*)(s32))func_13CDF0)(1) == 0) {
-            D_001D87E0_003ABE98 = 0;
+            D_001D87E0 = 0;
             if (func_12BC00() == 0) {
                 r = (c >> 11) << 11;
                 p->f8 = p->f8 + (c >> 11);
             } else {
-                func_11AF48(D_001D87E8_003ABE98);
+                func_11AF48(D_001D87E8);
             }
         }
     } else {
@@ -170,9 +167,9 @@ s32 func_003ABE98(P_3ABE98 *p, s32 b, s32 c) {
         buf[2] = 0;
         func_13CDF0(0);
         if (func_13CD28(p->f8, c >> 11, b, buf) != 0) {
-            D_001D87E0_003ABE98 = 1;
+            D_001D87E0 = 1;
         } else {
-            func_11AF48(D_001D8800_003ABE98);
+            func_11AF48(D_001D8800);
         }
         r = 0;
     }
@@ -226,7 +223,7 @@ void func_003AC0B0(unsigned long *p, unsigned long a, unsigned long b, unsigned 
 typedef struct { s32 f0; s32 f4; s32 f8; u8 pC[0xC]; s32 f18; u8 p1C[0x24]; s32 f40; u8 p44[4]; long f48; s32 f50; s32 f54; } O_3AC0D8;
 typedef struct { s32 w0; s32 w4; s32 w8; s32 pad[5]; } St_3AC0D8;
 extern s32 func_11EE20();
-extern u8 func_003AC150_003AC0D8[];
+extern void func_003AC150();
 s32 func_003AC0D8(O_3AC0D8 *o, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5)
 {  St_3AC0D8 *new_var;
   St_3AC0D8 st;
@@ -240,7 +237,7 @@ s32 func_003AC0D8(O_3AC0D8 *o, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5)
   new_var = &st;
   o->f18 = a3 << 11;
   o->f40 = func_11EE20(new_var);
-  ((s32 (*)(void *))func_003AC150_003AC0D8)(o);
+  ((s32 (*)(void *))func_003AC150)(o);
   o->f48 = 0;
   return 1;
 }
@@ -458,7 +455,7 @@ LINKER_REMNANT("asm/remnants", func_003AD100);
 /* localdecomp:start func_003AD108 */
 typedef struct { char c[4]; } S4_3AD108;
 typedef struct { u8 p0[0x48]; u8 p48[0x60]; s32 fA8; } S_3AD108;
-extern S4_3AD108 D_001D8830_003AD108[];
+extern S4_3AD108 D_001D8830[];
 extern s32 D_001DA134_003AD108;
 extern void func_003ACFF8();
 extern s32 func_003AD520();
@@ -471,7 +468,7 @@ s32 func_003AD108(S_3AD108 *a) {
     s32 r2;
     s32 r3;
     s32 v;
-    buf = D_001D8830_003AD108[0];
+    buf = D_001D8830[0];
     func_003ACFF8(a, &r0, &r1, &r2, &r3);
     if (r1 + r3 < 4) return 0;
     v = func_003AD520((r0 & 0xFFFFFFF) | 0x20000000, r1, (r2 & 0xFFFFFFF) | 0x20000000, r3, &buf, 4, 0, 0);

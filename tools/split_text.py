@@ -14,7 +14,8 @@ the cross-file declarations of the files that already exist.
       when it is stale.
 
 Each file gets only the declarations its own blocks use: every statement from
-an earlier file (in link order) that declares a name the file mentions, plus,
+an earlier file (in link order) that declares a name the file uses before
+declaring it itself, plus,
 transitively, what those statements mention (a typedef's struct, a macro's
 expansion). Preprocessor lines keep their order; identical C statements are
 written once. A file never sees declarations from later files, the same rule
@@ -94,15 +95,28 @@ def render(ext, chunks, prelude=None):
     return HEADER + "\n" + sf.EXT_BEGIN + "\n" + (ext_text + "\n" if ext_text else "") + sf.EXT_END + "\n\n" + body.lstrip("\n")
 
 
+def file_needs(chunks):
+    """Names a file uses before declaring them itself: the only ones it needs
+    from earlier files. A name the file declares (prototype, extern, typedef,
+    struct, macro) before its first use comes from the file's own
+    declaration; copying an earlier file's declaration in front of it would
+    only add a second one, which conflicts when the types differ."""
+    need, declared = set(), set()
+    for _, _, body in chunks:
+        mine = set()
+        for st in sf.declaration_statements(body):
+            mine |= sf.declared_names(st)
+        need |= sf.used_names(body) - declared - mine
+        declared |= mine
+    return need
+
+
 def write_files(per_file, root, default_nl="\n"):
     """per_file: [(rel, chunks, prelude or None)] in link order."""
     stmts_before = []
     results = []
     for rel, chunks, prelude in per_file:
-        need = set()
-        for _, _, body in chunks:
-            need |= sf.used_names(body)
-        ext = external_declarations(stmts_before, need)
+        ext = external_declarations(stmts_before, file_needs(chunks))
         results.append((rel, render(ext, chunks, prelude)))
         stmts_before += statements_of(chunks)
     for rel, text in results:
@@ -157,8 +171,14 @@ def extra_declarations(rel, src, files=None, root=sf.ROOT):
     needs and the file doesn't have yet: what `--refresh` would add once the
     code is saved. localdecomp and try_func.py put these in front of a test
     build so a function that uses another file's prototype compiles."""
-    have = set(norm(x) for x in sf.declaration_statements(sf.read_source(rel, root)))
-    ext = external_declarations(earlier_statements(rel, files, root), sf.used_names(src))
+    text = sf.read_source(rel, root)
+    have = set(norm(x) for x in sf.declaration_statements(text))
+    # names the new code or the file's own blocks declare come from those declarations
+    blocks = "".join(b for _, _, b in sf.split_file(text)[2])
+    own = set()
+    for st in sf.declaration_statements(src) + sf.declaration_statements(blocks):
+        own |= sf.declared_names(st)
+    ext = external_declarations(earlier_statements(rel, files, root), sf.used_names(src) - own)
     return [x for x in ext if x.startswith("#") or norm(x.rstrip(";")) not in have and norm(x) not in have]
 
 
@@ -167,10 +187,7 @@ def refresh_one(rel, files=None, root=sf.ROOT):
     files = files or sf.read_file_list()
     text = sf.read_source(rel, root)
     prelude, _, chunks = sf.split_file(text)
-    need = set()
-    for _, _, body in chunks:
-        need |= sf.used_names(body)
-    ext = external_declarations(earlier_statements(rel, files, root), need)
+    ext = external_declarations(earlier_statements(rel, files, root), file_needs(chunks))
     new = render(ext, chunks, prelude)
     if new != text:
         write_keeping_newlines(os.path.join(root, rel), new)

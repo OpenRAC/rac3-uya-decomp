@@ -3,19 +3,12 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_003BD360(s32 p);
 typedef int u128_t __attribute__((mode(TI)));
-extern void func_00388440();
+extern void func_003BD8A0(void);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern s32 D_001D4B60[];
-extern void func_00388440(void *, s32, s32);
-extern s32 func_0037DF98();
-extern s32 func_0037DF98(s32);
-extern void func_003BD8A0(void);
-extern s32 D_0016C5E4[];
 extern void func_003BD490();
-extern void func_003B6528(s32, s32);
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B8F50);
@@ -217,12 +210,12 @@ void func_003BA3C8(void) {
 /* localdecomp:end func_003BA3C8 */
 
 /* localdecomp:start func_003BA3E8 */
-extern u8 *D_001D6EEC_003BA3E8[];
+extern u8 *D_001D6EEC[];
 void func_003BA3E8(s32 a0, u8 *src) {
     u8 *p;
     s32 i;
-    if (D_001D6EEC_003BA3E8[0] == 0) return;
-    p = D_001D6EEC_003BA3E8[0];
+    if (D_001D6EEC[0] == 0) return;
+    p = D_001D6EEC[0];
     i = 0;
     do {
         i++;
@@ -425,21 +418,21 @@ extern s32 func_0037DF98(s32);
 extern void func_003B6528(s32, s32);
 extern void func_003B6F28(s32, s32);
 extern s32 func_0011B754(void *, s32);
-__asm__(".extern D_001D90B8_003BC0F0, 1");
-extern u8 D_001D90B8_003BC0F0;
-extern volatile s32 D_001D4B4C_003BC0F0;
+__asm__(".extern D_001D90B8, 1");
+extern u8 D_001D90B8;
+extern volatile s32 D_001D4B4C;
 typedef struct { u8 n0[0x10]; u8 n1[0x10]; u8 n2[0x10]; s32 f30, f34, f38, f3C, f40, f44, f48, f4C, f50; u8 p54[0xC]; s8 f60; } S_BC0F0;
-extern S_BC0F0 D_002CE0E0_003BC0F0[];
+extern S_BC0F0 D_002CE0E0[];
 typedef struct { u8 pad[0x1AF8]; s32 f1AF8; u8 p2[0x1B14-0x1AFC]; s32 f1B14, f1B18, f1B1C; } S_BC0F0b;
-extern S_BC0F0b D_001A4BE0_003BC0F0[];
+extern S_BC0F0b D_001A4BE0[];
 s32 func_003BC0F0(s32 arg0, s32 arg1) {
-    S_BC0F0 *p = D_002CE0E0_003BC0F0;
+    S_BC0F0 *p = D_002CE0E0;
     S_BC0F0b *q;
     func_0011B754(p->n0, func_0037DF98(0x1645));
     func_0011B754(p->n1, func_0037DF98(0x1646));
     func_0011B754(p->n2, func_0037DF98(0xF07));
     p->f30 = 0;
-    q = D_001A4BE0_003BC0F0;
+    q = D_001A4BE0;
     p->f34 = q->f1B14;
     p->f38 = q->f1B1C;
     p->f3C = q->f1B18;
@@ -447,18 +440,18 @@ s32 func_003BC0F0(s32 arg0, s32 arg1) {
     if (arg1 != 0 && q->f1AF8 != 0) {
         p->f40 = 0;
     }
-    D_002CE0E0_003BC0F0->f44 = arg0;
-    D_002CE0E0_003BC0F0->f60 = 0;
+    D_002CE0E0->f44 = arg0;
+    D_002CE0E0->f60 = 0;
     func_003B6528(0, 0);
-    if (D_002CE0E0_003BC0F0->f40 == 0) {
-        D_002CE0E0_003BC0F0->f48 = 0;
-        D_002CE0E0_003BC0F0->f4C = 0x3C;
-        D_002CE0E0_003BC0F0->f50 = 0;
-        D_001D4B4C_003BC0F0 = 0;
+    if (D_002CE0E0->f40 == 0) {
+        D_002CE0E0->f48 = 0;
+        D_002CE0E0->f4C = 0x3C;
+        D_002CE0E0->f50 = 0;
+        D_001D4B4C = 0;
     } else {
-        D_002CE0E0_003BC0F0->f48 = 0;
-        D_002CE0E0_003BC0F0->f4C = 0x3C;
-        func_003B6F28(3, (s32)&D_001D90B8_003BC0F0);
+        D_002CE0E0->f48 = 0;
+        D_002CE0E0->f4C = 0x3C;
+        func_003B6F28(3, (s32)&D_001D90B8);
     }
     return 1;
 }
@@ -475,28 +468,28 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BCFB0);
 INCLUDE_ASM("asm/nonmatchings/text", func_003BD0D8);
 
 /* localdecomp:start func_003BD360 */
-__asm__(".extern D_001DA520_003BD360, 16");
-__asm__(".extern D_001DA530_003BD360, 16");
-__asm__(".extern D_001DA534_003BD360, 16");
-__asm__(".extern D_001D9D80_003BD360, 16");
+__asm__(".extern D_001DA520, 16");
+__asm__(".extern D_001DA530, 16");
+__asm__(".extern D_001DA534, 16");
+__asm__(".extern D_001D9D80, 16");
 typedef struct { u8 pad[0x20]; u8 b20; u8 pad21[0x33]; s32 f54; u8 pad58[0x10]; s32 f68; u8 pad6C[0x34]; s32 fA0; } O_3BD360;
-extern u32 D_001DA520_003BD360; 
-extern s32 D_001DA530_003BD360; 
-extern s32 D_001DA534_003BD360; 
-extern s32 D_001D9D80_003BD360; 
+extern u32 D_001DA520; 
+extern s32 D_001DA530; 
+extern s32 D_001DA534; 
+extern s32 D_001D9D80; 
 extern void func_003C1F10();
 extern void func_003BD778();
 extern void func_003C23E8();
 void func_003BD360(s32 arg) {
     O_3BD360 *o = (O_3BD360 *)arg;
     s32 p;
-    if ((u32)o < D_001DA520_003BD360) {
+    if ((u32)o < D_001DA520) {
         o->b20 = 0xFD;
     } else {
         o->b20 = 0xFE;
         p = o->f68;
         if (p) {
-            if (p >= D_001DA530_003BD360 && p < D_001DA530_003BD360 + D_001DA534_003BD360 * 64) {
+            if (p >= D_001DA530 && p < D_001DA530 + D_001DA534 * 64) {
                 func_003C1F10(p);
                 o->f68 = 0;
             }
@@ -505,18 +498,18 @@ void func_003BD360(s32 arg) {
             func_003BD778(o, o->f54);
         }
     }
-    o->fA0 = D_001D9D80_003BD360 + 2;
+    o->fA0 = D_001D9D80 + 2;
     func_003C23E8(o, 0x80807F7F);
 }
 /* localdecomp:end func_003BD360 */
 
 /* localdecomp:start func_003BD428 */
-extern int D_001DA54C_003BD428;
-extern int D_001DA53C_003BD428;
-extern int D_001DA548_003BD428;
-extern int D_001DA540_003BD428;
-extern int D_001DA544_003BD428;
-__asm__(".extern D_001DA544_003BD428, 4");
+extern int D_001DA54C;
+extern int D_001DA53C;
+extern int D_001DA548;
+extern int D_001DA540;
+extern int D_001DA544;
+__asm__(".extern D_001DA544, 4");
 extern void func_00388440(void *, int, int);
 
 unsigned int func_003BD428(int count, int base) {
@@ -526,20 +519,20 @@ unsigned int func_003BD428(int count, int base) {
     size = count * 4;
     end = start + size;
 
-    D_001DA54C_003BD428 = end;
-    D_001DA53C_003BD428 = start;
-    D_001DA548_003BD428 = start;
-    D_001DA540_003BD428 = 0;
-    D_001DA544_003BD428 = 0;
+    D_001DA54C = end;
+    D_001DA53C = start;
+    D_001DA548 = start;
+    D_001DA540 = 0;
+    D_001DA544 = 0;
     func_00388440((void *)start, 0, size);
-    return (D_001DA54C_003BD428 + 0x3F) & 0xFFFFFFC0;
+    return (D_001DA54C + 0x3F) & 0xFFFFFFC0;
 }
 /* localdecomp:end func_003BD428 */
 
 /* localdecomp:start func_003BD490 */
 typedef struct { u8 p0[0x48]; u8 *tbl[1]; } C_3BD490;
 typedef struct { u8 p0[0x24]; C_3BD490 *f24; u8 p28[0x18]; u8 b40; u8 b41; u8 b42; u8 b43; u8 p44[0x14]; s32 f58; s32 f5C; u8 p60[0xC]; u8 b6C; u8 p6D; u8 b6E; } S_3BD490;
-extern u8 D_002CE180_003BD490[];
+extern u8 D_002CE180[];
 void func_003BD490(S_3BD490 *s)
 {
   u8 *new_var2;
@@ -555,7 +548,7 @@ void func_003BD490(S_3BD490 *s)
   {
     s->b6C = s->b42;
     s->b6E = 0;
-    s->f58 = (s32) (D_002CE180_003BD490 + (s->b40 << 11));
+    s->f58 = (s32) (D_002CE180 + (s->b40 << 11));
   }
   s->f5C = *((s32 *) ((s->f24->tbl[s->b43] + (new_var = s->b41 * 4)) + 0x1C));
 }

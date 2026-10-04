@@ -6,14 +6,10 @@ extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern s32 func_003AD6A8();
-extern void func_11A0B0();
-extern void func_124920(void);
-extern void func_124970(void);
 extern s32 func_003AD458();
 extern s32 func_003AD488();
 extern s32 func_003AD4B0();
 extern s32 func_003AD4D8();
-extern u8 *D_001DA134[];
 extern s32 func_003AD520();
 extern void func_003AD6B0();
 /* --- end of declarations from other files --- */
@@ -177,14 +173,14 @@ void func_003AD7F8(volatile s32 *p) {
 LINKER_REMNANT("asm/remnants", func_003AD818);
 
 /* localdecomp:start func_003AD820 */
-extern s32 D_001DA168_003AD820;
-extern s32 D_001DA17C_003AD820;
+extern s32 D_001DA168;
+extern s32 D_001DA17C;
 extern s32 *func_003E03C8(s32 *);
 s32 *func_003AD820(s32 idx) {
     s32 i;
     s32 *p;
-    if (D_001DA17C_003AD820 == 0) {
-        p = &D_001DA168_003AD820;
+    if (D_001DA17C == 0) {
+        p = &D_001DA168;
         i = 4;
         do {
             func_003E03C8(p);
@@ -192,9 +188,9 @@ s32 *func_003AD820(s32 idx) {
             __asm__ volatile("nop");
             p++;
         } while (i != -1);
-        D_001DA17C_003AD820 = 1;
+        D_001DA17C = 1;
     }
-    return &D_001DA168_003AD820 + idx;
+    return &D_001DA168 + idx;
 }
 /* localdecomp:end func_003AD820 */
 

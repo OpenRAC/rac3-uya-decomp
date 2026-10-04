@@ -1,20 +1,12 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
-extern f32 func_00388960(f32);
-extern f32 func_00388978(f32);
-extern void func_00388440();
-extern void func_003A3EF0(s32, unsigned long);
+extern void func_003BE340(void);
+extern void func_003BDC90(void);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern void func_00388440(void *, s32, s32);
-extern void func_11F0A0();
-extern s32 D_001D9DB0;
-extern s32 D_001D9DB8;
-extern void func_003885F0(u32 *, s32, s32);
-extern void func_00388440(void *, int, int);
 /* --- end of declarations from other files --- */
 
 LINKER_REMNANT("asm/remnants", func_003BDAC0);
@@ -136,10 +128,10 @@ LINKER_REMNANT("asm/remnants", func_003BE3A0);
 
 /* localdecomp:start func_003BE3C0 */
 extern int D_001DA51C;
-extern int D_001DA524_003BE3C0;
+extern int D_001DA524;
 int func_003BE3C0(void) {
     unsigned char *current = (unsigned char *)(*(volatile int *)&D_001DA51C);
-    unsigned char *end = (unsigned char *)(*(volatile int *)&D_001DA524_003BE3C0);
+    unsigned char *end = (unsigned char *)(*(volatile int *)&D_001DA524);
     int result = (int)end;
 
     if (current != end) {

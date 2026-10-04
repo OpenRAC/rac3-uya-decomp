@@ -2,18 +2,14 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void * func_003A9B10();
-extern s32 D_001D5C78;
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern void func_003830E8();
-extern s32 func_0039D6C8(s32);
 extern s32 D_001D8118[];
 extern s32 D_001D8118[2];
 extern s32 D_001D8100[];
 extern s32 D_001D8100[2];
-extern void func_00121760();
 extern u8 *func_003A5C70(u8 *);
 /* --- end of declarations from other files --- */
 
@@ -27,17 +23,17 @@ s32 func_003A7CC8(void) {
 /* localdecomp:start func_003A7CD0 */
 void func_003830E8();
 void func_003A7690(void *);
-void func_003A7CC8_003A7CD0(void *);
+void func_003A7CC8(void *);
 typedef struct { u8 pad0[0xB0]; f32 fB0; } S_00225980_003A7CD0_003A7CD0;
-extern S_00225980_003A7CD0_003A7CD0 D_00225980_003A7CD0[];
+extern S_00225980_003A7CD0_003A7CD0 D_00225980[];
 
 void func_003A7CD0(void *arg0) {
     f32 temp_f20;
     s32 temp_v1;
 
     if (*(*(f32 **)((u8 *)(arg0) + 4)) != 0.0f) {
-        temp_f20 = D_00225980_003A7CD0->fB0;
-        D_00225980_003A7CD0->fB0 = 0.62f;
+        temp_f20 = D_00225980->fB0;
+        D_00225980->fB0 = 0.62f;
         func_003830E8();
         temp_v1 = (*(s32 *)((u8 *)(arg0) + 0x1A8));
         switch (temp_v1) {                          /* irregular */
@@ -45,10 +41,10 @@ void func_003A7CD0(void *arg0) {
             func_003A7690(arg0);
             break;
         case 2:
-            func_003A7CC8_003A7CD0(arg0);
+            func_003A7CC8(arg0);
             break;
         }
-        D_00225980_003A7CD0->fB0 = temp_f20;
+        D_00225980->fB0 = temp_f20;
         func_003830E8();
     }
 }
@@ -282,7 +278,7 @@ void func_003A95A0(void *arg0, s32 arg1) {
 
 /* localdecomp:start func_003A9698 */
 typedef struct { u8 p0[0x1C4]; u32 f1C4; } S_3A9698;
-extern S_3A9698 *D_001D52FC_003A9698[];
+extern S_3A9698 *D_001D52FC[];
 extern s32 func_0037E368(s32, s32, s32, s32, s32, s32);
 extern s32 *func_003A5910();
 extern f32 *func_003A5DE8();
@@ -291,7 +287,7 @@ void func_003A9698(u8 *base, s32 b, f32 f) {
     s32 *r;
     f32 *q;
     u8 *p;
-    if ((D_001D52FC_003A9698[0]->f1C4 & 0xF000) != 0) {
+    if ((D_001D52FC[0]->f1C4 & 0xF000) != 0) {
         func_0037E368(0, 0, 1, 0, 1, 0);
     }
     p = base + 0x628;

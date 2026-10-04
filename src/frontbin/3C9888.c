@@ -1,7 +1,8 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
-extern void func_003A40C8();
+extern void func_003C9B80(void);
+extern void func_003C9AE0(void);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
@@ -11,32 +12,32 @@ extern void (*D_00226A80[])(s32);
 INCLUDE_ASM("asm/nonmatchings/text", func_003C9888);
 
 /* localdecomp:start func_003C99D0 */
-extern u32 *D_001DA0D0_003C99D0;
-extern u32 *D_001DA70C_003C99D0;
-extern s32 D_001DA714_003C99D0;
-extern s32 D_001D4BB0_003C99D0;
+extern u32 *D_001DA0D0;
+extern u32 *D_001DA70C;
+extern s32 D_001DA714;
+extern s32 D_001D4BB0;
 extern void func_003CA860(void);
 extern s32 func_003CA9C8(s32);
 extern void func_003A40C8(void);
 void func_003C99D0(void) {
-    u32 *save = D_001DA0D0_003C99D0;
+    u32 *save = D_001DA0D0;
     s32 r;
-    D_001DA0D0_003C99D0 += 4;
-    D_001DA70C_003C99D0[0] = 0x20000000;
-    D_001DA70C_003C99D0[1] = (u32)D_001DA0D0_003C99D0;
-    D_001DA70C_003C99D0[2] = 0;
-    D_001DA70C_003C99D0[3] = 0;
+    D_001DA0D0 += 4;
+    D_001DA70C[0] = 0x20000000;
+    D_001DA70C[1] = (u32)D_001DA0D0;
+    D_001DA70C[2] = 0;
+    D_001DA70C[3] = 0;
     func_003CA860();
-    r = func_003CA9C8(D_001D4BB0_003C99D0);
+    r = func_003CA9C8(D_001D4BB0);
     func_003A40C8();
-    if (D_001DA714_003C99D0 < r) { D_001DA714_003C99D0 = r; }
-    D_001DA0D0_003C99D0[0] = 0x20000000;
-    D_001DA0D0_003C99D0[1] = (u32)(D_001DA70C_003C99D0 + 4);
-    D_001DA0D0_003C99D0[2] = 0;
-    D_001DA0D0_003C99D0[3] = 0;
-    D_001DA0D0_003C99D0 += 4;
+    if (D_001DA714 < r) { D_001DA714 = r; }
+    D_001DA0D0[0] = 0x20000000;
+    D_001DA0D0[1] = (u32)(D_001DA70C + 4);
+    D_001DA0D0[2] = 0;
+    D_001DA0D0[3] = 0;
+    D_001DA0D0 += 4;
     save[0] = 0x20000000;
-    save[1] = (u32)D_001DA0D0_003C99D0;
+    save[1] = (u32)D_001DA0D0;
     save[2] = 0;
     save[3] = 0;
 }

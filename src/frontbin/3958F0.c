@@ -931,7 +931,33 @@ void func_00397270(void) {
 
 LINKER_REMNANT("asm/remnants", func_00397288);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003972A0);
+/* localdecomp:start func_003972A0 */
+extern u8 D_0032E3C8_003972A0[];
+extern u8 D_0032E658_003972A0[];
+extern s32 func_00399710();
+extern void func_00399A00();
+extern void func_00399F40();
+void func_003972A0(u8 *arg) {
+    s32 a, b, t, i;
+    u8 *q;
+    a = func_00399710(D_0032E3C8_003972A0);
+    b = func_00399710(D_0032E658_003972A0);
+    t = *(s32 *)arg;
+    if (t == a) {
+        if (*(s32 *)(arg + 4) == b) {
+            arg += 8;
+            q = arg + t;
+            func_00399A00(arg, q, 0, D_0032E3C8_003972A0);
+            arg = q;
+            for (i = 0; i < 0x25; i++) {
+                func_00399A00(arg, arg + b, i, D_0032E658_003972A0);
+                arg += b;
+            }
+            func_00399F40();
+        }
+    }
+}
+/* localdecomp:end func_003972A0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00397380);
 

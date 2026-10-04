@@ -7,15 +7,41 @@ extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern s32 func_13CEB0(void);
 s32 func_13CD28(s32, s32, s32, void *);
+extern void func_11F0A0();
 extern s32 func_003ABD78();
 extern s32 func_003AD040();
 extern s32 func_003ABE70();
-extern void func_11F0A0();
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003ABA48);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ABB60);
+/* localdecomp:start func_003ABB60 */
+typedef struct { u8 p0[8]; u32 f8; s32 fC; } O_ABB60;
+extern s32 D_001DA138_003ABB60;
+extern s32 func_003ABC30();
+s32 func_003ABB60(s32 unused, O_ABB60 *obj, u8 *buf) {
+    s32 v[4];
+    s32 a0, a1, a2, a3;
+    s32 t, q, q2, w, res;
+    u32 p, end;
+    t = *(s32 *)(buf + 0x50008);
+    p = obj->f8 + 4;
+    end = (u32)buf + t;
+    p = (p >= end) ? p - t : p;
+    q = obj->fC - 4;
+    w = end - p;
+    w = (q < w) ? q : w;
+    q2 = q - w;
+    func_003AAC70(D_001DA138_003ABB60, v, &v[1], &v[2], &v[3]);
+    a1 = v[1];
+    a0 = v[0];
+    a2 = v[2];
+    a3 = v[3];
+    res = func_003ABC30(a0, a1, a2, a3, p, w, buf, q2);
+    func_003AAD40(D_001DA138_003ABB60, res);
+    return res > 0;
+}
+/* localdecomp:end func_003ABB60 */
 
 /* localdecomp:start func_003ABC30 */
 extern void func_11A0B0();

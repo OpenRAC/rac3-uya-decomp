@@ -7,12 +7,16 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern void func_00389920(s32);
 extern void func_003866E8();
 extern s32 D_001D4CE8[];
+extern s32 func_0039D6C8(s32);
 extern s32 func_003B2AA0(void);
+extern s32 func_003E3040();
 extern void func_003B43B0(void);
 extern s32 func_0037DCE8(void);
 extern void func_003B43C0();
+extern void *func_003AED40(s32);
 extern s32 func_003E24B0(s32 arg0, s32 arg1);
 extern s32 D_001D8A48;
 extern s32 D_001D8A70_g;
@@ -146,7 +150,37 @@ void func_003B2720(void) {
 INCLUDE_ASM("asm/nonmatchings/text", func_003B27A8);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318840);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B2958);
+/* localdecomp:start func_003B2958 */
+typedef struct { s32 p0; void *vt; } O_B2958;
+extern s32 D_001D8AD0_003B2958;
+extern s32 D_001D8AD4_003B2958;
+extern s32 D_001D8ADC_003B2958;
+extern s32 D_001D8B68_003B2958[2];
+extern u8 D_001D5BDC_003B2958[];
+void func_003B2958(void) {
+    s32 i;
+    s32 j;
+    s32 *p;
+    O_B2958 *o;
+    func_003E3040(0x10);
+    func_003E3040(0x11);
+    for (i = 0; i < 4; i++) {
+        o = (O_B2958 *)func_003AED40(i);
+        (*(void (**)(O_B2958 *))((u8 *)o->vt + 0xC))(o);
+    }
+    func_0039D6C8(1);
+    func_003B5F88(D_001D8AD0_003B2958);
+    for (j = 0; j < 4; j++) {
+        func_003B5F88(D_001D8B68_003B2958[j]);
+    }
+    if (D_001D5BDC_003B2958[0] == 0) {
+        func_003B5F88(D_001D8ADC_003B2958);
+        func_003B5F88(D_001D8AD4_003B2958);
+    }
+    func_00389920(0);
+    func_0038E728(0);
+}
+/* localdecomp:end func_003B2958 */
 
 /* localdecomp:start func_003B2A28 */
 extern u8 D_001D5BDC[];

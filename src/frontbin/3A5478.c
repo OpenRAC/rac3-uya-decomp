@@ -224,7 +224,37 @@ extern s32 D_001D8218[];
 u8 *func_003A5A78(u8 *p) { *(s32 **)(p + 0x24) = D_001D8218; return p; }
 /* localdecomp:end func_003A5A78 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A5A90);
+/* localdecomp:start func_003A5A90 */
+typedef struct { s32 *p0; s32 *p4; s32 *p8; s32 *pC; s32 *p10; u8 b14; u8 b15; u8 b16; u8 b17; u8 b18; u8 pad[3]; s32 w1C; s32 w20; } O_A5A90;
+void func_003A5A90(o, a1, a2) O_A5A90 *o; s32 a1; s32 a2; {
+    s32 *t; s32 x;
+    o->w20 = a2;
+    if (a2 != 0) {
+        t = (s32 *)func_003ECDC0(0x10, (s32)func_003A6910(a2));
+        x = o->w20;
+        o->p0 = t;
+        t[1] = 0; t[2] = 0; t[3] = 0; t[0] = 0;
+        t = (s32 *)func_003ECDC0(0x10, (s32)func_003A6910(x));
+        x = o->w20;
+        o->p8 = t;
+        t[1] = 0; t[2] = 0; t[3] = 0; t[0] = 0;
+        t = (s32 *)func_003ECDC0(0x10, (s32)func_003A6910(x));
+        x = o->w20;
+        o->p4 = t;
+        t[1] = 0; t[2] = 0; t[3] = 0; t[0] = 0;
+        t = (s32 *)func_003ECDC0(0x10, (s32)func_003A6910(x));
+        x = o->w20;
+        o->pC = t;
+        t[1] = 0; t[2] = 0; t[3] = 0; t[0] = 0;
+        t = (s32 *)func_003ECDC0(0x10, (s32)func_003A6910(x));
+        o->p10 = t;
+        t[1] = 0; t[2] = 0; t[3] = 0; t[0] = 0;
+    }
+    o->w1C = a1;
+    o->b17 = 0; o->b14 = 0; o->b16 = 0; o->b15 = 0; o->b18 = 0;
+    func_003A5958(o, 1);
+}
+/* localdecomp:end func_003A5A90 */
 
 LINKER_REMNANT("asm/remnants", func_003A5BB8);
 

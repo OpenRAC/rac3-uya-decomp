@@ -10,6 +10,7 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern s32 func_00392108();
 void func_0039B760(u8 *, u32);
 typedef struct {
     u8 pad0[0x10];

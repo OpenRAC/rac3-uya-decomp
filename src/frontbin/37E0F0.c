@@ -936,7 +936,18 @@ void func_00387BD8(s32 a, s32 b, s32 c, s32 d, unsigned long e, s32 g) {
 }
 /* localdecomp:end func_00387BD8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00387C78);
+/* localdecomp:start func_00387C78 */
+void func_00387C78(s32 x, s32 y, s32 w, s32 z, s32 a, s32 b) {
+    s32 c = (a << 24) | b;
+    func_003867F8(x, y, w, z, c);
+    func_003867F8(x + 1, y - 1, w - 2, w, c);
+    func_003867F8(x + 2, y - 2, w - 3, w - 2, c);
+    func_003867F8(x + 4, y - 4, w - 4, w - 3, c);
+    func_003867F8(x + 1, y - 1, z, z + 2, c);
+    func_003867F8(x + 2, y - 2, z + 2, z + 3, c);
+    func_003867F8(x + 4, y - 4, z + 3, z + 4, c);
+}
+/* localdecomp:end func_00387C78 */
 
 LINKER_REMNANT("asm/remnants", func_00387DB8);
 

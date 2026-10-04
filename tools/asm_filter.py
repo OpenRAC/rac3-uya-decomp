@@ -7,15 +7,17 @@ and its delay slot) with nops right before the backward branch. Retail
 frontbin has 142 such padded loops and not a single loop shorter than 6.
 
 None of the assemblers we have does exactly that:
-  bin/ee-as.exe  never pads a loop gcc wrote in .set noreorder mode;
+  bin/ee-as.exe  never pads a short loop, in either .set mode;
   Ps2EeAs        pads every loop to 7, one nop too many.
 
 So between gcc and the assembler, this filter rewrites every backward branch
-gcc emitted in noreorder mode that closes a loop of 6 or fewer instructions:
+that closes a loop of 6 or fewer instructions (in noreorder mode, or in
+reorder mode, where ee-as gives the branch a delay-slot nop but no padding):
 it adds nops before the branch until the loop is 6 long, and writes the branch
 as a raw `.word` whose offset the assembler computes from the label. A raw
 .word is data to the assembler, so neither assembler pads it again, and the
-branch bytes are the ones the assembler would have produced.
+branch bytes are the ones the assembler would have produced. In reorder mode
+the delay-slot nop the assembler would have added is written out after it.
 
 Loops whose body contains a macro instruction (a load from a symbol, `li`,
 ...) are left alone, since their length isn't known before assembly. Inline asm
@@ -72,18 +74,33 @@ SIMPLE_OPS = re.compile(r"^(addu|addiu|subu|and|andi|or|ori|xor|xori|nor|slt|slt
                         r"movz|movn|mult|multu|mult1|multu1|nop)$")
 
 
-def insn_count(lines):
+def insn_count(lines, noreorder=True):
     """Number of machine instructions in these .s lines, or None if unsure
-    (macro instructions, which may expand to more than one word)."""
+    (macro instructions, which may expand to more than one word).
+
+    `noreorder` is the .set mode at the first line. In reorder mode the
+    assembler gives every branch and jump its own delay-slot nop (ee-as never
+    moves an instruction into the slot), so there they count as two words."""
     n = 0
     for l in lines:
         s = l.split("#", 1)[0].strip()
+        if s.startswith(".set"):
+            if "noreorder" in s:
+                noreorder = True
+            elif re.search(r"\breorder\b", s):
+                noreorder = False
+        if s.startswith(".word"):
+            n += 1  # a raw instruction (inline asm, or a branch this filter already rewrote)
+            continue
+        am = re.match(r"\.(p2align|align)\s+(\d+)", s)
+        if am and int(am.group(2)) > 2:
+            return None  # 8-byte or wider padding inside the body: its length isn't known here
         if not s or s.startswith(".") or LABEL_RE.match(l):
             continue
         m = re.match(r"([a-z0-9.]+)\s*(.*)", s)
         if m and (m.group(1) in ("jal", "jalr", "b", "j", "jr") or m.group(1) in TWO or m.group(1) in ONE
                   or m.group(1) in REGIMM or m.group(1) in BC1 or m.group(1) in PSEUDO_Z):
-            n += 1  # a call or a branch is one word, its label operand is not a macro
+            n += 1 if noreorder else 2  # its label operand is not a macro
             continue
         if m and m.group(1) == "li":
             im = re.match(r"^\$\w+\s*,\s*(-?\d+|-?0x[0-9a-fA-F]+)\s*(#.*)?$", m.group(2))
@@ -236,7 +253,7 @@ def filter_asm(text):
             continue
         m = LABEL_RE.match(line)
         if m:
-            labels[m.group(1)] = len(out)
+            labels[m.group(1)] = (len(out), noreorder)
         if s.startswith(".set"):
             if "noreorder" in s:
                 noreorder = True
@@ -245,7 +262,7 @@ def filter_asm(text):
         if s.startswith((".ent", ".end")) and not s.startswith(".endif"):
             labels = {}  # labels are per function
         bm = BRANCH_RE.match(line)
-        if noreorder and bm and not s.startswith("."):
+        if bm and not s.startswith("."):
             mn = bm.group(2)
             ops = [o.strip() for o in bm.group(3).split(",")]
             target = ops[-1] if ops else ""
@@ -254,12 +271,17 @@ def filter_asm(text):
                     bits = encode(mn, ops[:-1])
                 except KeyError:
                     bits = None
-                n = insn_count(out[labels[target] + 1:]) if bits is not None else None
+                at, mode = labels[target]
+                n = insn_count(out[at + 1:], mode) if bits is not None else None
                 if n is not None and n + 2 <= 6:
                     ind = bm.group(1)
                     out.append(f"{ind}nop\n" * (4 - n))
                     out.append(f"{ind}.word 0x{bits:08X} | ((({target} - . - 4) >> 2) & 0xFFFF)"
                                f"  # {mn} {bm.group(3)}\n")
+                    if not noreorder:
+                        # reorder mode: the assembler would have added the
+                        # delay-slot nop after a real branch, not after a .word
+                        out.append(f"{ind}nop\n")
                     continue
         out.append(line)
     return "".join(out)

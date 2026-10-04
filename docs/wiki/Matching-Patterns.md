@@ -463,3 +463,9 @@ Each was confirmed by a function that now matches in the full build.
 - **Two reads of the same `lui` global around calls** need a scalar `extern s32 X;` under `@ps2as`; an unsized array shares one `lui` across the calls (`func_003ABB60`).
 - **`(flag >> 24)`** gives a bare `sra` where retail has one; the callee's parameter order sets the order of float register setup (`func_003A4DC8`).
 - **Declaring a callee `s32` instead of `void`** changes the `$v0`/`$v1` choice around the call; a K&R zero-argument declaration leaves the argument registers untouched (`func_003B8968`).
+- **Index an array in a loop instead of walking a pointer** (`func_003C1950`): `e[i].t`, `e[i].id` let gcc strength-reduce to a pointer whose start sits in a temp and is `move`d into the saved register, as retail does. A hand-written walking pointer gets other registers.
+- **Count-down loops written `for (i = N; i != -1; i--)`, one counter per loop** (`func_003A9768`, `func_003A8060`): this decides which register holds the `-1` constant.
+- **Store order sets delay-slot filling** (`func_003A5A90`): zero stores written `t[1]`, `t[2]`, `t[3]`, `t[0]` matched; ascending order did not.
+- **K&R definition** when callers use an unprototyped `extern void f();` with another argument count (`func_003A5A90`); a prototyped definition makes those callers fail with "too few arguments".
+- **64-bit values are `long` / `unsigned long`**, not `u64`/`s64`, or gcc reports an unsupported wide integer operation (`func_003D14D0`).
+- **Float arguments need a prototype for the callee**, or gcc promotes them to double (`func_003A5DF0` went from 33 to 63 diffs without one).

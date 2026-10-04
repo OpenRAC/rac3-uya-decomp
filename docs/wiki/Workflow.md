@@ -85,7 +85,7 @@ python tools/pr_check.py
 & "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe"          (or: python3 tools/build.py)
 ```
 
-`pr_check.py` catches the usual full-build failures (undefined aliases, conflicting typedefs, variable definitions, `@ps2as` ranges with asm stubs) and tells you the line to fix. `make` must end with `MATCH`. Then open a PR ([Pull requests](Pull-Requests)).
+`pr_check.py` catches the usual full-build failures (undefined aliases, conflicting typedefs, variable definitions, `@ps2as` ranges with asm stubs, and any file or slice that no longer compiles) and tells you the line to fix. Before that, `python tools/try_in_context.py scratch/func_X.c` on each new function shows both its diff inside its file and whether the rest of the build still compiles with its declarations. `make` must end with `MATCH`. Then open a PR ([Pull requests](Pull-Requests)).
 
 ## Common full-build errors
 
@@ -98,4 +98,5 @@ python tools/pr_check.py
 | `conflicting types for 'S_...'` | Two blocks define the same typedef name differently | Give one a unique name (e.g. suffix the function address) |
 | Ps2EeAs errors about `macro.inc` or unknown options | An `@ps2as` range contains an `INCLUDE_ASM` stub | Narrow the override to end after the C function |
 | `implicit declaration of function` or `'X' undeclared` in a file that used to build | The block uses something only another file declares | `python tools/split_text.py --refresh` |
+| `conflicting types for 'func_X'` (or `D_X`) in a later block or another file | Your block declares a name with a different type than a later declaration; `split_text.py --refresh` copies yours into later files | Use the existing declaration (grep `src/frontbin/`), or a per-function alias in your block plus its line in `symbol_addrs_resolved.txt`. `try_in_context.py` and `pr_check.py` report this before `make` does |
 | `NO MATCH` with no compile error | A function compiled but doesn't match, often a partial saved from localdecomp | Rebuild each changed function in localdecomp or `try_func.py`; restore `INCLUDE_ASM` for any that aren't at 0 |

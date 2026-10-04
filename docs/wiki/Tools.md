@@ -70,7 +70,7 @@ Output is `func_X: MATCH` or `func_X: N diff` plus a side-by-side listing.
 
 ### try_in_context.py
 
-Puts your snippet into a copy of the function's source file in place of the function, builds that file (or the slice holding the function) the way the real build does, and diffs it. Use it when something matches in `try_func.py` but not in `make`.
+Puts your snippet into a copy of the function's source file in place of the function, builds that file (or the slice holding the function) the way the real build does, and diffs it. Then it compiles the rest of the file and every later file that would receive the block's declarations through `split_text.py --refresh`, and reports any `conflicting types` error there. That is the usual reason a function that matches in `try_func.py` stops `make`: a later block or file declares the same name differently. Run it on every function before you insert it (`--no-file-check` skips the second part).
 
 ```
 python tools/try_in_context.py scratch/func_003AED08.c
@@ -145,7 +145,8 @@ Catches the mistakes that break the full build, and names the line to fix:
 - orphaned `INCLUDE_RODATA` lines;
 - stale localdecomp scores;
 - C functions whose retail code saves `$ra` with `sq`/`lq` but that are missing from `tools/sq_ra_funcs.txt` (a warning; see [Matching patterns](Matching-Patterns));
-- retail files staged in git.
+- retail files staged in git;
+- every source file, and every slice of a file with mixed flags, compiles the way the build compiles it (under a minute; `--no-compile` skips it). This catches a declaration that clashes with a later block or a later file. On Linux it needs `UYA_TOOLCHAIN` and `UYA_RUNNER`, like `try_func.py`.
 
 ```
 python tools/pr_check.py
@@ -201,7 +202,7 @@ Rewrites the frontbin units in `objdiff.json` from `tools/src_files.txt` (one un
 
 ### asm_filter.py
 
-Runs between gcc and the assembler in every build path (`build_text.py`, `try_func.py`, localdecomp, `permuter_setup.py`); you don't call it yourself. Retail's assembler padded every loop shorter than 6 instructions with `nop`s before the backward branch. Neither assembler we have does that: `ee-as` never pads such loops and Ps2EeAs pads them to 7. The filter adds the `nop`s to reach 6, then writes the branch as a raw `.word` so neither assembler pads it again. Loops whose body contains a macro instruction are left alone.
+Runs between gcc and the assembler in every build path (`build_text.py`, `try_func.py`, localdecomp, `permuter_setup.py`); you don't call it yourself. Retail's assembler padded every loop shorter than 6 instructions with `nop`s before the backward branch. Neither assembler we have does that: `ee-as` never pads such loops and Ps2EeAs pads them to 7. The filter adds the `nop`s to reach 6, then writes the branch as a raw `.word` so neither assembler pads it again. It handles branches gcc wrote in either `.set` mode; in reorder mode it counts the delay-slot `nop` the assembler adds after every branch (ee-as never fills a delay slot itself) and writes that `nop` out after the raw branch. Loops whose body contains a macro instruction or wider-than-4-byte alignment are left alone.
 
 Without it, no C function containing a short loop could match. With it, loops match with no special C.
 

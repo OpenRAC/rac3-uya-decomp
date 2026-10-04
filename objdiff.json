@@ -1000,8 +1000,10 @@
         "progress_categories": [
           "levels",
           "common_level_code"
-        ]
-      }
+        ],
+        "source_path": "src/levels/common"
+      },
+      "base_path": "build/objdiff/base/common.o"
     },
     {
       "name": "levels/common data",

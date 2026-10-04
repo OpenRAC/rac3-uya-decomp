@@ -190,7 +190,7 @@ Its `function_context` function is what gives localdecomp, `try_func.py` and `pe
 
 ### build_common_c.py
 
-The opt-in build for the level-code C in `src/levels/common/` (listed in `tools/common_c.json`). It compiles each function with its frontbin donor's flags and compares it byte for byte with the retail common-level object made from your own overlays. Not part of `make`. Usage and the checks it applies: `docs/common_level_c.md`.
+The opt-in build for the level-code C in `src/levels/common/` (listed in `tools/common_c.json`). It compiles each function with its frontbin donor's flags, compares it byte for byte with the retail common-level object made from your own overlays, and writes `build/objdiff/base/common.o`, the base of the `levels/common` unit. `make objdiff` runs it through `tools/common_c_base.py`, which takes the inputs from `C:\decomp-refs` (or `UYA_REFS`) and writes an empty base when they aren't there. Usage and the checks it applies: `docs/common_level_c.md`.
 
 ### split_text.py
 

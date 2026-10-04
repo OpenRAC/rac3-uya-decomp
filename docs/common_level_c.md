@@ -156,12 +156,15 @@ into matching by copying reference instructions.
 
 ## Reporting and limits
 
-For an opt-in local objdiff configuration, set the `levels/common` unit's
-`base_path` to the generated `build/objdiff/base/common.o` only after the gates
-pass. Keep every other unit and the full-game denominator unchanged. The
-main configuration and existing CI remain untouched until personal level
-inputs are provisioned there; this source does not silently promise a CI
-progress increase.
+Since 2026-10-04 the `levels/common` unit in `objdiff.json` uses
+`build/objdiff/base/common.o` as its base, and `make objdiff` builds it with
+`tools/common_c_base.py`. That script runs this builder with the inputs in
+`C:\decomp-refs` (`levels/`, `level-targets/`, `level-targets-split/common.o`;
+another folder with `UYA_REFS`), so CI and localdecomp's Full check count
+every function that passes the gates. If a catalogued function stops passing,
+`make objdiff` fails. On a machine without those private inputs it writes an
+empty base instead: the report still runs and counts no common-level C. The
+full-game denominator is unchanged.
 
 Count the owned function once, not once per overlay or per identical alias.
 Handwritten ASM, linker remnants, data and alignment bytes are not C gains.

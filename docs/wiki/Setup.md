@@ -120,12 +120,14 @@ $PY tools/split_shared_levels.py $REFS/level-targets $REFS/level-targets-split
 $PY tools/gen_exe_targets.py "$GAME" $REFS/exe-targets
 
 mkdir -p /mnt/c/decomp-refs
-cp -r $REFS/level-targets-split $REFS/exe-targets $REFS/frontbin_data.o /mnt/c/decomp-refs/
+cp -r $REFS/level-targets $REFS/level-targets-split $REFS/exe-targets $REFS/frontbin_data.o /mnt/c/decomp-refs/
+mkdir -p /mnt/c/decomp-refs/levels
+cp -r "$GAME/levels/singleplayer" "$GAME/levels/multiplayer" /mnt/c/decomp-refs/levels/
 ```
 
 The level step takes about ten minutes (51 overlays). Check the results in `C:\decomp-refs`:
 
-- `level-targets-split` must hold **105** `.o` files (code and data for each level, `common`, `common_data` and `uninitialised`). The intermediate `level-targets` folder isn't used by localdecomp or CI, so you can leave it behind.
+- `level-targets-split` must hold **105** `.o` files (code and data for each level, `common`, `common_data` and `uninitialised`). `level-targets` (the 51 unsplit objects) and `levels` (your unpacked overlays) are what `make objdiff` uses to prove the common-level C in `src/levels/common/` and count it in the report (`tools/common_c_base.py`); without them that C counts as 0.
 - `exe-targets` must hold **8** `.o` files (code and data for each of the four other executables).
 - `frontbin_data.o` must be there, and its generator must have printed `data sections differing from retail: none`. The level generator prints `non-reloc mismatches vs retail: 0` for every overlay; anything else means the object isn't an exact copy of retail.
 

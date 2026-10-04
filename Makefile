@@ -122,8 +122,14 @@ clean:
 #         "decompiled / total" instead of 100%.
 OBJDIFF_TARGET := $(BUILD_DIR)/objdiff/target/text.o
 OBJDIFF_BASE   := $(BUILD_DIR)/objdiff/base/text.o
+# common-level C (src/levels/common/, docs/common_level_c.md): the levels/common
+# unit's base. tools/common_c_base.py proves each function against your own
+# reference files in C:\decomp-refs (or UYA_REFS) and fails if one stops
+# matching; without those files it writes an empty base, so the report still runs.
+OBJDIFF_COMMON := $(BUILD_DIR)/objdiff/base/common.o
+COMMON_DEPS    := $(wildcard src/levels/common/*.c) tools/common_c.json tools/build_common_c.py tools/common_c_base.py
 
-objdiff: check $(OBJDIFF_TARGET) $(OBJDIFF_BASE)
+objdiff: check $(OBJDIFF_TARGET) $(OBJDIFF_BASE) $(OBJDIFF_COMMON)
 
 $(OBJDIFF_TARGET): $(TEXT_OBJ) $(TARGET_BIN)
 	@if not exist "$(subst /,\,$(dir $@))frontbin" mkdir "$(subst /,\,$(dir $@))frontbin"
@@ -133,3 +139,6 @@ $(OBJDIFF_TARGET): $(TEXT_OBJ) $(TARGET_BIN)
 $(OBJDIFF_BASE): $(TEXT_DEPS) include/include_asm.h
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
 	$(PYTHON) tools/build_text.py --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
+
+$(OBJDIFF_COMMON): $(COMMON_DEPS)
+	$(PYTHON) tools/common_c_base.py -o "$@"

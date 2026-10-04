@@ -9,7 +9,7 @@ How `make` turns the repo into a byte-identical `frontbin.elf`, and which files 
 3. `ee-ld.exe -T linker_scripts/frontbin.ld` places every section at its retail file offset. `INPUT(symbol_addrs_resolved.txt)` supplies the address of every external symbol. The `.data` output is `data_a` + `text.c.o(.rodata)` (all switch jump tables, in function order) + `data_b`, the same layout the original linker produced.
 4. `ee-objcopy -O binary` makes `build/frontbin.bin`, and `tools/check_match.py` compares its SHA-1 with the one in `frontbin.splat.yaml`. That is the `MATCH` line.
 
-`make objdiff` also builds the objdiff inputs, one unit per source file: `build/objdiff/target/frontbin/<file>.o` (the full build) and `build/objdiff/base/frontbin/<file>.o` (the same file with every `INCLUDE_ASM` compiled away), so objdiff reports decompiled/total per file.
+`make objdiff` also builds the objdiff inputs, one unit per source file: `build/objdiff/target/frontbin/<file>.o` (the full build) and `build/objdiff/base/frontbin/<file>.o` (the same file with every `INCLUDE_ASM` compiled away), so objdiff reports decompiled/total per file. It also builds `build/objdiff/base/common.o`, the base of the `levels/common` unit, from the common-level C in `src/levels/common/` (`tools/common_c_base.py`, which runs `tools/build_common_c.py` against the reference files in `C:\decomp-refs`; without them it writes an empty base).
 
 `tools/build.py` runs steps 1 to 4 on Linux and macOS through wibo.
 

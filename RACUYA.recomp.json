@@ -1,0 +1,17 @@
+{
+  "$schema": "https://recomp.fyi/schema/v1.json",
+  "game": "Ratchet & Clank: Up Your Arsenal",
+  "wikidata": "Q2292483",
+  "system": "PS2",
+  "type": "decomp", "port",
+  "original": { "region": "USA", "revision": "v1.00" },
+  "project": "R&C: UYA Decompilation",
+  "status": "in-progress",
+  "targets": ["Windows"],
+  "toolchain": "N64recomp",
+  "approach": "Byte matching decompilation.",
+  "maintainers": [{ "name": "vetusmagnus", "link": "https://github.com/vetusmagnus" }],
+  "links": [{ "label": "Discord", "url": "https://discord.gg/jH6YBbCShV" }, { "label": "Website", "url": "https://openrac.dev" } ],
+  "help": ["Function matching"],
+  "notes": "The project is in the very early stages. We are currently trying to build the main menu natively on PC and if that works then we will finish the game."
+}

@@ -8,5 +8,6 @@
 - [Tools](Tools)
 - [Toolchain and build](Toolchain-and-Build)
 - [Pull requests](Pull-Requests)
+- [Credits](Credits)
 
 <sub>Edit these pages in `docs/wiki/` in the repo.</sub>

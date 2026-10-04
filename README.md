@@ -30,6 +30,7 @@ Start with the [wiki](https://github.com/vetusmagnus/ratchet-uya-decomp/wiki):
 - [Workflow](https://github.com/vetusmagnus/ratchet-uya-decomp/wiki/Workflow)
 - [Matching patterns](https://github.com/vetusmagnus/ratchet-uya-decomp/wiki/Matching-Patterns)
 - [Pull requests](https://github.com/vetusmagnus/ratchet-uya-decomp/wiki/Pull-Requests)
+- [Credits](https://github.com/vetusmagnus/ratchet-uya-decomp/wiki/Credits)
 
 The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in [`docs/compiler_matrix_findings.md`](docs/compiler_matrix_findings.md), and the plan to 100% is in [`docs/full_match_roadmap.md`](docs/full_match_roadmap.md).
 

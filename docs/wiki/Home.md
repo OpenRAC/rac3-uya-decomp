@@ -21,6 +21,7 @@ A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arse
 | [Tools](Tools) | Every script in `tools/`, localdecomp and the Makefile: what each is for and when to use it |
 | [Toolchain and build](Toolchain-and-Build) | How the build works: `text_parts.txt`, assemblers, symbol files, objdiff |
 | [Pull requests](Pull-Requests) | What a PR must contain and the checklist a reviewer uses |
+| [Credits](Credits) | The people, tools and projects this decomp relies on |
 
 ## Ground rules
 

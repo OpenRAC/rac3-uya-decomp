@@ -3,7 +3,7 @@
   "game": "Ratchet & Clank: Up Your Arsenal",
   "wikidata": "Q2292483",
   "system": "PS2",
-  "type": "decomp", "port",
+  "type": ["decomp", "port"],
   "original": { "region": "USA", "revision": "v1.00" },
   "project": "R&C: UYA Decompilation",
   "status": "in-progress",

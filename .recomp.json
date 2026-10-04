@@ -11,7 +11,7 @@
   "toolchain": "eegcc_2.95.3_sn_v1.36",
   "approach": "Byte matching decompilation.",
   "maintainers": [{ "name": "vetusmagnus", "link": "https://github.com/vetusmagnus" }],
-  "links": [{ "label": "Discord", "url": "https://discord.gg/jH6YBbCShV" }, { "label": "Website", "url": "https://openrac.dev" } ],
+  "links": [{ "label": "Discord", "url": "https://discord.gg/2x9dQ6GwQ7" }, { "label": "Website", "url": "https://openrac.dev" } ],
   "help": ["Function matching"],
   "notes": "The project is in the very early stages. We are currently trying to build the main menu natively on PC and if that works then we will finish the game."
 }

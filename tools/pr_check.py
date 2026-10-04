@@ -3,8 +3,12 @@
 
 Run from anywhere; paths are relative to the repo root.
 
-    python tools/pr_check.py                       # source checks
+    python tools/pr_check.py                       # source checks, then compile every file
+    python tools/pr_check.py --no-compile          # source checks only (seconds)
     python tools/pr_check.py --obj build/src/text.c.o   # plus object checks
+
+On Linux/macOS set UYA_TOOLCHAIN and UYA_RUNNER (wibo), or pass --toolchain
+and --runner, as for try_func.py.
 
 `make` (MATCH) is still the real test. These checks explain the usual
 reasons it fails, in terms of the line you need to fix:
@@ -29,11 +33,16 @@ reasons it fails, in terms of the line you need to fix:
              C (move them into text_parts.txt)
   retail     no retail binaries are tracked by git
   status     localdecomp's status.json agrees with the sources about what is C
+  compile    every source file, and every slice of a file with mixed flags,
+             compiles as the build compiles it (under a minute; this is
+             what catches a declaration that clashes with a later block or a
+             later file, which try_func.py can't see)
   --obj      the built text.c.o has no data sections
 
 Exit status 1 if any error was found. Warnings don't fail.
 """
-import argparse, os, re, subprocess, sys
+import argparse
+import shutil, os, re, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
@@ -413,10 +422,46 @@ def check_obj(path):
             "(a variable was defined, or a string/float constant went to .rodata/.lit4)")
 
 
+def check_compile(toolchain, runner):
+    """Compile every slice of every source file to assembly, exactly as the
+    build does (no assembling), and report compiler errors. This is what
+    catches a declaration that clashes with a later block of the same file,
+    or with a later file that received it through split_text.py --refresh:
+    try_func.py only sees the function and what comes before it. Takes under a
+    minute; skipped (with a warning) when the toolchain isn't found."""
+    import tempfile
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import build_text as bt
+    import srcfiles as sf
+    gcc = os.path.join(toolchain, "bin", "ee-gcc2953.exe")
+    if not os.path.exists(gcc):
+        warn(f"compile check skipped: {gcc} not found (set UYA_TOOLCHAIN, or pass --no-compile)")
+        return
+    cmd = ([runner] if runner else []) + [gcc]
+    parts = bt.read_parts(os.path.join(ROOT, "tools", "text_parts.txt"))
+    cflags = ["-I", "include", "-I", ".", "-DINCLUDE_ASM_USE_MACRO_INC=1"]
+    tmp = tempfile.mkdtemp(prefix="pr_check_")
+    cwd = os.getcwd()
+    os.chdir(ROOT)
+    try:
+        for rel, _ in sf.read_file_list():
+            for where, lines in bt.compile_errors(rel, sf.read_source(rel), parts, cmd, cflags, tmp):
+                err(f"{where} does not compile (the full build would stop here):\n    "
+                    + "\n    ".join(lines[:8]))
+    finally:
+        os.chdir(cwd)
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--obj", help="built object to check, e.g. build/src/text.c.o")
     ap.add_argument("--no-git", action="store_true", help="skip the git tracked-file check")
+    ap.add_argument("--no-compile", action="store_true",
+                    help="skip compiling every source file and slice (under a minute)")
+    ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN", "C:/tools/eegcc_2.95.3_sn_v1.36"))
+    ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"),
+                    help="wibo, to run the Windows toolchain on Linux/macOS")
     args = ap.parse_args()
 
     asm, defined = check_sources()
@@ -427,6 +472,8 @@ def main():
         check_git()
     if args.obj:
         check_obj(args.obj)
+    if not args.no_compile and not errors:
+        check_compile(args.toolchain, args.runner)
 
     for w in warnings:
         print("warning:", w)

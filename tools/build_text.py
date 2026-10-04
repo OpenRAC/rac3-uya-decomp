@@ -189,6 +189,43 @@ def function_context(text_unused, parts, name, drop_typedefs=(), own_src=None):
     return ctx
 
 
+def compile_errors(rel, text, parts, gcc_cmd, cflags, tmpdir):
+    """Compile every slice of one source file to assembly, the way main()
+    does, without assembling or keeping the output, and return the compiler's
+    error lines ([] if it compiles). `text` is the file's content (it may
+    differ from the file on disk), `gcc_cmd` the compiler command as a list
+    (runner + gcc). Used by pr_check.py and try_in_context.py to catch
+    conflicting declarations before a full build does."""
+    import tempfile
+    prelude, _, chunks = sf.split_file(text)
+    slices = file_slices(chunks, parts)
+    root = os.path.dirname(os.path.dirname(os.path.abspath(gcc_cmd[-1])))
+    errors = []
+    for k, (fl, idxs) in enumerate(slices):
+        src = text if len(slices) == 1 else slice_source(rel, prelude, chunks, idxs)
+        if len(slices) == 1:
+            src = '#line 1 "%s"\n' % rel.replace('\\', '/') + src
+        fd, cpath = tempfile.mkstemp(suffix='.c', dir=tmpdir)
+        with os.fdopen(fd, 'w', newline='\n') as f:
+            f.write(src)
+        spath = cpath[:-2] + '.s'
+        pflags = [f for f in expand_flags(fl, os.path.join(root, 'bin', 'x')) if not f.startswith('-B')]
+        pc = [f for f in cflags if not f.startswith('-Wa,')]
+        r = subprocess.run(gcc_cmd + ['-S'] + pflags + pc + ['-o', spath, cpath],
+                           capture_output=True, text=True)
+        for p in (cpath, spath):
+            try:
+                os.remove(p)
+            except OSError:
+                pass
+        if r.returncode:
+            lines = [l for l in (r.stdout + r.stderr).splitlines()
+                     if l.strip() and 'never used' not in l and 'warning' not in l]
+            where = rel if len(slices) == 1 else '%s (slice %d)' % (rel, k)
+            errors.append((where, lines or ['compiler failed with no message']))
+    return errors
+
+
 def compile_one(cc, flags, cflags, cpath, spath, opath, label):
     pflags = expand_flags(flags, cc)
     asflags = [f for f in pflags if f.startswith('-B')]

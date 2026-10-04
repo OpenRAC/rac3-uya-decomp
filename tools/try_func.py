@@ -130,11 +130,64 @@ def retail_size(name, fallback):
 MD = Cs(CS_ARCH_MIPS, CS_MODE_MIPS64 + CS_MODE_LITTLE_ENDIAN)
 
 
+_REGN = ("zero at v0 v1 a0 a1 a2 a3 t0 t1 t2 t3 t4 t5 t6 t7 "
+         "s0 s1 s2 s3 s4 s5 s6 s7 t8 t9 k0 k1 gp sp fp ra").split()
+# R5900 (EE) instructions capstone doesn't know: MMI (opcode 0x1C), lq/sq.
+# MMI0/1/2/3 are selected by the function field, the operation by bits 6-10.
+_MMI = {
+    0x08: {0: "paddw", 1: "psubw", 2: "pcgtw", 3: "pmaxw", 4: "paddh", 5: "psubh", 6: "pcgth", 7: "pmaxh",
+           8: "paddb", 9: "psubb", 10: "pcgtb", 16: "paddsw", 17: "psubsw", 18: "pextlw", 19: "ppacw",
+           20: "paddsh", 21: "psubsh", 22: "pextlh", 23: "ppach", 24: "paddsb", 25: "psubsb", 26: "pextlb",
+           27: "ppacb", 30: "pext5", 31: "ppac5"},
+    0x28: {1: "pabsw", 2: "pceqw", 3: "pminw", 4: "padsbh", 5: "pabsh", 6: "pceqh", 7: "pminh", 10: "pceqb",
+           16: "padduw", 17: "psubuw", 18: "pextuw", 20: "padduh", 21: "psubuh", 22: "pextuh", 24: "paddub",
+           25: "psubub", 26: "pextub", 27: "qfsrv"},
+    0x09: {0: "pmaddw", 2: "psllvw", 3: "psrlvw", 4: "pmsubw", 8: "pmfhi", 9: "pmflo", 10: "pinth",
+           12: "pmultw", 13: "pdivw", 14: "pcpyld", 16: "pmaddh", 17: "phmadh", 18: "pand", 19: "pxor",
+           20: "pmsubh", 21: "phmsbh", 26: "pexeh", 27: "prevh", 28: "pmulth", 29: "pdivbw", 30: "pexew",
+           31: "prot3w"},
+    0x29: {0: "pmadduw", 3: "psravw", 8: "pmthi", 9: "pmtlo", 10: "pinteh", 12: "pmultuw", 13: "pdivuw",
+           14: "pcpyud", 18: "por", 19: "pnor", 26: "pexch", 27: "pcpyh", 30: "pexcw"},
+}
+_MMI_FN = {0x00: "madd", 0x01: "maddu", 0x04: "plzcw", 0x10: "mfhi1", 0x11: "mthi1", 0x12: "mflo1",
+           0x13: "mtlo1", 0x18: "mult1", 0x19: "multu1", 0x1A: "div1", 0x1B: "divu1", 0x20: "madd1",
+           0x21: "maddu1", 0x30: "pmfhl", 0x31: "pmthl", 0x34: "psllh", 0x36: "psrlh", 0x37: "psrah",
+           0x3C: "psllw", 0x3E: "psrlw", 0x3F: "psraw"}
+
+
+def ee_dis(word):
+    """Text for an R5900-only instruction, or None."""
+    op, rs, rt, rd = word >> 26, (word >> 21) & 31, (word >> 16) & 31, (word >> 11) & 31
+    r = lambda n: "$" + _REGN[n]
+    if op in (0x1E, 0x1F):
+        imm = word & 0xFFFF
+        imm = imm - 0x10000 if imm & 0x8000 else imm
+        return "%s %s, %s(%s)" % ("lq" if op == 0x1E else "sq", r(rt), hex(imm), r(rs))
+    if op != 0x1C:
+        return None
+    fn, sa = word & 0x3F, (word >> 6) & 31
+    if fn in _MMI:
+        name = _MMI[fn].get(sa)
+        return "%s %s, %s, %s" % (name, r(rd), r(rs), r(rt)) if name else None
+    name = _MMI_FN.get(fn)
+    if name is None:
+        return None
+    if fn in (0x34, 0x36, 0x37, 0x3C, 0x3E, 0x3F):
+        return "%s %s, %s, %d" % (name, r(rd), r(rt), sa)
+    return "%s %s, %s, %s" % (name, r(rd), r(rs), r(rt))
+
+
 def dis(word):
     if word is None:
         return "-"
+    if word >> 26 in (0x1C, 0x1E, 0x1F):  # MMI, lq, sq: capstone reads these as other ISAs' opcodes
+        ee = ee_dis(word)
+        if ee:
+            return ee
     ins = list(MD.disasm(struct.pack("<I", word), 0))
-    return f"{ins[0].mnemonic} {ins[0].op_str}" if ins else f".word 0x{word:08x}"
+    if ins:
+        return f"{ins[0].mnemonic} {ins[0].op_str}"
+    return f".word 0x{word:08x}"
 
 
 def text_c_context(name, own_src):

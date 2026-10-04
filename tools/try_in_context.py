@@ -9,7 +9,9 @@ MATCH alone and still break the build. This script puts FILE.c into a copy of
 the function's source file in place of its INCLUDE_ASM (or its current
 block), builds that file (or the slice holding the function, for a file with
 mixed flags) the way tools/build_text.py does, and diffs the function
-against retail.
+against retail. Then it compiles the rest of that file and every later file
+that receives this block's declarations (split_text.py --refresh), which is
+where a conflicting declaration shows up; try_func.py can't see that.
 
     python tools/try_in_context.py scratch/func_003AED08.c
     python tools/try_in_context.py scratch/f.c func_003AED08 --mode N --as ps2as
@@ -49,6 +51,8 @@ def main():
     ap.add_argument("--mode", choices=["S", "N"])
     ap.add_argument("--as", dest="asm", choices=["default", "ps2as", "newas"])
     ap.add_argument("--quiet", action="store_true")
+    ap.add_argument("--no-file-check", action="store_true",
+                    help="skip compiling the rest of the file and the later files that get this block's declarations")
     ap.add_argument("--toolchain", default=tf.DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--retail", default=os.path.join(ROOT, "frontbin.elf"))
@@ -101,6 +105,50 @@ def main():
         errs = [l for l in (p.stdout + p.stderr).splitlines() if "error" in l or ": " in l and "warning" not in l]
         sys.exit("COMPILE ERROR\n" + "\n".join(errs[-15:]))
     tf.diff_object(opath, [name], tf.Retail(args.retail), args.quiet)
+    if not args.no_file_check:
+        check_files(rel, text, files, base, args)
+
+
+def check_files(rel, text, files, gcc_cmd, args):
+    """The diff above only compiles the function's own slice. The full build
+    also compiles the file's other slices (later blocks see this block's
+    declarations) and, after `split_text.py --refresh`, every later file that
+    uses a name this block declares. A clash with any of those passes
+    try_func.py and this diff, then stops the build; compile them all here."""
+    import shutil
+    import srcfiles as sf
+    import split_text
+    tmp = tempfile.mkdtemp(prefix="ctxtree_")
+    try:
+        for r, _ in files:
+            dst = os.path.join(tmp, r)
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            shutil.copyfile(os.path.join(ROOT, r), dst)
+        with open(os.path.join(tmp, rel), "w", newline="\n") as f:
+            f.write(text)
+        before = {r: sf.read_source(r, tmp) for r, _ in files}
+        split_text.refresh(files, tmp)
+        check = [rel] + [r for r, _ in files if r != rel and sf.read_source(r, tmp) != before[r]]
+        parts = bt.read_parts(os.path.join(ROOT, "tools", "text_parts.txt"))
+        cflags = [f for f in CFLAGS if not f.startswith("-Wa,")]
+        bad = []
+        for r in check:
+            bad += bt.compile_errors(r, sf.read_source(r, tmp), parts, gcc_cmd, cflags, tmp)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    others = len(check) - 1
+    if not bad:
+        print("file check: %s%s compile%s with this block" % (
+            rel, " and %d later file(s) that get its declarations" % others if others else "", "" if others else "s"))
+        return
+    print("FILE CHECK FAILED: the full build would not compile with this block:")
+    for where, lines in bad:
+        print("  " + where)
+        for l in lines[:8]:
+            print("    " + l)
+    print("Fix: match the existing declaration of that name (grep src/frontbin/), or use a per-function "
+          "alias (D_XXXXXXXX_<func>) in this block and add it to symbol_addrs_resolved.txt.")
+    sys.exit(2)
 
 
 if __name__ == "__main__":

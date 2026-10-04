@@ -999,7 +999,28 @@ INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318140);
 
 LINKER_REMNANT("asm/remnants", func_003919E0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00391A18);
+/* localdecomp:start func_00391A18 */
+typedef struct { u8 p0[8]; s32 w8; u8 pC[0x44]; s32 w50; s32 w54; s32 w58; s32 w5C; u8 p60[0xC]; s32 w6C; u8 p70[4]; s32 w74; } O_91A18;
+extern s32 func_00392108();
+extern void func_00392400();
+extern void func_00392878();
+extern void func_0038EE58();
+extern s16 D_001A666A_00391A18[];
+s32 func_00391A18(O_91A18 *o) {
+    s32 x, y, h;
+    x = o->w50;
+    y = o->w54;
+    o->w58 = 0x100;
+    o->w5C = 0x40;
+    func_0038EDE8(o, &x, &y);
+    func_0038EE58(o, &x, &y, o->w6C, 0);
+    h = o->w74 * 0xDD / o->w8 + 0x1B;
+    func_00392878(func_00392108(0x7558, 1), x, y, h, 0x40, 0x80);
+    func_00392400(func_00392108(0x7558, 0), x, y, 0x100, 0x40, 0x80);
+    func_00392400(func_00392108(0x7558, 2), x, y, 0x20, 0x20, D_001A666A_00391A18[0] == 0 ? 0 : 0x80);
+    return o->w58;
+}
+/* localdecomp:end func_00391A18 */
 
 /* localdecomp:start func_00391B30 */
 extern void func_0038EFD0(void *);

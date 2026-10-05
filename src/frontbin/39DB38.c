@@ -275,12 +275,28 @@ INCLUDE_ASM("asm/nonmatchings/text", func_0039E9A0);
 
 LINKER_REMNANT("asm/remnants", func_0039EA58);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039EA60);
+/* localdecomp:start func_0039EA60 */
+typedef struct { u8 pad[8]; s32 f8; s32 fC; u8 pad2[9]; u8 f19; } S_39EA60;
+s32 func_0039EA60(f32 *op, void *c, f32 x, f32 lo, f32 hi) {
+    S_39EA60 *o = (S_39EA60 *)op;
+    s32 a = o->f8;
+    f32 t;
+    if ((o->f19 & 1) || c != 0) {
+        if (x <= lo) return o->fC;
+        if (hi <= x) return a;
+        t = hi - x;
+        return a + (s32)((t * t * (f32)(o->fC - a)) / ((hi - lo) * (hi - lo)));
+    }
+    if (x <= lo) return o->fC;
+    if (!(hi <= x)) return a + (s32)(((hi - x) * (f32)(o->fC - a)) / (hi - lo));
+    return a;
+}
+/* localdecomp:end func_0039EA60 */
 
 /* localdecomp:start func_0039EB38 */
 extern s32 D_00222480[];
 extern f32 func_003887C8(void *, void *);
-extern void func_0039EA60(f32 *, void *, f32, f32, f32);
+extern s32 func_0039EA60(f32 *, void *, f32, f32, f32);
 typedef struct { s32 pad; f32 *q; } S_39EB38;
 void func_0039EB38(S_39EB38 *p, void *a, void *b, void *c) {
     f32 f;

@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_0039B2E8();
 void func_0039B760(u8 *, u32);
 /* --- end of declarations from other files --- */
 

@@ -8,6 +8,7 @@ extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern void func_003CA860(void);
 extern s32 func_003CA9C8(s32);
+extern void func_003C9C58();
 /* --- end of declarations from other files --- */
 
 ASM_FUNC("asm/handwritten", func_003C9C58);

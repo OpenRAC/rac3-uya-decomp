@@ -475,3 +475,21 @@ Each was confirmed by a function that now matches in the full build.
 - **K&R definition** when callers use an unprototyped `extern void f();` with another argument count (`func_003A5A90`); a prototyped definition makes those callers fail with "too few arguments".
 - **64-bit values are `long` / `unsigned long`**, not `u64`/`s64`, or gcc reports an unsupported wide integer operation (`func_003D14D0`).
 - **Float arguments need a prototype for the callee**, or gcc promotes them to double (`func_003A5DF0` went from 33 to 63 diffs without one).
+
+## Patterns from agent batches 4 to 17 (2026-10-04)
+
+Each was confirmed by a function that now matches in the full build.
+
+- **The callee's return type changes the caller.** `extern void f();` versus `extern s32 f();` (or the real `s32 *`) moves registers and scheduling even when the result is unused. It was the deciding change for `func_003B0608`, `00397380`, `003C8D50`, `00384C98` and `003E0FC8`. Try the callee's real prototype, or `s32`, before anything else.
+- **Size hints choose the address form of a scalar extern:** `__asm__(".extern X, 4");` before first use gives `$gp`; `.extern X, 16` gives the macro `lui` form even for a scalar; an unsized array read as `X[0]` gives the split `%hi`/`%lo` form (`func_003C8D50`, `003B0608`, `0039AAF0`, `0039C028`).
+- **One variable, two address forms:** when retail reads the same address through both `$gp` and `lui`, declare two names for it and give only one the `.extern X, 4` hint (`func_003968F8`, `00396120`, `00396680`, `0038EB10`). This is one of the cases where an alias is a real technique, not a leftover.
+- **Adjacent `$gp` objects need separate names**: an array base for several of them gets shared by gcc (batch 15).
+- **A switch tree with `slti`:** a `switch` with only `case 1` and `case 2` gives `beq; beq`; retail's `beq 1; slti 2; ...` tree appears when the switch also has a `case 0:` (`func_003A6520`).
+- **A one-element array declaration** (`u8 D_X[1]`, or a sized `T D_X[2]`) instead of `u8 D_X[]` changes whether the address is built before the call or split around its delay slot (`func_003E1F40`).
+- **Calling a K&R extern with fewer arguments than it reads** matches retail where it passes only some registers; adding the extra arguments adds instructions (`func_003BE418`, `func_0039C028`).
+- **Reuse the parameter as the working pointer** (`a0 = ...; a0[0] = ...`) to keep it in `$a0`; a fresh local lands in `$v1` (`func_0039C028`).
+- **Early returns:** a `bnel` followed directly by the "return 0" block comes from `if (x == 0) return 0;`, not from nesting (`func_003822C8`).
+- **Stores of different constants to one global in several branches:** write the separate stores with no result variable; gcc tail-merges them into one `sw` with retail's registers (`func_00396680`).
+- **Index a struct-array member each time** (`D.row[a].f`) rather than taking a row pointer once; the pointer form folds the member offset into the base register (`func_00395AC8`).
+- **Same family, different data:** adapt a matched sibling and change only the callee and the table global (`func_003E1F40` from `func_003E1E50`).
+- **Per-function compiler flags as a last resort:** `func_003C8D50` and `func_00384C98` match only with `-fno-schedule-insns`, `func_0039A040` only with `-fno-force-mem` (single-function overrides in `text_parts.txt`, like `func_003AD650`'s `-fno-schedule-insns`). No plain-C variant was found; treat these as open questions about the original source, not as a pattern to reach for first.

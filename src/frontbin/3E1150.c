@@ -19,6 +19,7 @@ extern s32 func_003E1950();
 extern s32 func_003E1A98();
 extern s32 func_003E11D0();
 extern void *func_003E1150();
+extern s32 *func_003E1930();
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003E1150 */

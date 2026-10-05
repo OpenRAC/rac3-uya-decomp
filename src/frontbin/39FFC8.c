@@ -9,7 +9,6 @@ typedef int u128_t __attribute__((mode(TI)));
 extern void func_003A3EF0(s32, unsigned long);
 extern void func_003A4188(void);
 extern void func_003A4128(void);
-extern void func_003A3DA0(s32);
 extern void func_003A40C8();
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
@@ -401,7 +400,42 @@ done:
 }
 /* localdecomp:end func_003A32E0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A3368);
+/* localdecomp:start func_003A3368 */
+extern s32 func_003A3220(s32);
+extern s32 D_001DA0B4;
+extern u8 D_00142BA0[];
+extern s32 D_00227480[];
+extern u8 D_00143A07[];
+extern u8 D_00160C40_003A3368[];
+extern void func_0038E380(s32 *);
+extern void func_003A3430(s32, s32, s32, s32, s32);
+void func_003A3368(s32 arg) {
+    u32 *p;
+    s32 idx;
+    s32 v;
+    s32 d;
+    s32 x;
+    s32 arr;
+    u8 *q;
+    s32 f;
+    if (arg < 0) {
+        D_001DA0B4 = 0;
+        return;
+    }
+    idx = func_003A3220(arg);
+    p = (u32 *)(D_00142BA0 + (((u32)arg >> 2) << 2));
+    *p |= 1 << (arg & 0x1F);
+    func_0038E380(D_00227480);
+    q = D_00160C40_003A3368;
+    arr = (s32)q + 8;
+    x = (idx * 4 + 2) << 2;
+    v = *(s32 *)(x + arr);
+    d = D_00143A07[0];
+    if (D_00227480[0]) d = 0;
+    f = idx == 0x1F;
+    func_003A3430(v + *(s32 *)(q + 4), *(s32 *)(D_00160C40_003A3368 + x + 0xC), (idx << 4) + arr, d, f);
+}
+/* localdecomp:end func_003A3368 */
 
 /* localdecomp:start func_003A3430 */
 extern u8 D_001A30B0[];
@@ -575,7 +609,54 @@ void func_003A3C00(void) {
 }
 /* localdecomp:end func_003A3C00 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A3C80);
+/* localdecomp:start func_003A3C80 */
+__asm__(".extern D_001D8014_003A3C80, 4");
+__asm__(".extern D_001DA0E0_g_003A3C80, 4");
+extern s32 D_001D8014_003A3C80;
+extern s32 D_001DA0E0_g_003A3C80;
+extern s32 D_001DA0E0_003A3C80;
+extern s32 D_001DA0D8_003A3C80;
+extern s32 D_001DA0DC_003A3C80;
+extern s32 D_001DA0C8_003A3C80[];
+extern u32 *D_001DA0D0_003A3C80;
+extern s32 *func_12D650();
+extern void func_12D938();
+extern void func_11F0A0();
+extern void func_003D4858();
+extern void func_003A3C00();
+extern void func_003A3DA0(s32);
+void func_003A3C80(void) {
+    s32 t;
+    s32 flags;
+    s32 lim;
+    s32 c;
+    s32 *r;
+    t = (s32)D_001DA0D0_003A3C80 - D_001DA0C8_003A3C80[D_001DA0DC_003A3C80];
+    flags = D_001D8014_003A3C80 | 0x1F;
+    lim = D_001DA0E0_003A3C80;
+    if (t >= lim) lim = t;
+    D_001D8014_003A3C80 = flags;
+    c = D_001DA0D8_003A3C80 < t;
+    D_001DA0E0_g_003A3C80 = lim;
+    if (c == 0 || D_001DA0DC_003A3C80 == 0) {
+        D_001DA0D0_003A3C80[0] = 0x70000000;
+        D_001DA0D0_003A3C80[1] = 0;
+        D_001DA0D0_003A3C80[2] = 0;
+        D_001DA0D0_003A3C80[3] = 0;
+        r = func_12D650(1);
+        *r |= 0xC0;
+        func_11F0A0(0);
+        func_12D938(r, D_001DA0C8_003A3C80[D_001DA0DC_003A3C80]);
+        if (c != 0) {
+            func_003A3DA0(1);
+            func_003A3C00();
+        }
+    } else {
+        *(volatile s32 *)&D_001D8014_003A3C80 = 0;
+        func_003D4858();
+    }
+}
+/* localdecomp:end func_003A3C80 */
 
 /* localdecomp:start func_003A3DA0 */
 extern s32 D_001D8014;

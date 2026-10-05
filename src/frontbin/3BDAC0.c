@@ -14,7 +14,40 @@ LINKER_REMNANT("asm/remnants", func_003BDAC0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BDAC8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BDBA0);
+/* localdecomp:start func_003BDBA0 */
+extern int D_001DA0D0_003BDBA0;
+__asm__(".extern D_001DA0D0_003BDBA0, 16");
+extern int D_001DA510_003BDBA0;
+__asm__(".extern D_001DA510_003BDBA0, 16");
+extern s32 D_001D4BB0_003BDBA0;
+__asm__(".extern D_001D4BB0_003BDBA0, 4");
+extern void func_003C5AE0();
+extern void func_003A40C8();
+void func_003BDBA0(void) {
+    u32 *s0, *t;
+    u32 c;
+    c = 0x20000000;
+    t = ((u32 *)D_001DA0D0_003BDBA0);
+    s0 = t;
+    t += 4;
+    D_001DA0D0_003BDBA0 = (int)t;
+    ((u32 *)D_001DA510_003BDBA0)[0] = c;
+    ((u32 *)D_001DA510_003BDBA0)[1] = D_001DA0D0_003BDBA0;
+    ((u32 *)D_001DA510_003BDBA0)[2] = 0;
+    ((u32 *)D_001DA510_003BDBA0)[3] = 0;
+    func_003C5AE0(D_001D4BB0_003BDBA0);
+    func_003A40C8();
+    ((u32 *)D_001DA0D0_003BDBA0)[0] = c;
+    ((u32 *)D_001DA0D0_003BDBA0)[1] = D_001DA510_003BDBA0 + 0x10;
+    ((u32 *)D_001DA0D0_003BDBA0)[2] = 0;
+    ((u32 *)D_001DA0D0_003BDBA0)[3] = 0;
+    D_001DA0D0_003BDBA0 = (int)(((u32 *)D_001DA0D0_003BDBA0) + 4);
+    s0[0] = c;
+    s0[1] = D_001DA0D0_003BDBA0;
+    s0[2] = 0;
+    s0[3] = 0;
+}
+/* localdecomp:end func_003BDBA0 */
 
 /* localdecomp:start func_003BDC90 */
 typedef struct { s16 a; s16 b; } T_BDC90;

@@ -69,7 +69,39 @@ void func_003B15B8(void) {
 }
 /* localdecomp:end func_003B15B8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B15E0);
+/* localdecomp:start func_003B15E0 */
+typedef struct { u8 on; u8 pad[7]; } F;
+typedef struct { void (*fn)(); s32 pad; } T;
+extern s32 D_001D8A48_003B15E0;
+__asm__(".extern D_001D8A48_003B15E0, 4");
+extern F D_001D8A78_003B15E0[1];
+__asm__(".extern D_001D8A78_003B15E0, 8");
+extern T D_001D8A7C[1];
+__asm__(".extern D_001D8A7C, 16");
+typedef struct { s32 a[7]; } R;
+extern R D_142430[];
+extern void func_003B1368();
+extern void func_003B1430();
+extern void func_003B1490();
+extern void func_003B14D0();
+extern void func_003B15B8();
+void func_003B15E0(s32 unused) {
+    s32 i;
+    s32 m = D_001D8A48_003B15E0;
+    for (i = 0; i < 4; i++) {
+        D_001D8A78_003B15E0[i].on = 1;
+        switch (m) {
+        case 0: D_001D8A7C[i].fn = func_003B1490; break;
+        case 1:
+            D_001D8A7C[i].fn = func_003B1430;
+            if (D_142430[i].a[12] == -1) D_001D8A7C[i].fn = func_003B15B8;
+            break;
+        case 2: D_001D8A7C[i].fn = func_003B1368; break;
+        case 3: D_001D8A7C[i].fn = func_003B14D0; break;
+        }
+    }
+}
+/* localdecomp:end func_003B15E0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B16B0);
 

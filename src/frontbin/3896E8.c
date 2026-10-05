@@ -1339,7 +1339,7 @@ LINKER_REMNANT("asm/remnants", func_00393458);
 /* localdecomp:start func_00393460 */
 extern void func_00385B60(s32);
 extern void func_13CA28(void);
-extern void func_13B620(void);
+extern s32 func_13B620(void);
 extern void func_003A0010(void);
 extern void func_0039D4D0(void);
 extern void func_0039CBA0(void);

@@ -92,6 +92,14 @@ def classify(name):
         return "remnant", size
     if "Handwritten function" in s:
         return "handwritten", size
+    # Two shapes spimdisasm doesn't flag but no compiler produces: the COP0
+    # performance-counter ops (mfpc/mtpc, which it can't decode), and lq/sq with
+    # $at as the data register. Both only occur in the hand-written .s files.
+    for w, o, operands in ins:
+        if (w >> 26) == 0x10 and ((w >> 21) & 31) in (0, 4) and (w & 0x7FF):
+            return "handwritten", size  # mfpc/mtpc: mfc0/mtc0 have the low 11 bits clear
+        if (w >> 26) in (0x1E, 0x1F) and ((w >> 16) & 31) == 1:
+            return "handwritten", size
     if not has_return:
         return "odd", size
     if "jtbl_" in s:

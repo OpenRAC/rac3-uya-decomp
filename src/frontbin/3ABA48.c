@@ -10,7 +10,35 @@ extern s32 func_003AD040();
 extern s32 func_003ABE70();
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ABA48);
+/* localdecomp:start func_003ABA48 */
+typedef struct { u8 p0[8]; s32 f8; s32 fC; unsigned long f10; unsigned long f18; } O_ABA48;
+extern s32 D_001DA134_003ABA48;
+extern u8 D_001D87C8[];
+extern s32 func_003ACFF8_003ABA48();
+extern s32 func_003AD0A0_003ABA48();
+extern s32 func_003AAA98();
+extern s32 func_003AD018_003ABA48();
+extern s32 func_003ABC30();
+s32 func_003ABA48(s32 unused, O_ABA48 *obj, u8 *buf) {
+    s32 v[4];
+    s32 t, p, q, w, q2, n;
+    t = *(s32 *)(buf + 0x50008);
+    p = obj->f8;
+    q = obj->fC;
+    w = (s32)buf + t - p;
+    w = (q < w) ? q : w;
+    q2 = q - w;
+    func_003ACFF8_003ABA48(D_001DA134_003ABA48, &v[0], &v[1], &v[2], &v[3]);
+    n = func_003ABC30((v[0] & 0xFFFFFFF) | 0x20000000, v[1], (v[2] & 0xFFFFFFF) | 0x20000000, v[3], p, w, buf, q2);
+    if (n > 0) {
+        if (func_003AD0A0_003ABA48(D_001DA134_003ABA48, obj->f10, obj->f18, v[0], n) == 0) {
+            func_003AAA98(D_001D87C8);
+        }
+    }
+    func_003AD018_003ABA48(D_001DA134_003ABA48, n);
+    return n > 0;
+}
+/* localdecomp:end func_003ABA48 */
 
 /* localdecomp:start func_003ABB60 */
 typedef struct { u8 p0[8]; u32 f8; s32 fC; } O_ABB60;

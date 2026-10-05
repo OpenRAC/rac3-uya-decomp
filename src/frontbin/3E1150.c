@@ -14,6 +14,7 @@ extern void func_003E1548();
 extern void func_003E15D8(void *);
 extern void func_003E1668();
 extern void func_003E1AA8(void *p);
+extern s32 func_003E1A50(s32 *, s32, s32, s32, s32, s32);
 extern s32 func_003E1BC8();
 extern void func_003E1BB8();
 extern s32 func_003E1950();

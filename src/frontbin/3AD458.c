@@ -84,9 +84,6 @@ s32 func_003AD520(u8 *a, s32 sz, u8 *b, s32 off, u8 *src1, s32 len1, u8 *src2, s
 /* localdecomp:end func_003AD520 */
 
 /* localdecomp:start func_003AD650 */
-/* the do/while(0) wrapper changes gcc's scheduling of the increment, which
-   is what this function needed -fno-schedule-insns for before */
-#define ADVANCE_3AD650(o) do { (o) += 0x27E40; } while (0)
 typedef struct {
     s32 stream;
     u8 *entries;
@@ -108,7 +105,7 @@ void func_003AD650(volatile Queue_003AD650 *queue, s32 stream, u8 *entries, s32 
             *(s32 *)(offset + (s32)queue->entries) = 0;
             *(s32 *)(offset + (s32)queue->entries + 4) = index;
             index++;
-            ADVANCE_3AD650(offset);
+            offset += 0x27E40;
         } while (index < capacity);
     }
 }

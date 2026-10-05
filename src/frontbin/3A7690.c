@@ -321,7 +321,68 @@ u8 *func_003A9768(u8 *p) {
 }
 /* localdecomp:end func_003A9768 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A9890);
+/* localdecomp:start func_003A9890 */
+extern u8 *D_001D5C78_003A9890;
+extern s32 D_001D545C;
+extern u8 D_001D8730[];
+extern u8 D_001D8740[];
+__asm__(".extern D_001D5C78_003A9890, 16");
+__asm__(".extern D_001D545C, 16");
+extern s32 func_003A6830();
+extern void func_003A5EF8();
+extern void func_003A6770();
+extern void func_003A6638();
+extern void func_003A6640();
+extern void func_003A5F88();
+extern void func_003A5FA0();
+extern void func_003A6788();
+extern void func_003A6768();
+extern void func_003A8230();
+extern void func_003A6A00();
+extern void func_003A61D0();
+extern f32 *func_003A6278();
+typedef struct { u8 pad[0x5100]; s32 a[4]; s32 b[4]; } S_3A9890;
+void func_003A9890(S_3A9890 *sx, s32 a1, s32 a2) {
+    u8 *s = (u8 *)sx;
+    u8 *b;
+    u8 *q;
+    s32 i;
+    s32 k;
+    u32 j;
+    f32 *r;
+    for (k = 0; k < 4; k++) {
+        sx->a[k] = func_003A6830(D_001D5C78_003A9890 + 0x7090, 0xC);
+        sx->b[k] = func_003A6830(D_001D5C78_003A9890 + 0x7090, 0xD);
+    }
+    if (D_001D545C != -2) {
+        for (i = 0; i < 4; i++) {
+            b = s + i * 0x618;
+            j = 0;
+            do {
+                func_003A5EF8(b, 0x16, 1, D_001D8730, a2);
+                func_003A6770(b, 5);
+                func_003A6638(b, 0x64);
+                func_003A6640(b, 0);
+                func_003A5F88(b, 0x706EC8FF, 0x706EC8FF);
+                func_003A5FA0(b, 0x80808080, 0x80808080);
+                func_003A6788(b, 0x80000000);
+                func_003A6768(b, 1);
+                j++;
+                b += 0x3C;
+            } while (j < 0x1A);
+            func_003A8230(s + (i * 0xB50 + 0x18A0), a1, a2);
+            func_003A6A00(s + (i * 0x230 + 0x4610), a2);
+        }
+    }
+    q = s + 0x45E0;
+    func_003A61D0(q, D_001D8740, a2);
+    *(f32 *)func_003A5910(q) = 2155905024.0f;
+    *func_003A6278(q) = 60008.0f;
+    ((s32 *)func_003A6278(q))[1] = 0;
+    *(s32 *)(s + 0x189C) = a2;
+    func_003A6A00(s + 0x4ED0, a2);
+}
+/* localdecomp:end func_003A9890 */
 
 LINKER_REMNANT("asm/remnants", func_003A9AB0);
 

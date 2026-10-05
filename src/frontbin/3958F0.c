@@ -1613,7 +1613,28 @@ s32 func_0039A9E0(s32 bit) {
 
 LINKER_REMNANT("asm/remnants", func_0039AA80);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039AAF0);
+/* localdecomp:start func_0039AAF0 */
+typedef struct { u8 p0[0xC]; s32 fC; s32 f10; s32 f14; u8 p1[0x10]; s32 f28; } S_39AAF0;
+extern S_39AAF0 D_00229000_0039AAF0;
+extern u32 D_001D545C;
+extern s32 D_00143140[];
+extern s32 func_003895E8();
+extern void func_0039ABB0();
+void func_0039AAF0(void *arg0) {
+    S_39AAF0 *p = &D_00229000_0039AAF0;
+    s32 r;
+    if (p->f10 != 0) {
+        if (p->f28 == 0) {
+            func_00388440(arg0, 0, 0x800);
+            return;
+        }
+        func_0039A9E0(D_001D545C);
+        r = func_003895E8(arg0, 0x800, p->f14, p->fC);
+        if (r == -1) func_0039ABB0(arg0);
+        if (D_00143140[D_001D545C] < r) D_00143140[D_001D545C] = r;
+    }
+}
+/* localdecomp:end func_0039AAF0 */
 
 LINKER_REMNANT("asm/remnants", func_0039ABA0);
 

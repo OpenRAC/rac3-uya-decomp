@@ -5,7 +5,7 @@ A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arse
 ## Where things stand
 
 - `src/frontbin/*.c` hold every function in the `.text` section, one file per original source file (`tools/src_files.txt`, see [docs/source_files.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/source_files.md)). Functions that are done are C. The rest are `INCLUDE_ASM(...)` stubs that pull in the retail assembly from `asm/nonmatchings/text/`.
-- As of 2026-10-05, 1,508 of the 1,867 functions are final source: 1134 in C, plus 149 hand-written assembly functions (`ASM_FUNC`) and 225 linker remnants (`LINKER_REMNANT`). Run `python tools/pr_check.py` for the current count.
+- As of 2026-10-05, 1,516 of the 1,867 functions are final source: 1142 in C, plus 149 hand-written assembly functions (`ASM_FUNC`) and 225 linker remnants (`LINKER_REMNANT`). Run `python tools/pr_check.py` for the current count.
 - Until 2026-10-03 all of this was one file, `src/text.c`. Anything that still refers to it (an old branch, an old note) predates the split; see [docs/source_files.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/source_files.md) for how to carry it over.
 - The toolchain is fully identified: SN Systems ee-gcc 2.95.3 v1.36, plus the right assembler per function. See [Toolchain and build](Toolchain-and-Build).
 - The level overlays are tracked for progress. Work on their shared code has started with a few verified functions in `src/levels/common/`, built by an opt-in tool ([docs/common_level_c.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/common_level_c.md)); it is not part of `make`.

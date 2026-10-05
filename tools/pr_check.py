@@ -277,12 +277,12 @@ def check_file(raw, label):
     # aliases
     sym_path = os.path.join(ROOT, "symbol_addrs_resolved.txt")
     known = set(re.findall(r"^\s*(\w+)\s*=", open(sym_path).read(), re.M)) if os.path.exists(sym_path) else set()
-    for name in sorted(set(re.findall(r"\b(D_[0-9A-Fa-f]{8}_\w+)\b", code))):
+    # D_ and func_ aliases, with the address written in 6 or 8 digits (D_1CCFD0_x, D_001CCFD0_x)
+    for name, hexaddr in sorted(set(re.findall(r"\b((?:D|func)_([0-9A-Fa-f]{6,8})_\w+)\b", code))):
         if name not in known and name not in macros:
             m = re.search(r"\b%s\b" % name, code)
-            addr = name[2:10]
             err(f"{label}:{lineno(raw, m.start())}: alias {name} has no address; add "
-                f"`{name} = 0x{addr.upper()};` to symbol_addrs_resolved.txt")
+                f"`{name} = 0x{int(hexaddr, 16):08X};` to symbol_addrs_resolved.txt")
     return raw, code, asm, defined
 
 

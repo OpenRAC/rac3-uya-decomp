@@ -322,7 +322,26 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003804A0);
 INCLUDE_ASM("asm/nonmatchings/text", func_00380600);
 TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003807F0);
+/* localdecomp:start func_003807F0 */
+extern f32 D_001D9C50_003807F0; __asm__(".extern D_001D9C50_003807F0, 16");
+typedef struct { u8 pad[0xC8]; f32 fC8; f32 fCC; u8 fD0[0x460 - 0xD0]; } S_3807F0;
+extern f32 func_003BEBF8(f32 *, f32, f32);
+extern s32 func_00388398(void *);
+void func_003807F0(s32 a) {
+    S_3807F0 *s = (S_3807F0 *)(D_00222560 + a * 0x460);
+    if (s->fC8 != 0.0f) {
+        func_003BEBF8(&D_001D9C50_003807F0 + a, s->fCC, s->fC8);
+        if ((&D_001D9C50_003807F0)[a] == s->fCC) {
+            if (func_00388398(s->fD0) == 1) {
+                s->fCC = 0.0f;
+            }
+        }
+        if (s->fCC <= 0.0f && (&D_001D9C50_003807F0)[a] <= 0.0f) {
+            s->fC8 = 0.0f;
+        }
+    }
+}
+/* localdecomp:end func_003807F0 */
 TEXT_PADDING(2);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003808E0);

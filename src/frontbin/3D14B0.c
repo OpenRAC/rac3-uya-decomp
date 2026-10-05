@@ -154,7 +154,30 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003D3780);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003D3A50);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003D3B90);
+/* localdecomp:start func_003D3B90 */
+extern s32 D_001D5600_003D3B90;
+__asm__(".extern D_001D5600_003D3B90, 16");
+extern s32 D_001D5604_003D3B90;
+__asm__(".extern D_001D5604_003D3B90, 16");
+extern s32 D_001D5628_003D3B90;
+__asm__(".extern D_001D5628_003D3B90, 16");
+extern s32 D_001D55FC_003D3B90;
+__asm__(".extern D_001D55FC_003D3B90, 16");
+extern u8 D_001D3EF0[];
+extern s32 func_003D3148();
+extern s32 func_003D3428();
+extern s32 func_003D3780();
+extern void func_003D1650(u8 **, s32, s32, s32, s32, s32, s32);
+void func_003D3B90(void) {
+    u8 *p;
+    p = D_001D3EF0;
+    func_003D3148(&p, D_001D5600_003D3B90, D_001D5604_003D3B90, D_001D5600_003D3B90 >> 6, 0, 0, (D_001D5600_003D3B90 + 1) << 4, (D_001D5604_003D3B90 + 1) << 4);
+    func_003D3428(&p, 1);
+    func_003D3780(&p, D_001D5600_003D3B90, D_001D5604_003D3B90, D_001D5600_003D3B90 >> 6, 0, 0, (D_001D5600_003D3B90 + 1) << 4, (D_001D5604_003D3B90 + 1) << 4, 0xFF82FF);
+    func_003D1650(&p, D_001D5628_003D3B90, 0x100, 0x100, 0, 1, 0x80);
+    D_001D55FC_003D3B90 = (s32)p - (s32)D_001D3EF0;
+}
+/* localdecomp:end func_003D3B90 */
 
 /* localdecomp:start func_003D3C80 */
 __asm__(".extern D_001D5634, 4");

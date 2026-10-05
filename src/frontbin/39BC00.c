@@ -13,6 +13,7 @@ extern s32 func_0039D668(s32, s32, s32);
 extern s32 func_0039D5F8();
 extern s32 func_0039D5A8();
 extern s32 func_0039D668();
+extern s32 func_0039D510(s32, s32, s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_0039BC00 */

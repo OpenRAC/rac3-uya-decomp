@@ -496,7 +496,28 @@ void func_003A6288(void *arg0, s32 arg1) {
 }
 /* localdecomp:end func_003A6288 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A62E8);
+/* localdecomp:start func_003A62E8 */
+typedef struct { f32 *p0; f32 *p4; u8 p8[4]; u32 *pC; f32 *p10; u8 p14[0x14]; f32 *p28; } S_62E8;
+extern u8 D_001D81AC_003A62E8;
+extern u32 D_001D81B0_003A62E8;
+__asm__(".extern D_001D81AC_003A62E8, 4");
+__asm__(".extern D_001D81B0_003A62E8, 4");
+extern s32 func_00392108();
+extern void func_003925F0();
+void func_003A62E8(S_62E8 *a) {
+    u32 loc[4];
+    if (*a->p10 != 0.0f) {
+        if (D_001D81AC_003A62E8 != 0) {
+            *a->pC = (*a->pC & 0xFF000000) | (D_001D81B0_003A62E8 & 0xFFFFFF);
+        }
+        loc[0] = *a->pC;
+        loc[1] = *a->pC;
+        loc[2] = *a->pC;
+        loc[3] = *a->pC;
+        func_003925F0(func_00392108((s32)a->p28[0], (s32)a->p28[1]), (s32)a->p0[0], (s32)a->p0[1], (s32)a->p4[0], (s32)a->p4[1], loc);
+    }
+}
+/* localdecomp:end func_003A62E8 */
 
 /* localdecomp:start func_003A63E0 */
 void func_003A63E0(u8 *p, s32 a, s32 b) {

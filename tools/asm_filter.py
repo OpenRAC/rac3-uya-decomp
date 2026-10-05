@@ -71,7 +71,7 @@ SIMPLE_OPS = re.compile(r"^(addu|addiu|subu|and|andi|or|ori|xor|xori|nor|slt|slt
                         r"daddu|daddiu|dsubu|dsll|dsrl|dsra|dsll32|dsrl32|dsra32|move|negu|not|lui|"
                         r"lb|lbu|lh|lhu|lw|lwu|ld|sb|sh|sw|sd|lwc1|swc1|l\.s|s\.s|lq|sq|"
                         r"add\.s|sub\.s|mul\.s|neg\.s|abs\.s|mov\.s|c\.\w+\.s|cvt\.\w+\.\w+|mtc1|mfc1|"
-                        r"movz|movn|mult|multu|mult1|multu1|nop)$")
+                        r"movz|movn|mult|multu|mult1|multu1|div|divu|mflo|mfhi|nop)$")
 
 
 def insn_count(lines, noreorder=True):
@@ -117,6 +117,10 @@ def insn_count(lines, noreorder=True):
             return None
         if m.group(1) in ("li",):
             return None
+        if m.group(1) in ("div", "divu"):
+            dops = [o.strip() for o in ops.split(",")]
+            if not (len(dops) == 2 or (len(dops) == 3 and dops[0] in ("$0", "$zero"))):
+                return None  # `div rd, rs, rt` is an assembler macro (several words)
         n += 1
     return n
 

@@ -1269,7 +1269,45 @@ s32 func_003997F0(s32 *arg0) {
 }
 /* localdecomp:end func_003997F0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00399830);
+/* localdecomp:start func_00399830 */
+extern void func_00388440(void *, s32, s32);
+extern void func_00388550();
+extern u16 func_00399748(u8 *p, u32 n);
+s32 func_00399830(u8 *dst, s32 n, s32 *e) {
+    s32 off = 0;
+    u8 *p = dst + 8;
+    s32 *q;
+    s32 t, u, w;
+    if (e[0] != 0) {
+        q = e;
+        do {
+            off += 8;
+            w = n * q[1];
+            u = q[0];
+            t = u + w;
+            *(s32 *)p = q[2];
+            *(s32 *)(p + 4) = q[1];
+            p += 8;
+            if (q[2] == 0x1770) {
+                func_00388440(p, 0, q[1]);
+            } else {
+                func_00388550(p, t, q[1]);
+            }
+            p += q[1];
+            off += q[1];
+            q += 4;
+            p = (u8 *)((s32)p + 3 & ~3);
+            off = (off + 3) & ~3;
+        } while (q[0] != 0);
+    }
+    off += 8;
+    *(s32 *)(p + 4) = 0;
+    *(s32 *)p = -1;
+    *(s32 *)(dst + 4) = func_00399748(dst + 8, off);
+    *(s32 *)dst = off;
+    return off + 8;
+}
+/* localdecomp:end func_00399830 */
 
 /* localdecomp:start func_00399948 */
 typedef struct { u8 b[8]; } V8_399948;

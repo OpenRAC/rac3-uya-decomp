@@ -303,7 +303,30 @@ void func_003AC3A0(p, n) S_AC3A0 *p; s32 n; {  /* K&R: older callers use unproto
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AC3F8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AC5E0);
+/* localdecomp:start func_003AC5E0 */
+extern s32 func_11EE60(s32);
+extern void func_11EE40(s32);
+extern void func_003AC040(s32);
+extern void func_003ABFD0(s32);
+s32 func_003AC5E0(s32 *p) {
+    func_11EE60(p[0x10]);
+    p[0x11] = 0;
+    func_003AC040(5);
+    p[7] = *(volatile s32 *)0x1000B410;
+    p[8] = *(volatile s32 *)0x1000B430;
+    p[9] = *(volatile s32 *)0x1000B420;
+    p[10] = *(volatile s32 *)0x1000B400;
+    if (*(volatile s32 *)0x10002010 & 0xF0) { do {} while (*(volatile s32 *)0x10002010 & 0xF0); }
+    func_003ABFD0(0);
+    p[11] = *(volatile s32 *)0x1000B010;
+    p[12] = *(volatile s32 *)0x1000B020;
+    p[13] = *(volatile s32 *)0x1000B000;
+    p[14] = *(volatile s32 *)0x10002020;
+    p[15] = *(volatile s32 *)0x10002010;
+    func_11EE40(p[0x10]);
+    return 1;
+}
+/* localdecomp:end func_003AC5E0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AC6F0);
 

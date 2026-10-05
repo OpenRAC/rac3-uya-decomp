@@ -495,3 +495,14 @@ Each was confirmed by a function that now matches in the full build.
 - **Extra compiler flags are a per-file question, not a per-function trick.** The original build set flags per source file, so a flag a function needs must also leave every other function in its file matching. Check that before adding one: compile the file's other C functions with it (`try_func.py --flags="-fno-..."` on each).
   - `-fno-force-mem` (needed by `func_0039A040`): all 88 C functions in `3958F0.c` still match with it, and 1069 of all 1123 do. It's now the flag for the whole of `3958F0.c`, which is most likely what the original used.
   - `-fno-schedule-insns` (needed by `func_003AD650`, `func_003C8D50`, `func_00384C98`): 524 of the 1123 C functions change with it, so it wasn't a project-wide flag. Around those three, the C functions that still match with it form runs of only 3, 3 and 1, so each would have to be its own small source file. That is possible (our file boundaries are estimates, and `func_003AD650` is in a different address mode from both neighbours, which is what a file boundary looks like), but unproven. They stay single-function overrides; if more neighbours turn out to need the flag, that's evidence for a small file there.
+
+## Patterns from agent batch 19 (2026-10-05)
+
+- **A `long` working variable keeps a `movz` chain:** with `int`, gcc folds `r = 1; if (x == -2) r = 0;` into `xor`/`sltu`; with `long` (and a `long` return) it emits retail's `movz` chain.
+- **`t = &A; p = &B; if (a0 == 0) p = t;`** loads the two addresses in the same order as retail's `movz $a2, $a1, $a0`; a ternary or if/else swaps them.
+- **Statement-order search pays off early:** the order of a function's first few statements alone moved results between 5 and 46 differing words; a brute-force search over them matched `func_00394B38` and `func_00394F78`, and a random-swap search over store order matched `func_0039C7B0` and `func_0039C8A8`.
+- **`for` versus `do { } while`** can change which registers a loop counter and its copy get (`func_003D98D0` needed `for`). Try both.
+- **A guarded hardware wait loop:** `if (r & 0xF0) { do {} while (r & 0xF0); }` with `r` a `volatile` hardware register read gives retail's shape; a plain `while` gives the unguarded form (`func_003AC5E0`).
+- **Callees with float arguments:** if retail loads `$f13` before a call, the callee's real prototype has more float parameters than the call seems to need. Check its definition.
+- **No `#define` in a function block:** `split_text.py --refresh` copies a block's macros into later files like any declaration.
+- **`-fno-schedule-insns` never helped a near miss:** tried on about 25 near misses, it made all but one worse and fixed none. The remaining differences in near misses are register allocation and statement order, not scheduling.

@@ -134,7 +134,33 @@ void func_00394C18(u8 *d, u8 *s) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00394C58);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00394F78);
+/* localdecomp:start func_00394F78 */
+typedef struct { u8 p[0x2D]; u8 b2D; } S_4F78;
+extern u8 D_002D7210[];
+extern s16 D_002D7030[];
+extern s32 D_002D67C0[];
+extern s32 D_002D9CB0[];
+extern s32 D_001DA500;
+extern s32 D_001DA504;
+extern void func_00394C58(s32, s32, void *, s32);
+extern void func_003C79F0();
+void func_00394F78(S_4F78 *a, s32 b, void *c, s32 d) {
+    if (a == 0) {
+        func_003C79F0(d, 1);
+        D_002D7210[d] = D_001DA504;
+        D_001DA504 = D_001DA504 + 1;
+    } else {
+        D_002D7030[D_001DA500] = d;
+        D_002D7210[d] = D_001DA500;
+        D_002D67C0[D_001DA500] = (s32)a;
+        D_002D9CB0[D_001DA500] = a->b2D << 10;
+        if (a->b2D == 0xFF) D_002D9CB0[D_001DA500] = 0x100000;
+        func_00394C58((s32)a, b, c, d);
+        func_003C79F0(d, 0);
+        D_001DA500 = D_001DA500 + 1;
+    }
+}
+/* localdecomp:end func_00394F78 */
 
 LINKER_REMNANT("asm/remnants", func_00395088);
 

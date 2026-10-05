@@ -25,13 +25,13 @@ void func_0039BC00(void) {
 }
 /* localdecomp:end func_0039BC00 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BC18);
+ASM_FUNC("asm/handwritten", func_0039BC18);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BC40);
+ASM_FUNC("asm/handwritten", func_0039BC40);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BC70);
+ASM_FUNC("asm/handwritten", func_0039BC70);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BC80);
+ASM_FUNC("asm/handwritten", func_0039BC80);
 
 /* localdecomp:start func_0039BC90 */
 void func_0039BC90(void) {
@@ -55,7 +55,7 @@ void func_0039BCA0(void) {
 }
 /* localdecomp:end func_0039BCA0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BCC8);
+ASM_FUNC("asm/handwritten", func_0039BCC8);
 
 ASM_FUNC("asm/handwritten", func_0039BD08);
 
@@ -514,7 +514,7 @@ typedef struct { u8 pad[4]; s16 s; u8 pad2[0x10]; } S_39D6C8;
 extern S_39D6C8 D_1CCFD0_0039D6C8;
 extern void func_0039CEA8();
 extern void func_13CA28();
-extern void func_13B620();
+extern s32 func_13B620(void);
 extern void func_13CA20();
 extern void func_00388418();
 s32 func_0039D6C8(s32 a) {

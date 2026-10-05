@@ -32,7 +32,43 @@ s32 func_0039FFC8(u32 a0, s32 a1) {
 
 LINKER_REMNANT("asm/remnants", func_0039FFF0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A0010);
+/* localdecomp:start func_003A0010 */
+/* sq $zero has no C form (the compiler always emits por+sq from a zero); this is the inline-asm macro the original used */
+#define QZERO(p) __asm__ __volatile__("sq $0,0x0(%0)" : : "r"(p))
+extern s32 D_001D6E1C;
+extern u8 D_1A3100[];
+extern void func_13CA28(void);
+extern s32 func_13B620(void);
+extern void func_13C170(void);
+extern s32 func_12C908(s32);
+extern void func_003A0200(void);
+void func_003A0010(void) {
+    s32 c;
+    s32 i;
+    u8 *p;
+    func_13CA28();
+    func_13B620();
+    func_13C170();
+    D_001D6E1C = 0xB4;
+    while (func_13B620() != 0) {
+        func_12C908(0);
+        c = D_001D6E1C;
+        if (c == 0) break;
+        D_001D6E1C = c - 1;
+    }
+    for (i = 3; i >= 0; i--) {
+        QZERO(D_1A3100 + i * 0x10);
+    }
+    p = D_001A30B0;
+    *(s32 *)(p + 0x48) = 0;
+    for (i = 0x33; i >= 0; i--) {
+        *(s32 *)(p + 0xC0) = 0;
+        *(u8 *)(p + 0xD0) = 0;
+        p += 0x80;
+    }
+    func_003A0200();
+}
+/* localdecomp:end func_003A0010 */
 
 /* localdecomp:start func_003A00D0 */
 void func_003A00D0(s32 a0, long a1) {

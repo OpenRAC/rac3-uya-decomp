@@ -388,11 +388,13 @@ function rather than rewriting the C.
   (`*(u128_t *)` at 0x00/0x10/0x20) with the range's flags allocates `$2`, `$3`, `$6`;
   `$at` is not something this compiler hands to a value. In `frontbin.elf` the only
   files containing `lq $at` are the nine under `asm/handwritten/`, plus
-  `func_00388E58` and `func_00388E38` - both still `INCLUDE_ASM` in `src/frontbin/388B40.c`.
+  `func_00388E58` and `func_00388E38`, which are now `ASM_FUNC` there too (2026-10-05:
+  `tools/triage.py` files `lq`/`sq $at` and the COP0 performance-counter ops as hand-written).
 - **`sq $zero` - a 128-bit zero store.** `*(u128_t *)p = 0;`, `(u128_t)0` and a named
   `register u128_t z = 0;` all compile to `por $2,$zero,$zero` followed by `sq $2,0($a0)`:
   the TImode zero is materialised in a register first, so retail's single `sq $zero` is out
-  of reach from C here.
+  of reach from plain C. Resolved 2026-10-05 with the `QZERO` inline-asm macro (see the
+  blocker pass below): the original used inline asm for it.
 
 A third shape from the same pass, `sq $31` / `lq $31`, has a workaround rather than a dead
 end - list the function in `tools/sq_ra_funcs.txt` (*Functions that save `$ra` with `sq`*
@@ -494,7 +496,8 @@ Each was confirmed by a function that now matches in the full build.
 - **Same family, different data:** adapt a matched sibling and change only the callee and the table global (`func_003E1F40` from `func_003E1E50`).
 - **Extra compiler flags are a per-file question, not a per-function trick.** The original build set flags per source file, so a flag a function needs must also leave every other function in its file matching. Check that before adding one: compile the file's other C functions with it (`try_func.py --flags="-fno-..."` on each).
   - `-fno-force-mem` (needed by `func_0039A040`): all 88 C functions in `3958F0.c` still match with it, and 1069 of all 1123 do. It's now the flag for the whole of `3958F0.c`, which is most likely what the original used.
-  - `-fno-schedule-insns` (needed by `func_003AD650`, `func_003C8D50`, `func_00384C98`): 524 of the 1123 C functions change with it, so it wasn't a project-wide flag. Around those three, the C functions that still match with it form runs of only 3, 3 and 1, so each would have to be its own small source file. That is possible (our file boundaries are estimates, and `func_003AD650` is in a different address mode from both neighbours, which is what a file boundary looks like), but unproven. They stay single-function overrides; if more neighbours turn out to need the flag, that's evidence for a small file there.
+  - `-fno-schedule-insns` (now only `func_003C8D50` and `func_00384C98`; `func_003AD650` lost its override, see the blocker pass below): 524 of the 1123 C functions change with it, so it wasn't a project-wide flag. Around those two, the C functions that still match with it form runs of only 3 and 1, so each would have to be its own small source file. That is possible (our file boundaries are estimates), but unproven. They stay single-function overrides; if more neighbours turn out to need the flag, that's evidence for a small file there. A test on 44 scheduling near misses (`tools/try_func.py --flags="-fno-schedule-insns"`): 0 matched and 44 got worse, so the flag is not a general fix for instruction-order near misses.
+  - `-fno-schedule-insns2` was on: only 392 of the 1123 C functions still match without it.
 
 ## Patterns from agent batch 19 (2026-10-05)
 
@@ -506,3 +509,18 @@ Each was confirmed by a function that now matches in the full build.
 - **Callees with float arguments:** if retail loads `$f13` before a call, the callee's real prototype has more float parameters than the call seems to need. Check its definition.
 - **No `#define` in a function block:** `split_text.py --refresh` copies a block's macros into later files like any declaration.
 - **`-fno-schedule-insns` never helped a near miss:** tried on about 25 near misses, it made all but one worse and fixed none. The remaining differences in near misses are register allocation and statement order, not scheduling.
+## Patterns from the blocker pass (2026-10-05)
+
+A pass over the remaining `INCLUDE_ASM` functions, sorted by what each one needs. Each item below was confirmed by a function that now matches in the full build.
+
+- **`sq $zero` is inline asm, resolved.** The compiler never stores a quadword zero directly: a zeroed `u128_t` always comes out as `por $v0, $zero, $zero; sq $v0`. Retail's bare `sq $zero, off(reg)` (the 16-byte zeroing loops in `func_003A0010` and `func_003A2DF8`) therefore came from an inline-asm macro in the original source, the same conclusion Lombyte's `qzero.h` reached for other Insomniac binaries. Use
+
+  ```c
+  #define QZERO(p) __asm__ __volatile__("sq $0,0x0(%0)" : : "r"(p))
+  ```
+
+  An asm with no outputs is implicitly volatile, so the `__volatile__` is just documentation; the `"=m"` output form is the only one that is not. Write the loop with the index in the address, `QZERO(D_1A3100 + i * 0x10)` for `i = 3; i >= 0; i--`, not with a running pointer: the running pointer makes gcc keep a second `lui` in a saved register and grows the frame (`func_003A0010`).
+- **Which register comes first in `addu`.** For a C pointer plus an integer gcc always puts the pointer first in the tree, so `base + off` gives `addu $v0, $base, $off`. When retail has the offset register first, write the sum as integers with the offset on the left: `(u8 *)(off + (s32)b)`. For a loaded base, load it into a local first (`g = *(s32 *)0x1D4B38; base = g + off;`). Matched `func_0037F4F8` (a VU0 function: `lqc2`/`vadd.xyz`/`sqc2` in `__asm__` around plain `u128_t` copies).
+- **A `do { } while (0)` macro changes scheduling.** Wrapping the loop's increment in a statement macro, `#define ADVANCE(o) do { (o) += 0x27E40; } while (0)`, reorders gcc 2.95's output enough that `func_003AD650` matches at the project flags; it needed `-fno-schedule-insns` before. Try this before reaching for a flag when the diff is only the position of an increment or a store.
+- **Hand-written code the tools now flag.** `tools/triage.py` classifies as hand-written any function that reads or writes the COP0 performance counters (`mfpc`/`mtpc`, which spimdisasm cannot decode) or that uses `$at` as the data register of `lq`/`sq`; no compiler emits either. Seven functions moved to `asm/handwritten/` on that rule: `func_0039BC18`, `0039BC40`, `0039BC70`, `0039BC80`, `0039BCC8` (performance counters) and `func_00388E38`, `func_00388E58` (`$at` quadword copies).
+- **Keep one prototype per callee across files.** The split build copies declarations from earlier files, so `extern void func_13B620();` in one file and `extern s32 func_13B620(void);` in another is a compile error in `pr_check.py` and the file check of `try_in_context.py`. Fix the older declaration (it was `void` only because that file ignored the result) rather than adding an alias.

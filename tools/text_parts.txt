@@ -211,8 +211,6 @@
 0x003AD288     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003AD430     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003AD458     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
-0x003AD650     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-schedule-insns   # single-function override
-0x003AD6A8     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003AD8A8     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003ADBB0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003ADC68     -O2 -G8 -fopt-stack -mno-check-zero-division

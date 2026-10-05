@@ -68,7 +68,55 @@ void func_003AA290(void) {
 
 LINKER_REMNANT("asm/remnants", func_003AA2D0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AA2E8);
+/* localdecomp:start func_003AA2E8 */
+extern s32 D_001DA10C;
+extern s32 D_001DA110;
+extern s32 D_001DA114;
+extern s32 D_001DA118;
+extern s32 D_001DA120;
+extern s32 D_001DA124;
+extern s32 D_001DA128;
+extern s32 D_001DA12C;
+extern s32 D_001DA108_003AA2E8;
+extern s32 D_001DA11C_003AA2E8;
+extern s32 D_001DA130_003AA2E8;
+extern s32 D_001DA134_003AA2E8;
+extern s32 D_001DA138_003AA2E8;
+extern s32 D_001DA140[];
+extern s32 D_001D4D40;
+extern void func_0038CC68();
+extern s32 func_003AA4B0();
+extern void func_003AAA00();
+extern void func_003AA828();
+s32 func_003AA2E8(s32 a, s32 b, s32 (*alloc)(s32, s32), s32 c, s32 flag) {
+    s32 i;
+    s32 *p;
+    s32 r;
+    D_001DA10C = alloc(0x1A0000, 0x40);
+    p = D_001DA140;
+    D_001DA110 = alloc(0x4FC80, 0x40);
+    D_001DA114 = alloc(0x1010, 0x40);
+    D_001DA108_003AA2E8 = alloc(0x14, 0x40);
+    D_001DA118 = alloc(0xEC800, 0x40);
+    D_001DA11C_003AA2E8 = alloc(0x5000C, 0x40);
+    D_001DA120 = alloc(0xC000, 0x40);
+    D_001DA124 = alloc(0x80000, 0x40);
+    D_001DA128 = alloc(0x4000, 0x40);
+    D_001DA12C = alloc(0x3000, 0x40);
+    D_001DA130_003AA2E8 = alloc(0xC, 0x40);
+    D_001DA134_003AA2E8 = alloc(0xB8, 0x40);
+    D_001DA138_003AA2E8 = alloc(0x68, 0x40);
+    for (i = 1; i >= 0; i--) {
+        *p++ = alloc(0x4000, 0x80);
+    }
+    func_0038CC68(flag != 0, flag != 0);
+    func_003AA828(a, b, c);
+    r = func_003AA4B0(D_001DA134_003AA2E8, D_001DA11C_003AA2E8, D_001DA130_003AA2E8);
+    func_003AAA00();
+    D_001D4D40 = D_001D4D40 & ~0x80;
+    return r;
+}
+/* localdecomp:end func_003AA2E8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AA4B0);
 

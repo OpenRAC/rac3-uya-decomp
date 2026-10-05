@@ -37,7 +37,35 @@ s32 *func_003E03C8(s32 *p) {
 }
 /* localdecomp:end func_003E03C8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E03D8);
+/* localdecomp:start func_003E03D8 */
+typedef struct { u8 p0[0x50]; s32 *arr[35]; u8 pad[0x41DC - 0xDC]; } O_3E03D8;
+extern O_3E03D8 D_00302E80_003E03D8[];
+extern O_3E03D8 D_003177CC[];
+extern s32 func_003E1BC8();
+void func_003E03D8(void) {
+    O_3E03D8 *s = D_00302E80_003E03D8;
+    O_3E03D8 *p;
+    s32 **q;
+    if (s != 0) {
+        p = D_003177CC;
+        if (p != s) {
+            do {
+                p--;
+                if (p->arr != 0) {
+                    q = p->arr + 35;
+                    if (p->arr != q) {
+                        do {
+                            q--;
+                            if (*q) func_003E1BC8(*q);
+                            *q = 0;
+                        } while (p->arr != q);
+                    }
+                }
+            } while (p != D_00302E80_003E03D8);
+        }
+    }
+}
+/* localdecomp:end func_003E03D8 */
 
 /* localdecomp:start func_003E0478 */
 extern u8 D_00302E80[];

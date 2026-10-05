@@ -372,7 +372,43 @@ s32 func_003BB558(void) {
 }
 /* localdecomp:end func_003BB558 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BB5C0);
+/* localdecomp:start func_003BB5C0 */
+extern s32 func_00388398();
+extern s32 func_003B8A20();
+extern void func_003B6488();
+s32 func_003BB5C0(s32 a) {
+    S_3BB558 *g = D_002CE040;
+    s32 r = 0;
+    s32 k;
+    switch (g->w44) {
+    case 0:
+        if (func_00388398(&g->w40) == 1) {
+            g->w40 = 0xF;
+            g->w44 = g->w44 + 1;
+        }
+        break;
+    case 1:
+        if (func_00388398(&g->w40) == 1) {
+            g->w40 = 0x5A;
+            g->w44 = g->w44 + 1;
+        }
+        func_003B8B10((f32)g->w40 / 15.0f);
+        break;
+    case 2:
+        if (func_003B8A20()) func_003B6488();
+        if (func_00388398(&g->w40) == 1 && a != 0) {
+            g->w40 = 0xF;
+            g->w44 = g->w44 + 1;
+        }
+        break;
+    case 3:
+        if (func_00388398(&g->w40) == 1) r = 1;
+        func_003B8B10(1.0f - (f32)g->w40 / 15.0f);
+        break;
+    }
+    return r;
+}
+/* localdecomp:end func_003BB5C0 */
 
 /* localdecomp:start func_003BB730 */
 extern s32 D_001D4BC0;
@@ -574,7 +610,44 @@ INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318A00);
 INCLUDE_ASM("asm/nonmatchings/text", func_003BC568);
 TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BCFB0);
+/* localdecomp:start func_003BCFB0 */
+typedef struct { u8 p0[0x20]; u8 f20; u8 p21[0x47]; s32 f68; u8 p6c[0x34]; u32 fA0; u8 pa4[0x5C]; } O_3BCFB0;
+__asm__(".extern D_001DA520, 16");
+__asm__(".extern D_001DA524, 16");
+__asm__(".extern D_001D9D80, 16");
+__asm__(".extern D_001DA440, 16");
+extern u32 D_001DA520;
+extern u32 D_001DA524;
+extern s32 D_001D9D80;
+extern s32 D_001DA440;
+extern volatile u8 D_001D90F8;
+extern s32 func_003C1DA0();
+extern void func_003BD0D8();
+extern void func_00388440();
+extern int func_003BE3C0();
+O_3BCFB0 *func_003BCFB0(s32 a, s32 b) {
+    O_3BCFB0 *p;
+    O_3BCFB0 *end;
+    s32 r;
+    end = (O_3BCFB0 *)D_001DA524;
+    p = (O_3BCFB0 *)D_001DA520;
+    if (p < (O_3BCFB0 *)D_001DA524) do {
+        if (p->f20 < 0xFE) continue;
+        if ((u32)D_001D9D80 < p->fA0) continue;
+        r = 0;
+        if (b) r = func_003C1DA0(b);
+        if (r == 0 && b) break;
+        if (p->f20 == 0xFF) *((u8 *)p + 0x120) = p->f20;
+        func_003BD0D8(p, a);
+        p->f68 = r;
+        if (b) func_00388440(r, 0, b);
+        if (D_001DA440) D_001DA440 = D_001DA440 - 1;
+        return p;
+    } while (++p < (O_3BCFB0 *)D_001DA524);
+    if (D_001D90F8) func_003BE3C0();
+    return 0;
+}
+/* localdecomp:end func_003BCFB0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BD0D8);
 

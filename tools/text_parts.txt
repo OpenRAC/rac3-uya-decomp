@@ -128,6 +128,8 @@
 0x00397288     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
 0x00397380     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem @ps2as   # single-function override
 0x0039748C     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
+0x00397490     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x00399660     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
 0x00399F40     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses -fno-force-mem   # single-function override
 0x00399F70     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
 0x0039A130     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem @ps2as   # single-function override

@@ -7,6 +7,7 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern void func_003BDAC8();
 /* --- end of declarations from other files --- */
 
 LINKER_REMNANT("asm/remnants", func_003BDAC0);
@@ -15,7 +16,39 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BDAC8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BDBA0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BDC90);
+/* localdecomp:start func_003BDC90 */
+typedef struct { s16 a; s16 b; } T_BDC90;
+typedef struct { u8 c[0xC]; s32 fC; } E_BDC90;
+typedef struct { u8 p0[0x20]; E_BDC90 *f20; } O_BDC90;
+extern s32 D_002DA070[];
+extern O_BDC90 *D_002D67C0[];
+extern T_BDC90 D_002D98B0[];
+void func_003BDC90(void) {
+    s32 *p;
+    E_BDC90 *e;
+    u8 *c;
+    u8 *o;
+    T_BDC90 *t;
+    for (p = D_002DA070; *p >= 0; p++) {
+        e = D_002D67C0[*p]->f20;
+        for (;;) {
+            o = (u8 *)(e->fC & 0x7FFFFFFF);
+            c = e->c;
+            if (*c != 0xFF) {
+                do {
+                    t = &D_002D98B0[*c];
+                    if (t->a != 0) { *(u32 *)(o + 0x30) = (*(u32 *)(o + 0x30) & 0xFFFFC000) | t->a; }
+                    if (t->b != 0) { *(u32 *)(o + 0x40) = (*(u32 *)(o + 0x40) & 0xFFFFC000) | t->b; }
+                    c++;
+                    o += 0x40;
+                } while (*c != 0xFF);
+            }
+            if (e->fC < 0) break;
+            e++;
+        }
+    }
+}
+/* localdecomp:end func_003BDC90 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BDD68);
 

@@ -6,6 +6,7 @@ extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern void func_00389920(s32);
+extern s32 func_0039D6C8();
 extern s32 func_0039D6C8(s32);
 extern s32 func_003B2AA0(void);
 extern s32 func_003E3040();
@@ -13,6 +14,8 @@ extern void func_003B43B0(void);
 extern s32 func_0037DCE8(void);
 extern void func_003B43C0();
 extern void *func_003AED40(s32);
+extern s32 func_003B4220();
+extern void func_003B41F8();
 extern s32 func_003E24B0(s32 arg0, s32 arg1);
 extern void func_003B3558(s32);
 /* --- end of declarations from other files --- */
@@ -70,7 +73,40 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B15E0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B16B0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B1DA8);
+/* localdecomp:start func_003B1DA8 */
+__asm__(".extern D_001D8A48_003B1DA8, 4");
+extern s32 D_001D8A48_003B1DA8;
+extern s32 func_0037DF98();
+extern void func_003B3DB8(s32, s32, s32, s32, s32, s32, s32, s32, f32, s32, s32, s32, s32, s32, s32);
+void func_003B1DA8(void) {
+    s32 a = 0;
+    s32 b = 0;
+    s32 c = 0;
+    switch (D_001D8A48_003B1DA8) {
+    case 0:
+        a = 0x143;
+        b = 0x124;
+        c = 0x100;
+        break;
+    case 1:
+        a = 0x144;
+        b = 0x124;
+        c = 0x100;
+        break;
+    case 2:
+        a = 0x14E;
+        b = 0x124;
+        c = 0x100;
+        break;
+    case 3:
+        a = 0x1750;
+        b = 0x124;
+        c = 0x100;
+        break;
+    }
+    func_003B3DB8(0x10, 0xD000B, 0xD0002, 0xD0003, 0xD0004, 0xD0000, 0xD0001, 0xD0005, 8.7f, 0xD0008, func_0037DF98(a), 0xD0006, b, 0xD0007, c);
+}
+/* localdecomp:end func_003B1DA8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B1EB0);
 

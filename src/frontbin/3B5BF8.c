@@ -154,7 +154,21 @@ void func_003B60B0(s32 a) {
 }
 /* localdecomp:end func_003B60B0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B60F0);
+/* localdecomp:start func_003B60F0 */
+__asm__(".extern D_001D8C60, 4");
+__asm__(".extern D_001D8C5C, 4");
+extern f32 D_001D8C60;
+extern f32 D_001D8C5C;
+void func_003B60F0(void) {
+    f32 x, a;
+    D_001D8C5C += D_001D8C60 * 0.05f; a = D_001D8C60;
+    if (D_001D8C5C > 1.0f || D_001D8C5C < 0.0f) a = -a;
+    D_001D8C60 = a;
+    x = (D_001D8C5C > 1.0f) ? 1.0f : D_001D8C5C;
+    D_001D8C5C = x;
+    { f32 z = 0.0f; if (!(x < z)) z = x; D_001D8C5C = z; }
+}
+/* localdecomp:end func_003B60F0 */
 
 LINKER_REMNANT("asm/remnants", func_003B6190);
 

@@ -39,7 +39,46 @@ void func_003CB890(s32 arg0) {
 }
 /* localdecomp:end func_003CB890 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003CB958);
+/* localdecomp:start func_003CB958 */
+typedef int u128_3CB958 __attribute__((mode(TI)));
+extern u8 D_001DA730[8];
+extern f32 D_001DA740;
+extern f32 D_001DA744;
+extern volatile f32 D_001DA748;
+extern u8 D_001DA750[];
+extern void func_003886B0(void *, void *);
+extern void func_003886E8(f32 *, void *, f32);
+extern void func_00388758(void *, void *, void *);
+extern void func_00388830(s32, s32, f32);
+void func_003CB958(void *a, f32 t) {
+    f32 v[4];
+    f32 x, y, z;
+    *(u128_3CB958 *)D_001DA730 = *(u128_3CB958 *)a;
+    func_003886B0(v, a);
+    func_003886E8((f32 *)D_001DA750, D_001DA730, t);
+    x = v[0]; y = v[1]; z = v[2];
+    if (x < y) {
+        if (x < z) {
+            D_001DA740 = x;
+            D_001DA744 = z;
+            D_001DA748 = y;
+        } else {
+            goto A;
+        }
+    } else if (y < z) {
+        D_001DA740 = z;
+        D_001DA744 = y;
+        D_001DA748 = x;
+    } else {
+A:
+        D_001DA740 = y;
+        D_001DA744 = x;
+        D_001DA748 = z;
+    }
+    func_00388758(&D_001DA740, &D_001DA740, D_001DA730);
+    func_00388830((s32)&D_001DA740, (s32)&D_001DA740, 1.0f);
+}
+/* localdecomp:end func_003CB958 */
 
 /* localdecomp:start func_003CBA68 */
 void func_003CC4B0(s16 *);

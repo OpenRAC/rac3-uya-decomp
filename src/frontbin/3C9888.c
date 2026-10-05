@@ -7,6 +7,7 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern void func_00388B68();
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003C9888);
@@ -98,5 +99,33 @@ void func_003C9AE0(void) {
 }
 /* localdecomp:end func_003C9AE0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C9B80);
+/* localdecomp:start func_003C9B80 */
+extern s32 D_001D4BB4;
+extern u8 D_00222480[];
+extern u8 D_002F9C80[];
+extern void func_003886E8(f32 *, void *, f32);
+extern void func_00388F08();
+extern void func_00388648();
+extern void func_11F0A0(s32);
+extern void func_003C9C58();
+void func_003C9B80(void) {
+    u8 v[0x40];
+    u32 *o = D_001DA0D0;
+    s32 t = D_001D4BB4;
+    D_001DA70C = o;
+    o += 4;
+    D_001D4BB0 = t;
+    D_001DA0D0 = o;
+    func_00388B68(v);
+    func_003886E8((f32 *)(v + 0x30), D_00222480, -1024.0f);
+    *(f32 *)(v + 0x3C) = 1.0f;
+    func_00388F08(v, D_00222480 - 0x100, v);
+    func_003A3E40(5, (s32)v, 4);
+    func_003A3E40(0x14D, (s32)v, 4);
+    func_11F0A0(0);
+    func_003C9C58();
+    func_003C99D0();
+    func_00388648(D_002F9C80, 0x3000, 0x40);
+}
+/* localdecomp:end func_003C9B80 */
 TEXT_PADDING(2);

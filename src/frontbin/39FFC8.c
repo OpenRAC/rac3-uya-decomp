@@ -16,6 +16,8 @@ extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern void func_003A3C80(void);
 extern void func_003A3C00();
+extern void func_003A3DE8(s32, u32);
+extern void func_003A41F0(void);
 extern void func_003A0010(void);
 extern void func_003A3508(void);
 extern void func_003A3368();
@@ -276,7 +278,25 @@ void func_003A2BC0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A2C18);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A2DF8);
+/* localdecomp:start func_003A2DF8 */
+typedef struct { u8 pad[0x48]; s32 f48; s32 f4C; } E_3A2DF8;
+__asm__(".extern D_001D6EEC, 4");
+__asm__(".extern D_001D6EF0, 4");
+extern u8 *D_001D6EEC;
+extern f32 D_001D6EF0;
+extern s32 D_001DA090[2];
+void func_003A2DF8(E_3A2DF8 *a0) {
+    s32 i;
+    f32 one;
+    D_001D6EEC = (u8 *)a0;
+    for (i = 0x1FF; i >= 0; i--) {
+        a0[i].f48 = 0;
+    }
+    one = 1.0f;
+    QZERO(D_001DA090);
+    D_001D6EF0 = one;
+}
+/* localdecomp:end func_003A2DF8 */
 
 /* localdecomp:start func_003A2E40 */
 extern u8 *D_001D6EEC;

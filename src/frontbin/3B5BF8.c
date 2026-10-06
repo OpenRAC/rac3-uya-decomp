@@ -469,7 +469,45 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B7EB0);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B7FD8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B8168);
+/* localdecomp:start func_003B8168 */
+typedef int u128_3B8168 __attribute__((mode(TI)));
+typedef struct { u8 p0[0x38]; s32 idx; u8 p1[0x28]; u8 *tab; } S_3B8168;
+extern S_3B8168 D_00225780_003B8168;
+extern f32 D_00225A30[];
+typedef struct { u8 p0[0x140]; u128_3B8168 q; u8 p1[0x10]; f32 m[3][4]; } D_3B8168;
+extern u8 D_00222340[];
+extern void func_003830E8();
+extern void func_12FF40(f32 *);
+extern void func_130088(f32 *, f32 *, f32);
+extern void func_130130(f32 *, f32 *, f32);
+extern void func_12FFE0(f32 *, f32 *, f32);
+s32 func_003B8168(void) {
+    f32 m[16];
+    D_3B8168 *d;
+    S_3B8168 *s = &D_00225780_003B8168;
+    u8 *p = s->tab + s->idx * 32;
+    f32 *q = (f32 *)(p + 0x10);
+    s32 flag = p[0xC] != 0;
+    D_00225A30[0] = q[3];
+    func_003830E8();
+    *(u128_3B8168 *)(D_00222340 + 0x140) = *(u128_3B8168 *)p;
+    func_12FF40(m);
+    func_130088(m, m, *(f32 *)(p + 0x10));
+    func_130130(m, m, q[1]);
+    func_12FFE0(m, m, q[2]);
+    d = (D_3B8168 *)D_00222340;
+    d->m[0][0] = -m[8];
+    d->m[1][0] = -m[0];
+    d->m[2][0] = m[4];
+    d->m[0][1] = -m[9];
+    d->m[1][1] = -m[1];
+    d->m[2][1] = m[5];
+    d->m[0][2] = -m[10];
+    d->m[1][2] = -m[2];
+    d->m[2][2] = m[6];
+    return flag;
+}
+/* localdecomp:end func_003B8168 */
 
 /* localdecomp:start func_003B8280 */
 extern u8 D_001DA320[];
@@ -482,7 +520,21 @@ void func_003B8280(void) {
 }
 /* localdecomp:end func_003B8280 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B82C0);
+/* localdecomp:start func_003B82C0 */
+extern f32 func_00388978(f32);
+void func_003B82C0(u8 *ctx, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 n) {
+    s32 r = D_001D9D80 % n;
+    f32 s = func_00388978(((f32)r / (f32)n + (f32)r / (f32)n) * 3.1415927f + -3.1415927f);
+    s32 x = (s32)(s * a7) + a7 / 2;
+    s32 y = (s32)(s * a6) + a6 / 2;
+    s32 z = (s32)(s * a5) + a5 / 2;
+    a3 += x;
+    a2 += y;
+    a1 += z;
+    *(s32 *)(ctx + 0x78) = func_003894A0(0.05f, *(s32 *)(ctx + 0x78),
+        (a4 << 24) | (a3 << 16) | (a2 << 8) | a1);
+}
+/* localdecomp:end func_003B82C0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B8440);
 
@@ -491,7 +543,7 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003B8560);
 /* localdecomp:start func_003B8700 */
 extern void func_003958A0(s32);
 extern void func_003B6368(s32);
-extern void func_003B8168(void);
+extern s32 func_003B8168(void);
 extern void func_003B8560(void);
 extern s32 D_001D8D0C;
 extern s32 D_0016C5E4[];

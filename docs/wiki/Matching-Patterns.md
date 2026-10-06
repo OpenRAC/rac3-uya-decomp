@@ -560,4 +560,18 @@ Each was confirmed by a function that now matches in the full build.
 
 ## VU0 instructions as separate asm statements (provisional, 2026-10-06)
 
-`func_003DCD08` (0x1558 bytes) matches with each VU0 instruction written as its own non-volatile `__asm__` statement using the `j` (VU0 register) constraint, so gcc's scheduler can interleave VU0 ops with ordinary code as retail does. SN's cc1 only accepts `j` with `-mvu0-use-vf0-vfN`; the function's override uses `-mvu0-use-vf0-vf31`, but every N from 2 up gives the same bytes, so the original's N is unknown. This is the only function that uses the form so far. It may unlock much of the `vu0` bucket. Treat it as provisional until a second, independent function confirms it; until then, keep using the volatile-asm forms in "VU0 code: inline asm" where they work.
+`func_003DCD08` (0x1558 bytes) matches with each VU0 instruction written as its own non-volatile `__asm__` statement using the `j` (VU0 register) constraint, so gcc's scheduler can interleave VU0 ops with ordinary code as retail does. SN's cc1 only accepts `j` with `-mvu0-use-vf0-vfN`; the function's override uses `-mvu0-use-vf0-vf31`, but every N from 2 up gives the same bytes, so the original's N is unknown. A second function, `func_003C0188` (0x984 bytes, a different agent), matched the same way, so the form works beyond one function. What stays unknown is the exact `-mvu0-use-vf0-vfN` the original used. It may unlock much of the `vu0` bucket; prefer it where the volatile-asm forms in "VU0 code: inline asm" can't reproduce retail's interleaving.
+
+## Patterns from batch 23 (MMI bucket, 2026-10-06)
+
+Each was confirmed by a function that now matches in the full build.
+
+- **`sq $0` as non-volatile asm with a memory output**, `__asm__("sq $0,%0" : "=m"(*(u128_t *)(p + off)));`, schedules like an ordinary store. The volatile `"r"` form of `QZERO` blocks scheduling around it (`func_003BD668`; `func_003B7B50` went from 43 to 5 diffs). Use the `"=m"` form when retail moves other instructions across the store.
+- **Adjacent `@ps2as` overrides merge into one slice**, and an earlier block's `.extern` hints then reach the later functions of that slice. After adding an override, run the full build, and fix any function it breaks with per-function alias names (`func_003D2F90`, after `func_003D2878`'s override). `try_in_context.py` checks only the target function, so only the full build catches this.
+- **A loop-invariant constant that retail adds with `addu`:** declare it as a `long` local before the loop and add `(s32)` of it: `long base = 0x590000; id = i + (s32)base;` (`func_003B3DB8`).
+- **`addu` operand order:** read back the field you just stored, `p->h0 = c; p->h2 = p->h0 + p->hE;` (`func_003A6C30`).
+- **A nested select's branch layout:** put the inner test's xor in its own block-local temporary, `else { s32 e = k ^ 0x259; m = e ? 0 : 8; }` (`func_003B8440`).
+- **The callee's return type again:** declaring `func_12A9F0` as `s32` instead of `void` fixed a `$v0`/`$v1` swap in a final 64-bit pack (`func_00393E90`; its sibling `func_00393A18` needs the same).
+- **An indexed loop with two increments**, `for (i = 0; i < n; i++, list++)`, matched where a single induction variable didn't (`func_003936A8`).
+- **Integration note:** `tools/divs_nops.txt` is keyed by function. When a patch changes a function's `div.s` padding count, that line has to travel with the function; a stale count makes the function longer by 4 bytes per `nop` and shifts everything after it (`func_0037D200`, 2 to 1).
+- **Tool note:** `try_in_context.py` ignores `tools/localdecomp_flags.txt`, so an `@ps2as` candidate can only be checked in place once its `text_parts.txt` override exists.

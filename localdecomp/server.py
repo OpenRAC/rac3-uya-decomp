@@ -1309,15 +1309,30 @@ def _matched_by_unit(report):
     return units
 
 
+def _is_frontbin_unit(name):
+    return name == "frontbin/text" or name.startswith("frontbin/src/")
+
+
 def _summary(report):
-    m = report.get("measures", {})
+    """Totals over the frontbin units only (the report also holds the levels
+    and executables, which would otherwise be mixed into these numbers)."""
+    keys = ("matched_functions", "total_functions", "matched_code", "total_code",
+            "matched_data", "total_data")
+    tot = dict.fromkeys(keys, 0)
+    for u in report.get("units", []):
+        if not _is_frontbin_unit(u.get("name") or ""):
+            continue
+        m = u.get("measures", {})
+        for k in keys:
+            tot[k] += int(m.get(k, 0) or 0)
+    pct = lambda a, b: 100.0 * a / b if b else 0.0
     return {
-        "matched_functions": int(m.get("matched_functions", 0) or 0),
-        "total_functions": int(m.get("total_functions", 0) or 0),
-        "matched_code": int(m.get("matched_code", 0) or 0),
-        "total_code": int(m.get("total_code", 0) or 0),
-        "matched_code_percent": float(m.get("matched_code_percent", 0) or 0),
-        "matched_data_percent": float(m.get("matched_data_percent", 0) or 0),
+        "matched_functions": tot["matched_functions"],
+        "total_functions": tot["total_functions"],
+        "matched_code": tot["matched_code"],
+        "total_code": tot["total_code"],
+        "matched_code_percent": pct(tot["matched_code"], tot["total_code"]),
+        "matched_data_percent": pct(tot["matched_data"], tot["total_data"]),
     }
 
 
@@ -1398,9 +1413,12 @@ def run_full_check(project):
         result["baseline"] = _summary(base)
         bu, cu = _matched_by_unit(base), _matched_by_unit(cur)
         gained, lost = [], []
+        # gains are counted for frontbin only, like the table; losses are
+        # checked in every unit so a regression in level code still fails
         for unit in sorted(set(bu) | set(cu)):
             b, c = bu.get(unit, set()), cu.get(unit, set())
-            gained += [f"{unit}: {f}" for f in sorted(c - b)]
+            if _is_frontbin_unit(unit):
+                gained += [f"{unit}: {f}" for f in sorted(c - b)]
             lost += [f"{unit}: {f}" for f in sorted(b - c)]
         result["newly_matched"], result["lost"] = gained, lost
         step("compare with last push", not lost,

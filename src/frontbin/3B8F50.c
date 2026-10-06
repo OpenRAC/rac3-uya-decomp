@@ -8,6 +8,7 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern void func_003BDA38(void *, s32, void *);
 extern void func_003BD490();
 /* --- end of declarations from other files --- */
 
@@ -957,7 +958,49 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003BD550);
 
 LINKER_REMNANT("asm/remnants", func_003BD630);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BD668);
+/* localdecomp:start func_003BD668 */
+/* MATCH */
+extern s32 D_002F80A0[];
+extern s32 D_001DA560;
+__asm__(".extern D_001DA560, 16");
+extern void func_003CC198();
+s32 func_003BD668(u8 *obj, u8 *dst) {
+    u8 *out = (u8 *)0x70000000;
+    u8 *src;
+    s32 i;
+    s32 *cnt = (s32 *)0x70002000;
+    if (dst != 0) out = dst;
+    if (obj == 0) goto fail;
+    if (*(u8 **)(obj + 0x24) == 0) return 0;
+    if ((*(u8 **)(obj + 0x24))[0xF] == 0) goto fail;
+    D_002F80A0[0] = (s32)obj;
+    D_001DA560 = 1;
+    D_002F80A0[1] = 0x1000;
+    func_003CC198(cnt, 0x2000);
+    if (*cnt == 0) {
+fail:
+        return 0;
+    }
+    src = (u8 *)0x70002030;
+    i = 0;
+    while (i < *cnt) {
+        if (*(s16 *)src == 0) {
+            u128_t v = *(u128_t *)(src + 0x10);
+            __asm__("sq $0,%0" : "=m"(*(u128_t *)(out + 0x10)));
+            src += 0x20;
+            *(u128_t *)out = v;
+            out += 0x20;
+        } else if (*(s16 *)src == 1) {
+            *(u128_t *)out = *(u128_t *)(src + 0x10);
+            *(u128_t *)(out + 0x10) = *(u128_t *)(src + 0x20);
+            src += 0x30;
+            out += 0x20;
+        }
+        i++;
+    }
+    return *cnt;
+}
+/* localdecomp:end func_003BD668 */
 
 LINKER_REMNANT("asm/remnants", func_003BD768);
 

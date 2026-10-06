@@ -556,7 +556,7 @@ Each was confirmed by a function that now matches in the full build.
 - **`plzcw`** has no C form: `__asm__("plzcw %0, %1" : "=r"(d) : "r"(d)); d = 30 - d;` (`func_003D1650`, `func_003D1E68`).
 - **A dead 16-byte stack copy** is an aligned 4-float struct local, not a volatile `u128` (`func_003CB748`).
 - **Open question:** `func_003CB5B0` declares `D_001D9350` as `s32[2]` with `.extern D_001D9350, 8` to get the `$gp` form, but retail reads 16 bytes from it with `lq`. The 8 steers codegen and is probably not the real size.
-- **Tool gap:** the sq-`$ra` rewrite in `asm_filter.py` also matches `ld $16/$17` stack-argument loads, so `func_00386D98` (43 diffs) can't match until the rewrite is limited to the prologue saves and epilogue restores.
+- **Fixed (batch 29):** the sq-`$ra` rewrite in `asm_filter.py` used to treat `ld $16/$17` stack-argument loads as restores. It now counts only loads of a saved (register, slot) pair, and `func_00386D98` matched.
 
 ## VU0 instructions as separate asm statements (PROVISIONAL, open for exploration)
 
@@ -596,3 +596,14 @@ From the agents' reports and near-miss headers; each was found while matching or
 - **Loop invariants hoisted by the second loop pass take the first callee-saved registers.**
 - **Constants fold into adds but not multiplies** (`i * lh` keeps its register).
 - **Many "mmi" bucket functions are plain C**: their 128-bit ops are `-fcaller-saves` spills of ordinary values, not MMI code.
+
+## Patterns from batches 27 and 29 (2026-10-06)
+
+Each was confirmed by a function that now matches in the full build.
+
+- **Read the assembler off the retail bytes.** No `nop` after an `mfc1` whose result is used by the next instruction means Ps2EeAs (`@ps2as`). `func_0038BB50` (0x86C) had stalled for several batches on the default assembler; with `@ps2as` it matched.
+- **A `do { ... } while (0)` around a loop** changed loop alignment and register weights enough to finish `func_0038BB50`, with no empty asm needed.
+- **Two stores to the same object can be written in either order;** try both (`func_00386D98`: the `q+0x10` store comes after `q+0x48`).
+- **Struct-member reads vs cast-pointer reads.** This gcc runs without strict aliasing, so a load through a cast pointer is untyped memory and the scheduler keeps stores to plain globals after it. Struct-member loads don't conflict with stores to fixed scalar globals. Reading a header through `struct { s32 x[0x27]; }` instead of `((s32 *)hdr)[i]` was the biggest gain on `func_003B6528`.
+- **Float constants:** write the exact decimal of retail's bits, including truncated ones (`0.0749999955f` is `0x3D999999`, not `0.075f`) (`func_003A0EB0`).
+- **decomp-permuter is useful once its score is replaced** with `try_func.py`'s own metric (relocations resolved against retail). Its default score tracked `try_func` diffs poorly; with the replacement it improved 9 of 11 near misses in under an hour. Check the semantics of its rewrites before building on them.

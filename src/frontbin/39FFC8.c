@@ -14,6 +14,7 @@ extern void func_003A3EF0(s32, unsigned long);
 extern void func_003A35C0(void);
 extern void func_003A2460(void);
 typedef int u128_t __attribute__((mode(TI)));
+extern void func_003886E8(f32 *, void *, f32);
 extern void func_003A4188(void);
 extern void func_003A4128(void);
 extern void func_003A40C8();
@@ -24,6 +25,7 @@ extern void (*D_00226A80[])(s32);
 extern void func_003A3C00();
 extern void func_003A3DE8(s32, u32);
 extern void func_003A41F0(void);
+extern void func_003A3FB0(s32, s32, s32, s32);
 extern void func_003A0010(void);
 extern void func_003A3508(void);
 extern void func_003A3368();
@@ -199,7 +201,91 @@ LINKER_REMNANT("asm/remnants", func_003A0D20);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A0D58);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A0EB0);
+/* localdecomp:start func_003A0EB0 */
+/* Float constants are written as the exact decimal of retail's values, some of which are truncated (0.0749999955f is 0x3D999999). */
+typedef struct { f32 x, y, z, w; } V_3A0EB0;
+typedef struct { f32 x, y, z, w; } E_3A0EB0;
+typedef struct {
+    V_3A0EB0 v;
+    u128_t q10;
+    f32 f20; f32 f24; f32 f28; s32 f2C; s32 f30; s32 f34; s32 f38; s32 f3C; s32 f40; s32 f44; s32 f48; s32 f4C;
+} T_3A0EB0;
+extern s32 D_001D6FA0[2];
+__asm__(".extern D_001D6FA0, 8");
+extern s32 D_001DA090[2];
+extern s32 D_002257B4[];
+extern void func_003BD9A0();
+extern void func_003888F0();
+extern s32 func_003894A0(s32, s32, f32);
+extern void func_003A0D58(void *, void *, s32, f32, f32, f32, s32);
+extern void func_003A2EE0(void *, s32);
+extern f32 func_0037E250(f32, f32);
+extern f32 func_0037E2A8(void);
+extern s32 func_0037E208(s32, s32);
+extern void func_003A2E40(s32, u8 *);
+void func_003A0EB0(void *op, s32 idx, s32 flag) {
+    u8 *o = (u8 *)op;
+    f32 m0[4];
+    f32 v[4];
+    f32 m1[16];
+    T_3A0EB0 t;
+    E_3A0EB0 *e;
+    f32 s;
+    f32 f24, f28, f27, f25, f22, f23, f26, f21;
+    s32 i20, i21, c1, c2, x;
+    func_003BD9A0(o, 0, m1);
+    e = &((E_3A0EB0 *)D_001D6FA0)[idx];
+    func_003888F0(m0, e, m1);
+    s = (f32)o[0x95] * 0.0078125f * e->w;
+    f24 = s * 0.0599999987f + 0.0599999987f;
+    i20 = s * 5.0f + 25.0f;
+    f25 = s * 0.0399999991f + 0.0399999991f;
+    f22 = s * 0.375f + 0.375f;
+    f27 = s * 0.0249999911f + 0.174999997f;
+    i21 = s * 5.0f + 15.0f;
+    f28 = s * 0.0f + 0.0749999955f;
+    f23 = s * 0.099999994f + 0.099999994f;
+    f26 = s * 0.0249999985f + 0.0249999985f;
+    f21 = s * 0.0749999955f + 0.0749999955f;
+    c1 = func_003894A0(0x40204080, 0x40205080, s);
+    c2 = func_003894A0(-1, -1, s);
+    if (flag == 0 && (s8)o[0x95] >= 0) {
+        c1 = (c1 & 0xFFFFFF) | ((((c1 >> 24) * o[0x95]) >> 7) << 24);
+        c2 = (c2 & 0xFFFFFF) | ((((c2 >> 24) * o[0x95]) >> 7) << 24);
+    }
+    func_003886E8(v, m1, -f24);
+    func_003A0D58(m0, v, i20, f22, f23, f21, c1);
+    if (idx == 0) {
+        func_003886E8(v, m1, -f25);
+        func_003A0D58(m0, v, i21, f27, f26, f28, c2);
+    }
+    func_003A2EE0(o, 0x3F3F3F);
+    x = func_003894A0(0x2F7F, 0x7F7F, func_0037E250(0.0f, 1.0f));
+    *(u128_t *)&t.v = *(u128_t *)m0;
+    t.f2C = x;
+    t.f30 = x;
+    t.v.x += func_0037E250(-0.025f, 0.025f);
+    t.v.y += func_0037E250(-0.025f, 0.025f);
+    t.v.z += func_0037E250(-0.025f, 0.025f);
+    t.q10 = *(u128_t *)D_001DA090;
+    *(f32 *)&t.f24 = func_0037E2A8();
+    t.f20 = func_0037E250(90.0f, 180.0f) * 0.017453292f * 0.016666668f;
+    t.f4C = 5;
+    t.f3C = 1;
+    if (flag != 0) {
+        t.f38 = t.f34 = func_0037E208(0x28, 0x38);
+        t.f40 = t.f44 = func_0037E208(0x32, 0x3C);
+        t.f28 = func_0037E250(0.8f, 1.5f);
+        if (o[0x95] >= 0x41) func_003A2E40((s32)o, (u8 *)&t);
+    } else {
+        t.f38 = t.f34 = func_0037E208(0x1F, 0x3F);
+        t.f40 = t.f44 = func_0037E208(0x46, 0x5A);
+        t.f28 = func_0037E250(1.0f, 2.0f);
+        t.f3C |= ((D_002257B4[0] & 1) + 1) << 1;
+        func_003A2E40((s32)o, (u8 *)&t);
+    }
+}
+/* localdecomp:end func_003A0EB0 */
 
 /* localdecomp:start func_003A1340 */
 extern void func_003A0EB0(void *, s32, s32);

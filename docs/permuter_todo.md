@@ -235,3 +235,25 @@ Drafts are in the agents' `near_misses/` folders, each with a header (diff count
 | `func_0039EE68` | 409 | vu0; uses `__asm__("sq $0, %0")` |
 
 Some c1 drafts rely on `volatile` reads to steer scheduling; check those against the sanctioned forms before inserting.
+
+## MMI near misses after batch 29 (2026-10-06)
+
+Aligned diffs (difflib over the disassembly). `.permuter.c` drafts are decomp-permuter output converted back to the draft style; check their semantics.
+
+| Function | Diffs | Draft |
+|---|---|---|
+| `func_003B7B50` | 3 positional | hand |
+| `func_00393878` | 6 positional | hand |
+| `func_003D1D40` | 9 | permuter |
+| `func_003BDEA8` | 13 | permuter |
+| `func_00383FD8` | 27 | permuter; hand draft at 29 needs an `@ps2as` override at 0x383FD8 with a restore line at 0x384418 |
+| `func_00394C58` | 32 | permuter |
+| `func_0039C548` | 36 | permuter |
+| `func_0039FBD8` | 50 | permuter |
+| `func_003A4E70` | 60 | permuter |
+| `func_00395090` | 104 | permuter |
+| `func_00394368` | 121 | permuter |
+| `func_003B6528` | 191 (81 normalized) | hand; reload's spare-register order, see Matching-Patterns batch 29 |
+| `func_003830E8` | 242 | hand |
+| `func_0038CE40` | 233 normalized | hand |
+| `func_0038B1E8` | 390 | hand |

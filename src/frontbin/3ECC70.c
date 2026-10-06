@@ -7,9 +7,9 @@ extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern s32 func_003ECDB8();
+extern s32 func_003ECDC0();
 extern s32 *func_003ECDC8(s32 *);
 extern s32 func_003ECDE0(s32 *);
-extern s32 func_003ECDC0();
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003ECC70 */

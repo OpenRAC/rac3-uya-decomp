@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern f32 func_00388770(void *);
 extern f32 func_003887C8(void *, void *);
 extern f32 func_00388800();
 /* --- end of declarations from other files --- */

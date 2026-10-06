@@ -164,7 +164,163 @@ void func_0038B1B0(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 
 
 INCLUDE_ASM("asm/nonmatchings/text", func_0038B1E8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038BB50);
+/* localdecomp:start func_0038BB50 */
+typedef struct { s16 h0, h2, h4, h6, h8, hA, hC, hE, h10; u16 h12; s16 h14, h16; } B_38BB50;
+typedef struct { u32 w0, w1; } G_38BB50;
+extern s32 D_001D5B94;
+extern u8 D_001D5B41;
+__asm__(".extern D_001D5B41, 1");
+extern s32 D_001D5B48[2];
+__asm__(".extern D_001D5B48, 8");
+extern s32 D_001D5B5C[];
+extern s32 D_001D4BC0[];
+extern s32 D_001D4BC4[];
+extern void func_003A3FB0(s32, s32, s32, s32);
+extern s32 func_003898C0(u8 *p, s32 off, s32 *out);
+extern s32 func_00389D18_0038BB50(u8 *, s32, f32);
+extern void func_00389FB8_0038BB50(f32, f32, s32, u8 *, s32, f32, f32, s32, s32, unsigned long, f32, f32);
+void func_0038BB50(B_38BB50 *b, long ca, u8 **strs, s32 n, s16 sel, long cb, s32 *outx, s32 *outy, f32 scale) {
+    s16 starts[80];
+    s16 ends[80];
+    s16 colors[80];
+    u8 *lines[80];
+    s32 c1, c2;
+    s32 lim;
+    s32 first;
+    s32 nlines;
+    s32 j;
+    f32 quarter, width;
+
+    if (D_001D5B94 != 1 && !(b->h12 & 0x10)) {
+        func_003A3FB0(b->h4, b->h6 - 1, b->h0, b->h2 - 1);
+    }
+    first = 1;
+    D_001D5B41 = 1;
+    lim = -1;
+    quarter = scale * 0.25f;
+    if ((*(u8 *)&b->h12 ^ 1) & 1) {
+        width = (f32)(b->h6 - b->h8);
+    } else {
+        s32 r = b->h6 - b->h8;
+        s32 l = b->h8 - b->h4;
+        if (r < l) l = r;
+        width = (f32)l;
+        width *= 2.0f;
+    }
+    j = 0;
+    do {
+        nlines = 0;
+        for (; j < n; j++) {
+            u8 *s = strs[j];
+            s32 pos = 0;
+            while (s[pos] != 0 && nlines < 0x4F) {
+                s32 k = nlines;
+                s32 brk;
+                f32 w;
+                lines[k] = s;
+                starts[k] = pos;
+                {
+                    s16 *cp = colors + k;
+                    if (sel < 0) *cp = 0;
+                    else if (sel != j) *cp = 0;
+                    else *cp = 5;
+                }
+                w = 0.0f;
+                brk = pos;
+                while (w < width) {
+                    u8 c = s[pos];
+                    if (c == 0x20 || c < 0x10 || c == 0x2F) brk = pos;
+                    if (s[pos] < 2) break;
+                    pos += func_003898C0(s, pos, &c1);
+                    {
+                        G_38BB50 *g = (G_38BB50 *)(c1 * 8 + *(u32 *)0x1D55C4);
+                        if (g->w1 & 0x1F800000) {
+                            f32 f = (f32)(s32)(((g->w0 >> 25) + 2) & 0xFC) * quarter;
+                            if (first) first = 0;
+                            else w -= f;
+                            w += (f32)(((*(G_38BB50 **)0x1D55C4)[c1].w1 >> 23) & 0x3F) * scale;
+                            func_003898C0(s, pos + 1, &c2);
+                            if (c2 >= 0x10) {
+                                w += (f32)((((*(G_38BB50 **)0x1D55C4)[c1].w1 >> 29) + 2) & 0xFC) * 0.25f * scale;
+                            }
+                        }
+                    }
+                    pos++;
+                }
+                ends[k] = brk;
+                if ((s16)brk == starts[k]) ends[k] = pos;
+                pos = ends[k];
+                if (s[pos] == 0x20 || s[pos] < 0x10) ends[k]--;
+                nlines++;
+                if (s[pos] == 0) break;
+                pos++;
+                if (pos == lim) break;
+            }
+        }
+    } while (0);
+    {
+        s32 y, i;
+        {
+            s32 t = nlines * b->h10;
+            b->hC = 0;
+            b->hE = t;
+            y = b->hA;
+            if (b->h12 & 2) y -= t >> 1;
+        }
+        for (i = 0; i < nlines; i++) {
+            if (y + b->h10 >= b->h0 && b->h2 >= y) {
+                s32 len = ends[i] - starts[i] + 1;
+                s32 wpx;
+                if (lim > 0 && lim < len) len = lim;
+                wpx = func_00389D18_0038BB50(lines[i] + starts[i], len, 1.0f);
+                if (b->hC < wpx) b->hC = wpx;
+                if (!(b->h12 & 4)) {
+                    u16 fl;
+                    D_001D5B48[0] = ca;
+                    D_001D5B5C[0] = cb;
+                    fl = b->h12;
+                    if (fl & 8) {
+                        f32 x, yy;
+                        u16 hx;
+                        if (fl & 1) {
+                            x = (f32)(b->h8 - (wpx >> 1)) + (f32)b->h14 * 0.0625f;
+                            hx = b->h8;
+                        } else {
+                            x = (f32)b->h8 + (f32)b->h14 * 0.0625f;
+                            hx = b->h8;
+                        }
+                        yy = (f32)y + (f32)b->h16 * 0.0625f;
+                        if (colors[i] == 5) {
+                            *outx = (s16)hx;
+                            *outy = (s32)yy + (s32)((f32)b->h10 * 0.5f - 0.5f);
+                        }
+                        func_00389FB8_0038BB50(x, yy, D_001D5B48[colors[i]], lines[i] + starts[i], len, scale, scale, 0, 0, 0x80000000UL, 0.0f, 0.0f);
+                    } else {
+                        if (fl & 1) {
+                            func_00389FB8_0038BB50((f32)(b->h8 - (wpx >> 1)), (f32)y, D_001D5B48[colors[i]], lines[i] + starts[i], len, scale, scale, 0, 0, 0x80000000UL, 0.0f, 0.0f);
+                        } else {
+                            func_00389FB8_0038BB50((f32)b->h8, (f32)y, D_001D5B48[colors[i]], lines[i] + starts[i], len, scale, scale, 0, 0, 0x80000000UL, 0.0f, 0.0f);
+                        }
+                        if (colors[i] == 5) {
+                            *outx = b->h8;
+                            *outy = y + (s32)((f32)b->h10 * 0.5f - 0.5f);
+                        }
+                    }
+                }
+                if (lim > 0) {
+                    lim -= len;
+                    if (lim <= 0) break;
+                }
+            }
+            y += b->h10;
+        }
+    }
+    D_001D5B41 = 0;
+    if (D_001D5B94 != 1 && !(b->h12 & 0x10)) {
+        func_003A3FB0(0, D_001D4BC0[0] - 1, 0, D_001D4BC4[0] - 1);
+    }
+}
+/* localdecomp:end func_0038BB50 */
 
 /* localdecomp:start func_0038C3C0 */
 extern void func_00389D18();
@@ -1231,7 +1387,51 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003921D8);
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00392400);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003925F0);
+/* localdecomp:start func_003925F0 */
+typedef int u128_3925F0 __attribute__((mode(TI)));
+extern u8 D_001D76F0[];
+extern P_392108 *D_001D9F28_003925F0;
+extern W_392108 *D_001D9F2C_003925F0;
+extern s32 D_001DA0D0_003925F0;
+extern s32 D_001D9F14;
+extern s32 D_001D4BD0;
+extern s32 D_001D4BD4;
+extern unsigned long func_003921D8(s32);
+void func_003925F0(s32 idx, s32 x, s32 y, s32 w, s32 h, s32 *uv) {
+    P_392108 *p = (P_392108 *)((idx << 2) + (s32)D_001D9F28_003925F0);
+    u8 *e = (u8 *)&D_001D9F2C_003925F0[p->b];
+    s32 tw = 1 << e[6];
+    s32 th = 1 << e[7];
+    u8 *r;
+    u8 *pk;
+    u8 *q;
+    *(s32 *)(D_001DA0D0_003925F0 + 0) = 0x10000008;
+    *(s32 *)(D_001DA0D0_003925F0 + 4) = 0;
+    *(s32 *)(D_001DA0D0_003925F0 + 8) = 0;
+    *(s32 *)(D_001DA0D0_003925F0 + 0xC) = 0x50000008;
+    r = (u8 *)D_001DA0D0_003925F0;
+    D_001DA0D0_003925F0 = (s32)r + 0x10;
+    *(u128_3925F0 *)(r + 0x10) = *(u128_3925F0 *)D_001D76F0;
+    pk = (u8 *)D_001DA0D0_003925F0;
+    q = pk + 0x10;
+    D_001DA0D0_003925F0 = (s32)q;
+    *(unsigned long *)(pk + 0x10) = func_003921D8(idx);
+    *(unsigned long *)(q + 8) = 0x15C;
+    *(unsigned long *)(q + 0x10) = uv[0];
+    *(unsigned long *)(q + 0x18) = 0;
+    *(unsigned long *)(q + 0x20) = (unsigned long)((x << 4) + D_001D4BD0 - 8) | ((unsigned long)((y << 4) + D_001D4BD4 - 8) << 16) | ((unsigned long)D_001D9F14 << 32);
+    *(unsigned long *)(q + 0x28) = uv[1];
+    *(unsigned long *)(q + 0x30) = tw << 4;
+    *(unsigned long *)(q + 0x38) = (unsigned long)(((x + w) << 4) + D_001D4BD0 - 8) | ((unsigned long)((y << 4) + D_001D4BD4 - 8) << 16) | ((unsigned long)D_001D9F14 << 32);
+    *(unsigned long *)(q + 0x40) = uv[2];
+    *(unsigned long *)(q + 0x48) = th << 20;
+    *(unsigned long *)(q + 0x50) = (unsigned long)((x << 4) + D_001D4BD0 - 8) | ((unsigned long)(((y + h) << 4) + D_001D4BD4 - 8) << 16) | ((unsigned long)D_001D9F14 << 32);
+    *(unsigned long *)(q + 0x58) = uv[3];
+    *(unsigned long *)(q + 0x60) = (th << 20) + (tw << 4);
+    *(unsigned long *)(q + 0x68) = (unsigned long)(((x + w) << 4) + D_001D4BD0 - 8) | ((unsigned long)(((y + h) << 4) + D_001D4BD4 - 8) << 16) | ((unsigned long)D_001D9F14 << 32);
+    D_001DA0D0_003925F0 = D_001DA0D0_003925F0 + 0x70;
+}
+/* localdecomp:end func_003925F0 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00392878);
 

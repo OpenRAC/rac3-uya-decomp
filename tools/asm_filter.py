@@ -155,6 +155,11 @@ def sq_rewrite(lines):
         if m:
             saves.append((i, m.group(2) in ("sd", "sq"), (30 if m.group(3) == "fp" else int(m.group(3))), int(m.group(4)),
                           m.group(1), l[len(body):]))
+    # Only loads that restore a saved (register, slot) pair count as restores;
+    # an incoming stack argument loaded into $s0/$s1 (ld $17, 0x20($sp) in a
+    # leaf such as func_00386D98) is not a restore and is left alone.
+    stored = {(s[2], s[3]) for s in saves if s[1]}
+    saves = [s for s in saves if s[1] or (s[2], s[3]) in stored]
     regs = sorted({s[2] for s in saves}, key=SAVE_ORDER.index)
     offs = sorted({s[3] for s in saves})
     if not regs or len(regs) != len(offs):

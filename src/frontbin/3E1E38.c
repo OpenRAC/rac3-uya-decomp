@@ -22,19 +22,22 @@ extern s32 func_003E31A8(s32, s32);
 extern s32 func_003E28E0(s32, s32);
 extern s32 func_003E3250(s32, s32, s32);
 extern s32 func_003E24B0(s32 arg0, s32 arg1);
+extern void func_003E3EE8();
+extern s32 func_003E29B8(s32, s32);
+extern s32 func_003E2560(s32, s32);
+extern s32 func_003E3D08(s32, s32, f32, f32, f32, f32, f32, f32);
+extern s32 func_003E3700(s32, s32, s32, s32, s32, s32, s32, s32);
+extern s32 func_003E34F0(s32, s32, s32, s32, s32);
 extern s32 func_003E3988(s32, s32, s32, f32, f32, f32, f32, f32);
 extern s32 func_003E3BD0(s32, s32, s32, f32, f32, f32, f32);
-extern s32 func_003E3D08(s32, s32, f32, f32, f32, f32, f32, f32);
 extern s32 func_003E3630(s32, s32, s32, s32, s32, s32, s32);
 extern s32 func_003E1E50(s32, f32, f32);
 extern s32 func_003E21F8(s32, f32);
 extern s32 func_003E2808();
 extern s32 func_003E2808(s32, s32);
-extern s32 func_003E2560(s32, s32);
 extern s32 func_003E2A90(s32, s32, s32, s32, s32);
 extern s32 func_003E2B98(s32, s32, s32);
 extern s32 func_003E2028(s32, f32, f32);
-extern s32 func_003E29B8(s32, s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003E1E38 */

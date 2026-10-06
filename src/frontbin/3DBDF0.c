@@ -479,6 +479,11 @@ void func_003DBEC8(void) {
 /* localdecomp:end func_003DBEC8 */
 
 /* localdecomp:start func_003DCD08 */
+/* PROVISIONAL, VU0 j-constraint form: each VU0 instruction is a separate non-volatile __asm__
+   using the "j" (VU0 register) constraint, which needs -mvu0-use-vf0-vfN (override in
+   tools/text_parts.txt). Kept for further exploration: the original's N is unknown (vf2 and up
+   all give these bytes, vf1 does not compile). See Matching-Patterns, "VU0 instructions as
+   separate asm statements". */
 typedef int Q_3DCD08 __attribute__((mode(TI)));
 typedef struct { Q_3DCD08 a, b; } V2_3DCD08;
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3DCD08;

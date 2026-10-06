@@ -3,6 +3,7 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_0039E8E0(void);
 extern s32 func_0039EE68(void);
+typedef int u128_t __attribute__((mode(TI)));
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
@@ -273,7 +274,35 @@ s32 func_0039E928(s32 a, s32 i) {
 }
 /* localdecomp:end func_0039E928 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039E9A0);
+/* localdecomp:start func_0039E9A0 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_39E9A0;
+extern V4_39E9A0 D_00222480_0039E9A0[];
+extern V4_39E9A0 D_002276E0[];
+extern s32 D_001A30F4[];
+extern void func_0037E2F0(s32, f32, f32);
+extern s32 func_003CE740();
+extern void func_003886E8_0039E9A0(void *, void *, f32);
+void func_0039E9A0(V4_39E9A0 *a, V4_39E9A0 *p) {
+    u128_t va, vb;
+    if (p == 0) p = D_00222480_0039E9A0;
+    func_0037E2F0((s32)a, 0.5f, 6.0f);
+    __asm__("lqc2 %0, %1" : "=j"(va) : "m"(*a));
+    __asm__("lqc2 %0, %1" : "=j"(vb) : "m"(*p));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(va) : "j"(va), "j"(vb));
+    __asm__("sqc2 %1, %0" : "=m"(*a) : "j"(va));
+    if (func_003CE740(p, a, 0x82, D_001A30F4[0], 0)) {
+        __asm__("lqc2 %0, %1" : "=j"(vb) : "m"(*p));
+        __asm__("lqc2 %0, %1" : "=j"(va) : "m"(D_002276E0[0]));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(va) : "j"(va), "j"(vb));
+        __asm__("sqc2 %1, %0" : "=m"(*a) : "j"(va));
+        func_003886E8_0039E9A0(a, a, 0.75f);
+        __asm__("lqc2 %0, %1" : "=j"(vb) : "m"(*p));
+        __asm__("lqc2 %0, %1" : "=j"(va) : "m"(*a));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(va) : "j"(va), "j"(vb));
+        __asm__("sqc2 %1, %0" : "=m"(*a) : "j"(va));
+    }
+}
+/* localdecomp:end func_0039E9A0 */
 
 LINKER_REMNANT("asm/remnants", func_0039EA58);
 
@@ -308,7 +337,48 @@ void func_0039EB38(S_39EB38 *p, void *a, void *b, void *c) {
 }
 /* localdecomp:end func_0039EB38 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039EB98);
+/* localdecomp:start func_0039EB98 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_39EB98;
+typedef struct { u8 pad[0x50]; f32 f50; } O_39EB98;
+extern u8 D_00222880[];
+extern void func_00388E78(void *, void *);
+extern void func_003888F0_0039EB98(V4_39EB98 *, V4_39EB98 *, V4_39EB98 *);
+extern f32 func_00389380_0039EB98(f32, f32);
+extern f32 func_003893C8(f32, f32);
+s32 func_0039EB98(O_39EB98 *o, u128_t *pt) {
+    V4_39EB98 m[4];
+    V4_39EB98 v[1];
+    V4_39EB98 w[1];
+    V4_39EB98 p[1];
+    f32 a, d;
+    func_00388E78(m, D_00222880);
+    *(u128_t *)v = *(u128_t *)(D_00222880 - 0x380);
+    {
+        u128_t x;
+        __asm__("lqc2 %0, %1" : "=j"(x) : "m"(v[0]));
+        __asm__("vsub.xyz %0, $vf0, %1" : "=j"(x) : "j"(x));
+        __asm__("sqc2 %1, %0" : "=m"(v[0]) : "j"(x));
+    }
+    v[0].w = 1.0f;
+    func_003888F0_0039EB98(&m[3], v, m);
+    *(u128_t *)p = *pt;
+    p[0].w = 1.0f;
+    func_003888F0_0039EB98(p, p, m);
+    a = -func_00388A28(p[0].x, p[0].y);
+    if (a < 0.0f) a += 6.2831855f;
+    if (func_003887A0((f32 *)w) < 2.0f) {
+        if (o->f50 >= 0.0f) {
+            d = func_003893C8(a, o->f50);
+            if (d > 0.2f) a = func_00389380_0039EB98(o->f50, 0.2f);
+            else if (d < -0.2f) a = func_003893C8(o->f50, 0.2f);
+        }
+        o->f50 = a;
+    } else {
+        o->f50 = -1.0f;
+    }
+    return a * 180.0f * 0.31830987f;
+}
+/* localdecomp:end func_0039EB98 */
 
 /* localdecomp:start func_0039ED50 */
 typedef struct { u8 p[0xC]; s32 fC; s32 f10; } T;

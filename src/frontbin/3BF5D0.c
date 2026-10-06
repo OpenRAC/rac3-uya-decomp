@@ -1,10 +1,12 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern long func_00384EC0(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern void func_003BF6A8(f32 *v, f32 r);
 extern void func_003BFEF0(void *, s32, f32, f32);
 /* --- end of declarations from other files --- */
 
@@ -110,7 +112,33 @@ void func_003BF838(u8 *p, u128_3BF838 *a1, u128_3BF838 *a2, void *a3) {
 
 LINKER_REMNANT("asm/remnants", func_003BF8F8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF910);
+/* localdecomp:start func_003BF910 */
+extern s32 func_00388920(f32 *);
+void func_003BF910(void *a, void *b) {
+    f32 *v = (f32 *)a;
+    f32 t[4];
+    f32 x, y, z, ax, ay, az, m, s;
+    s32 n;
+    x = v[0];
+    y = v[1];
+    z = v[2];
+    __asm__("abs.s %0, %1" : "=f"(ax) : "f"(x));
+    __asm__("abs.s %0, %1" : "=f"(ay) : "f"(y));
+    __asm__("abs.s %0, %1" : "=f"(az) : "f"(z));
+    if (ay < ax) ay = ax;
+    m = ay;
+    m = (az < m) ? m : az;
+    n = (s32)(m * 10000.0f / 63.0f);
+    if (n >= 256) n = 255;
+    if (n <= 0) n = 1;
+    t[3] = n;
+    s = 1.0f / (t[3] * 0.0001f);
+    t[0] = x * s + 127.0f;
+    t[1] = y * s + 127.0f;
+    t[2] = z * s + 127.0f;
+    *(s32 *)b = func_00388920(t);
+}
+/* localdecomp:end func_003BF910 */
 
 LINKER_REMNANT("asm/remnants", func_003BFA18);
 
@@ -133,7 +161,24 @@ f32 func_003BFB80(s32 a, s32 b, s32 c) {
 }
 /* localdecomp:end func_003BFB80 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BFBA8);
+/* localdecomp:start func_003BFBA8 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3BFBA8;
+typedef int Q_3BFBA8 __attribute__((mode(TI)));
+extern f32 D_001D5C00;
+extern void func_003886E8(f32 *, void *, f32);
+void func_003BFBA8(void *a, f32 *out, s32 f) {
+    Q_3BFBA8 p, q, r;
+    __asm__("lqc2 %0, %1" : "=j"(p) : "m"(D_001D5C00));
+    __asm__("lqc2 %0, %1" : "=j"(q) : "m"(*(V4_3BFBA8 *)a));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(r) : "j"(p), "j"(q));
+    __asm__("sqc2 %1, %0" : "=m"(*(V4_3BFBA8 *)out) : "j"(r));
+    out[2] = 0;
+    ((void (*)(void *, f32))func_00388830)(out, 1.0f);
+    if (f == 0) {
+        func_003886E8(out, out, -1.0f);
+    }
+}
+/* localdecomp:end func_003BFBA8 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003BFC18);
 
@@ -213,7 +258,73 @@ void func_003BFE08(s32 a, f32 *unused, s32 c) {
 
 LINKER_REMNANT("asm/remnants", func_003BFEE0);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BFEF0);
+/* localdecomp:start func_003BFEF0 */
+typedef int Q_3BFEF0 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3BFEF0;
+typedef struct { f32 m[4][4]; s32 c[4]; f32 uv[8]; long gs[4]; } P_3BFEF0;
+extern V_3BFEF0 D_00222480;
+__asm__(".extern D_001D91B0, 8");
+extern f32 D_001D91B0[2];
+extern void func_003888F0();
+extern void func_003CD830();
+void func_003BFEF0(void *pos, s32 color, f32 size, f32 off) {
+    P_3BFEF0 d;
+    V_3BFEF0 up;
+    V_3BFEF0 b[4];
+    V_3BFEF0 o;
+    f32 *m;
+    f32 *tbl = D_001D91B0;
+    s32 i = 3;
+    f32 one = 1.0f;
+    *(Q_3BFEF0 *)&up = 0;
+    up.z = one;
+    up.w = one;
+    d.gs[1] = func_00384EC0(0xB);
+    d.gs[3] = 0x8000000048UL;
+    d.gs[2] = 0xFF9000000260UL;
+    d.gs[0] = 5;
+    *(Q_3BFEF0 *)&b[3] = *(Q_3BFEF0 *)pos;
+    d.uv[0] = 0.0f;
+    d.uv[1] = 0.0f;
+    d.uv[2] = 0.0f;
+    d.uv[3] = one;
+    d.uv[4] = one;
+    d.uv[5] = 0.0f;
+    d.uv[6] = one;
+    d.uv[7] = one;
+    {
+        Q_3BFEF0 x, y;
+        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(D_00222480));
+        __asm__("lqc2 %0, %1" : "=j"(x) : "m"(b[3]));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(y) : "j"(y), "j"(x));
+        __asm__("sqc2 %1, %0" : "=m"(b[0]) : "j"(y));
+    }
+    func_00388830((s32)&b[0], (s32)&b[0], one);
+    func_00388758((f32 *)&b[1], (f32 *)&b[0], (s32)&up);
+    func_00388830((s32)&b[1], (s32)&b[1], one);
+    func_00388758((f32 *)&b[2], (f32 *)&b[1], (s32)&b[0]);
+    func_003886E8((f32 *)&o, &b[0], off);
+    {
+        Q_3BFEF0 x, y;
+        __asm__("lqc2 %0, %1" : "=j"(x) : "m"(b[3]));
+        __asm__("lqc2 %0, %1" : "=j"(y) : "m"(o));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
+        __asm__("sqc2 %1, %0" : "=m"(b[3]) : "j"(x));
+    }
+    d.c[3] = color;
+    d.c[2] = color;
+    d.c[1] = color;
+    d.c[0] = color;
+    m = d.m[0];
+    for (; i >= 0; i--) {
+        func_003886E8(m, tbl, size);
+        tbl += 4;
+        func_003888F0(m, m, b);
+        m += 4;
+    }
+    func_003CD830(&d, 0, 0);
+}
+/* localdecomp:end func_003BFEF0 */
 
 LINKER_REMNANT("asm/remnants", func_003C00B8);
 

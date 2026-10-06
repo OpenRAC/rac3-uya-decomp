@@ -9,6 +9,7 @@ extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3BE7F0;
 s32 func_003CE740(V_3BE7F0 *, V_3BE7F0 *, s32, s32, s32);
+extern s32 func_003CF790(void *, s32, void *, s32, f32);
 /* --- end of declarations from other files --- */
 
 ASM_FUNC("asm/handwritten", func_003CE740);

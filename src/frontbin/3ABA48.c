@@ -5,6 +5,9 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern void func_003ABD60();
+extern s32 func_003ACED0(s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_003AD220();
 extern s32 func_003ABD78();
 extern s32 func_003AD040();
 extern s32 func_003ABE70();
@@ -251,7 +254,7 @@ void func_003AC0B0(unsigned long *p, unsigned long a, unsigned long b, unsigned 
 typedef struct { s32 f0; s32 f4; s32 f8; u8 pC[0xC]; s32 f18; u8 p1C[0x24]; s32 f40; u8 p44[4]; long f48; s32 f50; s32 f54; } O_3AC0D8;
 typedef struct { s32 w0; s32 w4; s32 w8; s32 pad[5]; } St_3AC0D8;
 extern s32 func_11EE20();
-extern void func_003AC150();
+extern s32 func_003AC150();
 s32 func_003AC0D8(O_3AC0D8 *o, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5)
 {  St_3AC0D8 *new_var;
   St_3AC0D8 st;
@@ -271,7 +274,42 @@ s32 func_003AC0D8(O_3AC0D8 *o, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5)
 }
 /* localdecomp:end func_003AC0D8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AC150);
+/* localdecomp:start func_003AC150 */
+extern void func_003AC0B0_003AC150();
+typedef struct { s32 f0; s32 f4; s32 f8; s32 fC; s32 f10; s32 f14; u8 p18[0x2C]; s32 f44; u8 p48[8]; s32 f50; s32 f54; s32 f58; s32 f5C; } O_3AC150;
+s32 func_003AC150(O_3AC150 *o) {
+    s32 i = 0;
+    o->f44 = 1;
+    o->fC = 0;
+    o->f10 = 0;
+    o->f14 = 0;
+    o->f58 = 0;
+    o->f5C = 0;
+    if (o->f54 > 0) {
+        long m = -1;
+        s32 off = 0;
+        do {
+            i++;
+            *(long *)(off + o->f50) = m;
+            *(long *)(off + o->f50 + 8) = m;
+            *(s32 *)(off + o->f50 + 0x10) = 0;
+            *(s32 *)(off + o->f50 + 0x14) = 0;
+            off += 0x18;
+        } while (i < o->f54);
+    }
+    i = 0;
+    while (i < o->f8) {
+        func_003AC0B0_003AC150((unsigned long *)(o->f4 + i * 16), (o->f0 + i * 0x800) & 0xFFFFFFF, 3, 0x80);
+        i++;
+    }
+    func_003AC0B0_003AC150((unsigned long *)(o->f4 + i * 16), o->f4 & 0xFFFFFFF, 2, 0);
+    *(volatile u32 *)0x1000B420 = 0;
+    *(volatile u32 *)0x1000B410 = o->f0 & 0xFFFFFFF;
+    *(volatile u32 *)0x1000B430 = o->f4 & 0xFFFFFFF;
+    func_003AC040(5);
+    return 1;
+}
+/* localdecomp:end func_003AC150 */
 
 /* localdecomp:start func_003AC2B0 */
 extern void func_0011EE40(s32);
@@ -568,7 +606,7 @@ s32 func_003AD1D8(void *p) {
 /* localdecomp:start func_003AD220 */
 extern s32 func_003AD090();
 extern void func_003AD6B0();
-extern void func_003AC150();
+extern s32 func_003AC150();
 extern void func_003AD288();
 extern s32 D_001DA108;
 extern s32 *D_001DA108_003AD220[];

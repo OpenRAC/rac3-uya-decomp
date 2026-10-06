@@ -11,6 +11,7 @@ extern s32 D_001D8118[2];
 extern s32 D_001D8100[];
 extern s32 D_001D8100[2];
 extern u8 *func_003A5C70(u8 *);
+extern void func_003A5958(void *, s32);
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A7690);

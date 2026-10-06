@@ -539,3 +539,25 @@ The memory card state machine in `3958F0.c`, the largest function that was still
 - **Strength-reduced loop pointers:** retail keeps three pointers into a 0x40-byte table (`entry`, `entry+0x20`, `entry+0x25`). That came from `de = &tbl[i]` for `de->size`/`de->name[4]` plus `tbl[i].name` for the string arguments; other combinations gave two pointers.
 - Smaller ones: `func_11B2E8` (sprintf-like) must return `s32`, and `func_0038E6D0` is called through an `s32` cast, to keep `$v0` live. A `total + 1` that retail evaluates first needs its own temporary, since gcc reassociates `total + 1 + q`.
 - **Tooling for very large functions:** `try_func.py`'s positional diff is unusable until the size matches. An aligned diff (difflib over the disassembly, branch targets mapped to labels) made progress measurable from 883 diffs to 0.
+
+## Patterns from batch 21 (MMI bucket, 2026-10-06)
+
+Each was confirmed by a function that now matches in the full build.
+
+- **Check drafts with `try_in_context.py`, not only `try_func.py`.** `try_func.py` sees the extern declarations of earlier blocks but not their definitions, so a callee defined earlier in the file becomes an implicit `int` and gives false diffs (`func_003D1650` went from 23 diffs to MATCH in context; `func_0037F588`).
+- **GS/GIF packet writers:** `long **pp` with `*(*pp)++ = value;` under `@ps2as` matches quickly. If callers declare the first parameter `s32`, define it `s32` and cast inside (`func_003D1E68`).
+- **An earlier block's `.extern X, N` hint forces `$gp` for the rest of the file.** Where retail uses `lui` later in the file, use a per-function alias with no hint. Ps2EeAs still uses `$gp` in delay slots (`func_003D2878`).
+- **A volatile read steers delay-slot filling**, since gcc keeps volatile loads out of delay slots (`func_00380AB0`).
+- **Write symbol+offset constants inline** so related-value CSE picks retail's anchor register (`func_00381F18`).
+- **`$s` registers saved with `sq` but no `$ra`** take the same fix as the sq-`$ra` functions: an entry in `tools/sq_ra_funcs.txt` and no `-fopt-stack` (`func_003D1978`, `func_003D3780`).
+- **Rebase:** a `u8`-array access to `X + off` followed by stores through a local struct pointer gives retail's `addiu $s0, $s0, -off` (`func_003B8168`).
+- **Chained assignment** `a = b = f()` gives retail's store order (`func_003BA490`).
+- **Ps2EeAs fingerprint:** it expands the constant `1 << 63` as `addiu -1; dsll32 31` (`func_003B82C0`).
+- **`plzcw`** has no C form: `__asm__("plzcw %0, %1" : "=r"(d) : "r"(d)); d = 30 - d;` (`func_003D1650`, `func_003D1E68`).
+- **A dead 16-byte stack copy** is an aligned 4-float struct local, not a volatile `u128` (`func_003CB748`).
+- **Open question:** `func_003CB5B0` declares `D_001D9350` as `s32[2]` with `.extern D_001D9350, 8` to get the `$gp` form, but retail reads 16 bytes from it with `lq`. The 8 steers codegen and is probably not the real size.
+- **Tool gap:** the sq-`$ra` rewrite in `asm_filter.py` also matches `ld $16/$17` stack-argument loads, so `func_00386D98` (43 diffs) can't match until the rewrite is limited to the prologue saves and epilogue restores.
+
+## VU0 instructions as separate asm statements (provisional, 2026-10-06)
+
+`func_003DCD08` (0x1558 bytes) matches with each VU0 instruction written as its own non-volatile `__asm__` statement using the `j` (VU0 register) constraint, so gcc's scheduler can interleave VU0 ops with ordinary code as retail does. SN's cc1 only accepts `j` with `-mvu0-use-vf0-vfN`; the function's override uses `-mvu0-use-vf0-vf31`, but every N from 2 up gives the same bytes, so the original's N is unknown. This is the only function that uses the form so far. It may unlock much of the `vu0` bucket. Treat it as provisional until a second, independent function confirms it; until then, keep using the volatile-asm forms in "VU0 code: inline asm" where they work.

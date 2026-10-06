@@ -207,7 +207,7 @@ Large-function pass (2026-10-02, largest plain functions first). Matched: `func_
 
 | Function | Size | Best | Notes |
 |---|---|---|---|
-| `func_003A2DF8` | 0x44 | 3 diffs (S, default assembler) | `sq $zero` via the non-volatile `QZERO` form (`__asm__("sq $0,%0" : "=m"(*(u128 *)p))`) after `D_001D6EF0 = 1.0f;`. Left: retail builds the `1.0f` (`lui $at; mtc1`) before the `lui $v0` of the asm address. It MATCHES with `-fno-schedule-insns2`, but both neighbours (`func_003A2BC0`, `func_003A2E40`) need sched2 on, so that would mean a one-function source file; not applied. Drafts for all four: `scratch/near_misses/` (local, not in git) |
+| `func_003A2DF8` | 0x44 | matched 2026-10-06 (batch 21, S `@ps2as` with a `s32[2]` declaration for the `la` macro); was 3 diffs (S, default assembler) | `sq $zero` via the non-volatile `QZERO` form (`__asm__("sq $0,%0" : "=m"(*(u128 *)p))`) after `D_001D6EF0 = 1.0f;`. Left: retail builds the `1.0f` (`lui $at; mtc1`) before the `lui $v0` of the asm address. It MATCHES with `-fno-schedule-insns2`, but both neighbours (`func_003A2BC0`, `func_003A2E40`) need sched2 on, so that would mean a one-function source file; not applied. Drafts for all four: `scratch/near_misses/` (local, not in git) |
 | `func_003A0010` | 0xC0 | matched 2026-10-05 | `QZERO(D_1A3100 + i * 0x10)`, index in the address, not a running pointer |
 | `func_003959A8` | 0x11C | 2 diffs (S) | stores through `o + 0x18` base; retail folds the offset into the symbol |
 | `func_003B10A8` | 0xB0 | 41 diffs (S) | `ldl`/`ldr` unaligned copy; structure right, register allocation off |

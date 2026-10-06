@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_003886E8(f32 *, void *, f32);
+extern void func_00388758();
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_00388680 */

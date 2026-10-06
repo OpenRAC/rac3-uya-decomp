@@ -87,7 +87,26 @@ check_flags:
 
 LINKER_REMNANT("asm/remnants", func_003BF820);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BF838);
+/* localdecomp:start func_003BF838 */
+typedef int u128_3BF838 __attribute__((mode(TI)));
+typedef struct { u128_3BF838 r[4]; } M_3BF838;
+extern void func_00388BF0();
+extern void func_00388E78();
+extern void func_00388F08();
+extern void func_003BF360();
+void func_003BF838(u8 *p, u128_3BF838 *a1, u128_3BF838 *a2, void *a3) {
+    M_3BF838 m0, m1, m2, m3;
+    func_00388BF0(&m0, a2);
+    func_00388E78(&m1, &m0);
+    func_00388BF0(&m2, a3);
+    func_00388F08(&m3, &m1, &m2);
+    func_003BF360(&m3, p);
+    if (*(s32 *)(p + 0x3C) & 2) {
+        *(u128_3BF838 *)(p + 0x20) = *a2;
+    }
+    *(u128_3BF838 *)(p + 0x10) = *a1;
+}
+/* localdecomp:end func_003BF838 */
 
 LINKER_REMNANT("asm/remnants", func_003BF8F8);
 

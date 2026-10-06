@@ -4,6 +4,5 @@
 func_0039BEC0 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 func_003830E8 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 
-func_003B82C0 -O2 -G8 -mno-check-zero-division @ps2as
 func_003D1B10 -O2 -G8 -mno-split-addresses -mno-check-zero-division @ps2as
 func_003BA5B8 -O2 -G8 -mno-split-addresses -mno-check-zero-division @ps2as

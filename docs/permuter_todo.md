@@ -211,3 +211,27 @@ Large-function pass (2026-10-02, largest plain functions first). Matched: `func_
 | `func_003A0010` | 0xC0 | matched 2026-10-05 | `QZERO(D_1A3100 + i * 0x10)`, index in the address, not a running pointer |
 | `func_003959A8` | 0x11C | 2 diffs (S) | stores through `o + 0x18` base; retail folds the offset into the symbol |
 | `func_003B10A8` | 0xB0 | 41 diffs (S) | `ldl`/`ldr` unaligned copy; structure right, register allocation off |
+
+## Large-function near misses (batch 3, 2026-10-06)
+
+Drafts are in the agents' `near_misses/` folders, each with a header (diff count, flags, what is left). Not inserted.
+
+| Function | Diffs | Notes |
+|---|---|---|
+| `func_0039CEA8` | 5 | |
+| `func_003A7690` | 6 | |
+| `func_003A04A0` | 8 | vu0, uses the provisional `j` form |
+| `func_0038F3F8` | 14 | 2 are tool artifacts |
+| `func_00389FB8` | 20 | |
+| `func_0038FDC0` | 22 | |
+| `func_003E92D8` | 23 | |
+| `func_0038A848` | 39 | |
+| `func_003B6528` | 41 | |
+| `func_003830E8` | 76 | |
+| `func_00390C18` | 121 | |
+| `func_003B3558` | 135 | |
+| `func_003A8230` | 141 | |
+| `func_0038BB50` | 217 | |
+| `func_0039EE68` | 409 | vu0; uses `__asm__("sq $0, %0")` |
+
+Some c1 drafts rely on `volatile` reads to steer scheduling; check those against the sanctioned forms before inserting.

@@ -558,9 +558,19 @@ Each was confirmed by a function that now matches in the full build.
 - **Open question:** `func_003CB5B0` declares `D_001D9350` as `s32[2]` with `.extern D_001D9350, 8` to get the `$gp` form, but retail reads 16 bytes from it with `lq`. The 8 steers codegen and is probably not the real size.
 - **Tool gap:** the sq-`$ra` rewrite in `asm_filter.py` also matches `ld $16/$17` stack-argument loads, so `func_00386D98` (43 diffs) can't match until the rewrite is limited to the prologue saves and epilogue restores.
 
-## VU0 instructions as separate asm statements (provisional, 2026-10-06)
+## VU0 instructions as separate asm statements (PROVISIONAL, open for exploration)
 
-`func_003DCD08` (0x1558 bytes) matches with each VU0 instruction written as its own non-volatile `__asm__` statement using the `j` (VU0 register) constraint, so gcc's scheduler can interleave VU0 ops with ordinary code as retail does. SN's cc1 only accepts `j` with `-mvu0-use-vf0-vfN`; the function's override uses `-mvu0-use-vf0-vf31`, but every N from 2 up gives the same bytes, so the original's N is unknown. A second function, `func_003C0188` (0x984 bytes, a different agent), matched the same way, so the form works beyond one function. What stays unknown is the exact `-mvu0-use-vf0-vfN` the original used. It may unlock much of the `vu0` bucket; prefer it where the volatile-asm forms in "VU0 code: inline asm" can't reproduce retail's interleaving.
+Status: kept in the build, not settled. Three functions use it: `func_003DCD08` (0x1558 bytes), `func_003C0188` (0x984) and `func_003813E0` (0x664), matched by three different agents. Each block starts with a `PROVISIONAL, VU0 j-constraint form` comment and each override line in `tools/text_parts.txt` says `PROVISIONAL VU0 j-constraint form`, so `grep -rn "PROVISIONAL" src/frontbin tools/text_parts.txt` lists them.
+
+The form: each VU0 instruction is its own non-volatile `__asm__` statement using the `j` (VU0 register) constraint, so gcc's scheduler interleaves VU0 ops with ordinary code the way retail does. SN's cc1 only accepts `j` with `-mvu0-use-vf0-vfN`. The overrides use `-mvu0-use-vf0-vf31`.
+
+What is known (2026-10-06): with N = 1 the three functions don't compile; N = 2, 3, 8 and 31 all give identical bytes for all three. So the bytes can't tell N apart above 1. Retail only uses `$vf1`/`$vf2` in these functions and spills 128-bit values, which points to `-mvu0-use-vf0-vf2` as the original setting (c2's finding, batch 3), but that is inference, not proof.
+
+Open questions for whoever picks this up:
+- Is there a function where N changes the bytes (register pressure above `$vf2`)? That would settle N.
+- Was the flag set per file in the original? If so it should apply to each of these files, not one function.
+- Does the form match the rest of the `vu0` bucket? `func_003A04A0` is at 8 diffs with it.
+Until those are answered, prefer the volatile-asm forms in "VU0 code: inline asm" where they reproduce retail, and flag any new use of this form in the PR.
 
 ## Patterns from batch 23 (MMI bucket, 2026-10-06)
 
@@ -575,3 +585,14 @@ Each was confirmed by a function that now matches in the full build.
 - **An indexed loop with two increments**, `for (i = 0; i < n; i++, list++)`, matched where a single induction variable didn't (`func_003936A8`).
 - **Integration note:** `tools/divs_nops.txt` is keyed by function. When a patch changes a function's `div.s` padding count, that line has to travel with the function; a stale count makes the function longer by 4 bytes per `nop` and shifts everything after it (`func_0037D200`, 2 to 1).
 - **Tool note:** `try_in_context.py` ignores `tools/localdecomp_flags.txt`, so an `@ps2as` candidate can only be checked in place once its `text_parts.txt` override exists.
+
+## Patterns from large-function batch 3 (2026-10-06)
+
+From the agents' reports and near-miss headers; each was found while matching or nearly matching a large function.
+
+- **One C variable reused for unrelated values** decides close register ties.
+- **Callee prototypes decide scheduling:** float/int parameter order and `long` parameters change the caller; when unsure, try every order.
+- **Declare temporaries inside the one branch arm that uses them.**
+- **Loop invariants hoisted by the second loop pass take the first callee-saved registers.**
+- **Constants fold into adds but not multiplies** (`i * lh` keeps its register).
+- **Many "mmi" bucket functions are plain C**: their 128-bit ops are `-fcaller-saves` spills of ordinary values, not MMI code.

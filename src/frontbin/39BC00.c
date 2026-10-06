@@ -2,6 +2,11 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_0039BEC0(s32, s32, s32, s32, u8 *);
+extern void func_0039C2A8(void);
+extern s32 func_0039D510(s32, s32, s32);
+extern void func_0039C1C8(s32 a, s32 idx);
+extern void func_0039BD48(void);
+extern void func_0039CEA8();
 extern s32 func_0039BEA8(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
@@ -13,7 +18,6 @@ extern s32 func_0039D668(s32, s32, s32);
 extern s32 func_0039D5F8();
 extern s32 func_0039D5A8();
 extern s32 func_0039D668();
-extern s32 func_0039D510(s32, s32, s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_0039BC00 */

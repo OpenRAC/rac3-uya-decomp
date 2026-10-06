@@ -1,9 +1,11 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+typedef int u128_t __attribute__((mode(TI)));
 extern void func_003BF2A0();
 extern f32 func_003BE988(void *, s32);
 extern f32 func_003BEBF8(f32 *, f32, f32);
+extern void func_003BF360();
 extern void func_003BE340(void);
 extern void func_003BDC90(void);
 extern void (*D_00226880[])(s32);
@@ -287,7 +289,47 @@ void func_003BE418(S_3BE418 *p, s32 idx, s32 lim) {
 }
 /* localdecomp:end func_003BE418 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BE4F0);
+/* localdecomp:start func_003BE4F0 */
+typedef struct {
+    u8 p0[0x24]; Q_3BE418 *f24; u8 p28[0x18];
+    u8 f40; u8 f41; u8 f42; u8 f43; f32 f44; f32 f48; f32 f4C; void *f50; void *f54; u8 p58[8]; u8 f60; u8 p61[0xB]; u8 f6C;
+    u8 p6D[0x13]; u128_t f80; u8 p90[0x19]; u8 fA9;
+} S_3BE4F0;
+extern u128_t D_002D6180[];
+extern void func_003C1950_003BE4F0();
+extern s32 func_003BD810();
+extern void func_003C35A8();
+void func_003BE4F0(S_3BE4F0 *p, s32 idx, s32 lim, s32 dur) {
+    s32 v;
+    s32 r;
+    s32 n;
+    n = p->f24->e[idx]->n;
+    if (lim >= n) lim = n - 1;
+    if (dur <= 0) {
+        func_003BE418(p, idx, lim);
+        return;
+    }
+    if ((u32)(lim - 1) < 0xB) func_003C1950_003BE4F0(p, idx, (u16)lim);
+    if (0.025f < p->f44 || p->f50 != 0 || p->f54 != 0) {
+        r = func_003BD810(p);
+        if (r >= 0) {
+            func_003C35A8(p, r | 0x300);
+            D_002D6180[r] = p->f80;
+            if (p->f42 != 0xFF) p->fA9 = p->f42;
+            p->f42 = 0xFF;
+            p->f40 = r;
+        }
+    }
+    p->f41 = lim;
+    p->f43 = idx;
+    func_003BD490(p);
+    p->f60 &= 0xFD;
+    p->f48 = 1.0f;
+    p->f44 = 0;
+    p->f4C = 1.0f / (f32)dur;
+    p->f6C = p->f24->e[idx]->f11;
+}
+/* localdecomp:end func_003BE4F0 */
 TEXT_PADDING(4);
 
 LINKER_REMNANT("asm/remnants", func_003BE688);

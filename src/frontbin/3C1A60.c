@@ -12,6 +12,7 @@ extern void func_003C1A90();
 extern void func_003C5AE0();
 extern void func_003C5D90();
 extern void *func_003C5E70(s32, void *, s32, s32);
+extern void func_003C35A8();
 extern void func_003C1A60(s32, s32 *, s32 *, s32 *);
 /* --- end of declarations from other files --- */
 

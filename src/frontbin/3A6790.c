@@ -137,7 +137,80 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003A6A00);
 
 LINKER_REMNANT("asm/remnants", func_003A6C08);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A6C30);
+/* localdecomp:start func_003A6C30 */
+/* MATCH */
+typedef struct {
+    s16 h0, h2, h4, h6, h8, hA, hC, hE, h10;
+    u16 h12;
+    s16 h14, h16, h18, h1A;
+} W_3A6C30;
+extern char D_001D8388[], D_001D8398[], D_001D83A8[], D_001D83E0[], D_001D8418[], D_001D8420[], D_001D8430[];
+extern s32 func_11B2E8();
+extern void func_0038C8F8();
+extern void func_0038C980();
+extern void func_0038B1E8();
+extern void func_00387C78(s32, s32, s32, s32, s32, s32);
+extern void func_003A7090(s32, s32, s32, f32, f32, f32, f32);
+void func_003A6C30(s32 a0, W_3A6C30 *p, s32 a2, s32 a3, s32 mode, s32 center, s32 a6, s32 a7, s32 x, s32 y, u8 b) {
+    char buf[0x200];
+    s32 saved = (s16)p->h12;
+    s32 dx, dy, l, r, t, bo, cx, cy;
+    p->h12 |= 3;
+    if (x != 0) {
+        if (y != 0) {
+            if (b != 0) {
+                if (a7 != 0) func_11B2E8(buf, D_001D8388, a3, 1, x, 1, y);
+                else func_11B2E8(buf, D_001D8398, a3, 1, 1, x, 1, y);
+            } else {
+                if (a7 != 0) func_11B2E8(buf, D_001D83A8, a3, 1, x, y);
+                else func_11B2E8(buf, D_001D83E0, a3, 1, 1, x, y);
+            }
+        } else {
+            if (a7 != 0) func_11B2E8(buf, D_001D8418, a3, 1, x);
+            else func_11B2E8(buf, D_001D8420, a3, 1, 1, x);
+        }
+    } else {
+        func_11B2E8(buf, D_001D8430, a3);
+    }
+    p->h12 |= 4;
+    switch (mode) {
+    case 0: func_0038C8F8(p, a2, buf, a6); break;
+    case 1: ((void (*)(void *, s32, void *, s32, unsigned long, f32, f32))func_0038B1E8)(p, a2, buf, a6, 0x80000000UL, 1.0f, 1.0f); break;
+    case 2: func_0038C980(p, a2, buf, a6); break;
+    }
+    if (center != 0) {
+        s32 c = (*(s32 *)0x1D4BC4 - p->hE) >> 1;
+        p->h0 = c;
+        p->h2 = p->h0 + p->hE;
+        p->hA = c + (p->hE >> 1);
+    }
+    switch (mode) {
+    case 0: func_0038C8F8(p, a2, buf, a6); break;
+    case 1: ((void (*)(void *, s32, void *, s32, unsigned long, f32, f32))func_0038B1E8)(p, a2, buf, a6, 0x80000000UL, 1.0f, 1.0f); break;
+    case 2: func_0038C980(p, a2, buf, a6); break;
+    }
+    dx = (p->hC >> 1) + 10;
+    dy = (p->hE >> 1) + 5;
+    p->h12 &= ~4;
+    cx = p->h8;
+    cy = p->hA;
+    t = cy - dy;
+    l = cx - dx;
+    r = cx + dx;
+    bo = cy + dy;
+    func_00387C78(t, bo, l, r, 0x60, 0x600E5092);
+    func_003A7090(a0, 0x60, 0x332299DE, t, bo, l, r);
+    p->h18 = 2;
+    p->h12 |= 0x20;
+    p->h1A = 2;
+    switch (mode) {
+    case 0: func_0038C8F8(p, a2, buf, a6); break;
+    case 1: ((void (*)(void *, s32, void *, s32, unsigned long, f32, f32))func_0038B1E8)(p, a2, buf, a6, 0x80000000UL, 1.0f, 1.0f); break;
+    case 2: func_0038C980(p, a2, buf, a6); break;
+    }
+    p->h12 = saved;
+}
+/* localdecomp:end func_003A6C30 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A7090);
 

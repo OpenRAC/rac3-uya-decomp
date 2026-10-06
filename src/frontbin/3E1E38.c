@@ -1,6 +1,9 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern s32 func_003E2FC0(s32 arg0, s32 *arg1);
+extern s32 func_003E2F48(s32 a);
+extern s32 func_003E2ED8(s32 arg0);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
@@ -19,11 +22,14 @@ extern s32 func_003E31A8(s32, s32);
 extern s32 func_003E28E0(s32, s32);
 extern s32 func_003E3250(s32, s32, s32);
 extern s32 func_003E24B0(s32 arg0, s32 arg1);
+extern s32 func_003E3988(s32, s32, s32, f32, f32, f32, f32, f32);
+extern s32 func_003E3BD0(s32, s32, s32, f32, f32, f32, f32);
+extern s32 func_003E3D08(s32, s32, f32, f32, f32, f32, f32, f32);
+extern s32 func_003E3630(s32, s32, s32, s32, s32, s32, s32);
 extern s32 func_003E1E50(s32, f32, f32);
 extern s32 func_003E21F8(s32, f32);
 extern s32 func_003E2808();
 extern s32 func_003E2808(s32, s32);
-extern s32 func_003E3BD0(s32, s32, s32, f32, f32, f32, f32);
 extern s32 func_003E2560(s32, s32);
 extern s32 func_003E2A90(s32, s32, s32, s32, s32);
 extern s32 func_003E2B98(s32, s32, s32);

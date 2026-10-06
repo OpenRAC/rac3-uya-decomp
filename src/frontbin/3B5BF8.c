@@ -2,11 +2,12 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_003B62D0(s32);
+extern s32 func_12C908(s32);
+extern void func_0039B760(u8 *, u32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern s32 func_12C908(s32);
 extern s32 func_13B620(void);
 void func_0039B760(u8 *, u32);
 extern void func_0039B760();
@@ -536,7 +537,42 @@ void func_003B82C0(u8 *ctx, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 
 }
 /* localdecomp:end func_003B82C0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B8440);
+/* localdecomp:start func_003B8440 */
+/* MATCH */
+typedef int u128_3B8440 __attribute__((mode(TI)));
+__asm__(".extern D_001DA33C, 4");
+__asm__(".extern D_001DA330_003B8440, 4");
+extern s32 D_001DA320_003B8440[2];
+extern f32 D_001DA33C;
+extern s32 D_001DA330_003B8440;
+extern f32 D_001DA334_003B8440;
+extern f32 D_001DA338_003B8440;
+extern void func_003B82C0(void *, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_003BDA38(void *, s32, void *);
+extern void func_00389380(f32, f32);
+extern f32 func_00388978(f32);
+extern void func_00385688(void (*)(), s32);
+extern void func_003B8280(void);
+void func_003B8440(u8 *p) {
+    u128_3B8440 v;
+    s32 k;
+    s32 m;
+    f32 f;
+    *(u16 *)(p + 0x34) |= 0x10;
+    func_003B82C0(p, 0x38, 0x88, 0x40, 0x80, 0x18, 0x40, 0x18, 0x64);
+    k = *(s16 *)(p + 0xAA);
+    if (k == 10) m = 1; else { s32 e = k ^ 0x259; m = e ? 0 : 8; }
+    func_003BDA38(p, m, &v);
+    f = ((f32 (*)(f32, f32))func_00389380)(D_001DA33C, 0.06690429151058197f);
+    D_001DA33C = f;
+    f = (func_00388978(f) * 0.5f + 0.5f) * 13.0f;
+    *(u128_3B8440 *)D_001DA320_003B8440 = v;
+    D_001DA334_003B8440 = 0.04f;
+    D_001DA338_003B8440 = 0.07f;
+    D_001DA330_003B8440 = (((s32)f + 0x17) << 24) | 0xC0;
+    func_00385688(func_003B8280, (s32)p);
+}
+/* localdecomp:end func_003B8440 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003B8560);
 

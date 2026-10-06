@@ -2,18 +2,24 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_0011A264(s32, s32, s32);
+extern void func_0038DA28(s32, long, long);
+extern void func_0038DA80(void);
+extern void func_0038DB18(s32);
+extern void func_0038DA58(void);
+extern void func_0038DB98(void);
+extern void func_0038DF10(s32);
+extern s32 func_0038E2E8();
+extern s32 func_0038E440();
+extern void func_00389920(s32);
 extern void func_00393460();
 extern void func_0038DC08(s32, s32, s32, s32);
 extern void func_0038E030(s32, s32);
-extern void func_0038DA80(void);
-extern void func_0038DB18(s32);
 extern void func_0038DEB0(void);
 extern void func_00391FD8(void);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern void func_0038DB98(void);
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003896E8);

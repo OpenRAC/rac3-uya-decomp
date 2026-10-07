@@ -121,7 +121,7 @@ Sorts every remaining `INCLUDE_ASM` function into one bucket:
 | Bucket | Meaning |
 |---|---|
 | `plain` | ordinary C |
-| `sibcall` | ends in a sibling call (`j func_` after the epilogue): a later compiler than ours built it (boot_elf's engine core, i5bootn); not matchable until that compiler is in the toolchain |
+| `sibcall` | ends in a sibling call (`j func_` after the epilogue): not our compiler; in practice Sony's 2.9-ee-991111 library compiler (boot_elf's engine core, i5bootn); not matchable until that compiler is in the toolchain |
 | `switch` | jump tables |
 | `vu0` | VU0 inline asm |
 | `mmi` | 128-bit EE instructions |

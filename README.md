@@ -10,7 +10,7 @@ This repo contains no game code or assets. To build it you need your own copy of
 
 boot_elf (the main executable: the engine core and a second copy of the front end) is split the same way, in `src/boot_elf/core/` and `src/boot_elf/text/`, and its front end was seeded from frontbin's C; see [`docs/boot_elf.md`](docs/boot_elf.md). `python tools/pr_check.py --target boot_elf` prints its count.
 
-i5bootn (the bootstrap launcher the disc starts first) is in `src/i5bootn/`; see [`docs/i5bootn.md`](docs/i5bootn.md). Its compiled code appears to come from a later Sony compiler than ours, so it is set up and building but not matched yet. `python tools/pr_check.py --target all` prints every target's count.
+i5bootn (the bootstrap launcher the disc starts first) is in `src/i5bootn/`; see [`docs/i5bootn.md`](docs/i5bootn.md). Most of its compiled code is Sony library code built with another compiler (Sony ee-gcc 2.9-ee-991111; see [`docs/compiler_matrix_i5bootn.md`](docs/compiler_matrix_i5bootn.md)), so only its own two C functions are matched so far. `python tools/pr_check.py --target all` prints every target's count.
 
 frontbin's code is in `src/frontbin/`, one C file per original source file (see [`docs/source_files.md`](docs/source_files.md)). Until 2026-10-03 it was a single `src/text.c`; branches or notes that mention that file are older than the split.
 

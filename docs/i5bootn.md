@@ -60,23 +60,31 @@ and boot_elf, but those keep ee-objcopy.
   at 0x800008) and Sony's libkernl system-call stubs (`addiu $v1, $0, N;
   syscall; jr $ra`).
 - 8 linker remnants.
-- 44 compiled functions still `INCLUDE_ASM`: the loader and the C parts of
-  libkernl (TLB setup and printf-style formatting among them).
+- 44 compiled functions: libgcc (26), small libc and SIO helpers, newlib
+  `exit`, a printf-style formatter, the loader and `main`. 2 are C so far
+  (`main`, `func_008010F8`); the rest are `INCLUDE_ASM`.
 
 The source-file split (5 files) and the flags in `targets/i5bootn/text_parts.txt`
 are estimates from `tools/bootstrap_target.py` (the target's base flags,
 `-mno-split-addresses` where the assembly looks like it).
 
-**It was most likely not built with our compiler.** Three of its compiled
-functions end in a sibling call (`j func_...` after the epilogue, with the stack
-restore in the delay slot), and they keep saved registers in 16-byte-aligned
-slots (SN at our flags packs them: `func_008007C8` compiles to a 0x10 frame where
-retail has 0x20). SN ee-gcc 2.95.3
-never emits a sibling call; Sony's later compilers (2.96-ee-001003-1 and the 3.2
-builds) do. `tools/triage.py` files the functions that show it under `sibcall`
-(3 here; 43 in boot_elf's engine core). Until that compiler is in the
-toolchain, expect near misses on this code: the build stays correct, only the
-C can't match yet.
+**Most of it was not built with our compiler.** The compiler matrix
+([`docs/compiler_matrix_i5bootn.md`](compiler_matrix_i5bootn.md)) shows three
+compilers in this one file:
+
+- **libgcc** (26 functions: soft-float, 64-bit division and multiply,
+  `__main`): Sony **ee-gcc 2.9-ee-991111-01** at `-O2`, from GCC 2.95's own
+  source. All 26 rebuild byte for byte.
+- **Small libc and SIO helpers** (8 functions, including the 3 in the
+  `sibcall` bucket): the same Sony 2.9-ee-991111 family. It does make sibling
+  calls; SN 2.95.3 never does.
+- **newlib `exit()`**: 2.96-ee-001003-1.
+- **`main` and `func_008010F8`**: our SN 2.95.3. Both are matched in C (`main`
+  at `-O0` without `-fopt-stack`, a single-function override in
+  `targets/i5bootn/text_parts.txt`).
+
+So expect near misses on the library code until Sony's 2.9-ee-991111-01 is in
+the toolchain; the build stays correct.
 
 ## Starting the tree again
 

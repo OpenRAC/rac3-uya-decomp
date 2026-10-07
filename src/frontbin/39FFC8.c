@@ -8,8 +8,6 @@ typedef struct {
 extern void func_003A30E0(void);
 extern void func_003A3B00(void);
 extern void func_003A44F0(void);
-extern void func_003A3C80(void);
-extern void func_003A3C00(void);
 extern s32 func_0039EE68(void);
 extern void func_003A3EF0(s32, unsigned long);
 extern void func_003A35C0(void);
@@ -24,7 +22,6 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern void func_003A3C00();
 extern void func_003A3DE8(s32, u32);
 extern void func_003A41F0(void);
 extern void func_003A3FB0(s32, s32, s32, s32);
@@ -800,7 +797,76 @@ void func_003A1E48(void) {
 }
 /* localdecomp:end func_003A1E48 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A2028);
+/* localdecomp:start func_003A2028 */
+typedef struct { u8 pad[0x44]; s16 h44; u8 pad2[0x15A]; s32 tbl[1]; } S_225780_3A2028;
+typedef struct { u8 pad[0x28]; s32 f28; } E_3A2028;
+extern S_225780_3A2028 D_00225780_3A2028;
+extern E_3A2028 *D_001DA51C_3A2028;
+extern s32 D_001D5B94;
+extern s32 D_001D5B90;
+extern s32 D_001D9C44;
+extern s32 D_001D9C48;
+extern s32 D_001D9D9C;
+extern void func_003A3C80();
+extern void func_003A3C00();
+extern void func_0038DB98();
+extern void func_0038DF10();
+extern void func_0038DA80();
+extern void func_00397490();
+extern void func_00381F18();
+extern void func_003BD8A0();
+extern void func_003838C0();
+extern void func_0039E8E0();
+extern s32 func_003A1438();
+extern void func_0038DB18();
+extern void func_00384420();
+extern void func_003A3DA0();
+extern void func_003A1E48();
+s32 func_003A2028(void) {
+    E_3A2028 *t;
+    E_3A2028 *e;
+    s32 i;
+    s32 r;
+    s32 s;
+    if (((s32 (*)())func_003A1AD0)() == 0) return 1;
+    t = D_001DA51C_3A2028;
+    for (i = 0; i < D_00225780_3A2028.h44; i++) {
+        do { e = (E_3A2028 *)D_00225780_3A2028.tbl[i]; } while (0);
+        if (e != 0 && t != e) {
+            do { e->f28 = (s32)t; t = e; } while (0);
+        }
+    }
+    D_001D5B94 = 2;
+    do {
+        func_003A3C80();
+        func_003A3C00();
+        func_0038DB98();
+        func_0038DF10(1);
+        func_0038DA80();
+        func_00397490();
+        func_00381F18();
+        func_003BD8A0();
+        func_003838C0();
+        D_001D9D9C = -1;
+        func_0039E8E0();
+        r = func_003A1438();
+        func_0038DB18(0);
+        D_001D9C44 = 0x131;
+        func_00384420(0);
+        s = D_001D5B90;
+        if (s != -2) {
+            D_001D5B94 = s;
+            D_001D5B90 = -2;
+        }
+        func_003A3DA0(1);
+        func_12C908(0);
+        D_001D9C48 = D_001D9C48 + 1;
+    } while (D_001D5B94 == 2);
+    D_001D5B94 = 0;
+    func_003A1E48();
+    return r;
+}
+/* localdecomp:end func_003A2028 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003A21C0);
 

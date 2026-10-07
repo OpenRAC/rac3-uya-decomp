@@ -5,6 +5,7 @@ extern void func_003934E8(s32, s32);
 extern void func_00393580(void);
 extern void func_00394060(void);
 extern void func_003A3DA0(s32);
+extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
@@ -15,7 +16,41 @@ INCLUDE_ASM("asm/nonmatchings/text", func_003934E8);
 
 LINKER_REMNANT("asm/remnants", func_00393550);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00393580);
+/* localdecomp:start func_00393580 */
+extern u8 D_00227600_00393580[];
+extern u8 D_3EDDF7[];
+extern u8 D_01FF8000[];
+extern u8 D_01FFC000[];
+extern u32 D_001DA0D8;
+extern s32 func_0011A264(s32, s32, s32);
+void func_00393580(void) {
+    u32 *s = (u32 *)D_00227600_00393580;
+    u32 c;
+    func_0011A264((s32)s, 0, 0xA0);
+    c = (u32)D_01FFC000;
+    s[0] = 0;
+    s[1] = 0x100000;
+    s[2] = (u32)D_3EDDF7 & 0xFFFFF000;
+    s[3] = s[2];
+    s[4] = s[3] + D_001DA0D8;
+    s[5] = s[4] + D_001DA0D8;
+    s[6] = s[5] + 0x100000;
+    s[0x22] = (u32)D_01FF8000;
+    s[0x21] = s[0x22] - 0x40000;
+    s[0x20] = s[0x21] - 0x64000;
+    s[0x1F] = s[0x20];
+    s[0x1E] = s[0x1F] - 0x2C000;
+    s[0x1D] = s[0x1E] - 0x8000;
+    s[0x1C] = s[0x1D] - 0x14000;
+    s[0x1A] = s[6];
+    s[0x23] = c;
+    s[0x1B] = s[0x1C];
+    s[0x24] = 0x7000000;
+    s[0x25] = 0x7100000;
+    s[0x26] = 0x7180000;
+    s[0x27] = 0x7200000;
+}
+/* localdecomp:end func_00393580 */
 
 LINKER_REMNANT("asm/remnants", func_003936A0);
 

@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9AC0[2])(s32);
 extern long func_00384EC0(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
@@ -180,7 +181,40 @@ void func_003BFBA8(void *a, f32 *out, s32 f) {
 }
 /* localdecomp:end func_003BFBA8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003BFC18);
+/* localdecomp:start func_003BFC18 */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3BFC18;
+typedef int Q_3BFC18 __attribute__((mode(TI)));
+extern s32 D_001D5BEC_003BFC18;
+extern s32 D_001D5BF0;
+typedef struct { u8 p0[0xB0]; V4_3BFC18 v; } S_3BFC18;
+extern S_3BFC18 D_001A4BE0;
+extern void func_003886E8(f32 *, void *, f32);
+extern void func_003BFBA8(void *, void *, s32);
+void func_003BFC18(void *a, f32 *out, s32 flag) {
+    if (D_001D5BEC_003BFC18 == 0) {
+        Q_3BFC18 r;
+        __asm__("vmr32.xyzw %0, $vf0" : "=j"(r));
+        __asm__("sqc2 %1, %0" : "=m"(*(V4_3BFC18 *)out) : "j"(r));
+    } else if (D_001D5BF0 != 0) {
+        func_003BFBA8(a, out, 1);
+    } else {
+        Q_3BFC18 p, q, r;
+        S_3BFC18 *d = &D_001A4BE0;
+        f32 s = 1.0f;
+        if (d->v.w > 0.0f) {
+            s = -1.0f;
+        }
+        __asm__("lqc2 %0, %1" : "=j"(p) : "m"(*(V4_3BFC18 *)a));
+        __asm__("lqc2 %0, %1" : "=j"(q) : "m"(d->v));
+        __asm__("vsub.xyz %0, %1, %2" : "=j"(r) : "j"(q), "j"(p));
+        __asm__("sqc2 %1, %0" : "=m"(*(V4_3BFC18 *)out) : "j"(r));
+        ((void (*)(void *, void *, f32))func_00388830)(out, out, s);
+    }
+    if (flag == 0) {
+        func_003886E8(out, out, -1.0f);
+    }
+}
+/* localdecomp:end func_003BFC18 */
 
 /* localdecomp:start func_003BFCE8 */
 extern void func_003BFC18(void *);

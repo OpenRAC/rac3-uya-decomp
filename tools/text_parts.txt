@@ -19,13 +19,18 @@
 0x0037E4B8     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0037E630     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0037E7C8     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0037E878     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0037E920     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0037E9B0     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0037EB68     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0037EE80     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0037F090     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0037F0D8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0037F228     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
 0x0037F420     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0037F7A8     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override, PROVISIONAL VU0 j-constraint form
+0x0037F978     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003801C0     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override, PROVISIONAL VU0 j-constraint form
 0x003804A0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x00380600     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003807F0     -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -58,7 +63,7 @@
 0x00384EC0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x00385438     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x00385570     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
-0x00385628     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00385628     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x00385688     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x00385980     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x00385B60     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
@@ -70,6 +75,7 @@
 0x003866E8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003867F8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003869E0     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003869E8     -O2 -G8 -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override, PROVISIONAL VU0 j-constraint form
 0x00386D98     -O2 -G8 -mno-check-zero-division @ps2as   # single-function override
 0x00386F28     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00386F38     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
@@ -113,7 +119,8 @@
 0x0038DA80     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0038DC08     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x0038DEB0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
-0x0038E030     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x0038E030     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x0038E1E0     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x0038E380     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x0038E410     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x0038E5B8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
@@ -133,12 +140,13 @@
 0x0038F310     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0038F3A0     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x00391A18     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
-0x00391B70     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x00391B70     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # single-function override
 0x00391D08     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x00391E30     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x00391E78     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x00391FD8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x00392108     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x00392400     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # single-function override
 0x003925F0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x00392878     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # single-function override
 0x00392A20     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
@@ -149,6 +157,8 @@
 0x00393380     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x00393418     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003934E8     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00393580     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x003936A0     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003936A8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003937C8     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00393878     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
@@ -168,6 +178,7 @@
 0x003953E8     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003958A0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003958F0     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
+0x003959A8     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x00395AC8     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem @ps2as   # single-function override
 0x00395BC0     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
 0x00395EB8     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem @ps2as   # single-function override
@@ -209,7 +220,8 @@
 0x00399F70     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
 0x0039A130     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem @ps2as   # single-function override
 0x0039A170     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem @ps2as   # single-function override
-0x0039A3B0     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
+0x0039A3B0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x0039A518     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
 0x0039A5E8     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses -fno-force-mem   # single-function override
 0x0039A620     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem
 0x0039AAF0     -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem @ps2as   # single-function override
@@ -224,7 +236,9 @@
 0x0039BD48     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0039BE90     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0039BEA8     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # single-function override
-0x0039BEC0     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0039BEC0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x0039BF98     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x0039C020     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0039C028     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0039C158     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0039CBA0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
@@ -233,6 +247,8 @@
 0x0039D668     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0039DB38     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x0039E4A8     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
+0x0039E4B0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x0039E8E0     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0039E9A0     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
 0x0039EA58     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x0039EB98     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
@@ -245,6 +261,7 @@
 0x003A0D58     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
 0x003A0EB0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003A1340     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003A1438     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
 0x003A1870     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003A1AA0     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003A1AD0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
@@ -274,6 +291,7 @@
 0x003A3EE8     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003A3EF0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003A3FA8     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003A3FB0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003A40C8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003A41E8     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003A41F0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
@@ -283,6 +301,8 @@
 0x003A45F0     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003A4720     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003A4758     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x003A4860     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # single-function override
+0x003A4A20     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003A4A78     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003A4DC8     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003A53B0     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
@@ -302,6 +322,8 @@
 0x003A6C30     -O2 -G8 -mno-check-zero-division @ps2as   # single-function override
 0x003A7090     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003A7380     -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
+0x003A73A0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x003A7610     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003A7690     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003A7CD0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003A7D80     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
@@ -361,6 +383,8 @@
 0x003AEEB8     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003AF0A0     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # single-function override
 0x003AF0C8     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003AF2C0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x003AF718     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003AFC68     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003AFF20     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003B02A0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
@@ -400,6 +424,7 @@
 0x003B5128     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003B51F0     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003B5BF8     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003B5D10     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003B5EC8     -O2 -G8 -mno-split-addresses -fopt-stack -mno-check-zero-division   # single-function override
 0x003B5F88     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003B6050     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # single-function override
@@ -421,6 +446,7 @@
 0x003B78C8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003B7AA0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003B7B50     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003B7EB0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003B7FD8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003B8168     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003B8280     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # single-function override
@@ -441,7 +467,8 @@
 0x003B8EC0     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # single-function override
 0x003B8EF8     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003B8F48     -O2 -G8 -fopt-stack -mno-check-zero-division
-0x003B8F50     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003B8F50     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x003B9030     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003B9098     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2   # single-function override
 0x003B9160     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003B92B8     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
@@ -459,7 +486,7 @@
 0x003BA350     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003BA490     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003BA5B8     -O2 -G8 -mno-check-zero-division @ps2as   # single-function override
-0x003BA748     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003BA748     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
 0x003BA850     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003BA948     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # single-function override
 0x003BA9A0     -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -519,7 +546,8 @@
 0x003BF910     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # single-function override
 0x003BFA18     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003BFBA8     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses -mvu0-use-vf0-vf2 @ps2as   # single-function override
-0x003BFC18     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x003BFC18     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
+0x003BFCE8     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003BFEF0     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
 0x003C00B8     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x003C0188     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
@@ -575,6 +603,8 @@
 0x003D3B90     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003D3C80     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003D3E08     -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003D3FA0     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
+0x003D4198     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003D41E0     -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003D4680     -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003D46B0     -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # single-function override

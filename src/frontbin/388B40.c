@@ -3,6 +3,7 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_00389158(void *, void *, void *, f32);
 typedef int u128_t __attribute__((mode(TI)));
+extern void func_00388E58(void *, void *);
 extern void func_00388B68();
 extern void func_00388F08();
 /* --- end of declarations from other files --- */

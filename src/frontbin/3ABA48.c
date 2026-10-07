@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
@@ -607,7 +608,7 @@ s32 func_003AD1D8(void *p) {
 extern s32 func_003AD090();
 extern void func_003AD6B0();
 extern s32 func_003AC150();
-extern void func_003AD288();
+extern s32 func_003AD288();
 extern s32 D_001DA108;
 extern s32 *D_001DA108_003AD220[];
 void func_003AD220(s32 arg0) {
@@ -625,4 +626,56 @@ void func_003AD220(s32 arg0) {
 }
 /* localdecomp:end func_003AD220 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AD288);
+/* localdecomp:start func_003AD288 */
+typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; s32 x10; } S_3AD288;
+__asm__(".extern D_001DA108_003AD288, 16");
+extern S_3AD288 *D_001DA108_003AD288;
+extern u8 D_001D8850[];
+extern u8 D_001D8838[];
+extern s32 func_003AD748();
+extern void func_003AA7E0();
+extern s32 func_135C10();
+extern s32 func_135CE0();
+extern void func_135C60();
+extern void func_003AD6D8();
+extern void func_003AB610();
+extern s32 func_003AD088();
+extern void func_11AF48();
+extern s32 func_003AAA98();
+s32 func_003AD288(s32 *a) {
+    s32 ret = 1;
+    s32 v, h, w, hh;
+    while (func_135CE0(a) == 0) {
+        if (func_003AD088(a) == 1) {
+            ret = -1;
+            func_11AF48(D_001D8838);
+            break;
+        }
+        while ((v = func_003AD748(D_001DA108)) == 0) {
+            func_003AA7E0();
+        }
+        if (func_135C10(a, v, 0x340) < 0) {
+            func_003AAA98(D_001D8850);
+        }
+        if (a[2] == 0) {
+            S_3AD288 *p;
+            hh = a[0];
+            w = a[1];
+            h = 0;
+            p = (S_3AD288 *)D_001DA108;
+            if (h < p->x10) {
+                do {
+                    func_003AB610(p->x4 + h * 0x27E40 + 0x40, p->x0 + h * 0xD0000, 0, hh, w);
+                    func_003AB610(D_001DA108_003AD288->x4 + h * 0x27E40 + 0x13F40, D_001DA108_003AD288->x0 + h * 0xD0000, 1, hh, w);
+                    h++;
+                    p = D_001DA108_003AD288;
+                } while (h < p->x10);
+            }
+        }
+        func_003AD6D8(D_001DA108);
+        func_003AA7E0();
+    }
+    func_135C60(a);
+    return ret;
+}
+/* localdecomp:end func_003AD288 */

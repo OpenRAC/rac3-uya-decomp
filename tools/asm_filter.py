@@ -74,7 +74,7 @@ SIMPLE_OPS = re.compile(r"^(addu|addiu|subu|and|andi|or|ori|xor|xori|nor|slt|slt
                         r"movz|movn|mult|multu|mult1|multu1|div|divu|mflo|mfhi|nop)$")
 
 
-def insn_count(lines, noreorder=True):
+def insn_count(lines, noreorder=True, small=frozenset()):
     """Number of machine instructions in these .s lines, or None if unsure
     (macro instructions, which may expand to more than one word).
 
@@ -114,7 +114,13 @@ def insn_count(lines, noreorder=True):
         # a symbol operand (not reg, not N(reg), not a small number) is a macro
         last = ops.split(",")[-1].strip() if ops else ""
         if last and not re.match(r"^(\$\w+|-?\d+|-?0x[0-9a-fA-F]+|-?\d*\(\$\w+\)|-?0x[0-9a-fA-F]+\(\$\w+\)|%\w+\([^)]*\)(\(\$\w+\))?)$", last):
-            return None
+            # A load/store of a symbol the assembler already knows is small (an
+            # earlier `.extern SYM, N` with N <= 8, the -G8 limit) is a single
+            # $gp-relative word, not a lui/op macro pair.
+            sm = re.match(r"^([A-Za-z_.$][\w.$]*)(\s*[+-]\s*(\d+|0x[0-9a-fA-F]+))?$", last)
+            if not (sm and sm.group(1) in small
+                    and re.match(r"^(l[bhwd]u?|s[bhwd]|lwc1|swc1|l\.s|s\.s)$", m.group(1))):
+                return None
         if m.group(1) in ("li",):
             return None
         if m.group(1) in ("div", "divu"):
@@ -257,6 +263,20 @@ def divs_pass(text):
     return "".join(out)
 
 
+EXTERN_RE = re.compile(r"^\s*\.extern\s+([A-Za-z_.$][\w.$]*)\s*,\s*(\d+|0x[0-9a-fA-F]+)")
+
+
+def small_externs(lines, limit=8):
+    """Symbols declared `.extern SYM, N` with 0 < N <= limit in these lines.
+    A single-pass assembler only knows a symbol is small after its .extern."""
+    out = set()
+    for l in lines:
+        m = EXTERN_RE.match(l)
+        if m and 0 < int(m.group(2), 0) <= limit:
+            out.add(m.group(1))
+    return frozenset(out)
+
+
 def filter_asm(text):
     out, labels, noreorder, app = [], {}, False, False
     text = sq_pass(text)
@@ -291,7 +311,8 @@ def filter_asm(text):
                 except KeyError:
                     bits = None
                 at, mode = labels[target]
-                n = insn_count(out[at + 1:], mode) if bits is not None else None
+                n = (insn_count(out[at + 1:], mode, small_externs(out[:at + 1]))
+                     if bits is not None else None)
                 if n is not None and n + 2 <= 6:
                     ind = bm.group(1)
                     out.append(f"{ind}nop\n" * (4 - n))

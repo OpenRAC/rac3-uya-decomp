@@ -11,7 +11,12 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00116FCC);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00116FD0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00117070);
+/* localdecomp:start func_00117070 */
+extern long func_0011BFD8(s32, s32, s32);
+s32 func_00117070(s32 a) {
+    return func_0011BFD8(a, 0, 10);
+}
+/* localdecomp:end func_00117070 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00117098);
 
@@ -35,7 +40,29 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118720);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118834);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118838);
+/* localdecomp:start func_00118838 */
+typedef struct { u8 *p; s32 r; s32 w; s16 flags; s16 file; u8 *base; s32 size; s32 lbfsize; void *cookie; void *read; void *write; void *seek; void *close; u8 pad[0x24]; void *data; } F_118838;
+extern s32 func_0011B378();
+extern s32 func_0011B3E0();
+extern s32 func_0011B460();
+extern s32 func_0011B4C8();
+void func_00118838(F_118838 *ptr, s32 flags, s32 file, void *data) {
+    ptr->p = 0;
+    ptr->r = 0;
+    ptr->w = 0;
+    ptr->flags = flags;
+    ptr->file = file;
+    ptr->base = 0;
+    ptr->size = 0;
+    ptr->lbfsize = 0;
+    ptr->cookie = ptr;
+    ptr->read = func_0011B378;
+    ptr->write = func_0011B3E0;
+    ptr->seek = func_0011B460;
+    ptr->close = func_0011B4C8;
+    ptr->data = data;
+}
+/* localdecomp:end func_00118838 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118898);
 
@@ -85,7 +112,23 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00119588);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001197E0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00119F08);
+/* localdecomp:start func_00119F08 */
+s32 func_00119F08(s32 r, s32 *pwc, u8 *s, u32 n) {
+    s32 dummy;
+    s32 ret = 0;
+    if (pwc == 0) {
+        pwc = &dummy;
+    }
+    if (s != 0) {
+        ret = -1;
+        if (n != 0) {
+            *pwc = *s;
+            ret = *s; ret = ret != 0;
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_00119F08 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00119F3C);
 
@@ -107,7 +150,17 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A3F4);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A3F8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A4A0);
+/* localdecomp:start func_0011A4A0 */
+typedef struct N_11A4A0 { struct N_11A4A0 *next; s32 idx; } N_11A4A0;
+typedef struct { u8 pad[0x4C]; N_11A4A0 **tab; } S_11A4A0;
+void func_0011A4A0(S_11A4A0 *p, N_11A4A0 *n) {
+    if (n != 0) {
+        N_11A4A0 **f = p->tab;
+        n->next = f[n->idx];
+        f[n->idx] = n;
+    }
+}
+/* localdecomp:end func_0011A4A0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011A4D0);
 

@@ -2423,7 +2423,51 @@ void func_003F0250(u8 *p, f32 *a) {
 }
 /* localdecomp:end func_003F0250 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003F0290);
+/* localdecomp:start func_003F0290 */
+typedef struct {
+    void *vt0; void *vt4; s32 (**vt)(); u8 pad0[0x4]; f32 f10, f14, f18, f1C, f20, f24; u32 f28; u8 pad2[0xC]; s32 f38; s32 f3C; u32 f40; u32 f44; u8 pad3[0x4]; u32 f4C; u32 f50; u8 pad4[0x8]; f32 f5C; f32 f60;
+} O_3EAAD0;
+extern f32 D_001D96D8;
+extern f32 D_001D96DC;
+extern f32 D_001D96F4;
+extern s32 func_003EDD50();
+extern void func_003EDF48();
+extern void func_0038EB10_003F0290(unsigned long, s32, s32, s32, s32, unsigned long, f32, f32, f32, f32, f32, f32);
+void func_003F0290(O_3EAAD0 *o, s32 a) {
+    f32 b[4];
+    s32 flag, r;
+    f32 x, y, z;
+    f32 cx, cy, h, dy, w;
+    unsigned long p50, p28;
+    s32 p3C;
+    if (o->f3C == 0) return;
+    flag = 0;
+    x = 0.0f;
+    z = x;
+    ((void (*)())o->vt[8])(o, a, b, 1);
+    func_003EDF48(o, b);
+    y = x;
+    cx = b[0] + (b[2] - b[0]) * 0.5f;
+    cy = b[1] + (b[3] - b[1]) * 0.5f;
+    r = func_003EDD50(o, 0x40);
+    if (r) {
+        x = o->f20;
+        y = o->f24;
+        flag = 1;
+    }
+    h = o->f60;
+    dy = D_001D96F4 * h;
+    p28 = o->f28;
+    p3C = o->f3C;
+    w = o->f5C;
+    p50 = o->f50;
+    if (flag) {
+        func_0038EB10_003F0290(p50, p3C, -1, 1, flag, p28, (f32)(s32)(cx * D_001D96D8), (f32)(s32)((cy - dy) * D_001D96DC), w, h, x * D_001D96D8, y * D_001D96DC);
+    } else {
+        func_0038EB10_003F0290(p50, p3C, -1, 1, 0, p28, (f32)(s32)(cx * D_001D96D8), (f32)(s32)((cy - dy) * D_001D96DC), w, h, z, z);
+    }
+}
+/* localdecomp:end func_003F0290 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003F0448);
 

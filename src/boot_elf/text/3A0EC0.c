@@ -11,6 +11,7 @@ extern void (*D_00226A80[])(s32);
 extern void func_003A2818(void);
 extern void func_003A1EE8(void);
 extern s32 func_003A29B0(s32, s32, s32);
+extern s32 func_003A2940();
 extern s32 func_003A28F0();
 extern s32 func_003A29B0();
 extern s32 func_003A2858(s32, s32, s32);

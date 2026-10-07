@@ -16,8 +16,6 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern void func_003A9440(void);
-extern void func_003A93C0();
 extern void func_003A95A8(s32, u32);
 extern void func_003A99B0(void);
 extern void func_003A9770(s32, s32, s32, s32);
@@ -793,7 +791,76 @@ void func_003A7528(void) {
 }
 /* localdecomp:end func_003A7528 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A7708);
+/* localdecomp:start func_003A7708 */
+typedef struct { u8 pad[0x44]; s16 h44; u8 pad2[0x15A]; s32 tbl[1]; } S_225780_3A2028;
+typedef struct { u8 pad[0x28]; s32 f28; } E_3A2028;
+extern S_225780_3A2028 D_00225780_3A7708;
+extern E_3A2028 *D_001DA51C_3A7708;
+extern s32 D_001D5B94;
+extern s32 D_001D5B90;
+extern s32 D_001D9C44;
+extern s32 D_001D9C48;
+extern s32 D_001D9D9C;
+extern void func_003A9440();
+extern void func_003A93C0();
+extern void func_003926F0();
+extern void func_00392A68();
+extern void func_003925D8();
+extern void func_0039C6D8();
+extern void func_003865A8();
+extern void func_003C3060();
+extern void func_00388320();
+extern void func_003A3E30();
+extern s32 func_003A6B18();
+extern void func_00392670();
+extern void func_00388E80();
+extern void func_003A9560();
+extern void func_003A7528();
+s32 func_003A7708(void) {
+    E_3A2028 *t;
+    E_3A2028 *e;
+    s32 i;
+    s32 r;
+    s32 s;
+    if (((s32 (*)())func_003A71B0)() == 0) return 1;
+    t = D_001DA51C_3A7708;
+    for (i = 0; i < D_00225780_3A7708.h44; i++) {
+        do { e = (E_3A2028 *)D_00225780_3A7708.tbl[i]; } while (0);
+        if (e != 0 && t != e) {
+            do { e->f28 = (s32)t; t = e; } while (0);
+        }
+    }
+    D_001D5B94 = 2;
+    do {
+        func_003A9440();
+        func_003A93C0();
+        func_003926F0();
+        func_00392A68(1);
+        func_003925D8();
+        func_0039C6D8();
+        func_003865A8();
+        func_003C3060();
+        func_00388320();
+        D_001D9D9C = -1;
+        func_003A3E30();
+        r = func_003A6B18();
+        func_00392670(0);
+        D_001D9C44 = 0x131;
+        func_00388E80(0);
+        s = D_001D5B90;
+        if (s != -2) {
+            D_001D5B94 = s;
+            D_001D5B90 = -2;
+        }
+        func_003A9560(1);
+        func_12C908(0);
+        D_001D9C48 = D_001D9C48 + 1;
+    } while (D_001D5B94 == 2);
+    D_001D5B94 = 0;
+    func_003A7528();
+    return r;
+}
+/* localdecomp:end func_003A7708 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A78A0);
 

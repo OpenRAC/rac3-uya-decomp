@@ -9,6 +9,7 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern void func_003C3060();
 extern void func_003C0F70(void);
 extern void func_003C3028();
 extern void func_003C2C50();

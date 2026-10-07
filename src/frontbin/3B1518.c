@@ -315,7 +315,6 @@ void func_003B22C0(void) {
     s32 i;
     s32 x;
     s32 y;
-    S_B22C0 *p = D_00160C40_003B22C0;
     for (i = 0; i < 4; i++) {
         if (D_001D5BDC_003B22C0 != 0) {
             D_001D8A50[i] = (s32)func_003AFA90(i * 2);
@@ -329,7 +328,7 @@ void func_003B22C0(void) {
             y = (y + 15) & 0xFFFFFFF0;
             D_001D8A60[i] = y;
         }
-        func_003AEF70(func_003AED40(i), D_001D8A50[i], D_001D8A60[i], p->f4954, (s32)p->f7080);
+        func_003AEF70(func_003AED40(i), D_001D8A50[i], D_001D8A60[i], D_00160C40_003B22C0->f4954, (s32)D_00160C40_003B22C0->f7080);
     }
     func_003B1518();
     func_003B1DA8();

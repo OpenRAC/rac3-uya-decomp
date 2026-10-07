@@ -43,9 +43,12 @@ decomp-permuter's built-in score weights objdump differences in its own way and 
 ```sh
 export PERMUTER_ALIGNED_SCORER=$PWD/tools/permuter_scorer.py
 export PERMUTER_ALIGNED_FUNC=func_XXXXXXXX
+export UYA_TARGET=frontbin           # or boot_elf / i5bootn
 python3 ../decomp-permuter/permuter.py nonmatchings/func_XXXXXXXX -j2 --stop-on-zero
 ```
 
-With it the permuter's base score equals the aligned diff count x 10. Every output still needs checking: random rewrites can change what the code does.
+With it the permuter's base score equals the aligned diff count x 10. `python3 tools/permuter_scorer.py candidate.o func_XXXXXXXX` scores a single object the same way.
 
-`permuter_setup.py` also records the typedef attributes (`mode(TI)`, `aligned(16)`) that the parser can't read in `attrs.json`, and `compile.sh` puts them back before compiling each candidate. Before this, 128-bit and vector types silently became plain `int` in permuter runs.
+Every output still needs checking: random rewrites can change what the code does, and the aligned score accepts them. In k1's boot_elf run (2026-10-07) about half of the "improvements" were invalid (passing 0 instead of an argument, shrinking a type to `u16`, dropping a store); g4 rejected two of the same kind. Treat outputs as hints and rewrite the useful ones by hand. With the aligned scorer the permuter contributed to 4 of g4's 5 matches in the second final pass, and its finds carried over in several functions: `i = 0; if (n > i) do ... while`, an early `v = const`, `do { } while (0)` wraps, a callee's return type.
+
+`permuter_setup.py` also records the typedef attributes (`mode(TI)`, `aligned(16)`) that the parser can't read in `attrs.json`, and `compile.sh` puts them back before compiling each candidate. Before this, 128-bit and vector types silently became plain `int` in permuter runs (a draft at 5 real diffs scored 25 diffs' worth), and j-form VU0 drafts couldn't be permuted at all. The flags in `compile.sh` come from `tools/text_parts.txt`, so they include `-mvu0-use-vf0-vf2` since 2026-10-07 (a function with a line in `tools/localdecomp_flags.txt` gets that line instead, so put the flag there too); to drop a flag, edit `compile.sh` by hand (`permuter_setup.py` has no option for it).

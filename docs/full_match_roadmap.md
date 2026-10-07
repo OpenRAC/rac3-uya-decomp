@@ -1,6 +1,6 @@
 # Road to 100%: blockers and plan
 
-Status on 2026-09-26. `python tools/triage.py` prints the current numbers.
+Written on 2026-09-26; the dated updates below are a log, newest last. The current state is in **Update 2026-10-07** at the end. `python tools/pr_check.py --target all` and `python tools/triage.py --target all` print the live numbers.
 
 > **Note 2026-10-03:** `src/text.c` was split into one file per original source file in `src/frontbin/` ([source_files.md](source_files.md)). The dated entries below are a log and still say `text.c`; read it as "the sources".
 
@@ -10,14 +10,19 @@ Status on 2026-09-26. `python tools/triage.py` prints the current numbers.
 
 The build has matched byte for byte since the start. The goal is to have every function come from real source: C for compiled code, `.s` for code that was assembly in the original.
 
-| | Functions | Bytes of `.text` |
-|---|---|---|
-| In C | 695 | about 0xAB00 (10%) |
-| Still `INCLUDE_ASM` | 1,150 | about 0x65200 (90%) |
+On 2026-10-07 (`pr_check.py --target all`, `triage.py --target all`), all three targets build byte-identical:
 
-The functions matched so far are the small ones (63 bytes on average). What's left averages about 380 bytes, so measure progress by bytes, not by function count.
+| Target | In C | `ASM_FUNC` | `LINKER_REMNANT` | Still `INCLUDE_ASM` | % in C |
+|---|---|---|---|---|---|
+| frontbin | 1,414 | 156 | 225 | 72 (0x12ACC bytes) | 75.7% |
+| boot_elf | 1,479 | 358 | 328 | 650 (0x384A4 bytes) | 52.5% |
+| i5bootn | 2 | 147 | 8 | 42 (0x3D68 bytes) | 1.0% |
 
-## Remaining functions by bucket
+When this plan was written (2026-09-26, frontbin only), 695 functions were in C (about 0xAB00 bytes of `.text`, 10%) and 1,150 were still `INCLUDE_ASM` (about 0x65200 bytes, 90%). The functions matched first were the small ones (63 bytes on average) and what was left averaged about 380 bytes, so progress is better measured by bytes than by function count.
+
+## Remaining functions by bucket (2026-09-26, the starting point)
+
+Today's buckets are in Update 2026-10-07 below.
 
 | Bucket | Functions | Bytes | What it needs | Status |
 |---|---|---|---|---|
@@ -200,3 +205,40 @@ The permuter got none of the three in 25 minutes each. Matching-Patterns has the
 - All the toolchain-level open problems are solved: jump tables, remnants, hand-written asm, trailing padding, short-loop padding (including loops with a `jal`), `$ra` saved with `sq`, the `lwc1`/`nop` load, 64-bit constants and `div.s`/`sqrt.s` padding.
 - What blocks the rest is register allocation and scheduling near misses (`docs/permuter_todo.md`, status list at the top) and the volume of large functions.
 - The MMI bucket is still untested.
+
+## Update 2026-10-07: three targets, the VU0 flag, what blocks the rest
+
+`pr_check.py --target all`: frontbin **1414 functions in C, 72 INCLUDE_ASM (75.7%)**; boot_elf **1479 in C, 650 INCLUDE_ASM (52.5%)**; i5bootn **2 in C, 42 INCLUDE_ASM (1.0%)**. All three build byte-identical (`3bc94ee8...`, `48797530...`, `71f3ecfc...`).
+
+| Bucket | frontbin | boot_elf | i5bootn |
+|---|---|---|---|
+| plain | 41 (0x7D74 bytes) | 434 (0x22C34) | 36 (0x2D38) |
+| sibcall | | 43 (0x1FB8) | 3 (0x108) |
+| switch | 9 (0x3C3C) | 21 (0xA3B0) | 1 (0xD14) |
+| vu0 | 11 (0x3304) | 41 (0x3AEC) | |
+| mmi | 11 (0x3E18) | 29 (0x5428) | 1 (0x210) |
+| sys | | 2 (0x288) | |
+| odd | | 80 (0x36C) | 1 (0x4) |
+| total | 72 (0x12ACC) | 650 (0x384A4) | 42 (0x3D68) |
+
+### What happened since 2026-10-02
+
+- **Large-function batches (2026-10-05/06):** 13 large functions matched, among them `func_00397490` (the memory card state machine, 2163 instructions, the largest), `func_003DCD08` (0x1558, the first VU0 j-form match), `func_003DBEC8`, `func_003EB728`, `func_003BC568`, `func_00382458`, `func_0037D200` (the front-end main loop), `func_003C0188`, `func_00384EC0`, `func_003B2F50`, `func_003B16B0`, `func_003D2878` and `func_003813E0`. An aligned diff (difflib over the disassembly) made progress measurable on functions this size.
+- **Round d (19 agents, 2026-10-06):** 164 new frontbin matches (1183 to 1347 in C), 27 of them in the VU0 j-form.
+- **Final passes f and g (2026-10-06/07):** every function still in assembly was attempted with all earlier drafts at hand: 33 matches, then 18 (1360 to 1393, then 1393 to 1411). Every remaining frontbin function has a near-miss draft with a header.
+- **Round k (2026-10-07):**
+  - Blocker fixes: `tools/asm_filter.py` counts a load or store of a symbol with an earlier `.extern SYM, N` (N <= 8) as one word, so short poll loops are padded like retail (`func_003B8840` matched); `tools/gen_divs_nops.py` recognises `sqrt.s`, which the disassembler prints as a raw `c1` word; the unreferenced rodata after `func_003BC218`'s jump table (0x318A18 to 0x318ABC) can be written as `const u32 D_00318A18[42]` after the function, so its rodata split no longer blocks it; three prototypes in other functions' blocks fixed (`func_003972A0`, `func_003ACC30`, `func_003B9B60`).
+  - Permuter: `tools/permuter_scorer.py` scores by aligned diffs (hook: `tools/decomp-permuter-aligned-scorer.patch`), and `permuter_setup.py` keeps `mode(TI)` / `aligned(16)` typedef attributes (`attrs.json`), which had been silently dropped. See `docs/permuter.md`.
+  - frontbin: 3 more matches (`func_003B8840`, `func_003A9B10`, `func_003AF718`).
+  - boot_elf: `seed_boot_elf.py` rerun (17 more front-end functions), and 102 engine-core matches by k1 (1360 to 1479 in C).
+  - Compiler matrix on the 74 remaining frontbin drafts: SN best or tied on 73, no hidden library code, `-O2` everywhere, `-fopt-stack` confirmed (`compiler_matrix_findings.md`, Update 2026-10-07).
+  - boot_elf core classified by compiler (`boot_elf.md`).
+- **`-mvu0-use-vf0-vf2` on every frontbin and boot_elf line.** It is Sony's VU0 register-range option; N = 2 is the only value that fits all 38 j-form matches and the whole build, and it changes ordinary loop code through loop.c's thresholds. `func_003B22C0` and its boot_elf twin `func_003B7A80` were rewritten to use the struct global directly instead of a local pointer. The j-form is now the leading explanation for VU0 code interleaved with ordinary code ([Matching patterns](wiki/Matching-Patterns.md#vu0-j-form-one-asm-statement-per-instruction)), though the maintainer has not formally approved it.
+
+### What blocks the rest
+
+1. **frontbin: 71 near misses** (the 72nd INCLUDE_ASM, `func_003ECDF0`, is a data blob). Each has a draft; `docs/permuter_todo.md` lists the best diff and what is left for every one. Closest: `func_003BC218` (1 diff, `r = 1` in one switch case reuses another pseudo in retail), `func_003B0A60`, `func_003E09D8`, `func_003E89F0` (2 each), `func_00391E78`, `func_003B43C0`, `func_003E0E90` (3). The compiler matrix found no better compiler and no global flag for any of them. Rework `func_003B1EB0`, `func_003A8230` and `func_0038FDC0` under the new VU0 flag first (117 to 79, 141 to 131, 22 to 20 in m1's sweep).
+2. **Sony-compiled library code needs a compiler pseudo-flag.** About 440 boot_elf core functions and most of i5bootn were built with Sony's 2.9-ee-991111-01 or 2.96. A per-file pseudo-flag for each (like `@ps2as` for the assembler; the binaries are in `C:\tools\testfolder`) unlocks libgcc (56 functions in boot_elf, 26 in i5bootn, buildable from GCC 2.95's source) and the Sony library ranges.
+3. **989snd next.** The EE side of the sound library (0x13B330 to 0x13D420, about 60 functions) is SN code and matchable now; k1 already matched several.
+4. **`core.rdata` split.** Core functions with a `switch` stay INCLUDE_ASM until the core's read-only data is split per source file.
+5. **The 21 frontbin/boot_elf twins that differ.** 21 frontbin functions are not the same instructions in boot_elf's front end, so seeding can't carry them over; they need their own C (plus the seeded functions that compiled but didn't match).

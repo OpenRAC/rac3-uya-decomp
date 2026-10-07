@@ -66,7 +66,10 @@ and boot_elf, but those keep ee-objcopy.
 
 The source-file split (5 files) and the flags in `targets/i5bootn/text_parts.txt`
 are estimates from `tools/bootstrap_target.py` (the target's base flags,
-`-mno-split-addresses` where the assembly looks like it).
+`-mno-split-addresses` where the assembly looks like it). Unlike frontbin and
+boot_elf, its lines don't carry `-mvu0-use-vf0-vf2`; the 2026-10-07 global
+builds matched i5bootn with every VU0 range tried, so it makes no difference
+here.
 
 **Most of it was not built with our compiler.** The compiler matrix
 ([`docs/compiler_matrix_i5bootn.md`](compiler_matrix_i5bootn.md)) shows three

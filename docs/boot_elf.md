@@ -12,6 +12,14 @@ Every tool that works on frontbin works on boot_elf with `--target boot_elf`
 (or `UYA_TARGET=boot_elf`). Where each target's files live is in
 `tools/targets.py`.
 
+Status on 2026-10-07 (`pr_check.py --target boot_elf`): 1479 functions in C,
+650 INCLUDE_ASM (52.5% in C). The front end has 1376 in C and 154 left; the
+engine core 103 in C and 496 left, most of it library code built with other
+compilers (see "The engine core" below). `triage.py --target boot_elf` buckets
+the 650 as 434 plain, 43 sibcall, 21 switch, 41 vu0, 29 mmi, 2 sys and 80 odd.
+Every line in `targets/boot_elf/text_parts.txt` (core and front end) carries
+`-mvu0-use-vf0-vf2`, as frontbin's do (see Toolchain-and-Build).
+
 ## Setup
 
 1. Put your own `boot_elf.elf` in the repo root (it is in the root of the
@@ -63,7 +71,10 @@ by function name is per target.
 immediates are masked (96% of the bytes), and only 21 frontbin functions
 differ. Its source files start where frontbin's do (65 files), and every
 function has the flags its frontbin twin has. `tools/seed_boot_elf.py` copied
-frontbin's matched C into it (1359 functions); see below.
+frontbin's matched C into it (1359 functions on the first run, 1376 in C on
+2026-10-07); see below. The twin of a frontbin function rewritten for the
+global VU0 flag needs the same edit (`func_003B7A80`, twin of
+`func_003B22C0`).
 
 **`core.text` (the engine core).** New code, including Sony's libraries. Its
 13 source files are a first cut (runs of hand-written code and runs that need
@@ -80,12 +91,114 @@ another flag set). Things to know:
   C. Until then those stay INCLUDE_ASM.
 - 43 core functions end in a sibling call (`j func_...` after the epilogue),
   which SN ee-gcc 2.95.3 never emits: those parts of the core were built with
-  another compiler, most likely Sony's 2.9-ee-991111 (the library compiler
-  i5bootn's matrix found). `tools/triage.py` lists them as `sibcall`; see
-  Matching-Patterns, "Code from another compiler".
+  another compiler (Sony's 2.9-ee-991111 for the libraries, likely 2.96 for
+  the newlib region; see "The engine core" below). `tools/triage.py` lists
+  them as `sibcall`; see Matching-Patterns, "Code from another compiler".
 - 56 core functions (0x4568 bytes) are byte-identical to objects in the
   prebuilt `libgcc.a` (C++ exception runtime, soft-float, 64-bit division);
   see [`docs/compiler_matrix_i5bootn.md`](compiler_matrix_i5bootn.md).
+
+## The engine core: which compiler built what (2026-10-07)
+
+Agent m1 classified the 598 core functions that were still assembly before
+k1's pass, from the PsIIlib version strings, the strings each function
+references, byte-identical library hits and compiler fingerprints.
+
+**Region map**
+
+| Address range | Contents | Compiler |
+|---|---|---|
+| 0x116F80-0x11F2A0 | newlib / C runtime | likely 2.96 (8-byte save slots, but 16 sibling calls and 1 tail `jal`) |
+| 0x11F2A0-0x11FA10 | kernel stubs | hand-written / syscall |
+| 0x11FA10-0x126020 | libkernl / libc | Sony 2.9-ee-991111 fingerprint |
+| 0x126020-0x12AAE0 | libgcc (56 functions byte-identical, contiguous at 0x126020-0x12A7C8) | 2.9-ee-991111-01 |
+| 0x12AAE0-0x13B330 | libcdvd, libgraph, libdma, libmc, libmtap, libpad, libvu0, libmpeg/ipu, libscf | Sony 2.9-ee-991111 fingerprint |
+| 0x13B330-0x13D420 | 989snd, EE side | **SN** (8-byte slots, `$gp` use, no sibling calls, 46 tail `jal`s): matchable with our toolchain at `-O2 -G8 -fopt-stack` |
+
+**Fingerprints**, calibrated on frontbin's 1414 C functions (known SN), on
+frontbin sources recompiled with SN, 2.96, 2.9-991111-01 and 3.2, and on the
+56 libgcc hits:
+
+| Fingerprint | SN | 2.96 / 3.2 | 2.9-991111-01 and libgcc |
+|---|---|---|---|
+| 16-byte save slots | 0-2% | 0% | 99-100% |
+| `$ra` restored before the s-registers | 4-7% | 9-11% | 99-100% |
+| Sibling calls | 0% | 11-12% | 10% |
+| Tail call left as `jal` + epilogue | 15-20% | 3% | 4% |
+| `$gp` data access | 35-42% (at `-G8`) | about 0-3% (at `-G0`) | about 0-3% (at `-G0`) |
+
+`sd` versus `sq` saves and `daddu` moves don't separate the compilers (SN
+without `-fopt-stack`, and Sony's 2.95.x builds, use `sq` with 16-byte slots).
+
+**Classes** (per function in m1's `core_classified.tsv`):
+
+| Class | Functions | Bytes |
+|---|---|---|
+| Library, 2.9-ee-991111 fingerprint | 196 | 0x1164C |
+| Library, region only | 139 | 0x3A40 |
+| Library, libgcc exact | 56 | 0x4568 |
+| Library, sibling call | 46 | 0xE28 |
+| Hand-written / asm | 53 | 0x648 |
+| Likely 2.96 | 40 | 0x5EC0 |
+| Likely SN | 57 + 5 region only | 0x1D2C |
+| Unknown (frameless leaves) | 6 | 0x78C |
+
+- **Likely SN** (989snd, 62 functions, 0x13B330 to 0x13D3D0): the key
+  internals are `func_0013C578` (IOP command send) and `func_0013C348`; most
+  of the small 0x24-0x3C wrappers call one of those two. Start core work here.
+- **Likely 2.96** (40; needs a 2.96 compiler option): `func_00116FD0`,
+  `func_001173F8` (0x1264 bytes), `func_001197E0`, `func_0011A328` to
+  `func_0011B460`, `func_0011BD9C`, `func_0011C008` to `func_0011E8C0`
+  (including `func_0011C180`, 0xBF8, and `func_0011CEF0`, 0x1670). Test one
+  2.96-like function first to confirm the verdict.
+- **Unknown**: `func_0011B610`, `func_0011B754`, `func_0011B868`,
+  `func_0011B9A0`, `func_0011BB58`, `func_0011BD14`.
+- `libstdc++.a` has no non-trivial hits. 61 more one- to three-instruction
+  stubs equal generic libgcc stubs, which is not evidence. Only the
+  2.9-991111 (Windows) build ships these archives. The other near hits are
+  coincidences, except possibly the dtoa helpers at 0x11A5D8.
+
+About 440 core functions need a per-file compiler pseudo-flag (Sony
+2.9-ee-991111-01, and 2.96), the way `@ps2as` picks an assembler. Until the
+toolchain has that, they stay assembly. The libgcc functions can then be built
+from GCC 2.95's own source, as i5bootn's were
+([`compiler_matrix_i5bootn.md`](compiler_matrix_i5bootn.md)). OpenRAC's
+rac1-decomp already has those sources set up (`src/libgcc/`, one object per
+`L_` module, a per-file compiler column in its Makefile); built from them with
+the Linux 2.9-ee-991111-01 driver, `_divdi3.o`, `_moddi3.o`, `_udivdi3.o` and
+`_umoddi3.o` are word-for-word identical to Sony's `libgcc.a` members. See
+[Cross-repository resources](wiki/Cross-Repository-Resources.md).
+
+## Matching the core (k1, 2026-10-07)
+
+Agent k1 took 200 small plain core functions: **102 matched, 15 near misses,
+83 skipped.** No inline asm, no j-form, no `volatile`. Five need
+single-function overrides: `func_00122278`, `func_0013A9F0` and
+`func_00136010` match only with the default zero-division check (no
+`-mno-check-zero-division`), and `func_0013CEF8` and `func_0013D290` need
+`-mno-split-addresses`.
+
+The 83 skips agree with m1's classification; the signs (details in
+Matching-Patterns, "boot_elf's engine core"):
+
+| Reason | Functions |
+|---|---|
+| each saved register in its own 16-byte `sd` slot, `$ra` highest | 30 |
+| sibling calls | 18 |
+| short loop with an empty delay slot, padded with `nop`s to 7 words | 10 |
+| newlib reent wrappers (`&errno` kept as a full address) | 6 |
+| varargs FP register saves (none or all eight; ours saves four) | 5 |
+| alignment `nop` after `b` | 4 |
+| `$gp` stored or reloaded | 4 |
+| other (`pref` remnant words, a 4-byte function, `mult $0` + `mflo`, one not tried) | 6 |
+
+In 0012E9D8, 00124C50 and the 0013AA40/0013AAA8 pair the frame is the only
+difference. The near misses (drafts with headers in k1's bundle) include the
+`func_0012FC78` family (`func_0012FC78`, `func_0012F470`, `func_0012FC18`,
+`func_0012F5A8`), where gcc's global allocator records a conflict between a
+value and `$a2` for no visible reason, and several newlib functions
+(`func_0011A718`, `func_0011B018`, `func_0011B060`, `func_0011ABB8`,
+`func_0011A328`) that look like library code too.
 
 ## Seeding from frontbin
 
@@ -103,6 +216,8 @@ compares every seeded function with retail. Whatever doesn't match goes back
 to INCLUDE_ASM until the build prints MATCH. Functions already C in boot_elf
 are left alone, so **rerun it whenever frontbin gains matches**. It needs both
 ELFs and both asm trees.
+
+On 2026-10-07 a rerun carried 17 more frontbin matches over.
 
 The first run seeded 1359 of 1386 candidates. 27 went back to INCLUDE_ASM:
 `func_0039DB38` (its typedef `Pad_39DB38` belongs to a function that differs

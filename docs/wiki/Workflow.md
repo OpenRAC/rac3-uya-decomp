@@ -21,7 +21,7 @@ Not for C:
 
 Tell others what you're working on (open a draft PR early) so two people don't match the same function.
 
-**boot_elf** works the same way: its functions are `INCLUDE_ASM("asm/boot_elf/nonmatchings/core", ...)` (the engine core, `src/boot_elf/core/`) and `INCLUDE_ASM("asm/boot_elf/nonmatchings/text", ...)` (the front end, `src/boot_elf/text/`), its file list and flags are in `targets/boot_elf/`, and every tool takes `--target boot_elf`. In localdecomp, pick it in the dropdown above the function list. Its front end is frontbin's code at other addresses: when you match a frontbin function, `tools/seed_boot_elf.py` carries it over (see [Tools](Tools#seed_boot_elfpy)). Core functions with a `switch` can't be C yet (`core.rdata` isn't split; see `docs/boot_elf.md`).
+**boot_elf** works the same way: its functions are `INCLUDE_ASM("asm/boot_elf/nonmatchings/core", ...)` (the engine core, `src/boot_elf/core/`) and `INCLUDE_ASM("asm/boot_elf/nonmatchings/text", ...)` (the front end, `src/boot_elf/text/`), its file list and flags are in `targets/boot_elf/`, and every tool takes `--target boot_elf`. In localdecomp, pick it in the dropdown above the function list. Its front end is frontbin's code at other addresses: when you match a frontbin function, `tools/seed_boot_elf.py` carries it over (see [Tools](Tools#seed_boot_elfpy)). Core functions with a `switch` can't be C yet (`core.rdata` isn't split; see `docs/boot_elf.md`). Most of the core is Sony library code built with other compilers (newlib likely 2.96, libkernl/libc, libgcc and the Sony libraries 2.9-ee-991111), which stays assembly until the toolchain can compile a file with those; [Matching patterns](Matching-Patterns#boot_elfs-engine-core) lists the signs. The part that is SN code and matches now is 989snd's EE side, 0x13B330 to 0x13D420.
 
 **i5bootn** (the bootstrap launcher, `src/i5bootn/`, `--target i5bootn`) is set up the same way, but most of its compiled code is Sony library code built with Sony's ee-gcc 2.9-ee-991111 (libgcc, libc helpers), so expect near misses there until that compiler is in the toolchain. Its own code (`main`, `func_008010F8`) matches with ours. `triage.py` puts the clearest library cases in its `sibcall` bucket. See `docs/i5bootn.md` and `docs/compiler_matrix_i5bootn.md`.
 
@@ -43,10 +43,10 @@ Start the server (`python localdecomp/server.py --project . --no-git-sync`) and 
 - If a function needs a different assembler or address mode than its range while you're still working on it, add a line to `tools/localdecomp_flags.txt`:
 
   ```
-  func_0039BEC0 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+  func_0039BEC0 -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
   ```
 
-  This affects localdecomp and `try_func.py` only, not the real build.
+  This affects localdecomp and `try_func.py` only, not the real build. The line replaces the range's flags, so include `-mvu0-use-vf0-vf2` like the `text_parts.txt` lines do.
 
 ## 3b. Or match it on the command line
 
@@ -61,6 +61,11 @@ python tools/try_func.py scratch/f.c --mode S --as ps2as       # force a combina
 It prints `func_X: MATCH` or `func_X: N diff` with a side-by-side listing (left is yours, right is retail, `**` marks differing lines). Relocated fields are masked, so `lui $a0, 0` against `lui $a0, 0x1e` is not a difference. Keep scratch files outside `src/` (for example in a gitignored `scratch/` folder).
 
 `--all-modes` is the fastest way to find out whether a function needs non-default flags. Run it whenever a function is close but the global accesses don't line up.
+
+Two more checks before you spend time on a near miss:
+
+- `--flags=-Werror-implicit-function-declaration` lists every callee your snippet calls without a prototype. Each one silently becomes `int f()`, which passes floats as doubles and keeps `$v0` busy; several old drafts were measured that way. `--flags` adds to the range's flags, it never replaces them.
+- Check the function's range in `tools/text_parts.txt` before trusting a draft's header: some headers had the address mode wrong (S vs N), and drafts measured before 2026-10-07 were measured without `-mvu0-use-vf0-vf2`, which changes loop code (re-measure them).
 
 ## 4. Put it into its source file
 
@@ -78,7 +83,7 @@ If you used localdecomp's Save at score 0, this is done. By hand:
    /* localdecomp:end func_003E4790 */
    ```
 
-2. If the function needs flags other than its range's, add a single-function override to `tools/text_parts.txt` (see [Toolchain and build](Toolchain-and-Build#text_partstxt)) and delete its line from `localdecomp_flags.txt`.
+2. If the function needs flags other than its range's, add a single-function override to `tools/text_parts.txt` (see [Toolchain and build](Toolchain-and-Build#text_partstxt)) and delete its line from `localdecomp_flags.txt`. Start from the neighbouring line's flags exactly as written (every frontbin and boot_elf line has `-mvu0-use-vf0-vf2`): lines with equal flag lists are built as one slice.
 3. Use plain names (`D_00142430`). Only if another block in the same file declares that name with a different type, declare a per-function alias such as `D_00142430_00396628` and add it to `symbol_addrs_resolved.txt` with the real address (`D_00142430_00396628 = 0x142430;`). A plain `D_` name that's new to the build also needs its line there.
 4. If the block uses a prototype, typedef or extern that only another file declares, run `python tools/split_text.py --refresh`. It adds what the file needs to its "declarations from other files" section (localdecomp's Save does this for you). `pr_check.py` reports a file whose section is out of date.
 
@@ -90,6 +95,14 @@ python tools/pr_check.py
 ```
 
 `pr_check.py` catches the usual full-build failures (undefined aliases, conflicting typedefs, variable definitions, `@ps2as` ranges with asm stubs, and any file or slice that no longer compiles) and tells you the line to fix. Before that, `python tools/try_in_context.py scratch/func_X.c` on each new function shows both its diff inside its file and whether the rest of the build still compiles with its declarations. `make` must end with `MATCH`. Then open a PR ([Pull requests](Pull-Requests)).
+
+## When a function is stuck
+
+- **Start over.** A clean rewrite, or a copy of a matched sibling with the data changed, often beats tuning an old draft (`func_003A3FB0` went from 46 diffs to a match with a plain rewrite).
+- **Search orders.** Store order, statement order and prototype parameter order are cheap to brute-force with a script around `try_func.py`; respect data dependencies, or the search changes what the code does.
+- **Permuter.** `tools/permuter_setup.py` with the aligned scorer (`tools/permuter_scorer.py`, see `docs/permuter.md`). Check every output for semantics: in one run about half of its improvements changed what the code does.
+- **Under load** (several builds sharing a machine), wibo occasionally hangs in Ps2EeAs or the ee-gcc driver, and a full build can fail once without an error; a rerun passes. Wrap batch runs in `timeout`, and don't run two builds in one checkout at once (they corrupt `build/`).
+- Leave a header on a near-miss draft: flags, diff count, what is left, what you tried.
 
 ## Common full-build errors
 

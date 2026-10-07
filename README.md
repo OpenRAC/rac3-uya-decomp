@@ -6,7 +6,7 @@ This repo contains no game code or assets. To build it you need your own copy of
 
 ## Status
 
-1607 of 31316 functions (5.1%) are fully matched (2026-10-06). `python tools/pr_check.py` prints the current count for frontbin (the file being worked on). 1226 functions are matched fully in C with the rest matched being confirmed handwritten assembly as currently no known compiler or set of flags generates matching assembly.
+Status on 2026-10-07 (`python tools/pr_check.py --target <name>` prints the current count): frontbin 1795 of 1867 functions are final source (1414 in C, the rest confirmed hand-written assembly or linker remnants), boot_elf 2165 of 2815 (1479 in C), i5bootn 157 of 199 (2 in C). All three build byte-identical. objdiff's progress report has the whole-game numbers.
 
 boot_elf (the main executable: the engine core and a second copy of the front end) is split the same way, in `src/boot_elf/core/` and `src/boot_elf/text/`, and its front end was seeded from frontbin's C; see [`docs/boot_elf.md`](docs/boot_elf.md). `python tools/pr_check.py --target boot_elf` prints its count.
 

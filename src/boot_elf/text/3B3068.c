@@ -3,19 +3,23 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_003B3440(void *);
 extern s32 func_003A1180(s32, s32, s32, s32, u8 *);
-extern void (*D_001D9AC0[2])(s32);
+extern s32 func_003A2A10(s32);
+extern void func_003A0A20(u8 *, u32);
+extern s32 func_003B3068(void);
+extern void func_003B3268(void);
+extern void func_003B32A0();
 extern void func_003B3300(void);
 extern void func_003B3370(s32);
 extern void func_003B3338(void);
+extern void func_003B3B28(void);
+extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern s32 func_003A2A10(s32);
 void func_003A0A20(u8 *, u32);
 extern s32 func_003A2A10();
 extern void func_003B3430();
-extern void func_003A0A20(u8 *, u32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003B3068 */
@@ -1116,7 +1120,108 @@ void func_003B4A80(void) {
 }
 /* localdecomp:end func_003B4A80 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B4ED8);
+/* localdecomp:start func_003B4ED8 */
+typedef struct { s32 x0; s32 x4; u8 b8; u8 p9[3]; void (*fnC)(void); } E_3B4ED8;
+__asm__(".extern D_001D8990, 8");
+__asm__(".extern D_001D89A0, 4");
+__asm__(".extern D_001D8978, 4");
+__asm__(".extern D_001DA1BC, 4");
+__asm__(".extern D_001DA1C4, 4");
+__asm__(".extern D_001DA1B8, 4");
+__asm__(".extern D_001DA1C0, 4");
+__asm__(".extern D_001D8974, 4");
+__asm__(".extern D_001D8970, 4");
+__asm__(".extern D_001D89A4, 4");
+__asm__(".extern D_001D89A8, 4");
+__asm__(".extern D_001D89C8, 8");
+__asm__(".extern D_001D89B0, 8");
+extern f32 D_001D8990[2];
+extern f32 D_001D89A0;
+extern s32 D_001D8978;
+extern s32 D_001DA1BC;
+extern s32 D_001DA1C4;
+extern f32 D_001DA1B8;
+extern f32 D_001DA1C0;
+extern f32 D_001D8974;
+extern f32 D_001D8970;
+extern f32 D_001D89A4;
+extern f32 D_001D89A8;
+extern f32 D_001D89C8[2];
+extern f32 D_001D89B0[2];
+extern u8 *D_001D52FC_003B4ED8;
+extern E_3B4ED8 D_003376C0[];
+extern s32 func_003E7610(s32, f32, f32);
+extern s32 func_003E8448(s32, f32, f32);
+extern s32 func_003E7FC8(s32, s32);
+extern void func_003A5608();
+extern s32 func_003BB3A0();
+extern void func_003BB3A8();
+extern void func_003E7268(void *p);
+extern void func_003BB8B0();
+extern void func_003BB870(s32);
+void func_003B4ED8(void *arg0) {
+    s32 i;
+    s32 t;
+    s32 found;
+    s32 cmd;
+    for (i = 0; i < 4; i++) {
+        func_003E7610(i + 0x5B0002, 0.5f, D_001D8990[i]);
+        func_003E8448(i + 0x5B0002, D_001D89A0, 0.006667f);
+    }
+    t = *(s32 *)(D_001D52FC_003B4ED8 + 0x1C4);
+    if (t & 0x4000) {
+        found = 0;
+        do {
+            D_001D8978++;
+            if (D_001D8978 >= 5) D_001D8978 = 0;
+            if (D_003376C0[D_001D8978].b8) found = 1;
+        } while (found == 0);
+        cmd = 3;
+        goto send;
+    } else if (t & 0x1000) {
+        found = 0;
+        do {
+            D_001D8978--;
+            if (D_001D8978 < 0) D_001D8978 = 4;
+            if (D_003376C0[D_001D8978].b8) found = 1;
+        } while (found == 0);
+        cmd = 3;
+        goto send;
+    } else if (t & 0x40) {
+        if (D_003376C0[D_001D8978].b8 && D_003376C0[D_001D8978].fnC) {
+            D_003376C0[D_001D8978].fnC();
+            cmd = 4;
+send:
+            func_003A5608(cmd, 0, 0);
+        }
+    } else if (!(t & 0x910)) {
+        if (func_003BB3A0()) {
+            func_003BB3A8();
+            func_003E7268(arg0);
+        }
+    }
+    if (D_001DA1BC == 0) {
+        D_001DA1BC = 1;
+        D_001DA1B8 = D_001D8974;
+    }
+    if (D_001DA1C4 == 0) {
+        D_001DA1C4 = 1;
+        D_001DA1C0 = D_001D8970;
+    }
+    func_003E8448(0xD0028, D_001D89A4, D_001D89C8[D_001D8978]);
+    func_003E7610(0xD0028, D_001D89A8, D_001D89B0[D_001D8978]);
+    for (i = 0; i < 5; i++) {
+        if (D_003376C0[i].b8) {
+            func_003E7FC8(D_003376C0[i].x0, 0x8066CCFF);
+            if (i == D_001D8978) func_003E7FC8(D_003376C0[i].x0, 0x66D6EEFA);
+        } else {
+            func_003E7FC8(D_003376C0[i].x0, 0x80808080);
+        }
+    }
+    func_003BB8B0();
+    func_003BB870(0xD0028);
+}
+/* localdecomp:end func_003B4ED8 */
 
 /* localdecomp:start func_003B51A0 */
 extern s32 func_003E8800();

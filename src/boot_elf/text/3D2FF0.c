@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_003D2FF0();
+extern void func_003D3C74();
 /* --- end of declarations from other files --- */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_003D2FF0);

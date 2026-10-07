@@ -74,15 +74,55 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D8D8);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D914);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D918);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D964);
+/* localdecomp:start func_0038D918 */
+void func_0038D918(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf4, 0($5)\n"
+        "lqc2 $vf5, 16($5)\n"
+        "lqc2 $vf6, 32($5)\n"
+        "lqc2 $vf1, 0($6)\n"
+        "lqc2 $vf2, 16($6)\n"
+        "lqc2 $vf3, 32($6)\n"
+        "vmulax.xyzw ACC, $vf4, $vf1x\n"
+        "vmadday.xyzw ACC, $vf5, $vf1y\n"
+        "vmaddz.xyzw $vf1, $vf6, $vf1z\n"
+        "vmulax.xyzw ACC, $vf4, $vf2x\n"
+        "vmadday.xyzw ACC, $vf5, $vf2y\n"
+        "vmaddz.xyzw $vf2, $vf6, $vf2z\n"
+        "vmulax.xyzw ACC, $vf4, $vf3x\n"
+        "vmadday.xyzw ACC, $vf5, $vf3y\n"
+        "vmaddz.xyzw $vf3, $vf6, $vf3z\n"
+        "nop\n"
+        "sqc2 $vf1, 0($4)\n"
+        "sqc2 $vf2, 16($4)\n"
+        "sqc2 $vf3, 32($4)\n"
+    );
+}
+/* localdecomp:end func_0038D918 */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D968);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D9B0);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D9EC);
+/* localdecomp:start func_0038D9B0 */
+void func_0038D9B0(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0($5)\n"
+        "lqc2 $vf2, 0($6)\n"
+        "vaddw.xyz $vf9, $vf0, $vf0w\n"
+        "vmul.w $vf3, $vf2, $vf1\n"
+        "vmul.xyz $vf4, $vf2, $vf1\n"
+        "vmulw.xyz $vf5, $vf2, $vf1w\n"
+        "vmulw.xyz $vf6, $vf1, $vf2w\n"
+        "vopmula.xyz ACC, $vf1, $vf2\n"
+        "vopmsub.xyz $vf7, $vf2, $vf1\n"
+        "vadday.x ACC, $vf4, $vf4y\n"
+        "vmaddz.x $vf4, $vf9, $vf4z\n"
+        "vadd.xyz $vf8, $vf5, $vf6\n"
+        "vadd.xyz $vf8, $vf8, $vf7\n"
+        "vsubx.w $vf8, $vf3, $vf4x\n"
+        "sqc2 $vf8, 0($4)\n"
+    );
+}
+/* localdecomp:end func_0038D9B0 */
 
 /* localdecomp:start func_0038D9F0 */
 void func_0038D9F0(void) {
@@ -204,6 +244,29 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DD40);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DD8C);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DD90);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DDDC);
+/* localdecomp:start func_0038DD90 */
+/* func_0038DDDC (4 bytes, the sqc2 in this function's jr delay slot) was a split artifact. */
+void func_0038DD90(void) {
+    __asm__ __volatile__(
+        "mfc1 $at, $f12\n"
+        "qmtc2.ni $at, $vf7\n"
+        "vsubx.w $vf7, $vf0, $vf7x\n"
+        "nop\n"
+        "lqc2 $vf1, 0($5)\n"
+        "lqc2 $vf2, 16($5)\n"
+        "lqc2 $vf3, 32($5)\n"
+        "lqc2 $vf4, 0($6)\n"
+        "lqc2 $vf5, 16($6)\n"
+        "lqc2 $vf6, 32($6)\n"
+        "vmulaw.xyzw ACC, $vf1, $vf7w\n"
+        "vmaddx.xyzw $vf1, $vf4, $vf7x\n"
+        "vmulaw.xyzw ACC, $vf2, $vf7w\n"
+        "vmaddx.xyzw $vf2, $vf5, $vf7x\n"
+        "vmulaw.xyzw ACC, $vf3, $vf7w\n"
+        "vmaddx.xyzw $vf3, $vf6, $vf7x\n"
+        "sqc2 $vf1, 0($4)\n"
+        "sqc2 $vf2, 16($4)\n"
+        "sqc2 $vf3, 32($4)\n"
+    );
+}
+/* localdecomp:end func_0038DD90 */

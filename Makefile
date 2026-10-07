@@ -20,6 +20,15 @@
 
 TOOLBIN := C:/tools/eegcc_2.95.3_sn_v1.36/bin
 
+# Sony's ee-gcc 2.9-ee-991111 (the Windows build), for the text_parts.txt
+# ranges marked @ee29: library code that came prebuilt with Sony's compiler
+# (i5bootn's libgcc, see tools/ee29.py and docs/i5bootn.md). Set it with
+# `make EE29=...` or the UYA_EE29 environment variable.
+ifdef UYA_EE29
+EE29 ?= $(UYA_EE29)
+endif
+EE29 ?= C:/tools/testfolder/ee-gcc2.9-991111
+
 CC      := $(TOOLBIN)/ee-gcc2953.exe
 AS      := $(TOOLBIN)/ee-as.exe
 LD      := $(TOOLBIN)/ee-ld.exe
@@ -60,7 +69,7 @@ TEXT_PARTS := tools/text_parts.txt
 # .text sources: one C file per original source file, in link order in
 # tools/src_files.txt (see tools/srcfiles.py and tools/build_text.py).
 SRC_FILES := $(wildcard src/frontbin/*.c) tools/src_files.txt
-TEXT_DEPS := $(SRC_FILES) $(TEXT_PARTS) tools/build_text.py tools/srcfiles.py tools/asm_filter.py tools/targets.py tools/divs_nops.txt tools/sq_ra_funcs.txt
+TEXT_DEPS := $(SRC_FILES) $(TEXT_PARTS) tools/build_text.py tools/ee29.py tools/srcfiles.py tools/asm_filter.py tools/targets.py tools/divs_nops.txt tools/sq_ra_funcs.txt
 
 # --- data segments: splat's whole-segment disassembly, one .o each -------
 # data is split around the jump-table block (tools/migrate_jtbls.py); text.c.o(.rodata) goes between.
@@ -100,7 +109,7 @@ $(HEADER_OBJ): asm/header.s
 
 $(TEXT_OBJ): $(TEXT_DEPS)
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
-	$(PYTHON) tools/build_text.py --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
+	$(PYTHON) tools/build_text.py --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
 
 $(TARGET): $(HEADER_OBJ) $(DATA_OBJS) $(TEXT_OBJ) $(LD_SCRIPT)
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
@@ -148,7 +157,7 @@ $(OBJDIFF_TARGET): $(TEXT_OBJ) $(TARGET_BIN)
 
 $(OBJDIFF_BASE): $(TEXT_DEPS) include/include_asm.h
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
-	$(PYTHON) tools/build_text.py --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
+	$(PYTHON) tools/build_text.py --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
 
 $(OBJDIFF_COMMON): $(COMMON_DEPS)
 	$(PYTHON) tools/common_c_base.py -o "$@"
@@ -172,7 +181,7 @@ BOOT_LD      := linker_scripts/boot_elf.ld
 BOOT_TARGET  := $(BOOT_BUILD)/boot_elf.elf
 BOOT_BIN     := $(BOOT_BUILD)/boot_elf.bin
 BOOT_TABLES  := targets/boot_elf/src_files.txt targets/boot_elf/text_parts.txt targets/boot_elf/divs_nops.txt targets/boot_elf/sq_ra_funcs.txt
-BOOT_TOOLS   := tools/build_text.py tools/srcfiles.py tools/asm_filter.py tools/targets.py
+BOOT_TOOLS   := tools/build_text.py tools/ee29.py tools/srcfiles.py tools/asm_filter.py tools/targets.py
 BOOT_CORE_DEPS := $(wildcard src/boot_elf/core/*.c) $(BOOT_TABLES) $(BOOT_TOOLS)
 BOOT_TEXT_DEPS := $(wildcard src/boot_elf/text/*.c) $(BOOT_TABLES) $(BOOT_TOOLS)
 BOOT_CORE_OBJ  := $(BOOT_BUILD)/src/core.c.o
@@ -188,11 +197,11 @@ $(BOOT_BUILD)/asm/boot_elf/%.s.o: asm/boot_elf/%.s
 
 $(BOOT_CORE_OBJ): $(BOOT_CORE_DEPS)
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
-	$(PYTHON) tools/build_text.py --target boot_elf --unit core --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
+	$(PYTHON) tools/build_text.py --target boot_elf --unit core --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
 
 $(BOOT_TEXT_OBJ): $(BOOT_TEXT_DEPS)
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
-	$(PYTHON) tools/build_text.py --target boot_elf --unit text --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
+	$(PYTHON) tools/build_text.py --target boot_elf --unit text --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
 
 $(BOOT_TARGET): $(BOOT_ASM_OBJS) $(BOOT_CORE_OBJ) $(BOOT_TEXT_OBJ) $(BOOT_LD)
 	"$(LD)" -T "$(BOOT_LD)" -o "$@"
@@ -224,11 +233,11 @@ $(BOOT_OBJDIFF_TEXT_T): $(BOOT_TEXT_OBJ) $(BOOT_BIN)
 
 $(BOOT_OBJDIFF_CORE_B): $(BOOT_CORE_DEPS) include/include_asm.h
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
-	$(PYTHON) tools/build_text.py --target boot_elf --unit core --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
+	$(PYTHON) tools/build_text.py --target boot_elf --unit core --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
 
 $(BOOT_OBJDIFF_TEXT_B): $(BOOT_TEXT_DEPS) include/include_asm.h
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
-	$(PYTHON) tools/build_text.py --target boot_elf --unit text --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
+	$(PYTHON) tools/build_text.py --target boot_elf --unit text --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
 
 
 # ===========================================================================
@@ -249,7 +258,7 @@ I5_LD      := linker_scripts/i5bootn.ld
 I5_TARGET  := $(I5_BUILD)/i5bootn.elf
 I5_BIN     := $(I5_BUILD)/i5bootn.bin
 I5_TABLES  := targets/i5bootn/src_files.txt targets/i5bootn/text_parts.txt targets/i5bootn/divs_nops.txt targets/i5bootn/sq_ra_funcs.txt
-I5_DEPS    := $(wildcard src/i5bootn/*.c) $(I5_TABLES) tools/build_text.py tools/srcfiles.py tools/asm_filter.py tools/targets.py
+I5_DEPS    := $(wildcard src/i5bootn/*.c) $(wildcard src/i5bootn/libgcc/*.c) $(wildcard src/libgcc/*.h) $(I5_TABLES) tools/build_text.py tools/ee29.py tools/srcfiles.py tools/asm_filter.py tools/targets.py
 I5_TEXT_OBJ := $(I5_BUILD)/src/text.c.o
 I5_ASM_OBJS := $(I5_BUILD)/asm/i5bootn/header.s.o $(I5_BUILD)/asm/i5bootn/trailer.s.o \
                $(patsubst %,$(I5_BUILD)/asm/i5bootn/data/%.data.s.o,data rodata_a rodata_b)
@@ -260,7 +269,7 @@ $(I5_BUILD)/asm/i5bootn/%.s.o: asm/i5bootn/%.s
 
 $(I5_TEXT_OBJ): $(I5_DEPS)
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
-	$(PYTHON) tools/build_text.py --target i5bootn --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
+	$(PYTHON) tools/build_text.py --target i5bootn --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
 
 $(I5_TARGET): $(I5_ASM_OBJS) $(I5_TEXT_OBJ) $(I5_LD)
 	"$(LD)" -T "$(I5_LD)" -o "$@"
@@ -284,4 +293,4 @@ $(I5_OBJDIFF_T): $(I5_TEXT_OBJ) $(I5_BIN)
 
 $(I5_OBJDIFF_B): $(I5_DEPS) include/include_asm.h
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
-	$(PYTHON) tools/build_text.py --target i5bootn --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" -o "$@"
+	$(PYTHON) tools/build_text.py --target i5bootn --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"

@@ -1,14 +1,14 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern s32 func_003A2A10(s32);
+extern void func_0038E478(s32);
+extern s32 func_003823F0(s32);
 extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern void func_0038E478(s32);
-extern s32 func_003823F0(s32);
-extern s32 func_003A2A10(s32);
 extern s32 func_003A2A10();
 extern void *func_003B4500();
 extern s32 func_003823F0();

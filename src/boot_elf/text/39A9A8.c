@@ -1,12 +1,16 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_0039C6D8(void);
+extern void func_0039B0A8(void);
 extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern s32 func_0039F1F0();
+extern void func_0039E950(void);
+extern void func_0039A9A8(void);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_0039A9A8 */
@@ -1199,7 +1203,36 @@ void func_0039C328(void) {
 }
 /* localdecomp:end func_0039C328 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039C340);
+/* localdecomp:start func_0039C340 */
+extern char D_001D5360[];
+extern char D_001D5378[], D_001D5390[], D_001D53A8[], D_001D53C8[], D_001D53E8[];
+extern char D_001D5418[], D_001D5438[];
+extern void func_0011BB58(char *, void *, s32);
+void func_0039C340(u8 *p) {
+    s32 i;
+    u8 c;
+
+    func_0011BB58(D_001D5360, p + 8, 0x15);
+    c = p[0x12];
+    if (c == 'E') {
+        D_001D5378[2] = 'E';
+    } else if (c == 'P') {
+        D_001D5378[2] = 'I';
+    } else if (c == 'K') {
+        D_001D5378[2] = 'K';
+    }
+    for (i = 3; i < 7; i++) D_001D5378[i] = p[i + 0xD];
+    for (i = 8; i < 11; i++) D_001D5378[i] = p[i + 0xD];
+    for (i = 11; i < 13; i++) D_001D5378[i] = p[i + 0xE];
+    func_0011BB58(D_001D5390, D_001D5378, 0xD);
+    func_0011BB58(D_001D53A8, D_001D5378, 0xD);
+    func_0011BB58(D_001D53C8, D_001D5378, 0xD);
+    func_0011BB58(D_001D53E8, D_001D5378, 0xD);
+    func_0011BB58(D_001D53E8 + 0x14, D_001D5378, 0xD);
+    func_0011BB58(D_001D5418, D_001D5378, 0xD);
+    func_0011BB58(D_001D5438, D_001D5378, 0xD);
+}
+/* localdecomp:end func_0039C340 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0039C4D0);
 

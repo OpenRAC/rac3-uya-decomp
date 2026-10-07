@@ -25,6 +25,9 @@ Options:
   --early-extern-size SYMBOL=SIZE
                      expose a matching compiler-emitted size before first use
   --all-modes        try S, S+ps2as, N, N+ps2as and print one line each
+  --ee29 DIR         Sony ee-gcc 2.9-ee folder for @ee29 ranges (default: env
+                     UYA_EE29, else C:/tools/testfolder/ee-gcc2.9-991111);
+                     --flags=@ee29 compiles any function with it (tools/ee29.py)
   --quiet            only print MATCH / N diff lines
 
 Toolchain: --toolchain DIR or env UYA_TOOLCHAIN (default
@@ -94,6 +97,8 @@ def expand(flags, toolchain):
     (gcc uses the last -B), after the default bin/ee- assembler."""
     out, bopts = [], ["-B" + os.path.join(toolchain, "bin", "ee-")]
     for f in flags:
+        if f == "@ee29":  # the compiler, not the assembler: see compile_c() and tools/ee29.py
+            continue
         if f == "@ps2as":
             bopts.append("-B" + os.environ.get("UYA_PS2AS_PREFIX", os.path.join(toolchain, "ee", "bin", "Ps2Ee")))
             out.append("-DNO_MACRO_INC")
@@ -271,7 +276,18 @@ def compile_c(src_path, flags, args, name=None):
     # through to the link step (ld: built in linker script:1: parse error).
     head = 2 if args.runner else 1
     cmd = base[:head] + ["-S"] + base[head:] + ["-o", s_path, c_path]
-    p = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
+    if "@ee29" in flags:
+        # Sony's 2.9-ee driver writes the assembly; the project's assembler (below) assembles it
+        import ee29
+        try:
+            p = ee29.to_asm(flags, ["-I", "include", "-I", "."], c_path, s_path, cwd=ROOT,
+                            path=getattr(args, "ee29", None), runner=args.runner, capture=True)
+        except FileNotFoundError as e:
+            print("COMPILE ERROR\n" + str(e))
+            return None
+        cmd = p.args
+    else:
+        p = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
     if not p.returncode and os.path.exists(s_path):
         # retail's loop padding (tools/asm_filter.py), as in the full build
         sys.path.insert(0, os.path.join(ROOT, "tools"))
@@ -282,7 +298,8 @@ def compile_c(src_path, flags, args, name=None):
         except ValueError as error:
             print("METADATA ERROR: " + str(error))
             return None
-        filtered = asm_filter.filter_asm(assembly)
+        # no short-loop padding for @ee29 ranges (tools/ee29.py)
+        filtered = assembly if "@ee29" in flags else asm_filter.filter_asm(assembly)
         open(s_path, "w", newline="").write(filtered)
         cmd = base[:head] + ["-c"] + base[head:] + ["-o", o_path, s_path]
         p2 = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
@@ -417,6 +434,7 @@ def main():
                     help="compile the file alone, without the declarations its source file (src/frontbin/) puts in front of it")
     ap.add_argument("--toolchain", default=DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
+    ap.add_argument("--ee29", default=None, help="Sony ee-gcc 2.9-ee folder for @ee29 ranges (tools/ee29.py)")
     ap.add_argument("--retail", default=t.path("elf"))
     args = ap.parse_args()
     args.early_extern_sizes = {}

@@ -41,6 +41,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN"), required="UYA_TOOLCHAIN" not in os.environ)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER", "wibo"))
+    ap.add_argument("--ee29", default=os.environ.get("UYA_EE29"),
+                    help="Sony ee-gcc 2.9-ee-991111 folder for @ee29 ranges (tools/ee29.py)")
     args = ap.parse_args()
     tc = os.path.abspath(os.path.expanduser(args.toolchain))
     runner = args.runner
@@ -77,8 +79,10 @@ def main():
     cflags = ("-I include -I . -Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi "
               "-DINCLUDE_ASM_USE_MACRO_INC=1 -B" + os.path.join(tc, "bin", "ee-"))
     for u in t.units:
+        # @ee29 ranges (tools/ee29.py) run Sony's 2.9-ee driver from --ee29 / UYA_EE29 through the runner
         run([sys.executable, "tools/build_text.py", "--target", t.name, "--unit", u.name,
-             "--cc", wrappers["cc"], "--ld", wrappers["ld"], "--cflags", cflags, "-o", t.obj(u)])
+             "--cc", wrappers["cc"], "--ld", wrappers["ld"], "--cflags", cflags, "--runner", runner]
+            + (["--ee29", args.ee29] if args.ee29 else []) + ["-o", t.obj(u)])
 
     # 3. link, flatten, compare
     elf = os.path.join(t.build_dir, t.name + ".elf")

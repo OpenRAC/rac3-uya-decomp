@@ -1137,6 +1137,11 @@ SECTIONS
     # that range (see tools/build_text.py). gcc uses the last -B, so these
     # come after the default one.
     tool_root = project.toolbin.parent
+    # @ee29: Sony's ee-gcc 2.9-ee-991111 compiles this range (tools/ee29.py; its
+    # folder comes from UYA_EE29, default C:/tools/testfolder/ee-gcc2.9-991111);
+    # the assembly is assembled below as usual
+    ee29_range = "@ee29" in extra_cflags
+    extra_cflags = [f for f in extra_cflags if f != "@ee29"]
     as_flags = {"@ps2as": "-B" + str(tool_root / "ee" / "bin" / "Ps2Ee"),
                 "@newas": "-B" + str(tool_root / "ee" / "bin") + "\\"}
     if "@ps2as" in extra_cflags and "-DNO_MACRO_INC" not in extra_cflags:
@@ -1151,7 +1156,18 @@ SECTIONS
     # (a repo under "RATCHET DECOMP DIRECTORY") fails with "cpp.exe: Too many arguments". The files are
     # all in `work` (the cwd), so use bare names.
     cmd = base[:1] + ["-S"] + base[1:] + ["-o", s_path.name, c_path.name]
-    proc = subprocess.run(cmd, cwd=work, capture_output=True, text=True)
+    if ee29_range:
+        import ee29
+        # the libgcc sources include their headers by repo-relative path; a
+        # relative -I avoids the spaces the 2.9 driver can't pass on either
+        rel_root = os.path.relpath(str(project.root), str(work))
+        try:
+            proc = ee29.to_asm([], ["-I", rel_root, "-I", os.path.join(rel_root, "include")] + extra_cflags,
+                               c_path.name, s_path.name, cwd=str(work), capture=True)
+        except FileNotFoundError as e:
+            raise BuildError("compile", str(e))
+    else:
+        proc = subprocess.run(cmd, cwd=work, capture_output=True, text=True)
     if proc.returncode != 0:
         raise BuildError("compile", proc.stdout + proc.stderr)
     try:
@@ -1161,7 +1177,8 @@ SECTIONS
         af = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(af)
         s_text = s_path.read_text()
-        s_path.write_text(af.filter_asm(s_text))
+        # no short-loop padding for @ee29 ranges (tools/ee29.py)
+        s_path.write_text(s_text if ee29_range else af.filter_asm(s_text))
     except FileNotFoundError:
         pass
     cmd = base[:1] + ["-c"] + base[1:] + ["-o", o_path.name, s_path.name]

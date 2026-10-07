@@ -33,7 +33,7 @@ file offset and the gaps are zeros. Nothing uses `$gp` (its `gp` in
 | Section | Address | Size | Built from |
 |---|---|---|---|
 | ELF and program header | file 0x0 | 0x1000 | `asm/i5bootn/header.s` |
-| `.text` | 0x800000 | 0x4FD8 | `src/i5bootn/*.c` (5 files) |
+| `.text` | 0x800000 | 0x4FD8 | `src/i5bootn/*.c` (5 files) and `src/i5bootn/libgcc/*.c` (libgcc, 10 files) |
 | `.data` | 0x805000 | 0x9DC | `asm/i5bootn/data/data.data.s` |
 | `.rodata` | 0x805A00 | 0xBEFC3 | `rodata_a`, the jump table (`INCLUDE_RODATA`), `rodata_b`; almost all of it is the payload the launcher loads |
 | `.sbss`, `.bss` | 0x8C4A00, 0x8C4A80 | | not in the file |
@@ -86,8 +86,16 @@ compilers in this one file:
   at `-O0` without `-fopt-stack`, a single-function override in
   `targets/i5bootn/text_parts.txt`).
 
-So expect near misses on the library code until Sony's 2.9-ee-991111-01 is in
-the toolchain; the build stays correct.
+The libgcc range (0x802640 to the end of `.text`) is in `src/i5bootn/libgcc/`,
+one source file per libgcc.a member, from GCC 2.95.2's own source, and is
+compiled with Sony's Windows 2.9-ee-991111 through the `@ee29` pseudo-flag in
+`targets/i5bootn/text_parts.txt` (`tools/ee29.py`; the compiler's folder is
+`C:/tools/testfolder/ee-gcc2.9-991111` unless `EE29` / `UYA_EE29` says
+otherwise). See `src/libgcc/README.md`. The Windows build matches 23 of
+the 26 libgcc functions; `__moddi3`, `__udivdi3` and `__umoddi3` reserve stack
+that only the Linux 2.9-ee-991111-01 build reproduces, so they stay assembly.
+The small libc and SIO helpers can use `@ee29` the same way (a range override
+in their own files).
 
 ## Starting the tree again
 

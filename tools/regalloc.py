@@ -19,6 +19,7 @@ Background (gcc 2.95 global.c, reproduced in the Cygnus EE sources):
 Usage:
     python tools/regalloc.py scratch/func_0039BEC0.c
     python tools/regalloc.py scratch/f.c --flags "-O2 -G8 -mno-split-addresses"
+    python tools/regalloc.py scratch/f.c --flags "@ee29 -O2 -G0"    # Sony's 2.9-ee (tools/ee29.py)
 The snippet should be self-contained like the ones tools/try_func.py takes
 (externs, typedefs, the function); s8..f64 are provided. The default flags are
 the project defaults; $UYA_TOOLCHAIN / --toolchain and $UYA_RUNNER (wibo) work as
@@ -41,8 +42,14 @@ def analyze(src, flags=DEFAULT_FLAGS, toolchain=None, runner=None, show=True):
     try:
         c = os.path.join(tmp, "v.c")
         open(c, "w").write(PRELUDE + src)
-        cmd = ([runner] if runner else []) + [gcc, "-S"] + flags.split() + ["-dlg", "v.c", "-o", "v.s"]
-        r = subprocess.run(cmd, cwd=tmp, capture_output=True, text=True)
+        if "@ee29" in flags.split():
+            # Sony's 2.9-ee compiler (tools/ee29.py; --flags "@ee29 -O2 -G0")
+            sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+            import ee29
+            r = ee29.to_asm(flags.split() + ["-dlg"], [], "v.c", "v.s", cwd=tmp, runner=runner, capture=True)
+        else:
+            cmd = ([runner] if runner else []) + [gcc, "-S"] + flags.split() + ["-dlg", "v.c", "-o", "v.s"]
+            r = subprocess.run(cmd, cwd=tmp, capture_output=True, text=True)
         if r.returncode:
             print(r.stderr[:1200])
             return None

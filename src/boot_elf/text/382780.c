@@ -1,6 +1,8 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_00388320(void);
+extern void func_003884F0(void);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_00382780 */

@@ -1110,6 +1110,188 @@
       }
     },
     {
+      "name": "boot_elf/core/_main",
+      "target_path": "build/objdiff/target/boot_elf/core/_main.o",
+      "base_path": "build/objdiff/base/boot_elf/core/_main.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/_main.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/_divdi3",
+      "target_path": "build/objdiff/target/boot_elf/core/_divdi3.o",
+      "base_path": "build/objdiff/base/boot_elf/core/_divdi3.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/_divdi3.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/_eh",
+      "target_path": "build/objdiff/target/boot_elf/core/_eh.o",
+      "base_path": "build/objdiff/base/boot_elf/core/_eh.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/_eh.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/_fixunsdfdi",
+      "target_path": "build/objdiff/target/boot_elf/core/_fixunsdfdi.o",
+      "base_path": "build/objdiff/base/boot_elf/core/_fixunsdfdi.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/_fixunsdfdi.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/_floatdidf",
+      "target_path": "build/objdiff/target/boot_elf/core/_floatdidf.o",
+      "base_path": "build/objdiff/base/boot_elf/core/_floatdidf.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/_floatdidf.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/_moddi3",
+      "target_path": "build/objdiff/target/boot_elf/core/_moddi3.o",
+      "base_path": "build/objdiff/base/boot_elf/core/_moddi3.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/_moddi3.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/_muldi3",
+      "target_path": "build/objdiff/target/boot_elf/core/_muldi3.o",
+      "base_path": "build/objdiff/base/boot_elf/core/_muldi3.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/_muldi3.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/_pure",
+      "target_path": "build/objdiff/target/boot_elf/core/_pure.o",
+      "base_path": "build/objdiff/base/boot_elf/core/_pure.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/_pure.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/_udivdi3",
+      "target_path": "build/objdiff/target/boot_elf/core/_udivdi3.o",
+      "base_path": "build/objdiff/base/boot_elf/core/_udivdi3.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/_udivdi3.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/_umoddi3",
+      "target_path": "build/objdiff/target/boot_elf/core/_umoddi3.o",
+      "base_path": "build/objdiff/base/boot_elf/core/_umoddi3.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/_umoddi3.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/dp-bit",
+      "target_path": "build/objdiff/target/boot_elf/core/dp-bit.o",
+      "base_path": "build/objdiff/base/boot_elf/core/dp-bit.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/dp-bit.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/fp-bit",
+      "target_path": "build/objdiff/target/boot_elf/core/fp-bit.o",
+      "base_path": "build/objdiff/base/boot_elf/core/fp-bit.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/fp-bit.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/frame",
+      "target_path": "build/objdiff/target/boot_elf/core/frame.o",
+      "base_path": "build/objdiff/base/boot_elf/core/frame.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/libgcc/frame.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/12A948",
+      "target_path": "build/objdiff/target/boot_elf/core/12A948.o",
+      "base_path": "build/objdiff/base/boot_elf/core/12A948.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/12A948.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
       "name": "boot_elf/core/12FFE0",
       "target_path": "build/objdiff/target/boot_elf/core/12FFE0.o",
       "base_path": "build/objdiff/base/boot_elf/core/12FFE0.o",
@@ -2060,6 +2242,126 @@
       "base_path": "build/objdiff/base/i5bootn/8010A8.o",
       "metadata": {
         "source_path": "src/i5bootn/8010A8.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/_main",
+      "target_path": "build/objdiff/target/i5bootn/_main.o",
+      "base_path": "build/objdiff/base/i5bootn/_main.o",
+      "metadata": {
+        "source_path": "src/i5bootn/libgcc/_main.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/_divdi3",
+      "target_path": "build/objdiff/target/i5bootn/_divdi3.o",
+      "base_path": "build/objdiff/base/i5bootn/_divdi3.o",
+      "metadata": {
+        "source_path": "src/i5bootn/libgcc/_divdi3.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/_fixunsdfdi",
+      "target_path": "build/objdiff/target/i5bootn/_fixunsdfdi.o",
+      "base_path": "build/objdiff/base/i5bootn/_fixunsdfdi.o",
+      "metadata": {
+        "source_path": "src/i5bootn/libgcc/_fixunsdfdi.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/_floatdidf",
+      "target_path": "build/objdiff/target/i5bootn/_floatdidf.o",
+      "base_path": "build/objdiff/base/i5bootn/_floatdidf.o",
+      "metadata": {
+        "source_path": "src/i5bootn/libgcc/_floatdidf.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/_moddi3",
+      "target_path": "build/objdiff/target/i5bootn/_moddi3.o",
+      "base_path": "build/objdiff/base/i5bootn/_moddi3.o",
+      "metadata": {
+        "source_path": "src/i5bootn/libgcc/_moddi3.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/_udivdi3",
+      "target_path": "build/objdiff/target/i5bootn/_udivdi3.o",
+      "base_path": "build/objdiff/base/i5bootn/_udivdi3.o",
+      "metadata": {
+        "source_path": "src/i5bootn/libgcc/_udivdi3.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/_umoddi3",
+      "target_path": "build/objdiff/target/i5bootn/_umoddi3.o",
+      "base_path": "build/objdiff/base/i5bootn/_umoddi3.o",
+      "metadata": {
+        "source_path": "src/i5bootn/libgcc/_umoddi3.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/dp-bit",
+      "target_path": "build/objdiff/target/i5bootn/dp-bit.o",
+      "base_path": "build/objdiff/base/i5bootn/dp-bit.o",
+      "metadata": {
+        "source_path": "src/i5bootn/libgcc/dp-bit.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/fp-bit",
+      "target_path": "build/objdiff/target/i5bootn/fp-bit.o",
+      "base_path": "build/objdiff/base/i5bootn/fp-bit.o",
+      "metadata": {
+        "source_path": "src/i5bootn/libgcc/fp-bit.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/_muldi3",
+      "target_path": "build/objdiff/target/i5bootn/_muldi3.o",
+      "base_path": "build/objdiff/base/i5bootn/_muldi3.o",
+      "metadata": {
+        "source_path": "src/i5bootn/libgcc/_muldi3.c",
         "progress_categories": [
           "executables",
           "i5bootn"

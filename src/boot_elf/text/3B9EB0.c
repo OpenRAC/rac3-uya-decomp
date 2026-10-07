@@ -1,11 +1,14 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_003BB390(void);
 extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern s32 func_003BB3A0();
+extern void func_003BB3A8();
 extern void func_003BA7D8(void *, s32);
 extern s32 *func_003B9EB0(s32);
 extern s32 func_003B9F38(s32 *);
@@ -584,7 +587,40 @@ void func_003BB230(s32 a, s32 b, s32 c) {
 }
 /* localdecomp:end func_003BB230 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BB270);
+/* localdecomp:start func_003BB270 */
+extern s32 func_0038E870(f32, s32, s32);
+extern f32 func_003C4308(f32, f32, f32);
+extern f32 D_001D96D8;
+void func_003BB270(s32 a, s32 pp, s32 qq) {
+    f32 *p = (f32 *)pp;
+    f32 *q = (f32 *)qq;
+    f32 r;
+    f32 t;
+    f32 k;
+    f32 c;
+    f32 lo;
+    f32 hi;
+    if (a != 0) {
+        c = 0.49f;
+        t = (f32)func_0038E870(1.2f, a, -1) / D_001D96D8;
+        k = 1.2f;
+        lo = 6.0f;
+        hi = 11.0f;
+        if (c < t) {
+            k = 0.588000059f / t;
+            t = c;
+        }
+        r = func_003C4308(lo, hi, (t - 0.0f) / c);
+        *q = r;
+        if (hi < r) {
+            *q = hi;
+        } else if (r < lo) {
+            *q = lo;
+        }
+        *p = k;
+    }
+}
+/* localdecomp:end func_003BB270 */
 
 extern s32 D_001D8C18[];
 

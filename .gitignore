@@ -1,4 +1,7 @@
 frontbin.elf
+boot_elf.elf
+# splat writes these during tools/setup_asm.py; the build uses linker_scripts/<target>.ld
+linker_scripts/*.splat.ld
 __pycache__/
 build/
 .localdecomp_work/

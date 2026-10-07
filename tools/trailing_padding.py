@@ -25,6 +25,7 @@ import os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import srcfiles  # noqa: E402
+import targets  # noqa: E402
 ENTRY = re.compile(
     r'(?:/\* localdecomp:start (func_[0-9A-F]{8}) \*/)'
     r'|(?:^(INCLUDE_ASM|ASM_FUNC|LINKER_REMNANT)\("([^"]+)",\s*(func_[0-9A-F]{8})\);)', re.M)
@@ -56,6 +57,9 @@ def scan(text):
             continue
         end = int(name[5:], 16) + int(sm.group(2), 16)
         nxt = int(ents[i + 1][0][5:], 16)
+        t = targets.get()
+        if t.unit_for(int(name[5:], 16)) is not t.unit_for(nxt):
+            continue  # the next entry is in another code section
         gap = (nxt - end) // 4
         align = ((-end) % 8) // 4
         tail = src.split("endlabel " + name, 1)[1] if ("endlabel " + name) in src else ""
@@ -67,6 +71,7 @@ def scan(text):
 
 
 def main():
+    targets.from_argv()
     apply = "--apply" in sys.argv
     text = srcfiles.read_all(ROOT)
     found = scan(text)

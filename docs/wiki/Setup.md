@@ -1,6 +1,6 @@
 # Setup
 
-You need three things the repo can't ship: the compiler toolchain, the retail `frontbin.elf`, and a few Python packages. Windows is the primary platform. Linux and macOS work through [wibo](https://github.com/decompals/wibo) (see the end of this page).
+You need three things the repo can't ship: the compiler toolchain, the retail `frontbin.elf` and `boot_elf.elf`, and a few Python packages. Windows is the primary platform. Linux and macOS work through [wibo](https://github.com/decompals/wibo) (see the end of this page).
 
 ## 1. Toolchain: SN Systems ee-gcc 2.95.3 v1.36
 
@@ -43,6 +43,17 @@ The game contents can be extracted from your legally obtained ISO using [the fol
 
 `frontbin.elf` is in `.gitignore`. Never force-add it.
 
+### Your own boot_elf.elf
+
+The repo also decompiles `boot_elf.elf`, the game's main executable (the engine core plus a second copy of the front end). It is in the root of the unpacked disc (the same `uya_scus_973_53` folder, next to `files` and `levels`). Put it in the repo root too and check it:
+
+```
+certutil -hashfile boot_elf.elf SHA1        (Windows)
+sha1sum boot_elf.elf                       (Linux/macOS)
+```
+
+It must be `487975305f8a263c750dfede50391b575ed07835`. It is in `.gitignore` as well. See [`docs/boot_elf.md`](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/boot_elf.md) for how it is laid out.
+
 ## 3. Python
 
 - Python 3.9 or newer.
@@ -62,7 +73,13 @@ It runs splat and the assembler fixups, then the same post-processing the projec
 
 You do **not** need `C:\decomp-refs` or `C:\decomp-refs-objdiff` to build or to match functions. Those folders only hold the retail objects that CI and localdecomp's "Full check" use for the objdiff progress report.
 
-If `make` stops with `No rule to make target 'asm/...'`, this step is missing or incomplete.
+Then generate boot_elf's asm the same way (it goes to `asm/boot_elf/`, next to frontbin's):
+
+```
+python tools/setup_asm.py --target boot_elf
+```
+
+If `make` stops with `No rule to make target 'asm/...'` (or `asm/boot_elf/...`), this step is missing or incomplete.
 
 ## 5. First build
 
@@ -72,13 +89,16 @@ From the repo root in PowerShell:
 & "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe"
 ```
 
-The last line should be:
+`make` builds both executables. The last two lines should be:
 
 ```
 MATCH: build/frontbin.bin sha1 3bc94ee895e4b4af9b5602a229af599c1103b542 (0x218924 bytes)
+MATCH: build/boot_elf/boot_elf.bin sha1 487975305f8a263c750dfede50391b575ed07835 (0x35EE64 bytes)
 ```
 
-If it isn't, check your `frontbin.elf` hash and the toolchain layout before changing anything. If `make` fails right away because an `asm/` file is missing, run step 4 first. After that, the unmodified repo always matches.
+`make check-frontbin` and `make check-boot_elf` build just one of them.
+
+If it isn't, check your `frontbin.elf` and `boot_elf.elf` hashes and the toolchain layout before changing anything. If `make` fails right away because an `asm/` file is missing, run step 4 first. After that, the unmodified repo always matches.
 
 ## 6. localdecomp
 
@@ -88,7 +108,7 @@ localdecomp is the project's local, decomp.me-style web editor. It builds one fu
 python localdecomp/server.py --project . --no-git-sync
 ```
 
-Then open http://127.0.0.1:8477. See [Workflow](Workflow) for how to use it.
+Then open http://127.0.0.1:8477. See [Workflow](Workflow) for how to use it. The dropdown at the top of the function list picks the executable (frontbin or boot_elf); an executable whose ELF or `asm/` folder is missing is listed as "not set up".
 
 Options you might need:
 
@@ -98,7 +118,7 @@ Options you might need:
 
 ## 7. Full localdecomp build (optional)
 
-localdecomp's **Full check** button (and CI) compares your build with every retail object in the game, not just `frontbin.elf`: the level overlays, `boot_elf.elf`, `i5bootn.elf`, `ntgui.elf`, `sly2.elf` and frontbin's data. Those reference objects are made from your own copy of the game, so they aren't in the repo. A fresh clone has none, and the Full check stops at "copy reference objects". You do **not** need any of this for `make` or for matching functions in localdecomp; it is only for the full progress report.
+localdecomp's **Full check** button (and CI) compares your build with every retail object in the game, not just the two executables it builds: the level overlays, `i5bootn.elf`, `ntgui.elf`, `sly2.elf` and frontbin's data. Those reference objects are made from your own copy of the game, so they aren't in the repo. A fresh clone has none, and the Full check stops at "copy reference objects". You do **not** need any of this for `make` or for matching functions in localdecomp; it is only for the full progress report.
 
 You need:
 
@@ -139,6 +159,6 @@ The compiler and binutils are Windows executables. [wibo](https://github.com/dec
 
 1. Copy the toolchain folder over with the same layout.
 2. Test a function: `export UYA_TOOLCHAIN=~/sn UYA_RUNNER=~/bin/wibo`, then `python3 tools/try_func.py some.c`.
-3. Full build: `python3 tools/build.py`. It runs the same steps as the Makefile and ends with the same `MATCH` line.
+3. Full build: `python3 tools/build.py` for frontbin and `python3 tools/build.py --target boot_elf` for boot_elf. They run the same steps as the Makefile and end with the same `MATCH` line.
 
 localdecomp's `server.py` assumes Windows paths and executables. On Linux, use `tools/try_func.py` for matching.

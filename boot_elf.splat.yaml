@@ -1,0 +1,67 @@
+name: boot_elf
+sha1: 487975305f8a263c750dfede50391b575ed07835
+options:
+  basename: boot_elf
+  target_path: boot_elf.elf
+  base_path: .
+  build_path: build
+  # bin segments (zero gaps, .bss, raw bytes) are written here; never commit them
+  asset_path: build/boot_elf/splat_assets
+  asm_path: asm/boot_elf
+  src_path: src/boot_elf
+  ld_script_path: linker_scripts/boot_elf.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - targets/boot_elf/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: targets/boot_elf/undefined_funcs_auto.txt
+  undefined_syms_auto_path: targets/boot_elf/undefined_syms_auto.txt
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: vutext, type: data, start: 0x2000, vram: 0x100080}
+  - {name: gap_vutext, type: bin, start: 0x18EB0}
+  - name: core
+    type: code
+    start: 0x18F00
+    vram: 0x116F80
+    subsegments:
+      - [0x18F00, c, core]
+  - {name: gap_core, type: bin, start: 0x3F3A0}
+  - {name: core_data, type: data, start: 0x3F400, vram: 0x13D480}
+  - {name: gap_core_data, type: bin, start: 0x51F90}
+  - {name: core_rdata, type: data, start: 0x52000, vram: 0x150080}
+  - {name: gap_core_bss, type: bin, start: 0x54310}
+  - {name: core_lit, type: data, start: 0xD6D00, vram: 0x1D4D80}
+  - {name: gap_core_lit, type: bin, start: 0xD75C0}
+  - {name: lit, type: data, start: 0xD7600, vram: 0x1D5680}
+  - {name: gap_bss, type: bin, start: 0xDB830}
+  - {name: data, type: data, start: 0x21DE00, vram: 0x31BE80}
+  - {name: gap_data, type: bin, start: 0x282F10}
+  - {name: lvl_vtbl, type: data, start: 0x282F80, vram: 0x381000}
+  - {name: gap_vtbl, type: bin, start: 0x282F8C}
+  - {name: lvl_camvtbl, type: data, start: 0x283000, vram: 0x381080}
+  - {name: gap_camvtbl, type: bin, start: 0x283014}
+  - {name: lvl_sndvtbl, type: data, start: 0x283080, vram: 0x381100}
+  - {name: gap_sndvtbl, type: bin, start: 0x283088}
+  - name: text
+    type: code
+    start: 0x283100
+    vram: 0x381180
+    subsegments:
+      - [0x283100, c, text]
+  - {name: gap_text, type: bin, start: 0x2F4538}
+  - {name: patch_data, type: data, start: 0x2F4580, vram: 0x3F2600}
+  - {name: gap_patch, type: bin, start: 0x2F4598}
+  - {name: legal_data, type: data, start: 0x2F5000, vram: 0x1800000}
+  - {name: gap_legal, type: bin, start: 0x2FB374}
+  - {name: mc1_data_a, type: data, start: 0x2FB380, vram: 0x1806380}
+  - {name: gap_mc1, type: bin, start: 0x32A740}
+  - {name: mc1_data_b, type: data, start: 0x32A780, vram: 0x1835780}
+  - {name: trailer, type: bin, start: 0x35EA98}
+  - [0x35EE64]

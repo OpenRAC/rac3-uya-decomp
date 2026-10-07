@@ -29,12 +29,13 @@ import importlib.util, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import srcfiles  # noqa: E402
-SRC_DIR = os.path.join(ROOT, "asm", "nonmatchings", "text")
-DEST = {"handwritten": ("asm/handwritten", "ASM_FUNC"),
-        "remnant": ("asm/remnants", "LINKER_REMNANT")}
+import targets  # noqa: E402
 
 
 def main():
+    t = targets.from_argv()   # --target boot_elf
+    DEST = {"handwritten": (t.handwritten, "ASM_FUNC"),
+            "remnant": (t.remnants, "LINKER_REMNANT")}
     spec = importlib.util.spec_from_file_location("triage", os.path.join(ROOT, "tools", "triage.py"))
     triage = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(triage)
@@ -42,13 +43,13 @@ def main():
     src = srcfiles.read_all(ROOT)
     moved = {k: 0 for k in DEST}
     renames = []
-    for name in re.findall(r'INCLUDE_ASM\("asm/nonmatchings/text",\s*(func_[0-9A-Fa-f]{8})\)', src):
+    for name in re.findall(r'INCLUDE_ASM\("[^"]+",\s*(func_[0-9A-Fa-f]{8})\)', src):
         bucket, _ = triage.classify(name)
         if bucket not in DEST:
             continue
         folder, macro = DEST[bucket]
         os.makedirs(os.path.join(ROOT, folder), exist_ok=True)
-        old_path = os.path.join(SRC_DIR, name + ".s")
+        old_path = os.path.join(ROOT, t.unit_for(int(name[5:], 16)).asm_dir, name + ".s")
         new_path = os.path.join(ROOT, folder, name + ".s")
         if os.path.exists(old_path):
             os.replace(old_path, new_path)
@@ -66,7 +67,7 @@ def main():
 
     def rename(text):
         for name, macro, folder in renames:
-            text = re.sub(r'INCLUDE_ASM\("asm/nonmatchings/text",\s*%s\);' % name,
+            text = re.sub(r'INCLUDE_ASM\("[^"]+",\s*%s\);' % name,
                           '%s("%s", %s);' % (macro, folder, name), text, count=1)
         return text
 

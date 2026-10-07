@@ -13,21 +13,26 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
-      # Retail frontbin.elf is copyrighted and gitignored; check_match.py needs it.
-      - name: Copy retail frontbin.elf
+      # Retail frontbin.elf and boot_elf.elf are copyrighted and gitignored;
+      # check_match.py needs them.
+      - name: Copy retail ELFs
         shell: pwsh
         run: |
           Copy-Item "C:\decomp-refs\frontbin.elf" -Destination "frontbin.elf" -Force
+          Copy-Item "C:\decomp-refs\boot_elf.elf" -Destination "boot_elf.elf" -Force
 
       - name: Copy retail-derived asm
         shell: pwsh
         run: |
           Copy-Item "C:\decomp-refs\asm" -Destination "asm" -Recurse -Force
           if (-not (Test-Path "asm\header.s")) { throw "asm\header.s missing after copy" }
+          # boot_elf's asm (python tools/setup_asm.py --target boot_elf) is in asm\boot_elf
+          if (-not (Test-Path "asm\boot_elf\header.s")) { throw "asm\boot_elf\header.s missing after copy (copy asm\boot_elf into C:\decomp-refs\asm)" }
 
-      # `make objdiff` runs the full build + MATCH check first, then produces
-      # one object per source file in build/objdiff/target/frontbin/ and build/objdiff/base/frontbin/
-      - name: Build frontbin and objdiff inputs
+      # `make objdiff` runs the full build + MATCH check of both executables
+      # first, then produces one object per source file in
+      # build/objdiff/{target,base}/frontbin/ and build/objdiff/{target,base}/boot_elf/{core,text}/
+      - name: Build frontbin, boot_elf and objdiff inputs
         shell: pwsh
         run: |
           & "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe" objdiff *> build_log.txt

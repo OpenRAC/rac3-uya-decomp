@@ -1,0 +1,1 @@
+// boot_elf symbols for splat (name = address). Function boundaries come from the sources.

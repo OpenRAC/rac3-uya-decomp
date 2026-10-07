@@ -2,6 +2,8 @@
 
 Every script in `tools/`, plus localdecomp and the Makefile, and what each is for. Run the Python tools from anywhere: they find the repo root themselves. Install their dependencies once with `pip install -r tools/requirements.txt`.
 
+**Two executables.** The repo builds `frontbin.elf` and `boot_elf.elf`. Every tool works on frontbin unless you pass `--target boot_elf` (or set `UYA_TARGET=boot_elf`): `setup_asm.py`, `build.py`, `build_text.py`, `try_func.py`, `try_in_context.py`, `triage.py`, `pr_check.py`, `split_text.py`, `gen_divs_nops.py`, `migrate_asm_sources.py`, `split_remnant_prefix.py`, `trailing_padding.py` and `check_match.py`. `tools/targets.py` lists each target's ELF, sections, source folders and tables (frontbin's are in `tools/`, boot_elf's in `targets/boot_elf/`). See [`docs/boot_elf.md`](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/boot_elf.md).
+
 ## Which tool do I need?
 
 | I want to... | Use |
@@ -198,7 +200,11 @@ The opt-in build for the level-code C in `src/levels/common/` (listed in `tools/
 
 ### gen_objdiff_units.py
 
-Rewrites the frontbin units in `objdiff.json` from `tools/src_files.txt` (one unit per file). Run it after adding or renaming a file.
+Rewrites the code units in `objdiff.json` for every target (one unit per source file: `frontbin/src/<file>`, `boot_elf/core/<file>`, `boot_elf/text/<file>`). Run it after adding or renaming a file.
+
+### seed_boot_elf.py
+
+Copies frontbin's matched C into boot_elf's front end (`.text`), which is frontbin's code linked at other addresses. It renames every address through a frontbin to boot_elf table built from the paired assembly, builds, and puts back to INCLUDE_ASM whatever doesn't match. Rerun it whenever frontbin gains matches: `python tools/seed_boot_elf.py` on Windows (it runs `make check-boot_elf`), `python3 tools/seed_boot_elf.py --toolchain ~/sn --runner ~/bin/wibo` elsewhere. `bootstrap_boot_elf.py` is the one-time script that made boot_elf's first tree; it is kept as a record.
 
 ### asm_filter.py
 

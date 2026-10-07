@@ -253,7 +253,7 @@
     },
     {
       "id": "boot_elf",
-      "name": "Boot ELF (core engine)"
+      "name": "Boot ELF"
     },
     {
       "id": "i5bootn",
@@ -266,6 +266,14 @@
     {
       "id": "sly2",
       "name": "Sly 2 (sly2.elf)"
+    },
+    {
+      "id": "boot_elf_core",
+      "name": "Boot ELF: engine core"
+    },
+    {
+      "id": "boot_elf_frontend",
+      "name": "Boot ELF: front end"
     }
   ],
   "units": [
@@ -981,6 +989,1020 @@
         "source_path": "src/frontbin/3ECC70.c",
         "progress_categories": [
           "frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/116F80",
+      "target_path": "build/objdiff/target/boot_elf/core/116F80.o",
+      "base_path": "build/objdiff/base/boot_elf/core/116F80.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/116F80.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/11EA10",
+      "target_path": "build/objdiff/target/boot_elf/core/11EA10.o",
+      "base_path": "build/objdiff/base/boot_elf/core/11EA10.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/11EA10.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/11F2A0",
+      "target_path": "build/objdiff/target/boot_elf/core/11F2A0.o",
+      "base_path": "build/objdiff/base/boot_elf/core/11F2A0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/11F2A0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/11F5F0",
+      "target_path": "build/objdiff/target/boot_elf/core/11F5F0.o",
+      "base_path": "build/objdiff/base/boot_elf/core/11F5F0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/11F5F0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/11F848",
+      "target_path": "build/objdiff/target/boot_elf/core/11F848.o",
+      "base_path": "build/objdiff/base/boot_elf/core/11F848.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/11F848.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/11F860",
+      "target_path": "build/objdiff/target/boot_elf/core/11F860.o",
+      "base_path": "build/objdiff/base/boot_elf/core/11F860.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/11F860.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/11FA10",
+      "target_path": "build/objdiff/target/boot_elf/core/11FA10.o",
+      "base_path": "build/objdiff/base/boot_elf/core/11FA10.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/11FA10.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/1245A0",
+      "target_path": "build/objdiff/target/boot_elf/core/1245A0.o",
+      "base_path": "build/objdiff/base/boot_elf/core/1245A0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/1245A0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/124988",
+      "target_path": "build/objdiff/target/boot_elf/core/124988.o",
+      "base_path": "build/objdiff/base/boot_elf/core/124988.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/124988.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/12FFE0",
+      "target_path": "build/objdiff/target/boot_elf/core/12FFE0.o",
+      "base_path": "build/objdiff/base/boot_elf/core/12FFE0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/12FFE0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/1301D8",
+      "target_path": "build/objdiff/target/boot_elf/core/1301D8.o",
+      "base_path": "build/objdiff/base/boot_elf/core/1301D8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/1301D8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/132EC8",
+      "target_path": "build/objdiff/target/boot_elf/core/132EC8.o",
+      "base_path": "build/objdiff/base/boot_elf/core/132EC8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/132EC8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/core/133BB8",
+      "target_path": "build/objdiff/target/boot_elf/core/133BB8.o",
+      "base_path": "build/objdiff/base/boot_elf/core/133BB8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/core/133BB8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_core"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/381180",
+      "target_path": "build/objdiff/target/boot_elf/text/381180.o",
+      "base_path": "build/objdiff/base/boot_elf/text/381180.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/381180.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/382780",
+      "target_path": "build/objdiff/target/boot_elf/text/382780.o",
+      "base_path": "build/objdiff/base/boot_elf/text/382780.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/382780.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38CD30",
+      "target_path": "build/objdiff/target/boot_elf/text/38CD30.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38CD30.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38CD30.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38D0E0",
+      "target_path": "build/objdiff/target/boot_elf/text/38D0E0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38D0E0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38D0E0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38D1D0",
+      "target_path": "build/objdiff/target/boot_elf/text/38D1D0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38D1D0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38D1D0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38D290",
+      "target_path": "build/objdiff/target/boot_elf/text/38D290.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38D290.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38D290.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38D3C0",
+      "target_path": "build/objdiff/target/boot_elf/text/38D3C0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38D3C0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38D3C0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38D488",
+      "target_path": "build/objdiff/target/boot_elf/text/38D488.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38D488.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38D488.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38D5A0",
+      "target_path": "build/objdiff/target/boot_elf/text/38D5A0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38D5A0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38D5A0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38DDE0",
+      "target_path": "build/objdiff/target/boot_elf/text/38DDE0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38DDE0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38DDE0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38DEC8",
+      "target_path": "build/objdiff/target/boot_elf/text/38DEC8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38DEC8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38DEC8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38DF00",
+      "target_path": "build/objdiff/target/boot_elf/text/38DF00.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38DF00.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38DF00.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/38E1F8",
+      "target_path": "build/objdiff/target/boot_elf/text/38E1F8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/38E1F8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/38E1F8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/398040",
+      "target_path": "build/objdiff/target/boot_elf/text/398040.o",
+      "base_path": "build/objdiff/base/boot_elf/text/398040.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/398040.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/39A9A8",
+      "target_path": "build/objdiff/target/boot_elf/text/39A9A8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/39A9A8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/39A9A8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3A03F8",
+      "target_path": "build/objdiff/target/boot_elf/text/3A03F8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3A03F8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3A03F8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3A0440",
+      "target_path": "build/objdiff/target/boot_elf/text/3A0440.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3A0440.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3A0440.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3A0EC0",
+      "target_path": "build/objdiff/target/boot_elf/text/3A0EC0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3A0EC0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3A0EC0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3A2E80",
+      "target_path": "build/objdiff/target/boot_elf/text/3A2E80.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3A2E80.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3A2E80.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3A56A8",
+      "target_path": "build/objdiff/target/boot_elf/text/3A56A8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3A56A8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3A56A8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3A9F18",
+      "target_path": "build/objdiff/target/boot_elf/text/3A9F18.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3A9F18.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3A9F18.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3AAB70",
+      "target_path": "build/objdiff/target/boot_elf/text/3AAB70.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3AAB70.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3AAB70.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3AAC38",
+      "target_path": "build/objdiff/target/boot_elf/text/3AAC38.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3AAC38.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3AAC38.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3ABF50",
+      "target_path": "build/objdiff/target/boot_elf/text/3ABF50.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3ABF50.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3ABF50.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3ACE50",
+      "target_path": "build/objdiff/target/boot_elf/text/3ACE50.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3ACE50.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3ACE50.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3AF4B8",
+      "target_path": "build/objdiff/target/boot_elf/text/3AF4B8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3AF4B8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3AF4B8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3B0260",
+      "target_path": "build/objdiff/target/boot_elf/text/3B0260.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3B0260.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3B0260.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3B1208",
+      "target_path": "build/objdiff/target/boot_elf/text/3B1208.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3B1208.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3B1208.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3B2BF0",
+      "target_path": "build/objdiff/target/boot_elf/text/3B2BF0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3B2BF0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3B2BF0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3B2C18",
+      "target_path": "build/objdiff/target/boot_elf/text/3B2C18.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3B2C18.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3B2C18.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3B3068",
+      "target_path": "build/objdiff/target/boot_elf/text/3B3068.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3B3068.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3B3068.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3B6828",
+      "target_path": "build/objdiff/target/boot_elf/text/3B6828.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3B6828.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3B6828.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3B6CD8",
+      "target_path": "build/objdiff/target/boot_elf/text/3B6CD8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3B6CD8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3B6CD8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3B9EB0",
+      "target_path": "build/objdiff/target/boot_elf/text/3B9EB0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3B9EB0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3B9EB0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3BB3B8",
+      "target_path": "build/objdiff/target/boot_elf/text/3BB3B8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3BB3B8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3BB3B8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3BE710",
+      "target_path": "build/objdiff/target/boot_elf/text/3BE710.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3BE710.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3BE710.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3C3280",
+      "target_path": "build/objdiff/target/boot_elf/text/3C3280.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3C3280.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3C3280.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3C4D90",
+      "target_path": "build/objdiff/target/boot_elf/text/3C4D90.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3C4D90.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3C4D90.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3C65C8",
+      "target_path": "build/objdiff/target/boot_elf/text/3C65C8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3C65C8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3C65C8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3C7220",
+      "target_path": "build/objdiff/target/boot_elf/text/3C7220.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3C7220.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3C7220.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3CD1B0",
+      "target_path": "build/objdiff/target/boot_elf/text/3CD1B0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3CD1B0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3CD1B0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3CD358",
+      "target_path": "build/objdiff/target/boot_elf/text/3CD358.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3CD358.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3CD358.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3CE2E8",
+      "target_path": "build/objdiff/target/boot_elf/text/3CE2E8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3CE2E8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3CE2E8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3CE9D0",
+      "target_path": "build/objdiff/target/boot_elf/text/3CE9D0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3CE9D0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3CE9D0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3CF048",
+      "target_path": "build/objdiff/target/boot_elf/text/3CF048.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3CF048.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3CF048.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3CF418",
+      "target_path": "build/objdiff/target/boot_elf/text/3CF418.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3CF418.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3CF418.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3D0D60",
+      "target_path": "build/objdiff/target/boot_elf/text/3D0D60.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3D0D60.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3D0D60.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3D1050",
+      "target_path": "build/objdiff/target/boot_elf/text/3D1050.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3D1050.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3D1050.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3D1958",
+      "target_path": "build/objdiff/target/boot_elf/text/3D1958.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3D1958.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3D1958.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3D1FF8",
+      "target_path": "build/objdiff/target/boot_elf/text/3D1FF8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3D1FF8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3D1FF8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3D2040",
+      "target_path": "build/objdiff/target/boot_elf/text/3D2040.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3D2040.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3D2040.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3D2ED0",
+      "target_path": "build/objdiff/target/boot_elf/text/3D2ED0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3D2ED0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3D2ED0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3D2FF0",
+      "target_path": "build/objdiff/target/boot_elf/text/3D2FF0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3D2FF0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3D2FF0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3D3F00",
+      "target_path": "build/objdiff/target/boot_elf/text/3D3F00.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3D3F00.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3D3F00.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3D6C70",
+      "target_path": "build/objdiff/target/boot_elf/text/3D6C70.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3D6C70.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3D6C70.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3DA098",
+      "target_path": "build/objdiff/target/boot_elf/text/3DA098.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3DA098.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3DA098.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3DEF88",
+      "target_path": "build/objdiff/target/boot_elf/text/3DEF88.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3DEF88.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3DEF88.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3DF200",
+      "target_path": "build/objdiff/target/boot_elf/text/3DF200.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3DF200.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3DF200.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3E15B0",
+      "target_path": "build/objdiff/target/boot_elf/text/3E15B0.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3E15B0.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3E15B0.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3E5950",
+      "target_path": "build/objdiff/target/boot_elf/text/3E5950.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3E5950.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3E5950.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3E6910",
+      "target_path": "build/objdiff/target/boot_elf/text/3E6910.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3E6910.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3E6910.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3E73F8",
+      "target_path": "build/objdiff/target/boot_elf/text/3E73F8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3E73F8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3E73F8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3E75F8",
+      "target_path": "build/objdiff/target/boot_elf/text/3E75F8.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3E75F8.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3E75F8.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3EAB38",
+      "target_path": "build/objdiff/target/boot_elf/text/3EAB38.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3EAB38.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3EAB38.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
+        ]
+      }
+    },
+    {
+      "name": "boot_elf/text/3F2430",
+      "target_path": "build/objdiff/target/boot_elf/text/3F2430.o",
+      "base_path": "build/objdiff/base/boot_elf/text/3F2430.o",
+      "metadata": {
+        "source_path": "src/boot_elf/text/3F2430.c",
+        "progress_categories": [
+          "executables",
+          "boot_elf",
+          "boot_elf_frontend"
         ]
       }
     },
@@ -2133,16 +3155,6 @@
         "progress_categories": [
           "level_data",
           "multiplayer"
-        ]
-      }
-    },
-    {
-      "name": "exes/boot_elf",
-      "target_path": "build/objdiff/target/exes/boot_elf.o",
-      "metadata": {
-        "progress_categories": [
-          "executables",
-          "boot_elf"
         ]
       }
     },

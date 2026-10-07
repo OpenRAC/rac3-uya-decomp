@@ -133,14 +133,21 @@ def insn_count(lines, noreorder=True):
 # already gives sq for the $s registers) every callee-saved save and restore is
 # rewritten to the slot retail uses. $ra is written as a raw word (sq =
 # 0x7FBF0000 | off, lq = 0x7BBF0000 | off, base $sp), like the retail .s files.
-SQ_RA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sq_ra_funcs.txt")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import targets  # noqa: E402
+
+
+def _sq_ra_file():
+    return targets.get().path("sq_ra_funcs")
+
+
 SAVE_RE = re.compile(r"^(\s*)(sd|sq|ld|lq)\s+\$(1[6-9]|2[0-3]|30|31|fp),\s*(\d+)\(\$sp\)\s*(#.*)?$")
 SAVE_ORDER = [16, 17, 18, 19, 20, 21, 22, 23, 30, 31]
 
 
 def sq_ra_funcs():
     try:
-        with open(SQ_RA_FILE) as f:
+        with open(_sq_ra_file()) as f:
             return {l.split("#")[0].strip() for l in f if l.split("#")[0].strip()}
     except OSError:
         return set()
@@ -201,13 +208,16 @@ def sq_pass(text):
 # in reorder mode keeps. tools/divs_nops.txt (tools/gen_divs_nops.py) lists, per
 # function, the count in front of each div.s/sqrt.s in order; they go back in as
 # raw .words. A function whose div.s/sqrt.s count differs from the table is left alone.
-DIVS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "divs_nops.txt")
+def _divs_file():
+    return targets.get().path("divs_nops")
+
+
 DIVS_RE = re.compile(r"^\s*(div\.s|sqrt\.s)\s")
 
 
 def divs_table():
     try:
-        with open(DIVS_FILE) as f:
+        with open(_divs_file()) as f:
             rows = [l.split("#")[0].split() for l in f]
     except OSError:
         return {}

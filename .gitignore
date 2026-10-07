@@ -1,5 +1,6 @@
 frontbin.elf
 boot_elf.elf
+i5bootn.elf
 # splat writes these during tools/setup_asm.py; the build uses linker_scripts/<target>.ld
 linker_scripts/*.splat.ld
 __pycache__/

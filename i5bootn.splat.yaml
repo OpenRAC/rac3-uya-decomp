@@ -1,0 +1,41 @@
+name: i5bootn
+sha1: 71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f
+options:
+  basename: i5bootn
+  target_path: i5bootn.elf
+  base_path: .
+  build_path: build
+  # bin segments (zero gaps, raw bytes) are written here; never commit them
+  asset_path: build/i5bootn/splat_assets
+  asm_path: asm/i5bootn
+  src_path: src/i5bootn
+  ld_script_path: linker_scripts/i5bootn.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  # .sbss/.bss (0x8C4A00..0x8C5F00) have no segment; this lets splat name the
+  # addresses the code uses there (targets/i5bootn/symbol_addrs.txt)
+  global_vram_start: 0x800000
+  global_vram_end: 0x8C5F00
+  symbol_addrs_path:
+    - targets/i5bootn/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: targets/i5bootn/undefined_funcs_auto.txt
+  undefined_syms_auto_path: targets/i5bootn/undefined_syms_auto.txt
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - name: text
+    type: code
+    start: 0x1000
+    vram: 0x800000
+    subsegments:
+      - [0x1000, c, text]
+  - {name: gap_text, type: bin, start: 0x5FD8}
+  - {name: data, type: data, start: 0x6000, vram: 0x805000}
+  - {name: gap_data, type: bin, start: 0x69DC}
+  - {name: rodata, type: data, start: 0x6A00, vram: 0x805A00}
+  - {name: trailer, type: bin, start: 0xC59C4}
+  - [0xC5B88]

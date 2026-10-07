@@ -6,6 +6,8 @@ Run from anywhere; paths are relative to the repo root.
     python tools/pr_check.py                       # source checks, then compile every file
     python tools/pr_check.py --no-compile          # source checks only (seconds)
     python tools/pr_check.py --obj build/src/text.c.o   # plus object checks
+    python tools/pr_check.py --target boot_elf     # another executable (tools/targets.py)
+    python tools/pr_check.py --target all          # every executable that is set up
 
 On Linux/macOS set UYA_TOOLCHAIN and UYA_RUNNER (wibo), or pass --toolchain
 and --runner, as for try_func.py.
@@ -14,7 +16,7 @@ and --runner, as for try_func.py.
 reasons it fails, in terms of the line you need to fix:
 
   files      every function sits in the file that owns its address
-             (tools/src_files.txt), at most once, and each file's
+             (the target's src_files.txt), at most once, and each file's
              declarations from other files are up to date
   markers    every /* localdecomp:start X */ has a matching end and the block
              defines function X
@@ -313,7 +315,7 @@ def check_parts(asm, defined):
 
 
 def check_status(defined, asm):
-    """localdecomp's status.json vs text.c: a function it scored 0 but that is
+    """localdecomp's status.json vs the sources: a function it scored 0 but that is
     still INCLUDE_ASM here is either not saved yet, or was scored before a
     server fix (see localdecomp/server.py's trailing-padding note)."""
     path = os.path.join(ROOT, ".localdecomp_work", "status.json") if T.name == targets.DEFAULT \
@@ -332,18 +334,18 @@ def check_status(defined, asm):
                    if isinstance(v, dict) and v.get("current_score") == 0 and n in nonmatching)
     if stale:
         warn(f"localdecomp scored {len(stale)} function(s) 0 that are still INCLUDE_ASM in "
-             f"text.c, so its match count runs ahead of the build: "
+             f"the sources, so its match count runs ahead of the build: "
              f"{', '.join(stale[:5])}{' ...' if len(stale) > 5 else ''}. "
              "Rebuild them in localdecomp to get a real score.")
     missing = sorted(n for n in defined if n not in status)
     if missing:
-        warn(f"{len(missing)} function(s) are C in text.c but have no localdecomp score "
+        warn(f"{len(missing)} function(s) are C in the sources but have no localdecomp score "
              f"(matched outside the tool): {', '.join(missing[:5])}"
              f"{' ...' if len(missing) > 5 else ''}")
 
 
 def check_sq_ra(defined):
-    """A function that is C in text.c and whose retail body saves $ra with sq/lq
+    """A function that is C in the sources and whose retail body saves $ra with sq/lq
     (the 16-byte slot layout; docs/wiki/Matching-Patterns.md, "Functions that
     save $ra with sq") must be listed in tools/sq_ra_funcs.txt: asm_filter
     rewrites those saves, and without the line the function keeps a
@@ -458,7 +460,7 @@ def check_compile(toolchain, runner):
 
 def main():
     global FILES, T
-    T = targets.from_argv()   # --target boot_elf
+    T = targets.from_argv(allow_all=True)   # --target boot_elf
     FILES = sf.read_file_list()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--obj", help="built object to check, e.g. build/src/text.c.o")

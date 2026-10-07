@@ -10,11 +10,13 @@ order, and no hand rewrite moves it.
 
     python tools/permuter_setup.py scratch/func_0037DF98.c
     python tools/permuter_setup.py scratch/f.c func_0037DF98 --out nonmatchings
+    python tools/permuter_setup.py --target boot_elf scratch/func_00117000.c
     python <permuter>/permuter.py nonmatchings/func_0037DF98 -j4
 
 FILE.c is the same self-contained snippet tools/try_func.py takes (externs,
 typedefs, the function), ideally your closest attempt so far. The script
-writes nonmatchings/<func>/ (gitignored) with:
+writes nonmatchings/<func>/ (gitignored; nonmatchings/<target>/<func>/ for a
+target other than frontbin, see tools/targets.py) with:
 
   base.c       FILE.c after the declarations the full build puts in front of
                it (build_text.function_context), preprocessed so pycparser can
@@ -23,7 +25,7 @@ writes nonmatchings/<func>/ (gitignored) with:
                pycparser can't parse them, so compile.sh puts them back.
   target.o     retail: the function's .s assembled with the same assembler.
   compile.sh   compiles a candidate with the function's real flags
-               (tools/localdecomp_flags.txt, then tools/text_parts.txt),
+               (the target's localdecomp_flags.txt, then its text_parts.txt),
                through --runner (wibo) on Linux.
   settings.toml
 
@@ -37,6 +39,8 @@ tools/try_func.py before pasting it into its source file.
 import argparse, os, re, shlex, subprocess, sys, tempfile, importlib.util
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import targets  # noqa: E402
 
 
 def load(name):
@@ -46,15 +50,17 @@ def load(name):
     return mod
 
 
-GP = 0x1DC8B0
 HINT_RE = re.compile(r'^\s*__asm__\s*\(\s*"\s*\.extern[^"]*"\s*\)\s*;\s*$', re.M)
 
 
 def main():
+    t = targets.from_argv()   # --target boot_elf
+    GP = t.gp
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("file")
     ap.add_argument("name", nargs="?")
-    ap.add_argument("--out", default=os.path.join(ROOT, "nonmatchings"))
+    ap.add_argument("--out", default=os.path.join(ROOT, "nonmatchings") if t.name == targets.DEFAULT
+                    else os.path.join(ROOT, "nonmatchings", t.name))
     ap.add_argument("--mode", choices=["S", "N"], help="force split (S) or -mno-split-addresses (N)")
     ap.add_argument("--as", dest="asm", choices=["default", "ps2as", "newas"])
     ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN", "C:/tools/eegcc_2.95.3_sn_v1.36"))
@@ -68,7 +74,8 @@ def main():
     name = args.name or next(iter(dict.fromkeys(tf.FUNC_DEF_RE.findall(src))), None)
     if not name:
         sys.exit("no func_XXXXXXXX definition found; pass the function name")
-    asm_path = os.path.join(ROOT, "asm", "nonmatchings", "text", name + ".s")
+    unit = t.unit_for(int(name[5:], 16)) if re.fullmatch(r"func_[0-9A-Fa-f]{8}", name) else None
+    asm_path = os.path.join(ROOT, unit.asm_dir if unit else t.units[0].asm_dir, name + ".s")
     if not os.path.exists(asm_path):
         sys.exit(f"{asm_path} not found (is {name} still INCLUDE_ASM?)")
 
@@ -145,6 +152,7 @@ OUT="$3"; case "$OUT" in /*) ;; *) OUT="$PWD/$OUT";; esac
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 cat "$DIR/prelude.c" "$IN" > "$TMP/in.c"
 cd {shlex.quote(ROOT)}
+export UYA_TARGET={t.name}
 {q(runner + [gcc, "-S", "-I", "include", "-I", "."] + cc_flags)} -o "$TMP/out.s" "$TMP/in.c"
 python3 tools/asm_filter.py "$TMP/out.s"
 {q(runner + [gcc, "-c", "-I", "include", "-I", "."] + cc_flags)} -o "$TMP/out.o" "$TMP/out.s"

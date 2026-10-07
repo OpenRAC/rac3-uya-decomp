@@ -1,0 +1,8 @@
+# Compiler flags for i5bootn by address (see tools/text_parts.txt for the format).
+# Estimates from tools/bootstrap_target.py: the target's base flags, plus
+# -mno-split-addresses where the assembly looks like N mode.
+0x00800000     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x00800160     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x00800488     -O2 -G0 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x00800800     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x008010A8     -O2 -G0 -fopt-stack -mno-check-zero-division

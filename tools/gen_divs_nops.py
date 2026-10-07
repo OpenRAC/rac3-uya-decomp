@@ -44,7 +44,7 @@ def counts(path):
 
 
 def main():
-    t = targets.from_argv()   # --target boot_elf: that target's sources and table
+    t = targets.from_argv(allow_all=True)   # --target boot_elf: that target's sources and table
     OUT = t.path("divs_nops")
     allf = "--all" in sys.argv
     import srcfiles

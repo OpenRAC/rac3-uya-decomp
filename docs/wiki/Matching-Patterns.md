@@ -143,6 +143,10 @@ extern f32 D_001D950C;           /* 0x1DC8B0 - 0x33A4 */
 
 A few such loads reach below 0x1D5680, into the main executable's small data; declare those the same way. Constants written in the source come out inline (`lui`/`ori`/`mtc1`) and need `@ps2as`, as above.
 
+## Code from another compiler (`sibcall`)
+
+A function that ends `ld $ra, ...; j func_X; addiu $sp, $sp, N` (or `j func_X` straight after the `$ra` reload) makes a sibling call: it jumps to its last callee instead of calling it and returning. SN ee-gcc 2.95.3 never does that (it emits `jal` and `jr $ra`), and frontbin has no such function. boot_elf's engine core has 43 and i5bootn 3, and the same code keeps saved registers in 16-byte-aligned slots where SN packs them. They were built with a later Sony compiler (2.96-ee-001003-1 or 3.2, which both do sibling calls). `tools/triage.py` puts them in the `sibcall` bucket; skip them until that compiler is in the toolchain.
+
 ## boot_elf's engine core
 
 - Some core functions start on a 4-byte boundary. A source file's object starts 8-aligned, so a file can only begin at an 8-aligned function; inside a file gcc places the functions itself.

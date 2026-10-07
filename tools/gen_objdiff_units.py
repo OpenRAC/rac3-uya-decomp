@@ -6,12 +6,12 @@ objdiff compares build/objdiff/target/<dir>/<file>.o (the matching build's
 object for that file) with build/objdiff/base/<dir>/<file>.o (the same file
 built with -DOBJDIFF_BASE, so only its C functions are in it). <dir> is the
 target's objdiff_dirs entry: frontbin for frontbin, boot_elf/core and
-boot_elf/text for boot_elf.
+boot_elf/text for boot_elf, i5bootn for i5bootn.
 
 Run this after adding, removing or renaming a file in a target's file list;
 every other unit in objdiff.json (data, levels, other executables) is left
 as it is, except the units a target says its files replace
-(objdiff_replaces: boot_elf's old reference-only exes/boot_elf unit).
+(objdiff_replaces: the old reference-only exes/boot_elf and exes/i5bootn units).
 
     python tools/gen_objdiff_units.py
 """

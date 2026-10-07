@@ -2007,6 +2007,66 @@
       }
     },
     {
+      "name": "i5bootn/src/800000",
+      "target_path": "build/objdiff/target/i5bootn/800000.o",
+      "base_path": "build/objdiff/base/i5bootn/800000.o",
+      "metadata": {
+        "source_path": "src/i5bootn/800000.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/800160",
+      "target_path": "build/objdiff/target/i5bootn/800160.o",
+      "base_path": "build/objdiff/base/i5bootn/800160.o",
+      "metadata": {
+        "source_path": "src/i5bootn/800160.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/800488",
+      "target_path": "build/objdiff/target/i5bootn/800488.o",
+      "base_path": "build/objdiff/base/i5bootn/800488.o",
+      "metadata": {
+        "source_path": "src/i5bootn/800488.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/800800",
+      "target_path": "build/objdiff/target/i5bootn/800800.o",
+      "base_path": "build/objdiff/base/i5bootn/800800.o",
+      "metadata": {
+        "source_path": "src/i5bootn/800800.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
+      "name": "i5bootn/src/8010A8",
+      "target_path": "build/objdiff/target/i5bootn/8010A8.o",
+      "base_path": "build/objdiff/base/i5bootn/8010A8.o",
+      "metadata": {
+        "source_path": "src/i5bootn/8010A8.c",
+        "progress_categories": [
+          "executables",
+          "i5bootn"
+        ]
+      }
+    },
+    {
       "name": "frontbin/data",
       "target_path": "build/objdiff/target/frontbin_data.o",
       "metadata": {
@@ -3165,16 +3225,6 @@
         "progress_categories": [
           "executables",
           "boot_elf"
-        ]
-      }
-    },
-    {
-      "name": "exes/i5bootn",
-      "target_path": "build/objdiff/target/exes/i5bootn.o",
-      "metadata": {
-        "progress_categories": [
-          "executables",
-          "i5bootn"
         ]
       }
     },

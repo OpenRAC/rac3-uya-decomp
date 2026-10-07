@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping. The full guide is on the [wiki](https://github.com/vetusmagnus/ratchet-uya-decomp/wiki) (sources in `docs/wiki/`). The short version:
+Thanks for helping. The full guide is on the [wiki](https://github.com/OpenRAC/rac3-uya-decomp/wiki) (sources in `docs/wiki/`). The short version:
 
 1. **Set up** the SN ee-gcc 2.95.3 v1.36 toolchain and your own `frontbin.elf` ([Setup](docs/wiki/Setup.md)).
 2. **Match** a function in localdecomp or with `tools/try_func.py` ([Workflow](docs/wiki/Workflow.md), [Matching patterns](docs/wiki/Matching-Patterns.md)).

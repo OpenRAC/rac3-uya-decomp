@@ -16,7 +16,7 @@ If you think something or someone is missing, or you'd like your entry changed o
 ## Toolchain
 
 - **SN Systems ProDG for PlayStation 2** (ee-gcc 2.95.3 v1.36, Ps2EeAs): the compiler and assemblers retail was built with. Preserved by [AngheloAlf/SN-Systems-ProDG_for_PS2_3.01](https://github.com/AngheloAlf/SN-Systems-ProDG_for_PS2_3.01).
-- **[decompme/compilers](https://github.com/decompme/compilers)**: the PS2 GCC builds (Sony 2.9 to 3.2) used to identify the compiler ([compiler matrix findings](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/compiler_matrix_findings.md)).
+- **[decompme/compilers](https://github.com/decompme/compilers)**: the PS2 GCC builds (Sony 2.9 to 3.2) used to identify the compiler ([compiler matrix findings](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/compiler_matrix_findings.md)).
 - **[wibo](https://github.com/decompals/wibo)** (decompals): runs the Windows toolchain on Linux and macOS.
 - **GNU Binutils** (`binutils-mips-linux-gnu`): disassembly and the level reference objects.
 

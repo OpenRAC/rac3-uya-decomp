@@ -14,7 +14,7 @@ Dates are Git committer timestamps (`%cI`), retaining their original UTC offsets
 
 ## O: libgcc and Sony library code in rac1-decomp (checked 2026-10-07)
 
-O rebuilds RAC1's `libgcc` from GCC's own sources ([O libgcc README][o-libgcc]) and builds most of its Sony library code (newlib, libkernl, libcdvd, libgraph, libmpeg and more) with Sony's 2.9-ee compiler. UYA links the same kind of code: 56 boot_elf core functions are byte-identical to `libgcc.a` members, and about 440 more core functions carry Sony 2.9-ee or 2.96 fingerprints (see [boot_elf.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/boot_elf.md)). What carries over:
+O rebuilds RAC1's `libgcc` from GCC's own sources ([O libgcc README][o-libgcc]) and builds most of its Sony library code (newlib, libkernl, libcdvd, libgraph, libmpeg and more) with Sony's 2.9-ee compiler. UYA links the same kind of code: 56 boot_elf core functions are byte-identical to `libgcc.a` members, and about 440 more core functions carry Sony 2.9-ee or 2.96 fingerprints (see [boot_elf.md](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/boot_elf.md)). What carries over:
 
 | What O does | Where | Use for UYA |
 |---|---|---|
@@ -135,10 +135,10 @@ This note describes relationships and methods. It distributes no new shared impl
 
 
 [u-vector]: https://github.com/llesieur99/ratchet-uya-decomp/blob/d54228fd175d1bac62ff6fb959a3f5ad8ea2cbcd/src/text.c#L11436
-[u-pr5]: https://github.com/vetusmagnus/ratchet-uya-decomp/pull/5
+[u-pr5]: https://github.com/OpenRAC/rac3-uya-decomp/pull/5
 [u-common-c]: https://github.com/llesieur99/ratchet-uya-decomp/blob/df121cd88669b9de716e857336ad5c44d30ef438/docs/common_level_c.md
 [u-level-vector]: https://github.com/llesieur99/ratchet-uya-decomp/blob/df121cd88669b9de716e857336ad5c44d30ef438/src/levels/common/func_00444F70.c
 [u-level-cosine]: https://github.com/llesieur99/ratchet-uya-decomp/blob/df121cd88669b9de716e857336ad5c44d30ef438/src/levels/common/func_004421E8.c
-[u-pr8]: https://github.com/vetusmagnus/ratchet-uya-decomp/pull/8
+[u-pr8]: https://github.com/OpenRAC/rac3-uya-decomp/pull/8
 [o-libgcc]: https://github.com/OpenRAC/rac1-decomp/blob/661bb60c1fb2e8f4e335a577193b8ee4a165b8fc/src/libgcc/README.md
 [o-make]: https://github.com/OpenRAC/rac1-decomp/blob/661bb60c1fb2e8f4e335a577193b8ee4a165b8fc/Makefile.sn

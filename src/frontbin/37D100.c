@@ -631,7 +631,7 @@ extern s32 func_0038E440();
 extern s32 func_0037DF98(s32);
 extern void func_0037E070(void);
 extern void func_0038C888(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
-extern void func_0038B1E8(s32, s32, s32, s32, unsigned long, s32, f32, f32);
+extern void func_0038B1E8(s32, long, s32, s32, unsigned long, s32, f32, f32);
 void func_0037DD30(void) {
     s16 buf[16];
     s32 x;

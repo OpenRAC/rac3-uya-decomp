@@ -31,6 +31,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import asm_filter  # noqa: E402
+import ee29  # noqa: E402
 import srcfiles as sf  # noqa: E402
 import targets  # noqa: E402
 from srcfiles import strip_comments, declarations_only, EXTERN_HINT_RE  # noqa: E402,F401
@@ -61,10 +62,14 @@ def expand_flags(flags, cc):
             file names are case-insensitive, so the prefix ".../ee/bin/Ps2Ee"
             finds Ps2EeAs.exe. gcc uses the last -B, so these are placed after
             the Makefile's CFLAGS.
-    @newas  use ee/bin/as.exe (May 2001), the one gcc picks without any -B."""
+    @newas  use ee/bin/as.exe (May 2001), the one gcc picks without any -B.
+    @ee29   compile with Sony's ee-gcc 2.9-ee-991111 instead of SN's compiler
+            (tools/ee29.py); it is dropped here, compile_one() handles it."""
     root = os.path.dirname(os.path.dirname(os.path.abspath(cc)))
     out = []
     for f in flags:
+        if f == ee29.FLAG:
+            continue
         if f == '@ps2as':
             out.append('-B' + os.path.join(root, 'ee', 'bin', 'Ps2Ee'))
             out.append('-DNO_MACRO_INC')  # Ps2EeAs can't read include/macro.inc
@@ -212,8 +217,13 @@ def compile_errors(rel, text, parts, gcc_cmd, cflags, tmpdir):
         spath = cpath[:-2] + '.s'
         pflags = [f for f in expand_flags(fl, os.path.join(root, 'bin', 'x')) if not f.startswith('-B')]
         pc = [f for f in cflags if not f.startswith('-Wa,')]
-        r = subprocess.run(gcc_cmd + ['-S'] + pflags + pc + ['-o', spath, cpath],
-                           capture_output=True, text=True)
+        if ee29.wanted(fl):
+            # Sony's 2.9-ee compiler for this range; gcc_cmd[0] is the runner (wibo) if there is one
+            runner = gcc_cmd[0] if len(gcc_cmd) > 1 else None
+            r = ee29.to_asm(fl, pc, cpath, spath, runner=runner, capture=True)
+        else:
+            r = subprocess.run(gcc_cmd + ['-S'] + pflags + pc + ['-o', spath, cpath],
+                               capture_output=True, text=True)
         for p in (cpath, spath):
             try:
                 os.remove(p)
@@ -235,21 +245,35 @@ def compile_one(cc, flags, cflags, cpath, spath, opath, label):
     if '@ps2as' in flags:
         # Ps2EeAs rejects the GNU as options (-mips3, -mcpu=5900, ...)
         pcflags = [f for f in cflags if not f.startswith('-Wa,')]
-    cmd = [cc, '-S'] + pflags + pcflags + asflags + ['-o', spath, cpath]
-    print(' '.join(cmd), flush=True)
-    if subprocess.run(cmd).returncode != 0:
-        sys.exit(f'build_text: {label} failed to compile')
+    if ee29.wanted(flags):
+        # compile with Sony's 2.9-ee driver, assemble below as usual
+        if ee29.to_asm(flags, pcflags, cpath, spath, path=EE29, runner=RUNNER).returncode != 0:
+            sys.exit(f'build_text: {label} failed to compile (2.9-ee)')
+    else:
+        cmd = [cc, '-S'] + pflags + pcflags + asflags + ['-o', spath, cpath]
+        print(' '.join(cmd), flush=True)
+        if subprocess.run(cmd).returncode != 0:
+            sys.exit(f'build_text: {label} failed to compile')
     with open(spath, newline='') as f:
         stext = f.read()
     with open(spath, 'w', newline='') as f:
-        f.write(asm_filter.filter_asm(stext))
+        # retail's short-loop padding is SN's assembler's; Sony's 2.9-ee
+        # library objects (@ee29) don't have it (tools/ee29.py)
+        f.write(stext if ee29.wanted(flags) else asm_filter.filter_asm(stext))
     cmd = [cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, spath]
     print(' '.join(cmd), flush=True)
     if subprocess.run(cmd).returncode != 0:
         sys.exit(f'build_text: {label} failed to assemble')
 
 
+# @ee29 ranges (tools/ee29.py): the 2.9-ee folder and the runner for its
+# Windows driver on Linux/macOS; main() sets them from --ee29 / --runner
+EE29 = None
+RUNNER = None
+
+
 def main():
+    global EE29, RUNNER
     T = targets.from_argv()
     ap = argparse.ArgumentParser()
     ap.add_argument('--files', default=None, help="file list (default: the target's)")
@@ -261,8 +285,14 @@ def main():
     ap.add_argument('--cflags', default='')
     ap.add_argument('--base', action='store_true', help='objdiff base build (-DOBJDIFF_BASE)')
     ap.add_argument('--workdir', default=None)
+    ap.add_argument('--ee29', default=None,
+                    help="Sony 2.9-ee-991111 folder for @ee29 ranges (default: env UYA_EE29, else %s)"
+                    % ee29.DEFAULT_ROOT)
+    ap.add_argument('--runner', default=None,
+                    help='runs the Windows 2.9-ee driver on Linux/macOS (default: env UYA_RUNNER, else wibo)')
     ap.add_argument('-o', '--output', required=True)
     a = ap.parse_args()
+    EE29, RUNNER = a.ee29 or None, a.runner or None
 
     parts = read_parts(a.parts or T.path('parts'))
     files = sf.read_file_list(a.files or T.path('files'))

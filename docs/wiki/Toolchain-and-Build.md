@@ -45,10 +45,18 @@ Pseudo-flags, expanded by `build_text.py`, localdecomp and `try_func.py`:
 |---|---|
 | `@ps2as` | Assemble with `ee/bin/Ps2EeAs.exe`. Adds `-DNO_MACRO_INC` and drops `-Wa,` options, which Ps2EeAs doesn't understand. The range (file or slice) must contain no `INCLUDE_ASM`. |
 | `@newas` | Assemble with `ee/bin/as.exe` (May 2001). |
+| `@ee29` | **Compile** with Sony's ee-gcc 2.9-ee-991111 instead of SN's compiler (`tools/ee29.py`). The assembly goes to the range's assembler without `asm_filter.py` (Sony's library objects don't have SN's short-loop padding). Write only options 2.9-ee knows on such a line (i5bootn's libgcc uses `@ee29 -O2 -G0`). |
 
 gcc uses the last `-B` on its command line, so a range's assembler choice wins over the Makefile default.
 
-There is no compiler pseudo-flag yet. boot_elf's engine core and most of i5bootn were built with Sony's library compilers (2.9-ee-991111-01, and 2.96 for boot_elf's newlib region; see `docs/boot_elf.md` and `docs/compiler_matrix_i5bootn.md`), so about 440 core functions and the libgcc code stay assembly until a per-file pseudo-flag can pick one of those compilers, the way `@ps2as` picks an assembler.
+`@ee29` is for library code that came prebuilt with Sony's own compiler (i5bootn's libgcc in `src/i5bootn/libgcc/`; see `docs/compiler_matrix_i5bootn.md`). It runs the 2.9-ee **driver** (`bin/ee-gcc.exe`, never `cc1` directly: the driver defines `__mips__`, `__R5900__` and the other target macros libgcc's `longlong.h` depends on), with its `lib/gcc-lib/ee/<version>/` folder passed explicitly as `-B` (and its `include/` as `-I` when there is one). Where it is:
+
+- `make`: the `EE29` variable, default `C:/tools/testfolder/ee-gcc2.9-991111`, or the `UYA_EE29` environment variable (`make EE29=D:/cc/ee-gcc2.9-991111`).
+- `build.py`, `build_text.py`, `try_func.py`, `try_in_context.py`, `permuter_setup.py`: `--ee29 DIR` or `UYA_EE29`, same default. On Linux and macOS the Windows driver runs through `UYA_RUNNER` (wibo). A folder with a Linux `bin/ee-gcc` instead (Sony's 2.9-ee-991111-01) works too, for experiments; committed code must match with the Windows 2.9-ee-991111, which the maintainer's build uses.
+- localdecomp: `UYA_EE29`, same default.
+- `try_func.py --flags=@ee29` compiles any function with it.
+
+The Windows 2.9-ee `cpp` rejects `#line 1 "file"` (it writes `# 0`, which its `cc1` refuses); `tools/ee29.py` turns those into `#line 2`, so compiler messages in that stretch are one line late. `regalloc.py` takes it in `--flags` (`--flags "@ee29 -O2 -G0"`). There is no pseudo-flag for 2.96 (boot_elf's newlib region, i5bootn's `exit`) yet.
 
 ## localdecomp_flags.txt
 

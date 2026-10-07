@@ -10,6 +10,21 @@ src/boot_elf/core/11F860.c 0011F860
 src/boot_elf/core/11FA10.c 0011FA10
 src/boot_elf/core/1245A0.c 001245A0
 src/boot_elf/core/124988.c 00124988
+# libgcc: one file per member of Sony's prebuilt libgcc.a, GCC's own source (src/libgcc/README.md)
+src/boot_elf/core/libgcc/_main.c 00126020
+src/boot_elf/core/libgcc/_divdi3.c 001260F0
+src/boot_elf/core/libgcc/_eh.c 001267F0
+src/boot_elf/core/libgcc/_fixunsdfdi.c 00127750
+src/boot_elf/core/libgcc/_floatdidf.c 00127848
+src/boot_elf/core/libgcc/_moddi3.c 001278E0
+src/boot_elf/core/libgcc/_muldi3.c 00127F48
+src/boot_elf/core/libgcc/_pure.c 00127FA8
+src/boot_elf/core/libgcc/_udivdi3.c 00127FB0
+src/boot_elf/core/libgcc/_umoddi3.c 00128580
+src/boot_elf/core/libgcc/dp-bit.c 00128AC0
+src/boot_elf/core/libgcc/fp-bit.c 00129780
+src/boot_elf/core/libgcc/frame.c 00129A58
+src/boot_elf/core/12A948.c 0012A948
 src/boot_elf/core/12FFE0.c 0012FFE0
 src/boot_elf/core/1301D8.c 001301D8
 src/boot_elf/core/132EC8.c 00132EC8

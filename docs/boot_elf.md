@@ -158,11 +158,24 @@ without `-fopt-stack`, and Sony's 2.95.x builds, use `sq` with 16-byte slots).
   2.9-991111 (Windows) build ships these archives. The other near hits are
   coincidences, except possibly the dtoa helpers at 0x11A5D8.
 
-About 440 core functions need a per-file compiler pseudo-flag (Sony
-2.9-ee-991111-01, and 2.96), the way `@ps2as` picks an assembler. Until the
-toolchain has that, they stay assembly. The libgcc functions can then be built
-from GCC 2.95's own source, as i5bootn's were
-([`compiler_matrix_i5bootn.md`](compiler_matrix_i5bootn.md)). OpenRAC's
+The `@ee29` pseudo-flag in `text_parts.txt` now compiles a range with Sony's
+Windows 2.9-ee-991111 (`tools/ee29.py`, [Toolchain and
+Build](wiki/Toolchain-and-Build.md)). The libgcc range 0x126020-0x12A948 uses
+it: `src/boot_elf/core/libgcc/`, one file per `libgcc.a` member, built from
+GCC 2.95.2's own source (shared headers in `src/libgcc/`, see its README).
+54 libgcc functions are C that way (`__main.o`, `_divdi3`, `_fixunsdfdi`,
+`_floatdidf`, `_muldi3`, `_pure.o`, all of `dp-bit.o` and `fp-bit.o`, 17 of
+`_eh.o`'s entries (built with `-fexceptions`, as GCC's own build does for
+`L_eh`) and 11 of `frame.o`'s). `__moddi3`, `__udivdi3` and `__umoddi3` only
+match with the Linux 2.9-ee-991111-01. Still assembly: `_eh.o`'s
+`copy_reg`, `throw_helper`, `__throw` and `__rethrow` (no 2.9-ee build gives
+them; `__rethrow` crashes both 2.9-ee compilers here), and `frame.o`'s
+`execute_cfa_insn` (its switch table is in `.rdata`, which is still one asm
+blob). Unlike
+i5bootn, the linker filled the gaps between modules with `0xCDCDCDCD`; those
+words are `INCLUDE_ASM` pieces at the end of each module file, so every file
+starts and ends where its object does. The rest of the core (about 380
+functions built with 2.9-ee-991111-01 or 2.96) still needs those compilers. OpenRAC's
 rac1-decomp already has those sources set up (`src/libgcc/`, one object per
 `L_` module, a per-file compiler column in its Makefile); built from them with
 the Linux 2.9-ee-991111-01 driver, `_divdi3.o`, `_moddi3.o`, `_udivdi3.o` and

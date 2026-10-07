@@ -2,9 +2,17 @@
 # Estimates from tools/bootstrap_target.py: the target's base flags, plus
 # -mno-split-addresses where the assembly looks like N mode.
 0x00800000     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x00800158     @ee29 -O2 -G0   # Sony 2.9-ee library code: func_00800158 (_exit stub)
 0x00800160     -O2 -G0 -fopt-stack -mno-check-zero-division
-0x00800488     -O2 -G0 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x00800488     -O0 -G0 -mno-check-zero-division   # func_00800488 (the loader) at -O0 like main: sq $fp frame, unfilled delay slots
 0x00800698     -O0 -G0 -mno-check-zero-division   # single-function override: main at -O0, no -fopt-stack (sq $fp frame)
 0x008006E0     -O2 -G0 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x00800790     @ee29 -O2 -G0   # Sony 2.9-ee library code: copy loop, _exit and its stubs
 0x00800800     -O2 -G0 -fopt-stack -mno-check-zero-division
-0x008010A8     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x008010A8     @ee29 -O2 -G0   # Sony 2.9-ee library code: word copy loop
+0x008010F8     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x008014D8     @ee29 -O2 -G0   # Sony 2.9-ee library code: SIO putc with \n to \r\n
+0x00801510     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x00802490     @ee29 -O2 -G0   # Sony 2.9-ee library code: printf output callback, varargs printf wrappers
+# libgcc (src/i5bootn/libgcc/): Sony's ee-gcc 2.9-ee-991111 (@ee29, tools/ee29.py), -O2 -G0
+0x00802640     @ee29 -O2 -G0

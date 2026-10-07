@@ -22,6 +22,8 @@ C:\tools\eegcc_2.95.3_sn_v1.36\
 
 If you install elsewhere, change `TOOLBIN` in the `Makefile` locally (don't commit that change) and pass `--toolbin` to localdecomp.
 
+i5bootn's libgcc (`src/i5bootn/libgcc/`, the `@ee29` ranges) also needs Sony's **ee-gcc 2.9-ee-991111** (Windows build), by default in `C:\tools\testfolder\ee-gcc2.9-991111` (`bin\ee-gcc.exe`, `lib\gcc-lib\ee\2.9-ee-991111\cc1.exe`, `cpp.exe`, `specs`). Elsewhere: `make EE29=...` or the `UYA_EE29` environment variable (see [Toolchain and Build](Toolchain-and-Build), pseudo-flags).
+
 ## 2. Your own frontbin.elf
 
 Extract `frontbin.elf` from your own copy of the game (NTSC-U, SCUS-97353) and put it in the repo root. Check it before anything else:

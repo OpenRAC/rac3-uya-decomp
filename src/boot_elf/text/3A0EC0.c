@@ -2,6 +2,11 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_003A1180(s32, s32, s32, s32, u8 *);
+extern s32 func_003A2858(s32, s32, s32);
+extern void func_003A14B0(s32 a, s32 idx);
+extern void func_003A1008(void);
+extern void func_003A21F0();
+extern s32 func_003A29B0(s32, s32, s32);
 extern void (*D_001D9AC0[2])(s32);
 extern s32 func_003A1168(s32);
 extern void (*D_00226880[])(s32);
@@ -10,11 +15,10 @@ extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern void func_003A2818(void);
 extern void func_003A1EE8(void);
-extern s32 func_003A29B0(s32, s32, s32);
+extern void func_003A1590(void);
 extern s32 func_003A2940();
 extern s32 func_003A28F0();
 extern s32 func_003A29B0();
-extern s32 func_003A2858(s32, s32, s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003A0EC0 */
@@ -340,7 +344,28 @@ void func_003A14B0(s32 a, s32 idx) {
 }
 /* localdecomp:end func_003A14B0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A14F8);
+/* localdecomp:start func_003A14F8 */
+typedef struct { u8 pad[0x90]; u32 a[1]; u32 b[1]; } S_3A14F8;
+typedef struct { s32 v; s32 w; } E_3A14F8;
+typedef struct { u8 pad0[0x79A4]; s32 f79A4; u8 pad1[0x79E8 - 0x79A8]; E_3A14F8 e[1]; } G_3A14F8;
+extern S_3A14F8 D_001A30B0_003A14F8[];
+extern G_3A14F8 D_00160C40_003A14F8[];
+extern void func_003A1440();
+void func_003A14F8(s32 idx) {
+    G_3A14F8 *g = D_00160C40_003A14F8;
+    s32 v = g->e[idx].v;
+    S_3A14F8 *s;
+    u32 *q;
+    if (v) {
+        s = D_001A30B0_003A14F8;
+        q = s->b;
+        s->a[idx + 1] = 0xFFFFFFFF;
+        ((void (*)(s32, s32, void *, unsigned long))func_0013BAB8)(v + g->f79A4, 0, func_003A1440, (u32)(q + idx));
+    } else {
+        D_001A30B0_003A14F8->a[idx + 1] = 0;
+    }
+}
+/* localdecomp:end func_003A14F8 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A1590);
 

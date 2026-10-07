@@ -1,0 +1,2 @@
+# patches for other repos must keep LF line endings or git apply rejects them
+*.patch text eol=lf

@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_00800840(int);
 /* --- end of declarations from other files --- */
 
 ASM_FUNC("asm/i5bootn/handwritten", func_00800800);

@@ -2,16 +2,18 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_003BBA90(s32);
+extern s32 func_12C908(s32);
+extern void func_003A0A20(u8 *, u32);
 extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
-extern s32 func_12C908(s32);
 extern s32 func_13B620(void);
 void func_003A0A20(u8 *, u32);
-extern void func_003A0A20(u8 *, u32);
 extern s32 func_003BD798();
+extern void func_003BB8B0();
+extern void func_003BB870(s32);
 extern void func_003A0A20();
 extern void func_003BB3B8(void);
 extern void func_003BB3C8(s32);
@@ -19,8 +21,6 @@ extern void func_003BB4D0(s32);
 extern s32 func_003BB688(s32);
 extern void func_003BB460(void);
 extern s32 func_003BB3F8(u32);
-extern void func_003BB8B0();
-extern void func_003BB870(s32);
 extern s32 func_003BB3E0(s32);
 /* --- end of declarations from other files --- */
 
@@ -1162,7 +1162,35 @@ void func_003BDFD0(void) {
 }
 /* localdecomp:end func_003BDFD0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BE000);
+/* localdecomp:start func_003BE000 */
+__asm__(".extern D_001D8D28, 4");
+__asm__(".extern D_001D8D2C, 4");
+typedef struct { u8 pad[0x64]; s32 f64; } S_16C580_3B8840;
+extern S_16C580_3B8840 D_16C580_003BE000;
+extern u8 D_001DA310_003BE000[1];
+extern s32 D_001DA2E8_003BE000[2];
+extern s32 func_00382868(s32);
+extern void func_003BDFD0(void);
+s32 func_003BE000(void) {
+    s32 i;
+    s32 r;
+    s32 cur;
+    u8 *used;
+    used = D_001DA310_003BE000;
+    for (i = 0; i < D_001D8D28; i++) {
+        if (i != D_001D8D2C && *(u8 *)(i + (s32)used) == 0) break;
+    }
+    if (i == D_001D8D28) func_003BDFD0();
+    cur = D_16C580_003BE000.f64;
+    do {
+        r = func_00382868(D_001D8D28);
+    } while (r == cur || *(u8 *)(r + (s32)used) != 0);
+    do {
+        *(u8 *)(r + (s32)used) = 1;
+        return D_001DA2E8_003BE000[r];
+    } while (0);
+}
+/* localdecomp:end func_003BE000 */
 
 /* localdecomp:start func_003BE0E8 */
 typedef struct { u8 pad[0x64]; s32 f64; s32 f68; } S_16C580b;

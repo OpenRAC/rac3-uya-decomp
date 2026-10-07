@@ -13,3 +13,21 @@ D_1000 = 0x1000;
 D_1FFF000 = 0x1FFF000;
 D_8C5F00 = 0x8C5F00;
 D_E0002000 = 0xE0002000;
+/* libgcc entry points under the GCC names the 2.9-ee compiler calls them by
+   (soft-float and 64-bit libcalls; src/i5bootn/libgcc/README.md). */
+__divdi3 = 0x00802710;
+__fixunsdfdi = 0x00802E00;
+__floatdidf = 0x00802EF0;
+__moddi3 = 0x00802F88;
+__udivdi3 = 0x008035F0;
+__umoddi3 = 0x00803BC0;
+dpadd = 0x00804510;
+dpsub = 0x00804568;
+dpmul = 0x008045D0;
+dpdiv = 0x00804878;
+dpcmp = 0x00804AF8;
+litodp = 0x00804B48;
+dptoul = 0x00804C08;
+dptofp = 0x00804CD8;
+fptodp = 0x00804F30;
+__muldi3 = 0x00804F70;

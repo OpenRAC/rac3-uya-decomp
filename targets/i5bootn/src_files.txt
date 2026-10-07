@@ -5,3 +5,15 @@ src/i5bootn/800160.c 00800160
 src/i5bootn/800488.c 00800488
 src/i5bootn/800800.c 00800800
 src/i5bootn/8010A8.c 008010A8
+# libgcc: one file per member of Sony's prebuilt libgcc.a (each its own object,
+# as retail's alignment gaps show), GCC's own source (src/i5bootn/libgcc/README.md)
+src/i5bootn/libgcc/_main.c 00802640
+src/i5bootn/libgcc/_divdi3.c 00802710
+src/i5bootn/libgcc/_fixunsdfdi.c 00802E00
+src/i5bootn/libgcc/_floatdidf.c 00802EF0
+src/i5bootn/libgcc/_moddi3.c 00802F88
+src/i5bootn/libgcc/_udivdi3.c 008035F0
+src/i5bootn/libgcc/_umoddi3.c 00803BC0
+src/i5bootn/libgcc/dp-bit.c 00804100
+src/i5bootn/libgcc/fp-bit.c 00804D30
+src/i5bootn/libgcc/_muldi3.c 00804F70

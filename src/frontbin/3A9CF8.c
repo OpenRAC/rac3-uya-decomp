@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 D_001D5C78;
+extern void (*D_001D9AC0[2])(s32);
 extern void func_003AA0B8(void);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);

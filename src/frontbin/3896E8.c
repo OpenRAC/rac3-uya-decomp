@@ -14,6 +14,7 @@ extern void func_00389920(s32);
 extern void func_0038C888(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern void func_0038B1E8(s32, s32, s32, s32, unsigned long, s32, f32, f32);
 extern void func_00393460();
+extern void (*D_001D9AC0[2])(s32);
 extern void func_0038DC08(s32, s32, s32, s32);
 extern void func_0038E030(s32, s32);
 extern void func_0038DEB0(void);
@@ -776,7 +777,52 @@ void func_0038DF10(s32 a0) {
 }
 /* localdecomp:end func_0038DF10 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0038E030);
+/* localdecomp:start func_0038E030 */
+extern u32 *D_001DA0D0_0038E030;
+extern void func_003A3EF0(s32, unsigned long);
+void func_0038E030(s32 x, s32 y) {
+    s32 n = x / 32;
+    unsigned long *p, *q, *r;
+    s32 i, a, b, lo, hi;
+    func_003A3EF0(0x42, (0x8000UL << 24) | 0x4A);
+    D_001DA0D0_0038E030[0] = (n + 5) | 0x10000000;
+    D_001DA0D0_0038E030[1] = 0;
+    D_001DA0D0_0038E030[2] = 0;
+    D_001DA0D0_0038E030[3] = (n + 5) | 0x50000000;
+    p = (unsigned long *)D_001DA0D0_0038E030;
+    r = p + 2;
+    D_001DA0D0_0038E030 = (u32 *)r;
+    p[2] = (0x8000UL << 45) | 1;
+    r[1] = 0xE;
+    r[2] = 0x32003;
+    r[3] = 0x47;
+    r[4] = (0x9000UL << 46) | 1;
+    r[5] = 0x10;
+    r[6] = 0x146;
+    r[7] = (0x8000UL << 16) | 0x8080;
+    r[8] = n | 0x8000 | (0x9000UL << 46);
+    r[9] = 0x44;
+    i = 0;
+    if (n > i) {
+        unsigned long t0, t1;
+        a = y * 8;
+        t0 = (unsigned long)(0x8000 - a) << 16;
+        t1 = (unsigned long)(a + 0x7FF0) << 16;
+        b = -(x * 8);
+        lo = b + 0x8000;
+        hi = b + 0x8200;
+        q = p + 12;
+        do {
+            *q++ = lo | t0;
+            *q++ = hi | t1;
+            hi += 0x200;
+            lo += 0x200;
+            i++;
+        } while (i < n);
+    }
+    D_001DA0D0_0038E030 += n * 4 + 0x14;
+}
+/* localdecomp:end func_0038E030 */
 
 /* localdecomp:start func_0038E1E0 */
 extern s32 D_001D5C78;
@@ -1358,7 +1404,7 @@ LINKER_REMNANT("asm/remnants", func_0038F0F0);
 
 /* localdecomp:start func_0038F0F8 */
 typedef struct { u8 p0[8]; s32 f8; s32 *fC; u8 p10[0x5C]; s32 f6C; u8 b70[4]; s32 f74; s32 f78; s32 f7C; } S_38F0F8;
-extern void func_00391B70();
+extern s32 func_00391B70();
 void func_0038F0F8(S_38F0F8 *p) {
     u8 *b = p->b70;
     if (p->fC) {
@@ -1521,7 +1567,63 @@ s32 func_00391B60(void) {
 
 LINKER_REMNANT("asm/remnants", func_00391B68);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00391B70);
+/* localdecomp:start func_00391B70 */
+typedef struct { s16 f0; u8 b2; u8 p3[9]; s32 fC; } O_391B70;
+typedef struct { u16 h0; u16 h2; u16 h4; u8 b6; u8 b7; } E_391B70;
+extern u8 *D_001D9F24_00391B70;
+extern s32 D_001D9D80_00391B70;
+extern s32 func_0037E1D8(s32, s32);
+s32 func_00391B70(O_391B70 *o) {
+    E_391B70 *e = (E_391B70 *)(D_001D9F24_00391B70 + o->f0 * 8);
+    s32 r = 0;
+    if (e->h0 != 0xFFFF) {
+        switch (o->b2) {
+        case 0:
+            r = e->h4;
+            break;
+        case 1:
+            r = e->h4 + ((D_001D9D80_00391B70 - o->fC) / e->b7) % e->h2;
+            break;
+        case 2: {
+            s32 n = e->h2 * 2;
+            r = ((D_001D9D80_00391B70 - o->fC) / e->b7) % (n - 2);
+            if (r >= e->h2) {
+                s32 u = r + 2;
+                r = n - u;
+            }
+            goto add;
+        }
+        case 3: {
+            s32 t = o->fC;
+            do {
+                if (t < D_001D9D80_00391B70) {
+                    s32 n;
+                    r = (D_001D9D80_00391B70 - t) / e->b7;
+                    n = e->h2 * 2;
+                    if (r < n - 2) {
+                        if (r >= e->h2) {
+                            s32 u = r + 2;
+                            r = n - u;
+                        }
+                    add:
+                        r += e->h4;
+                    } else {
+                        s32 k;
+                        r = e->h4;
+                        k = func_0037E1D8(0x1E, t) + 10;
+                        o->fC = e->h2 * 2 + k;
+                    }
+                } else {
+                    r = *(s32 *)((u8 *)o + 4);
+                }
+            } while (0);
+        }
+        }
+    }
+    *(s32 *)((u8 *)o + 4) = r;
+    return r;
+}
+/* localdecomp:end func_00391B70 */
 
 /* localdecomp:start func_00391D08 */
 // near miss: 17 diff, N mode default flags; only regalloc: retail s3=end,s4=-6,s5=10 and lui/addiu of D_0032DB20 after the jal; mine s3=10,s4=-6,s5=end and base before jal
@@ -1683,7 +1785,40 @@ s32 func_00392108(s32 key, s32 n) {
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003921D8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00392400);
+/* localdecomp:start func_00392400 */
+typedef struct { s32 w; u8 pad[2]; u8 b6; u8 b7; } W_392400;
+extern P_392108 *D_001D9F28_00392400;
+extern W_392400 *D_001D9F2C_00392400;
+extern u32 *D_001DA0D0;
+extern s32 func_003921D8_00392400();
+extern s32 D_001D4BD0;
+extern s32 D_001D4BD4;
+extern s32 D_001D9F14;
+void func_00392400(s32 idx, s32 x, s32 y, s32 w, s32 h, s32 col) {
+    unsigned long *q;
+    P_392108 *p = (P_392108 *)((idx << 2) + (s32)D_001D9F28_00392400);
+    W_392400 *e = &D_001D9F2C_00392400[p->b];
+    s32 tw = 1 << e->b6;
+    s32 th = 1 << e->b7;
+    D_001DA0D0[0] = 0x10000005;
+    D_001DA0D0[1] = 0;
+    D_001DA0D0[2] = 0;
+    D_001DA0D0[3] = 0x50000005;
+    q = (unsigned long *)(D_001DA0D0 + 4);
+    D_001DA0D0 = (u32 *)q;
+    q[0] = 0xE800UL << 47 | 0x8001;
+    q[1] = 0x5353106;
+    q[2] = func_003921D8_00392400(idx);
+    q[3] = 0x156;
+    q[4] = ((long)col << 24) | 0x7F7F7F;
+    q[5] = 0;
+    q[6] = (unsigned long)((x * 16 + D_001D4BD0 - 8) | ((long)(y * 16 + D_001D4BD4 - 8) << 16)) | ((long)D_001D9F14 << 32);
+    q[7] = (th << 20) + (tw << 4);
+    q[8] = (unsigned long)(((x + w) * 16 + D_001D4BD0 - 8) | ((long)((y + h) * 16 + D_001D4BD4 - 8) << 16)) | ((long)D_001D9F14 << 32);
+    q[9] = 0;
+    D_001DA0D0 += 0x14;
+}
+/* localdecomp:end func_00392400 */
 
 /* localdecomp:start func_003925F0 */
 typedef int u128_3925F0 __attribute__((mode(TI)));

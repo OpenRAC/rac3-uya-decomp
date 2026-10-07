@@ -7,6 +7,7 @@ extern s32 func_0039D510(s32, s32, s32);
 extern void func_0039C1C8(s32 a, s32 idx);
 extern void func_0039BD48(void);
 extern void func_0039CEA8();
+extern void (*D_001D9AC0[2])(s32);
 extern s32 func_0039BEA8(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
@@ -183,9 +184,89 @@ extern s32 D_001D6DA4[];
 extern s32 D_001D6D9C[];
 extern s32 D_001D6DA0[];
 extern s32 D_001D6DA8[];
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BEC0);
+/* localdecomp:start func_0039BEC0 */
+extern u8 D_001D5B78[];
+extern s32 D_001A7430[];
+extern s32 D_001DA050_0039BEC0[1];
+__asm__(".extern D_001D6DA4_0039BEC0, 4");
+__asm__(".extern D_001D6D9C_0039BEC0, 4");
+__asm__(".extern D_001D6DA0_0039BEC0, 4");
+__asm__(".extern D_001D6DA8_0039BEC0, 4");
+extern s32 D_001D5B90_0039BEC0;
+extern s32 D_001D5B94_0039BEC0;
+extern s32 D_001D4CEC_0039BEC0;
+extern s32 D_001D6DA4_0039BEC0;
+extern s32 D_001D6D9C_0039BEC0;
+extern s32 D_001D6DA0_0039BEC0;
+extern s32 D_001D6DA8_0039BEC0;
 
-INCLUDE_ASM("asm/nonmatchings/text", func_0039BF98);
+s32 func_0039BEC0(s32 screenId, s32 mode, s32 arg2, s32 arg3, u8 *outPtr) {
+    s32 result;
+    s32 flag;
+
+    if (outPtr != 0) {
+        *outPtr = 0;
+    }
+    result = (D_001D5B90_0039BEC0 == -2) ? 0 : -1;
+    if (mode == 1) {
+        result = (D_001D6DA4_0039BEC0 < 8) ? result : -2;
+    }
+    do {
+        flag = 0;
+    } while (0);
+    if (screenId >= 0) flag = D_001D5B78[screenId];
+    if (flag) {
+        result = -3;
+    }
+    if (D_001A7430[0] == 0) {
+        if ((D_001D5B94_0039BEC0 != 0) || ((D_001D4CEC_0039BEC0 & 1) == 0)) {
+            result = -1;
+        }
+    }
+    if (result == 0) {
+        D_001D5B90_0039BEC0 = screenId;
+        D_001D6D9C_0039BEC0 = arg2;
+        D_001D6DA0_0039BEC0 = arg3;
+        D_001D6DA8_0039BEC0 = (s32)outPtr;
+        if (mode == 1) {
+            D_001DA050_0039BEC0[D_001D6DA4_0039BEC0++] = D_001D5B94_0039BEC0;
+        }
+    }
+    return result;
+}
+/* localdecomp:end func_0039BEC0 */
+
+/* localdecomp:start func_0039BF98 */
+__asm__(".extern D_001D6DA4_0039BF98, 4");
+__asm__(".extern D_001D6D9C_0039BF98, 4");
+__asm__(".extern D_001D6DA0_0039BF98, 4");
+__asm__(".extern D_001D6DA8_0039BF98, 4");
+extern s32 D_001D5B90_0039BF98;
+extern s32 D_001D5B94_0039BF98;
+extern s32 D_001A7430_0039BF98[];
+extern s32 D_001DA050_0039BF98[1];
+extern s32 D_001D6DA4_0039BF98;
+extern s32 D_001D6D9C_0039BF98;
+extern s32 D_001D6DA0_0039BF98;
+extern s32 D_001D6DA8_0039BF98;
+s32 func_0039BF98(s32 screenId, s32 arg1) {
+    s32 result;
+    if (D_001D5B90_0039BF98 != -2) result = 1; else result = 0;
+    if (D_001D6DA4_0039BF98 == 0) result = 1;
+    if (D_001D5B94_0039BF98 != 4) {
+        if (D_001A7430_0039BF98[0] == 0) result = -1;
+    }
+    if (result == 0) {
+        s32 i = D_001D6DA4_0039BF98 - 1;
+        D_001D6D9C_0039BF98 = screenId;
+        D_001D6DA0_0039BF98 = arg1;
+        D_001D6DA4_0039BF98 = i;
+        D_001D5B90_0039BF98 = D_001DA050_0039BF98[i];
+        D_001D6DA8_0039BF98 = 0;
+    }
+    return result;
+}
+/* localdecomp:end func_0039BF98 */
 
 LINKER_REMNANT("asm/remnants", func_0039C020);
 

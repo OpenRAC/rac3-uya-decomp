@@ -4,6 +4,7 @@
 extern s32 func_0039D6C8(s32);
 extern void func_00389920(s32);
 extern s32 func_0037DF98(s32);
+extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
@@ -11,8 +12,8 @@ extern void (*D_00226A80[])(s32);
 extern s32 func_0039D6C8();
 extern void *func_003AED40();
 extern s32 func_003B2AA0(void);
-extern s32 func_003E3040();
 extern s32 func_0037DF98();
+extern s32 func_003E3040();
 extern s32 func_003E24B0(s32, s32);
 extern s32 func_003B42D0(void);
 extern s32 func_003B41F0(void);

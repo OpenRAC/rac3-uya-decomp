@@ -1,10 +1,12 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern void func_003CB5B0(void);
 /* --- end of declarations from other files --- */
 
 LINKER_REMNANT("asm/remnants", func_003CB5A0);

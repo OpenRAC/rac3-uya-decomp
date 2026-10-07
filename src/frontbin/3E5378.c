@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
@@ -1899,7 +1900,35 @@ void func_003E8EC8(O_3E8EC8 *self, s32 b) {
 }
 /* localdecomp:end func_003E8EC8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003E8FB0);
+/* localdecomp:start func_003E8FB0 */
+typedef struct { u8 b[16]; } B16_3E8FB0;
+typedef struct { u8 p0[8]; s32 (**vt)(); } C_3E8FB0;
+typedef struct { s32 *e[1]; u8 p0[0x40]; C_3E8FB0 *f44; s32 n; s32 p1; f32 f50, f54, f58, f5C; } S_3E8FB0;
+typedef struct { u8 p0[0x2C]; S_3E8FB0 *f2C; } O_3E8FB0;
+extern s32 func_003E8670();
+s32 func_003E8FB0(O_3E8FB0 *self, f32 *b) {
+    B16_3E8FB0 t;
+    S_3E8FB0 *s;
+    f32 dx, dy;
+    s32 i;
+    s = self->f2C;
+    t = *(B16_3E8FB0 *)b;
+    dx = b[2] - b[0];
+    dy = b[3] - b[1];
+    ((f32 *)&t)[0] = dx * s->f50 + b[0];
+    ((f32 *)&t)[1] = dy * s->f54 + b[1];
+    ((f32 *)&t)[2] = dx * s->f58 + b[0];
+    ((f32 *)&t)[3] = dy * s->f5C + b[1];
+    if (s->f44 != 0) {
+        ((s32 (*)())(s->f44->vt[0x14 / 4]))(s->f44, &t, s);
+    } else {
+        for (i = 0; i < self->f2C->n; i++) {
+            func_003E8670(((s32 **)self->f2C)[i], b);
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_003E8FB0 */
 
 /* localdecomp:start func_003E90C8 */
 typedef struct { u8 b[16]; } B16_3E90C8;
@@ -3025,7 +3054,49 @@ void func_003EC798(u8 *p, f32 *a) {
 }
 /* localdecomp:end func_003EC798 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003EC7D8);
+/* localdecomp:start func_003EC7D8 */
+typedef struct {
+    void *vt0; void *vt4; s32 (**vt)(); u8 pad0[0x4]; f32 f10, f14, f18, f1C; u8 pad20[0x18]; s32 f38; f32 f3C; s32 f40; s32 f44;
+} O_3EC7D8;
+extern f32 D_001D96C8[], D_001D96CC[], D_001D96D0_003EC7D8[], D_001D96D4_003EC7D8[], D_001D96D8_003EC7D8[], D_001D96DC_003EC7D8[];
+extern s32 func_003E8590();
+extern void func_003E8788();
+extern s32 func_003A6830();
+extern void func_003A4DC8(void *, s32, f32, f32, f32, f32, f32);
+void func_003EC7D8(O_3EC7D8 *o, s32 a) {
+    f32 b[4];
+    s32 p;
+    f32 x, y;
+    if (o->f44 == 0) return;
+    o->vt[8](o, a, b, 1);
+    if (func_003E8590(o, 0x100) != 0) {
+        f32 x, y;
+        f32 c;
+        f32 d;
+        f32 e;
+        s32 fl;
+        s32 k = o->f40;
+        p = func_003A6830(o->f44, k);
+        x = o->f10; y = o->f14; fl = o->f38; c = o->f18; d = o->f1C; e = o->f3C;
+        if (p == 0) return;
+        func_003A4DC8((void *)p, fl, (x + D_001D96D0_003EC7D8[0]) * D_001D96D8_003EC7D8[0], (y + D_001D96D4_003EC7D8[0]) * D_001D96DC_003EC7D8[0], c * D_001D96C8[0], d * D_001D96CC[0], e);
+    } else {
+        s32 k;
+        f32 c;
+        f32 d;
+        f32 e;
+        s32 fl;
+        func_003E8788(o, b);
+        x = b[0] + (b[2] - b[0]) * 0.5f;
+        y = b[1] + (b[3] - b[1]) * 0.5f;
+        k = o->f40;
+        p = func_003A6830(o->f44, k);
+        fl = o->f38; c = o->f18; d = o->f1C; e = o->f3C;
+        if (p == 0) return;
+        func_003A4DC8((void *)p, fl, (x + D_001D96D0_003EC7D8[0]) * D_001D96D8_003EC7D8[0], (y + D_001D96D4_003EC7D8[0]) * D_001D96DC_003EC7D8[0], c * D_001D96C8[0], d * D_001D96CC[0], e);
+    }
+}
+/* localdecomp:end func_003EC7D8 */
 
 /* localdecomp:start func_003EC960 */
 typedef struct { u8 p0[0x10]; f32 f10; f32 f14; f32 f18; f32 f1C; u8 p1[0x1C]; f32 f3C; s32 f40; u8 *f44; } O_3EC960;

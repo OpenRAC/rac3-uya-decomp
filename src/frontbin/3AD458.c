@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
@@ -13,6 +14,8 @@ extern s32 func_003AD4B0();
 extern s32 func_003AD4D8();
 extern s32 func_003AD520();
 extern void func_003AD6B0();
+extern s32 func_003AD748();
+extern void func_003AD6D8();
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003AD458 */

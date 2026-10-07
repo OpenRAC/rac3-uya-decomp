@@ -10,9 +10,11 @@ extern void func_003A3B00(void);
 extern void func_003A44F0(void);
 extern void func_003A3C80(void);
 extern void func_003A3C00(void);
+extern s32 func_0039EE68(void);
 extern void func_003A3EF0(s32, unsigned long);
 extern void func_003A35C0(void);
 extern void func_003A2460(void);
+extern void (*D_001D9AC0[2])(s32);
 typedef int u128_t __attribute__((mode(TI)));
 extern void func_003886E8(f32 *, void *, f32);
 extern void func_003A4188(void);
@@ -395,7 +397,148 @@ s32 func_003A13B0(s32 a) {
 }
 /* localdecomp:end func_003A13B0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A1438);
+/* localdecomp:start func_003A1438 */
+/* PROVISIONAL, VU0 j-constraint form: each VU0 instruction is a separate non-volatile __asm__
+   using the "j" (VU0 register) constraint, which needs -mvu0-use-vf0-vf2 (override in
+   tools/text_parts.txt). With -mvu0-use-vf0-vf31 loop.c hoists and strength-reduces differently
+   (234 diffs). Uses one plain-C volatile read of D.f34. See Matching-Patterns, "VU0 instructions
+   as separate asm statements". */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3A1438;
+typedef struct {
+    u8 pad[0x10]; V4_3A1438 f10; u8 pad20[0x40 - 0x20]; u8 f40; u8 f41; u8 pad42[2]; f32 f44;
+    u8 pad48[0x61 - 0x48]; u8 f61; u8 pad62; u8 f63; u8 pad64[4]; u8 *f68; u8 pad6C[0xAA - 0x6C]; s16 fAA;
+} O_3A1438;
+typedef struct { u8 pad[0x20]; u8 f20; u8 pad21[0x34 - 0x21]; u16 f34; u8 pad36[0xAA - 0x36]; s16 fAA; u8 padAC[0x100 - 0xAC]; } E_3A1438;
+typedef struct {
+    u8 pad[0x34]; s32 f34; s32 f38; s32 f3C; s16 f40; u8 pad42[2]; s16 f44; u8 pad46[2]; s16 f48;
+    u8 pad4A[0x60 - 0x4A]; s8 f60; u8 pad61[0x1A0 - 0x61]; O_3A1438 *f1A0[1];
+} S_225780_3A1438;
+typedef struct { u8 pad[0x1A0]; unsigned long f1A0; } Pad_3A1438;
+typedef struct { u8 pad[0x25C0]; O_3A1438 *f25C0; } S_1A4BE0_3A1438;
+extern S_225780_3A1438 D_00225780_003A1438;
+extern S_1A4BE0_3A1438 D_001A4BE0_003A1438;
+extern f32 D_001D9C50_003A1438;
+extern s32 D_001D5B90_003A1438;
+extern Pad_3A1438 *D_001D52FC_003A1438;
+extern s32 D_00142690_003A1438[];
+extern s32 D_001D4D40_003A1438;
+extern s32 D_001D545C_003A1438;
+extern s32 D_00143950_003A1438[];
+extern s16 D_001CCFD4_003A1438[];
+extern O_3A1438 *D_001DA088;
+extern s32 D_001D4B60_003A1438;
+extern E_3A1438 *D_001DA51C_003A1438;
+extern E_3A1438 *D_001DA524_003A1438;
+extern void func_003DFFD0(void);
+extern void func_003A2C18(void);
+extern s32 func_0039C710(void);
+extern s32 func_003E0190(void);
+extern void func_003BD490_003A1438(O_3A1438 *);
+extern void func_003886E8_003A1438(void *, void *, f32);
+extern void func_003A04A0(O_3A1438 *, s32);
+extern void func_003A26D0();
+extern void func_00385840_003A1438(void (*)(), O_3A1438 *);
+extern void func_003C26C8_003A1438(O_3A1438 *);
+extern void func_0037DD10(O_3A1438 *, s32);
+extern void func_0037DC38(O_3A1438 *);
+extern s32 func_0037DC58_003A1438(void);
+extern void func_003CB5B0(void);
+extern void func_003A1870(void);
+extern s32 func_003A13B0(s32);
+extern s32 func_0039D6C8(s32);
+extern void func_003E0068(void);
+s32 func_003A1438(void) {
+    s32 r;
+    s32 over;
+    f32 f;
+    if (D_00225780_003A1438.f60 != 0) return 0;
+    if (!(D_00225780_003A1438.f34 + 1 < D_00225780_003A1438.f40)) {
+        D_001D5B90_003A1438 = 0;
+        D_00225780_003A1438.f60 = 1;
+        return 0;
+    }
+    func_003DFFD0();
+    func_003A2C18();
+    f = D_001D9C50_003A1438 - 0.34f;
+    D_00225780_003A1438.f38++;
+    D_00225780_003A1438.f34++;
+    D_001D9C50_003A1438 = f;
+    if (f < 0.0f) D_001D9C50_003A1438 = 0.0f;
+    if (!(*(volatile s32 *)&D_00225780_003A1438.f34 < D_00225780_003A1438.f48)) func_0039C710();
+    r = 0;
+    over = !(D_00225780_003A1438.f34 < D_00225780_003A1438.f40);
+    if (D_00225780_003A1438.f34 >= 0x12 && D_001D9C50_003A1438 == 0.0f) {
+        if (((D_00142690_003A1438[0] & 0xFFFF0000) != 0 || D_001D4D40_003A1438 != 0 || D_001D545C_003A1438 <= 0)
+            && (((s32 *)D_001D52FC_003A1438)[0x1A4 / 4] & 0x800)) {
+            r = 1;
+        } else {
+            r = 1;
+            if ((D_001D52FC_003A1438->f1A0 & 0x8000000000FUL) ^ 0x8000000000FUL) r = 0;
+        }
+    }
+    if (r != 0 || over) {
+        D_00225780_003A1438.f60 = 1;
+        D_001D5B90_003A1438 = 0;
+    } else {
+        s32 i;
+        s32 v;
+        s32 lim = D_00143950_003A1438[0] ? 0x50 : 0x60;
+        if (D_00225780_003A1438.f38 >= lim) {
+            D_00225780_003A1438.f3C++;
+            if (D_001CCFD4_003A1438[0] != 0) func_0039D6C8(1);
+            func_003A1870();
+            func_003A13B0(D_00225780_003A1438.f3C + 1);
+        }
+        v = func_003E0190();
+        for (i = 0; i < D_00225780_003A1438.f44; i++) {
+            O_3A1438 *o = D_00225780_003A1438.f1A0[i];
+            s32 h = D_00225780_003A1438.f38 >> 1;
+            u8 *p;
+            V4_3A1438 a, b;
+            o->f41 = h + 1;
+            o->f40 = h;
+            func_003BD490_003A1438(o);
+            o->f44 = (f32)(D_00225780_003A1438.f38 & 1) * 0.5f;
+            if (v != 0 && (D_00225780_003A1438.f38 & 1)) o->f44 = 1.0f;
+            p = o->f68;
+            func_003886E8_003A1438(&a, p + o->f40 * 16, 1.0f - o->f44);
+            func_003886E8_003A1438(&b, p + o->f41 * 16, o->f44);
+            {
+                u128_t x, y;
+                __asm__("lqc2 %0, %1" : "=j"(x) : "m"(a));
+                __asm__("lqc2 %0, %1" : "=j"(y) : "m"(b));
+                __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
+                __asm__("sqc2 %1, %0" : "=m"(o->f10) : "j"(x));
+            }
+            {
+                s32 aa = o->fAA;
+                if (aa == 0xD54) {
+                    o->f63 = 8;
+                    func_003A04A0(o, 0);
+                    if (D_001DA088 == 0 || D_001DA088->fAA == aa) func_00385840_003A1438(func_003A26D0, o);
+                }
+            }
+            o->f61 = 0xFF;
+            func_003C26C8_003A1438(o);
+            if (o->fAA == 0) {
+                D_001A4BE0_003A1438.f25C0 = o;
+                func_0037DD10(o, 1);
+            }
+            if (o->fAA == 10) func_0037DC38(o);
+        }
+        if (D_001D4B60_003A1438 == 4 || func_0037DC58_003A1438() > 0) {
+            E_3A1438 *e;
+            for (e = D_001DA51C_003A1438; e < D_001DA524_003A1438; e++) {
+                if (e->f20 < 0xFE && e->fAA == 0x50A) e->f34 |= 1;
+            }
+        }
+    }
+    func_0039EE68();
+    func_003CB5B0();
+    func_003E0068();
+    return r;
+}
+/* localdecomp:end func_003A1438 */
 
 /* localdecomp:start func_003A1870 */
 typedef struct { u8 pad[6]; u8 f6; u8 pad7[5]; u8 fC; u8 padD[0x48 - 0xD]; void *f48[1]; } T_3A1870;
@@ -1401,7 +1544,31 @@ void func_003A3EF0(s32 a0, unsigned long a1) {
 
 LINKER_REMNANT("asm/remnants", func_003A3FA8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A3FB0);
+/* localdecomp:start func_003A3FB0 */
+typedef struct { u8 pad[0x150]; s16 w; s16 h; } S_1CFEC0_3A3FB0;
+extern S_1CFEC0_3A3FB0 D_001CFEC0_003A3FB0;
+extern u32 *D_001DA0D0_003A3FB0;
+void func_003A3FB0(s32 x0, s32 x1, s32 y0, s32 y1) {
+    s32 w = D_001CFEC0_003A3FB0.w - 1;
+    s32 h = D_001CFEC0_003A3FB0.h - 1;
+    if (x0 < 0) x0 = 0;
+    if (y0 < 0) y0 = 0;
+    if (w < x1) x1 = w;
+    if (h < y1) y1 = h;
+    D_001DA0D0_003A3FB0[0] = 0x10000002;
+    D_001DA0D0_003A3FB0[1] = 0;
+    D_001DA0D0_003A3FB0[2] = 0;
+    D_001DA0D0_003A3FB0[3] = 0x50000002;
+    D_001DA0D0_003A3FB0[4] = 0x8001;
+    D_001DA0D0_003A3FB0[5] = 0x10000000;
+    D_001DA0D0_003A3FB0[6] = 0xE;
+    D_001DA0D0_003A3FB0[7] = 0;
+    *(unsigned long *)(D_001DA0D0_003A3FB0 + 8) = (unsigned long)x0 | ((unsigned long)x1 << 16) | ((unsigned long)y0 << 32) | ((unsigned long)y1 << 48);
+    D_001DA0D0_003A3FB0[10] = 0x40;
+    D_001DA0D0_003A3FB0[11] = 0;
+    D_001DA0D0_003A3FB0 += 12;
+}
+/* localdecomp:end func_003A3FB0 */
 
 /* localdecomp:start func_003A40C8 */
 extern u32 *D_001DA0D0_g;

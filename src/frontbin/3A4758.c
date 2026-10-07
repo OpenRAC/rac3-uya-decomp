@@ -1,6 +1,7 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9AC0[2])(s32);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
@@ -93,7 +94,43 @@ u8 *func_003A4768(u8 *p) {
 }
 /* localdecomp:end func_003A4768 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A4860);
+/* localdecomp:start func_003A4860 */
+typedef struct { u8 p0[0x16]; s16 h16; } F_3A4860;
+typedef struct { u8 p0[4]; s16 n; u8 p6[2]; s16 nframes; s16 stride; u8 pC[0x14]; u8 *data; } A_3A4860;
+typedef struct { f32 m[16]; } M_3A4860;
+extern void func_003892D8();
+extern void func_00389330(void *, void *, void *, f32);
+extern void func_00389240();
+extern void func_00388F08();
+void func_003A4860(A_3A4860 *a, M_3A4860 *out, f32 t) {
+    f32 tmp[12];
+    s32 i;
+    s32 frame = (s32)t;
+    f32 frac;
+    u8 *src = a->data + frame * a->stride;
+    for (i = 0; i < a->n; i++, src += 0x18) {
+        func_003892D8(src, &out[i]);
+    }
+    { f32 ti, tf; /* retail keeps (s32)t in an FPR (cvt.w.s/cvt.s.w); gcc always goes through a GPR */ __asm__("cvt.w.s %0, %1" : "=f"(ti) : "f"(t)); __asm__("cvt.s.w %0, %1" : "=f"(tf) : "f"(ti)); frac = t - tf; }
+    if (0.001f < frac) {
+        s32 next = frame + 1;
+        if (!(next < a->nframes)) next = 0;
+        src = a->data + next * a->stride;
+        for (i = 0; i < a->n; i++, src += 0x18) {
+            func_003892D8(src, tmp);
+            func_00389330(&out[i], &out[i], tmp, frac);
+        }
+    }
+    {
+        F_3A4860 *f = (F_3A4860 *)(a->data + (s32)t * a->stride);
+        s32 j;
+        for (j = 0; j < a->n; j++, f++) {
+            func_00389240(&out[j], &out[j].m[4], &out[j].m[8], &out[j]);
+            if (f->h16 >= 0) func_00388F08(&out[j], &out[f->h16], &out[j]);
+        }
+    }
+}
+/* localdecomp:end func_003A4860 */
 
 extern int D_001DA0D0[];
 /* localdecomp:start func_003A4A20 */

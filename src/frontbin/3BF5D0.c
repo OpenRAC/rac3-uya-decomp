@@ -363,11 +363,10 @@ void func_003BFEF0(void *pos, s32 color, f32 size, f32 off) {
 LINKER_REMNANT("asm/remnants", func_003C00B8);
 
 /* localdecomp:start func_003C0188 */
-/* PROVISIONAL, VU0 j-constraint form: each VU0 instruction is a separate non-volatile __asm__
-   using the "j" (VU0 register) constraint, which needs -mvu0-use-vf0-vfN (override in
-   tools/text_parts.txt). Kept for further exploration: the original's N is unknown (vf2 and up
-   all give these bytes, vf1 does not compile). See Matching-Patterns, "VU0 instructions as
-   separate asm statements". */
+/* VU0 j-form: each VU0 instruction is a separate non-volatile __asm__ using the "j" (VU0
+   register) constraint, which needs -mvu0-use-vf0-vfN. The original build used N = 2 on every
+   file (tools/text_parts.txt carries -mvu0-use-vf0-vf2 on every line); see Matching-Patterns,
+   "VU0 j-form: one asm statement per instruction". */
 typedef struct {
     u8 p0[7]; u8 f7; u8 p8[9]; u8 f11; u8 f12; u8 p13; u8 f14; u8 p15; u8 f16; u8 f17; u8 p18[4];
     f32 f1C; f32 f20; f32 f24; f32 f28; f32 f2C; f32 f30; f32 f34; u16 f38; u8 p3A[0x12];

@@ -1,8 +1,11 @@
 # Compiler flags by address (tools/build_text.py). A line applies from its
 # address up to the next line. Files (tools/src_files.txt) use their first
 # line's flags; the lines marked "single-function override" are functions
-# that only match with other flags, and are compiled as a separate slice of
-# their file.
+# that only match with other flags. Each run of consecutive lines with the
+# same flag list is compiled as one slice of its file, so two neighbouring
+# overrides with identical flags share a slice (put a flag in a different
+# position to keep them apart). -mvu0-use-vf0-vf2 is on every line: the
+# original build used it (docs/wiki/Matching-Patterns.md, "VU0 j-form").
 0x0037D100     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0037D1A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # single-function override
 0x0037D200     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override

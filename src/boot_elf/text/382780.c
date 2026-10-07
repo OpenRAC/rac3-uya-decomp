@@ -718,7 +718,7 @@ void func_00383C18(u8 *o) {
 /* localdecomp:end func_00383C18 */
 
 /* localdecomp:start func_00383E38 */
-/* PROVISIONAL, VU0 j-constraint form (needs -mvu0-use-vf0-vf2, override in tools/text_parts.txt).
+/* VU0 j-form (needs -mvu0-use-vf0-vf2, on every line of tools/text_parts.txt).
    The empty asm on e keeps combine from folding the -0x1C0 base offset into the sq (retail keeps
    &D_00222500 in its own register, $a2). */
 typedef int Q_37F7A8 __attribute__((mode(TI)));
@@ -864,7 +864,7 @@ void func_00384620(s32 idx, A_37FF90 *a, s32 mode) {
 /* localdecomp:end func_00384620 */
 
 /* localdecomp:start func_00384850 */
-/* PROVISIONAL, VU0 j-constraint form (needs -mvu0-use-vf0-vf2, override in tools/text_parts.txt).
+/* VU0 j-form (needs -mvu0-use-vf0-vf2, on every line of tools/text_parts.txt).
    sq $zero through the documented non-volatile QZERO "=m" form. */
 typedef int Q_3801C0 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3801C0;
@@ -1286,11 +1286,10 @@ void func_00385750(S_3810C0 *o, f32 x, f32 y) {
 /* localdecomp:end func_00385750 */
 
 /* localdecomp:start func_00385A70 */
-/* PROVISIONAL, VU0 j-constraint form: each VU0 instruction is a separate non-volatile __asm__
-   using the "j" (VU0 register) constraint, which needs -mvu0-use-vf0-vfN (override in
-   tools/text_parts.txt). Kept for further exploration: the original's N is unknown (vf2 and up
-   all give these bytes, vf1 does not compile). See Matching-Patterns, "VU0 instructions as
-   separate asm statements". */
+/* VU0 j-form: each VU0 instruction is a separate non-volatile __asm__ using the "j" (VU0
+   register) constraint, which needs -mvu0-use-vf0-vfN. The original build used N = 2 on every
+   file (tools/text_parts.txt carries -mvu0-use-vf0-vf2 on every line); see Matching-Patterns,
+   "VU0 j-form: one asm statement per instruction". */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3813E0;
 typedef int Q_3813E0 __attribute__((mode(TI)));
 typedef struct {
@@ -1954,9 +1953,9 @@ void func_003885F0(void) {
 /* localdecomp:end func_003885F0 */
 
 /* localdecomp:start func_00388610 */
-/* PROVISIONAL, VU0 j-constraint form: each VU0 instruction is a separate non-volatile __asm__
-   using the "j" (VU0 register) constraint, which needs -mvu0-use-vf0-vf2 (override in
-   tools/text_parts.txt). See Matching-Patterns, "VU0 instructions as separate asm statements".
+/* VU0 j-form: each VU0 instruction is a separate non-volatile __asm__
+   using the "j" (VU0 register) constraint, which needs -mvu0-use-vf0-vf2 (on every line of
+   tools/text_parts.txt). See Matching-Patterns, "VU0 j-form".
    The two differences of the cross product go into fresh variables (y0, y2): reusing x0/x2 as
    outputs changes sched1's order of the VU loads and with it reload's spill pattern. */
 typedef int Q_383BB0 __attribute__((mode(TI)));
@@ -3082,7 +3081,7 @@ void func_0038B258(s32 y0, s32 y1, s32 x0, s32 x1, unsigned long c) {
 LINKER_REMNANT("asm/boot_elf/remnants", func_0038B440);
 
 /* localdecomp:start func_0038B448 */
-/* PROVISIONAL, VU0 j-constraint form (needs -mvu0-use-vf0-vf2, override in tools/text_parts.txt).
+/* VU0 j-form (needs -mvu0-use-vf0-vf2, on every line of tools/text_parts.txt).
    Saves $ra and $s0-$s6 with sq (tools/sq_ra_funcs.txt), so the override also drops -fopt-stack. */
 typedef int Q_3869E8 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3869E8;

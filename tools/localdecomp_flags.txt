@@ -1,6 +1,4 @@
 # localdecomp-only flag overrides for functions still INCLUDE_ASM in src/frontbin/.
 # func_XXXXXXXX <flags...>   (same syntax as text_parts.txt; wins over it in localdecomp)
 # When a function matches and goes into its source file, move the override to text_parts.txt.
-func_003830E8 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-
-func_003D1B10 -O2 -G8 -mno-split-addresses -mno-check-zero-division @ps2as
+func_003830E8 -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as

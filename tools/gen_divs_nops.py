@@ -22,6 +22,18 @@ BRANCH = re.compile(r"^(b|bc1[tf]l?|beq|bne|bgez|bgtz|blez|bltz|beql|bnel|bgezl|
 TARGET = re.compile(r"^(div\.s|sqrt\.s)$")
 
 
+WORD = re.compile(r"/\*\s*[0-9A-Fa-f]+\s+[0-9A-Fa-f]+\s+([0-9A-Fa-f]{8})\s*\*/")
+
+
+def is_sqrt_s(line):
+    """True if the line's instruction word is COP1 sqrt.s (fmt S, funct 4)."""
+    m = WORD.search(line)
+    if not m:
+        return False
+    w = int.from_bytes(bytes.fromhex(m.group(1)), "little")
+    return (w >> 26) == 0x11 and ((w >> 21) & 0x1F) == 0x10 and (w & 0x3F) == 4
+
+
 def counts(path):
     prev = []  # mnemonics before the current line, in order
     out = []
@@ -30,6 +42,8 @@ def counts(path):
         if not m:
             continue
         mn = m.group(1)
+        if mn == "c1" and is_sqrt_s(line):
+            mn = "sqrt.s"  # the disassembler prints the EE's sqrt.s as a raw `c1` word
         if TARGET.match(mn):
             n = 0
             i = len(prev) - 1

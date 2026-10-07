@@ -1,6 +1,8 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_00124F20(s32);
+extern void func_00125F70(s32, s32);
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00124988);
@@ -83,7 +85,23 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125328);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001254B8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125540);
+/* localdecomp:start func_00125540 */
+typedef struct N_125540 { struct N_125540 *next; struct N_125540 *prev; } N_125540;
+extern N_125540 *D_0013F2A0[];
+N_125540 *func_00125540(N_125540 *p) {
+    N_125540 *next = p->next;
+    if (p->prev != 0) {
+        p->prev->next = next;
+    } else {
+        D_0013F2A0[0] = next;
+    }
+    if (next != 0) {
+        next->prev = p->prev;
+    }
+    p->prev = 0;
+    return next;
+}
+/* localdecomp:end func_00125540 */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00125578);
 
@@ -373,11 +391,27 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D578);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012D5E8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D5F0);
+/* localdecomp:start func_0012D5F0 */
+u32 func_0012D5F0(u32 a) {
+    if ((a >> 28) == 7) {
+        a &= 0x0FFFFFFF;
+        a |= 0x80000000;
+    }
+    return a;
+}
+/* localdecomp:end func_0012D5F0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D618);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D650);
+/* localdecomp:start func_0012D650 */
+extern s32 D_00141500[];
+s32 func_0012D650(u32 i) {
+    if (i >= 10) {
+        return 0;
+    }
+    return D_00141500[i];
+}
+/* localdecomp:end func_0012D650 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D678);
 
@@ -403,7 +437,17 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_0012DC98);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012DCA0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012DDC8);
+/* localdecomp:start func_0012DDC8 */
+extern s32 func_0012DCA0(s32, s32, s32, s32);
+extern s32 D_00141538[];
+s32 func_0012DDC8(s32 a, s32 b, s32 c) {
+    s32 r = func_0012DCA0(a, b, c, 0x40);
+    if (r == 0) {
+        D_00141538[0] = 0xB;
+    }
+    return r;
+}
+/* localdecomp:end func_0012DDC8 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012DE00);
 

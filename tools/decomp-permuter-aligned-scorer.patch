@@ -1,0 +1,47 @@
+diff --git a/src/scorer.py b/src/scorer.py
+index 35bf27a..7917d6f 100644
+--- a/src/scorer.py
++++ b/src/scorer.py
+@@ -1,5 +1,6 @@
+ import difflib
+ import hashlib
++import os
+ import re
+ import shlex
+ from typing import Dict, List, Optional, Sequence, Tuple, Set
+@@ -7,6 +8,8 @@ from collections import Counter
+ 
+ from .objdump import ArchSettings, Line, objdump, get_arch
+ 
++_aligned_mod = None
++
+ 
+ class Scorer:
+     PENALTY_INF = 10**9
+@@ -58,6 +61,26 @@ class Scorer:
+         if not cand_o:
+             return Scorer.PENALTY_INF, ""
+ 
++        # Optional external scorer (aligned instruction diffs), see the
++        # project's tools/permuter_scorer.py. Score = 10 * aligned diffs.
++        ext = os.environ.get("PERMUTER_ALIGNED_SCORER")
++        func = os.environ.get("PERMUTER_ALIGNED_FUNC")
++        if ext and func:
++            import importlib.util
++
++            global _aligned_mod
++            if _aligned_mod is None:
++                spec = importlib.util.spec_from_file_location("permuter_scorer", ext)
++                assert spec and spec.loader
++                _aligned_mod = importlib.util.module_from_spec(spec)
++                spec.loader.exec_module(_aligned_mod)  # type: ignore
++            try:
++                nd = _aligned_mod.score(cand_o, func)  # type: ignore
++            except Exception:
++                return Scorer.PENALTY_INF, ""
++            text, _ = self._objdump(cand_o)
++            return nd * 10, hashlib.sha256(text.encode()).hexdigest()
++
+         objdump_output, cand_seq = self._objdump(cand_o)
+ 
+         num_stack_penalties: int = 0

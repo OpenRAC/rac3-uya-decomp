@@ -492,7 +492,7 @@ typedef struct { long f0; long f8; s32 f10; s32 f14; } S_CCb;
 typedef struct { u8 p0[0x40]; s32 f40; u8 p44[0xC]; S_CCb *f50; s32 f54; s32 f58; s32 f5C; } S_CCa;
 extern s32 func_11EE60(s32);
 extern void func_11EE40(s32);
-extern void func_003ACB00();
+extern s32 func_003ACB00();
 s32 func_003ACC30(S_CCa *a, S_CCb *b) {
     s32 r = 0;
     func_11EE60(a->f40);

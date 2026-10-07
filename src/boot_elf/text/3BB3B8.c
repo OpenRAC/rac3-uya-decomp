@@ -19,9 +19,9 @@ extern void func_003BB4D0(s32);
 extern s32 func_003BB688(s32);
 extern void func_003BB460(void);
 extern s32 func_003BB3F8(u32);
-extern s32 func_003BB3E0(s32);
 extern void func_003BB8B0();
 extern void func_003BB870(s32);
+extern s32 func_003BB3E0(s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003BB3B8 */

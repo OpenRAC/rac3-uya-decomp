@@ -32,3 +32,20 @@ Speed: about 25 candidates a second on two cores for a small function.
 ## When it doesn't help
 
 The permuter only moves a function if some C rewrite reaches retail. If nothing improves after about 20,000 iterations, the gap is probably not a source-shape problem. Check the other explanations first: hand-written code, inline asm in the original, a different flag or assembler for that range. `docs/full_match_roadmap.md` lists the known cases.
+
+## Aligned-diff scoring (recommended)
+
+decomp-permuter's built-in score weights objdump differences in its own way and often disagrees with how close a function really is (one near miss scored 180 at 5 real diffs). `tools/permuter_scorer.py` scores a candidate the way `try_func.py` and the matching agents measure it: instructions aligned against retail, relocations resolved, branch targets compared through the alignment. Score = 10 x aligned diffs, 0 = match.
+
+1. Once, in your decomp-permuter checkout: `git apply <repo>/tools/decomp-permuter-aligned-scorer.patch` (a 20-line hook in `src/scorer.py`; without the variables below it changes nothing).
+2. Per run:
+
+```sh
+export PERMUTER_ALIGNED_SCORER=$PWD/tools/permuter_scorer.py
+export PERMUTER_ALIGNED_FUNC=func_XXXXXXXX
+python3 ../decomp-permuter/permuter.py nonmatchings/func_XXXXXXXX -j2 --stop-on-zero
+```
+
+With it the permuter's base score equals the aligned diff count x 10. Every output still needs checking: random rewrites can change what the code does.
+
+`permuter_setup.py` also records the typedef attributes (`mode(TI)`, `aligned(16)`) that the parser can't read in `attrs.json`, and `compile.sh` puts them back before compiling each candidate. Before this, 128-bit and vector types silently became plain `int` in permuter runs.

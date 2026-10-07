@@ -53,7 +53,69 @@ def load(name):
 HINT_RE = re.compile(r'^\s*__asm__\s*\(\s*"\s*\.extern[^"]*"\s*\)\s*;\s*$', re.M)
 
 
+ATTR_RE = re.compile(r"__attribute__\s*\(\((?:[^()]|\([^()]*\))*\)\)")
+
+
+def _statements(text):
+    """Top-level statements (`typedef ...;`) with brace depth tracking."""
+    out, i, n = [], 0, len(text)
+    for m in re.finditer(r"(?m)^\s*typedef\b", text):
+        if m.start() < i:
+            continue
+        j, depth = m.start(), 0
+        while j < n:
+            c = text[j]
+            if c in "{(":
+                depth += 1
+            elif c in "})":
+                depth -= 1
+            elif c == ";" and depth == 0:
+                break
+            j += 1
+        out.append(text[m.start():j + 1])
+        i = j + 1
+    return out
+
+
+def typedef_attributes(text):
+    """{typedef name: [attribute, ...]} for every typedef that carries one."""
+    res = {}
+    for st in _statements(text):
+        found = ATTR_RE.findall(st)
+        if not found:
+            continue
+        bare = re.sub(r"\{.*\}", "{}", ATTR_RE.sub("", st), flags=re.S)
+        m = re.search(r"(\w+)\s*(\[[^\]]*\]\s*)*;\s*$", bare)
+        if m:
+            res[m.group(1)] = found
+    return res
+
+
+def reattach(attrs_path, c_path):
+    """Put recorded typedef attributes back into a permuter candidate."""
+    import json
+    attrs = json.load(open(attrs_path))
+    if not attrs:
+        return
+    text = open(c_path).read()
+    out, last = [], 0
+    for st in _statements(text):
+        k = text.index(st, last)
+        bare = re.sub(r"\{.*\}", "{}", st, flags=re.S)
+        m = re.search(r"(\w+)\s*(\[[^\]]*\]\s*)*;\s*$", bare)
+        if m and m.group(1) in attrs and "__attribute__" not in st:
+            st2 = st[:-1].rstrip() + " " + " ".join(attrs[m.group(1)]) + ";"
+            out.append(text[last:k] + st2)
+        else:
+            out.append(text[last:k] + st)
+        last = k + len(st)
+    out.append(text[last:])
+    open(c_path, "w").write("".join(out))
+
+
 def main():
+    if len(sys.argv) == 4 and sys.argv[1] == "--reattach":
+        return reattach(sys.argv[2], sys.argv[3])
     t = targets.from_argv()   # --target boot_elf
     GP = t.gp
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -98,6 +160,17 @@ def main():
     if p.returncode:
         sys.exit("preprocessing failed:\n" + p.stderr)
     base = p.stdout
+    # pycparser can't read __attribute__, so base.c is preprocessed with it
+    # defined away. That silently turns `typedef int Q __attribute__((mode(TI)))`
+    # into a plain int and drops aligned(16) on vector structs, so the permuter
+    # would score different code than the real build. Record each typedef's
+    # attributes from an unstripped preprocessing pass; compile.sh puts them back
+    # (tools/permuter_setup.py --reattach) before compiling a candidate.
+    cmd_full = [c for c in cmd if c not in ("-D__attribute__(x)=",)]
+    pf = subprocess.run(cmd_full, capture_output=True, text=True)
+    attrs = typedef_attributes(pf.stdout) if not pf.returncode else {}
+    import json
+    open(os.path.join(d, "attrs.json"), "w").write(json.dumps(attrs, indent=1))
     open(os.path.join(d, "base.c"), "w").write(base)
     open(os.path.join(d, "prelude.c"), "w").write("\n".join(h.strip() for h in hints) + "\n")
 
@@ -152,6 +225,7 @@ OUT="$3"; case "$OUT" in /*) ;; *) OUT="$PWD/$OUT";; esac
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 cat "$DIR/prelude.c" "$IN" > "$TMP/in.c"
 cd {shlex.quote(ROOT)}
+python3 tools/permuter_setup.py --reattach "$DIR/attrs.json" "$TMP/in.c"
 export UYA_TARGET={t.name}
 {q(runner + [gcc, "-S", "-I", "include", "-I", "."] + cc_flags)} -o "$TMP/out.s" "$TMP/in.c"
 python3 tools/asm_filter.py "$TMP/out.s"

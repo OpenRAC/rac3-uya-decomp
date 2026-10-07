@@ -13,7 +13,38 @@ extern void func_003CF340();
 extern void func_003CF2A0();
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003CF048);
+/* localdecomp:start func_003CF048 */
+extern f32 D_001DA6F0[];
+extern s32 D_001DA700[];
+extern f32 D_00225BB0[];
+extern f32 D_00335030[];
+extern void func_0038CEC8();
+void func_003CF048(void) {
+    f32 *v = D_001DA6F0;
+    f32 s = D_00225BB0[0];
+    f32 a, ar1, b, c, r1, r2;
+    b = v[1] * s;
+    a = v[0] * s;
+    r1 = 1.0f / (a - b);
+    ar1 = a * r1;
+    D_001DA700[0] = (s32)(v[0] * 1024.0f);
+    D_001DA700[1] = (s32)(v[1] * 1024.0f);
+    c = v[2] * s;
+    D_001DA700[2] = (s32)(v[2] * 1024.0f);
+    r2 = 1.0f / (b - c);
+    func_0038CEC8(D_00335030, 0x40);
+    D_00335030[13] = b * r2;
+    D_00335030[3] = a;
+    D_00335030[9] = ar1;
+    D_00335030[0] = r1 * 0.5f;
+    D_00335030[1] = -r1;
+    D_00335030[8] = b * r1 * -0.5f;
+    D_00335030[4] = r2 * 0.5f;
+    D_00335030[7] = b;
+    D_00335030[5] = -r2;
+    D_00335030[12] = c * r2 * -0.5f;
+}
+/* localdecomp:end func_003CF048 */
 
 /* localdecomp:start func_003CF190 */
 extern u32 *D_001DA0D0;

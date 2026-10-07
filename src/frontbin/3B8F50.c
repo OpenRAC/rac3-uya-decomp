@@ -416,7 +416,7 @@ extern void func_003B6F28();
 extern void func_003B87B8(s32, s32 *, s32);
 extern s32 func_003B8840(void);
 extern void func_003B8928(s32);
-extern void func_003B9DA8(void);
+extern void func_003B9DA8();
 extern void func_003B9BE8();
 extern void func_003B8E10(void *);
 extern void func_003B8D00(s32);

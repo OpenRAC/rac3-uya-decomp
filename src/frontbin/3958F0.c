@@ -1214,7 +1214,7 @@ LINKER_REMNANT("asm/remnants", func_00397288);
 extern u8 D_0032E3C8[];
 extern u8 D_0032E658[];
 extern s32 func_00399710();
-extern void func_00399A00();
+extern s32 func_00399A00();
 extern void func_00399F40();
 void func_003972A0(u8 *arg) {
     s32 a, b, t, i;

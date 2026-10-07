@@ -1,6 +1,6 @@
 # Matching patterns
 
-What makes SN ee-gcc 2.95.3 produce retail's exact code, collected from the ~1400 frontbin functions matched so far (and boot_elf's). The research behind it (compiler comparisons, how the assemblers were identified) is in [`docs/compiler_matrix_findings.md`](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/compiler_matrix_findings.md).
+What makes SN ee-gcc 2.95.3 produce retail's exact code, collected from the ~1400 frontbin functions matched so far (and boot_elf's). The research behind it (compiler comparisons, how the assemblers were identified) is in [`docs/compiler_matrix_findings.md`](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/compiler_matrix_findings.md).
 
 Every frontbin and boot_elf range already builds with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division`, so `$s` registers saved with `sd` in 8-byte slots and `div` without the trap come out right on their own. The VU0 flag (since 2026-10-07, see [VU0 j-form](#vu0-j-form-one-asm-statement-per-instruction)) also changes ordinary loop code, so measure drafts with it. What varies per function is how globals are declared, split vs no-split addresses, and which assembler runs.
 

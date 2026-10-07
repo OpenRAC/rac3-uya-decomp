@@ -52,11 +52,11 @@ certutil -hashfile boot_elf.elf SHA1        (Windows)
 sha1sum boot_elf.elf                       (Linux/macOS)
 ```
 
-It must be `487975305f8a263c750dfede50391b575ed07835`. It is in `.gitignore` as well. See [`docs/boot_elf.md`](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/boot_elf.md) for how it is laid out.
+It must be `487975305f8a263c750dfede50391b575ed07835`. It is in `.gitignore` as well. See [`docs/boot_elf.md`](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/boot_elf.md) for how it is laid out.
 
 ### Your own i5bootn.elf
 
-`i5bootn.elf` is the bootstrap launcher the disc starts first. It is in the unpacked disc's `files` folder. Put it in the repo root and check it the same way: the sha1 must be `71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f`. It is in `.gitignore` too. See [`docs/i5bootn.md`](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/i5bootn.md).
+`i5bootn.elf` is the bootstrap launcher the disc starts first. It is in the unpacked disc's `files` folder. Put it in the repo root and check it the same way: the sha1 must be `71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f`. It is in `.gitignore` too. See [`docs/i5bootn.md`](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/i5bootn.md).
 
 ## 3. Python
 

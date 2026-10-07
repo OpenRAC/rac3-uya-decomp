@@ -105,6 +105,7 @@ TARGETS = {
         splat_src="src",
         # data segments holding switch jump tables: {segment: unit that uses them}
         jtbl_segments={"data": "text"},
+        base_flags="-O2 -G8 -fopt-stack -mno-check-zero-division",
         label="frontbin (front end)",
     ),
     # boot_elf.elf: the engine core (core.text) plus a front-end overlay
@@ -147,7 +148,49 @@ TARGETS = {
         # other read-only data (strings, constants), so splitting it means giving
         # every piece to its file. Needed once a core switch function becomes C.
         jtbl_segments={"data": "text"},
+        base_flags="-O2 -G8 -fopt-stack -mno-check-zero-division",
         label="boot_elf (engine core + boot front end)",
+    ),
+    # i5bootn.elf: the bootstrap launcher the disc boots first. Its startup code,
+    # a small loader and Sony's libkernl; .rodata is mostly the payload it loads.
+    # Nothing touches $gp (gp 0: no small data), so its code was built with -G0.
+    "i5bootn": Target(
+        "i5bootn",
+        elf="i5bootn.elf",
+        sha1="71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f",
+        yaml="i5bootn.splat.yaml",
+        ld="linker_scripts/i5bootn.ld",
+        build_dir="build/i5bootn",
+        bin_name="i5bootn.bin",
+        files="targets/i5bootn/src_files.txt",
+        parts="targets/i5bootn/text_parts.txt",
+        divs_nops="targets/i5bootn/divs_nops.txt",
+        sq_ra_funcs="targets/i5bootn/sq_ra_funcs.txt",
+        localdecomp_flags="targets/i5bootn/localdecomp_flags.txt",
+        symbol_addrs="targets/i5bootn/symbol_addrs.txt",
+        symbols_resolved="targets/i5bootn/symbol_addrs_resolved.txt",
+        asm_root="asm/i5bootn",
+        handwritten="asm/i5bootn/handwritten",
+        remnants="asm/i5bootn/remnants",
+        gp=0,
+        # flags tools/bootstrap_target.py gives a new file (estimates until C matches)
+        base_flags="-O2 -G0 -fopt-stack -mno-check-zero-division",
+        units=[Unit("text", 0x800000, 0x804FD8, "src/i5bootn", "asm/i5bootn/nonmatchings/text", ".text", objdir="i5bootn")],
+        objdiff_units={"text": "i5bootn/src/"},
+        objdiff_dirs={"text": "i5bootn"},
+        objdiff_categories={"text": ["executables", "i5bootn"]},
+        objdiff_replaces=["exes/i5bootn"],
+        # 0x0..0x1000: ELF and program headers; 0xC59C4..: .reginfo, .shstrtab and
+        # the section header table
+        raw_blobs=[("header", 0x0, 0x1000), ("trailer", 0xC59C4, 0xC5B88)],
+        splat_src="src/i5bootn",
+        # .rodata starts with the code's read-only data (one jump table) and then
+        # holds the payload
+        jtbl_segments={"rodata": "text"},
+        # flat binary from tools/elf2bin.py: SN's ee-objcopy corrupts 21 bytes of
+        # this file's section-name table (see tools/elf2bin.py)
+        flatten="elf2bin",
+        label="i5bootn (bootstrap launcher)",
     ),
 }
 
@@ -161,9 +204,36 @@ def get(name=None):
     return TARGETS[name]
 
 
-def from_argv(argv=None):
+def is_set_up(t):
+    """True when the target's retail ELF and asm folders are in the repo
+    (tools/setup_asm.py --target NAME has been run)."""
+    return os.path.exists(t.path("elf")) and all(os.path.isdir(os.path.join(ROOT, u.asm_dir)) for u in t.units)
+
+
+def run_for_all(argv, elf_only=False):
+    """`--target all`: run this same command once per target that is set up and
+    exit with the worst exit code. Targets that aren't set up are skipped (with
+    elf_only, only the retail ELF has to be there: setup_asm.py makes the rest)."""
+    import subprocess
+    worst = 0
+    for t in TARGETS.values():
+        print("=== %s ===" % t.name, flush=True)
+        if not (os.path.exists(t.path("elf")) if elf_only else is_set_up(t)):
+            print("skipped: %s or its asm/ folder is missing (python tools/setup_asm.py --target %s)"
+                  % (t.elf, t.name), flush=True)
+            continue
+        env = dict(os.environ, UYA_TARGET=t.name)
+        r = subprocess.run([sys.executable, argv[0], "--target", t.name] + argv[1:], env=env)
+        worst = max(worst, r.returncode)
+    sys.exit(worst)
+
+
+def from_argv(argv=None, allow_all=False):
     """Take `--target NAME` / `--target=NAME` out of argv (sys.argv by default),
-    set UYA_TARGET for any tool this one runs, and return the Target."""
+    set UYA_TARGET for any tool this one runs, and return the Target.
+
+    With allow_all, `--target all` reruns the tool once per target (run_for_all)
+    and doesn't return; allow_all="elf" only needs each target's ELF."""
     argv = sys.argv if argv is None else argv
     name = None
     i = 1
@@ -178,6 +248,10 @@ def from_argv(argv=None):
             del argv[i]
             continue
         i += 1
+    if name == "all":
+        if not allow_all:
+            sys.exit("--target all isn't supported by this tool; name one of: %s" % ", ".join(TARGETS))
+        run_for_all(argv, elf_only=(allow_all == "elf"))
     t = get(name)
     os.environ["UYA_TARGET"] = t.name
     return t

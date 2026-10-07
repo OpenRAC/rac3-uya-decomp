@@ -78,6 +78,10 @@ another flag set). Things to know:
   file's strings and constants, so splitting it means giving every piece to
   its file. That is needed before a core function with a `switch` can become
   C. Until then those stay INCLUDE_ASM.
+- 43 core functions end in a sibling call (`j func_...` after the epilogue),
+  which SN ee-gcc 2.95.3 never emits: at least those parts of the core were
+  built with a later Sony compiler. `tools/triage.py` lists them as `sibcall`;
+  see Matching-Patterns, "Code from another compiler".
 
 ## Seeding from frontbin
 

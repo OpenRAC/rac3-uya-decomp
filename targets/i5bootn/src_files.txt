@@ -1,0 +1,7 @@
+# i5bootn source files in link order: path and the address of its first function.
+# See tools/bootstrap_target.py for where the boundaries come from.
+src/i5bootn/800000.c 00800000
+src/i5bootn/800160.c 00800160
+src/i5bootn/800488.c 00800488
+src/i5bootn/800800.c 00800800
+src/i5bootn/8010A8.c 008010A8

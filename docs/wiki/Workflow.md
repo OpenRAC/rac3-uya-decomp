@@ -23,6 +23,8 @@ Tell others what you're working on (open a draft PR early) so two people don't m
 
 **boot_elf** works the same way: its functions are `INCLUDE_ASM("asm/boot_elf/nonmatchings/core", ...)` (the engine core, `src/boot_elf/core/`) and `INCLUDE_ASM("asm/boot_elf/nonmatchings/text", ...)` (the front end, `src/boot_elf/text/`), its file list and flags are in `targets/boot_elf/`, and every tool takes `--target boot_elf`. In localdecomp, pick it in the dropdown above the function list. Its front end is frontbin's code at other addresses: when you match a frontbin function, `tools/seed_boot_elf.py` carries it over (see [Tools](Tools#seed_boot_elfpy)). Core functions with a `switch` can't be C yet (`core.rdata` isn't split; see `docs/boot_elf.md`).
 
+**i5bootn** (the bootstrap launcher, `src/i5bootn/`, `--target i5bootn`) is set up the same way, but its compiled code looks like a later Sony compiler's (sibling calls, 16-byte save slots), so expect near misses there until that compiler is in the toolchain. `triage.py` puts the clearest cases in its `sibcall` bucket. See `docs/i5bootn.md`.
+
 ## 2. Read the assembly
 
 - The calling convention is EABI: integer args in `$a0-$a3, $t0-$t3` (`$4-$11`), float args in `$f12-$f19`, return in `$v0` or `$f0`.

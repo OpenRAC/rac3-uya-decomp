@@ -197,7 +197,7 @@ def refresh_one(rel, files=None, root=sf.ROOT):
 
 def main():
     import targets
-    targets.from_argv()   # --target boot_elf: that target's file list
+    targets.from_argv(allow_all=True)   # --target boot_elf: that target's file list
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--from", dest="src", help="the old single text.c to split")
     ap.add_argument("--boundaries", default=sf.FILES_LIST, help="file list (path and start address per line)")

@@ -9,6 +9,7 @@ and reuses the function's existing `extern` prototype from the sources when
 there is one.
 
     python tools/gen_asm_func.py scratch func_003886B0 func_00388B40 ...
+    python tools/gen_asm_func.py --target boot_elf scratch func_00117000
     NOREORDER=1 python tools/gen_asm_func.py scratch func_X   # see below
 
 Then test each file with tools/try_func.py, and also with `--as ps2as`:
@@ -29,6 +30,8 @@ import os.path
 S=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/'
 import sys as _sys, os as _os
 _sys.path.insert(0, _os.path.join(S, 'tools'))
+import targets
+T=targets.from_argv()   # --target boot_elf: that target's sources and asm
 import srcfiles
 text=srcfiles.read_all(S.rstrip('/'))
 RN=['zero','at','v0','v1','a0','a1','a2','a3','t0','t1','t2','t3','t4','t5','t6','t7','s0','s1','s2','s3','s4','s5','s6','s7','t8','t9','k0','k1','gp','sp','fp','ra']
@@ -41,7 +44,7 @@ def dec(w):
     if op==0x1F: return 'sq $%d, %d($%d)'%(rt,imm,rs)
     return None
 def gen(n):
-    s=open(S+'asm/nonmatchings/text/%s.s'%n).read()
+    s=open(os.path.join(S, T.unit_for(int(n[5:],16)).asm_dir, n+'.s')).read()
     body=s.split('glabel %s'%n)[1].split('endlabel')[0]
     lines=[]
     for l in body.splitlines():

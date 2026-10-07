@@ -7,6 +7,8 @@ therefore has no asm/ at all and `make` stops with
 
     python tools/setup_asm.py                    # frontbin.elf  -> asm/
     python tools/setup_asm.py --target boot_elf  # boot_elf.elf  -> asm/boot_elf/
+    python tools/setup_asm.py --target i5bootn   # i5bootn.elf   -> asm/i5bootn/
+    python tools/setup_asm.py --target all       # every target whose ELF is in the repo root
 
 then build (`make` on Windows, `python3 tools/build.py` on Linux/macOS). Re-run it
 after pulling if the build says an asm/ file is missing; it is safe to repeat.
@@ -182,7 +184,7 @@ def fix_alignment(t):
 
 
 def main():
-    t = targets.from_argv()
+    t = targets.from_argv(allow_all="elf")
     elf = t.path("elf")
     if not os.path.exists(elf):
         sys.exit("%s not found in the repo root (see docs/wiki/Setup.md, step 2)" % t.elf)

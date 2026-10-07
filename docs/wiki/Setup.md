@@ -1,6 +1,6 @@
 # Setup
 
-You need three things the repo can't ship: the compiler toolchain, the retail `frontbin.elf` and `boot_elf.elf`, and a few Python packages. Windows is the primary platform. Linux and macOS work through [wibo](https://github.com/decompals/wibo) (see the end of this page).
+You need three things the repo can't ship: the compiler toolchain, the retail `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf`, and a few Python packages. Windows is the primary platform. Linux and macOS work through [wibo](https://github.com/decompals/wibo) (see the end of this page).
 
 ## 1. Toolchain: SN Systems ee-gcc 2.95.3 v1.36
 
@@ -54,6 +54,10 @@ sha1sum boot_elf.elf                       (Linux/macOS)
 
 It must be `487975305f8a263c750dfede50391b575ed07835`. It is in `.gitignore` as well. See [`docs/boot_elf.md`](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/boot_elf.md) for how it is laid out.
 
+### Your own i5bootn.elf
+
+`i5bootn.elf` is the bootstrap launcher the disc starts first. It is in the unpacked disc's `files` folder. Put it in the repo root and check it the same way: the sha1 must be `71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f`. It is in `.gitignore` too. See [`docs/i5bootn.md`](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/i5bootn.md).
+
 ## 3. Python
 
 - Python 3.9 or newer.
@@ -73,13 +77,16 @@ It runs splat and the assembler fixups, then the same post-processing the projec
 
 You do **not** need `C:\decomp-refs` or `C:\decomp-refs-objdiff` to build or to match functions. Those folders only hold the retail objects that CI and localdecomp's "Full check" use for the objdiff progress report.
 
-Then generate boot_elf's asm the same way (it goes to `asm/boot_elf/`, next to frontbin's):
+Then generate the other executables' asm the same way (it goes to `asm/boot_elf/` and `asm/i5bootn/`, next to frontbin's):
 
 ```
 python tools/setup_asm.py --target boot_elf
+python tools/setup_asm.py --target i5bootn
 ```
 
-If `make` stops with `No rule to make target 'asm/...'` (or `asm/boot_elf/...`), this step is missing or incomplete.
+`python tools/setup_asm.py --target all` does all three in one go.
+
+If `make` stops with `No rule to make target 'asm/...'` (or `asm/boot_elf/...`, `asm/i5bootn/...`), this step is missing or incomplete.
 
 ## 5. First build
 
@@ -89,16 +96,17 @@ From the repo root in PowerShell:
 & "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe"
 ```
 
-`make` builds both executables. The last two lines should be:
+`make` builds every executable. The output should include these three lines, the last one at the end:
 
 ```
 MATCH: build/frontbin.bin sha1 3bc94ee895e4b4af9b5602a229af599c1103b542 (0x218924 bytes)
 MATCH: build/boot_elf/boot_elf.bin sha1 487975305f8a263c750dfede50391b575ed07835 (0x35EE64 bytes)
+MATCH: build/i5bootn/i5bootn.bin sha1 71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f (0xC5B88 bytes)
 ```
 
-`make check-frontbin` and `make check-boot_elf` build just one of them.
+`make check-frontbin`, `make check-boot_elf` and `make check-i5bootn` build just one of them.
 
-If it isn't, check your `frontbin.elf` and `boot_elf.elf` hashes and the toolchain layout before changing anything. If `make` fails right away because an `asm/` file is missing, run step 4 first. After that, the unmodified repo always matches.
+If one doesn't match, check that ELF's hash and the toolchain layout before changing anything. If `make` fails right away because an `asm/` file is missing, run step 4 first. After that, the unmodified repo always matches.
 
 ## 6. localdecomp
 
@@ -108,7 +116,7 @@ localdecomp is the project's local, decomp.me-style web editor. It builds one fu
 python localdecomp/server.py --project . --no-git-sync
 ```
 
-Then open http://127.0.0.1:8477. See [Workflow](Workflow) for how to use it. The dropdown at the top of the function list picks the executable (frontbin or boot_elf); an executable whose ELF or `asm/` folder is missing is listed as "not set up".
+Then open http://127.0.0.1:8477. See [Workflow](Workflow) for how to use it. The dropdown at the top of the function list picks the executable (frontbin, boot_elf or i5bootn); an executable whose ELF or `asm/` folder is missing is listed as "not set up".
 
 Options you might need:
 
@@ -159,6 +167,6 @@ The compiler and binutils are Windows executables. [wibo](https://github.com/dec
 
 1. Copy the toolchain folder over with the same layout.
 2. Test a function: `export UYA_TOOLCHAIN=~/sn UYA_RUNNER=~/bin/wibo`, then `python3 tools/try_func.py some.c`.
-3. Full build: `python3 tools/build.py` for frontbin and `python3 tools/build.py --target boot_elf` for boot_elf. They run the same steps as the Makefile and end with the same `MATCH` line.
+3. Full build: `python3 tools/build.py --target all` (or one `--target`). It runs the same steps as the Makefile and ends each target with the same `MATCH` line.
 
 localdecomp's `server.py` assumes Windows paths and executables. On Linux, use `tools/try_func.py` for matching.

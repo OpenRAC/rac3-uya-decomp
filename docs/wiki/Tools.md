@@ -2,7 +2,7 @@
 
 Every script in `tools/`, plus localdecomp and the Makefile, and what each is for. Run the Python tools from anywhere: they find the repo root themselves. Install their dependencies once with `pip install -r tools/requirements.txt`.
 
-**Two executables.** The repo builds `frontbin.elf` and `boot_elf.elf`. Every tool works on frontbin unless you pass `--target boot_elf` (or set `UYA_TARGET=boot_elf`): `setup_asm.py`, `build.py`, `build_text.py`, `try_func.py`, `try_in_context.py`, `triage.py`, `pr_check.py`, `split_text.py`, `gen_divs_nops.py`, `migrate_asm_sources.py`, `split_remnant_prefix.py`, `trailing_padding.py` and `check_match.py`. `tools/targets.py` lists each target's ELF, sections, source folders and tables (frontbin's are in `tools/`, boot_elf's in `targets/boot_elf/`). See [`docs/boot_elf.md`](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/boot_elf.md).
+**Three executables.** The repo builds `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf`. Every tool works on frontbin unless you pass `--target boot_elf` / `--target i5bootn` (or set `UYA_TARGET`): `setup_asm.py`, `build.py`, `build_text.py`, `try_func.py`, `try_in_context.py`, `triage.py`, `pr_check.py`, `split_text.py`, `gen_divs_nops.py`, `migrate_asm_sources.py`, `split_remnant_prefix.py`, `trailing_padding.py`, `check_match.py`, `permuter_setup.py` and `gen_asm_func.py`. `setup_asm.py`, `build.py`, `pr_check.py`, `triage.py`, `split_text.py`, `gen_divs_nops.py` and `migrate_asm_sources.py` also take `--target all` (once per target that is set up; fails if any run fails). `tools/targets.py` lists each target's ELF, sections, source folders and tables (frontbin's are in `tools/`, the others' in `targets/<target>/`). See [`docs/targets.md`](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/targets.md), which also covers adding a target.
 
 ## Which tool do I need?
 
@@ -121,6 +121,7 @@ Sorts every remaining `INCLUDE_ASM` function into one bucket:
 | Bucket | Meaning |
 |---|---|
 | `plain` | ordinary C |
+| `sibcall` | ends in a sibling call (`j func_` after the epilogue): a later compiler than ours built it (boot_elf's engine core, i5bootn); not matchable until that compiler is in the toolchain |
 | `switch` | jump tables |
 | `vu0` | VU0 inline asm |
 | `mmi` | 128-bit EE instructions |
@@ -130,6 +131,8 @@ Sorts every remaining `INCLUDE_ASM` function into one bucket:
 ```
 python tools/triage.py                                  # summary by bucket
 python tools/triage.py --tsv docs/remaining_functions.tsv   # full list with sizes
+python tools/triage.py --target boot_elf --unit core        # another target, one code section
+python tools/triage.py --target all                     # one summary per target
 ```
 
 Start with `plain`, smallest first. `docs/remaining_functions.tsv` is its saved output.
@@ -153,6 +156,7 @@ Catches the mistakes that break the full build, and names the line to fix:
 ```
 python tools/pr_check.py
 python tools/pr_check.py --obj build/src/text.c.o      # also check the built object
+python tools/pr_check.py --target all                   # every target
 ```
 
 It also prints progress: C functions, `ASM_FUNC`, `LINKER_REMNANT`, remaining `INCLUDE_ASM`. Run it before every PR, then `make`.
@@ -166,7 +170,8 @@ It also prints progress: C functions, `ASM_FUNC`, `LINKER_REMNANT`, remaining `I
 On Windows, use SN's `make.exe`:
 
 ```
-& "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe"          # build and check: prints MATCH
+& "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe"          # build and check every target: one MATCH each
+& "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe" check-i5bootn   # one target (check-frontbin, check-boot_elf)
 & "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe" objdiff  # also build the objdiff/decomp.dev objects
 & "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe" clean
 ```
@@ -175,6 +180,7 @@ On Linux or macOS, `tools/build.py` runs the same steps through wibo:
 
 ```
 python3 tools/build.py --toolchain ~/sn --runner ~/bin/wibo
+python3 tools/build.py --target all --toolchain ~/sn --runner ~/bin/wibo
 ```
 
 Both do the same four steps:
@@ -201,6 +207,14 @@ The opt-in build for the level-code C in `src/levels/common/` (listed in `tools/
 ### gen_objdiff_units.py
 
 Rewrites the code units in `objdiff.json` for every target (one unit per source file: `frontbin/src/<file>`, `boot_elf/core/<file>`, `boot_elf/text/<file>`). Run it after adding or renaming a file.
+
+### bootstrap_target.py
+
+Makes a new target's source tree from its ELF, once the target is in `tools/targets.py` with its splat config and linker script: finds the functions with splat, classifies them (crt0, hand-written, remnant, compiled), estimates the source files and flags, writes `src/<target>/` and `targets/<target>/`, and runs `setup_asm.py`. i5bootn was set up with it (`python tools/bootstrap_target.py --target i5bootn`). It refuses to run once the tree has C. Steps for a new target are in `docs/targets.md`.
+
+### elf2bin.py
+
+`objcopy -O binary` in Python: each loadable segment's bytes at its load address. i5bootn's build uses it because SN's ee-objcopy corrupts 21 bytes of that file's section-name table (`flatten="elf2bin"` in `tools/targets.py`). It gives the same output as ee-objcopy for frontbin and boot_elf.
 
 ### seed_boot_elf.py
 

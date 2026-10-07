@@ -14,6 +14,7 @@ toolchain through wibo (https://github.com/decompals/wibo):
 
     python3 tools/build.py --toolchain ~/sn --runner ~/bin/wibo
     python3 tools/build.py --target boot_elf --toolchain ~/sn --runner ~/bin/wibo
+    python3 tools/build.py --target all --toolchain ~/sn --runner ~/bin/wibo
 
 The toolchain folder must have the Windows layout (bin/ee-gcc2953.exe,
 bin/ee-as.exe, bin/ee-ld.exe, bin/ee-objcopy.exe, ee/bin/Ps2EeAs.exe).
@@ -36,7 +37,7 @@ def run(cmd, **kw):
 
 
 def main():
-    t = targets.from_argv()
+    t = targets.from_argv(allow_all=True)
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN"), required="UYA_TOOLCHAIN" not in os.environ)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER", "wibo"))
@@ -83,7 +84,10 @@ def main():
     elf = os.path.join(t.build_dir, t.name + ".elf")
     binf = os.path.join(t.build_dir, t.bin_name)
     run(exe("ee-ld.exe") + ["-T", t.ld, "-o", elf])
-    run(exe("ee-objcopy.exe") + ["-O", "binary", elf, binf])
+    if getattr(t, "flatten", "objcopy") == "elf2bin":
+        run([sys.executable, "tools/elf2bin.py", elf, binf])
+    else:
+        run(exe("ee-objcopy.exe") + ["-O", "binary", elf, binf])
     run([sys.executable, "tools/check_match.py", "--target", t.name, binf, t.elf, t.yaml])
 
 

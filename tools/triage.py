@@ -3,8 +3,10 @@
 
     python tools/triage.py                 # summary
     python tools/triage.py --tsv docs/remaining_functions.tsv
+    python tools/triage.py --target boot_elf [--unit core]
+    python tools/triage.py --target all    # every target, one summary each
 
-Reads only the sources in src/frontbin/ and asm/nonmatchings/text/*.s. Each remaining function
+Reads only the target's sources and its asm (tools/targets.py). Each remaining function
 gets one bucket, the first that applies:
 
   remnant      Only [instruction, nop] pairs and no return: the last 8 bytes of
@@ -16,6 +18,12 @@ gets one bucket, the first that applies:
                they no longer show up here.
   odd          No return and not a remnant: probably a bad split. Fix the
                function boundaries before trying C.
+  sibcall      Ends in a sibling call: `j func_...` after the epilogue, with the
+               stack restore in the delay slot or the $ra reload just before.
+               SN ee-gcc 2.95.3 never emits that (it calls with jal and returns),
+               so these were built by a later compiler (Sony 2.96 or 3.x, not in
+               the toolchain yet). Seen in boot_elf's engine core and i5bootn;
+               frontbin has none.
   switch       Uses a jump table. Works in C since tools/migrate_jtbls.py;
                delete the INCLUDE_RODATA line(s) with the INCLUDE_ASM.
   vu0          VU0 macro instructions (lqc2, vadd, qmtc2...). Needs inline asm
@@ -105,6 +113,13 @@ def classify(name):
             return "handwritten", size
     if not has_return:
         return "odd", size
+    for k, (w, o, operands) in enumerate(ins):
+        if o == "j" and "func_" in operands:
+            nxt = ins[k + 1] if k + 1 < len(ins) else (0, "", "")
+            delay_restore = nxt[1] == "addiu" and re.match(r"\$sp, \$sp, 0x", nxt[2])
+            ra_reload = any(p[1] in ("ld", "lw", "lq") and p[2].startswith("$31,") for p in ins[max(0, k - 4):k])
+            if delay_restore or ra_reload:
+                return "sibcall", size
     if "jtbl_" in s:
         return "switch", size
     if any(VU.match(o) for o in ops):
@@ -122,7 +137,7 @@ def classify(name):
 
 
 def main():
-    t = targets.from_argv()   # --target boot_elf
+    t = targets.from_argv(allow_all=True)   # --target boot_elf
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--tsv", help="write name, address, size, bucket to this file")
     ap.add_argument("--unit", help="only this code section (boot_elf: core or text)")
@@ -137,7 +152,7 @@ def main():
     for _, b, sz in rows:
         count[b] += 1
         size[b] += sz
-    order = ["plain", "switch", "vu0", "mmi", "sys", "float-nop", "odd", "handwritten", "remnant"]
+    order = ["plain", "sibcall", "switch", "vu0", "mmi", "sys", "float-nop", "odd", "handwritten", "remnant"]
     print(f"{'bucket':<12}{'functions':>10}{'bytes':>10}")
     for b in order:
         if count[b]:

@@ -297,3 +297,7 @@ The full breakdown and plan are in `docs/full_match_roadmap.md`. The findings in
 - **`try_func.py` gave false MATCHes on swapped `$gp` stores.** It masked every relocated field, and two stores through `$gp` differ only in their relocated offsets. It now fills relocations in with the symbols' real addresses (symbol_addrs_resolved.txt, or the address in a D_/func_ name) and compares them in full; only section-relative relocations are still masked. Rechecked against all 617 previously matching blocks: no false failures. This, not "context in the full build", was why func_003AEDC8 and func_003AED08 needed their stores reordered.
 - **VU0 leaves ending `mtc1 $x, $f0` in the delay slot are hand-written.** Even with gcc emitting the `mtc1` itself (a union return from an asm output bound to `$4`), neither gcc's delay-slot filler, ee-as, Ps2EeAs nor ee/bin/as.exe puts it in the `jr $ra` slot. The originals wrote the whole function, `jr` included, in assembly.
 - **Hand-written functions and linker remnants moved out of INCLUDE_ASM** (`tools/migrate_asm_sources.py`): 100 to `asm/handwritten/` via `ASM_FUNC`, 203 to `asm/remnants/` via `LINKER_REMNANT`. Same bytes; they stay in the objdiff base build, so they count as done.
+
+## i5bootn
+
+See [compiler_matrix_i5bootn.md](compiler_matrix_i5bootn.md): i5bootn mixes Sony ee-gcc 2.9-ee-991111-01 (libgcc and libc helpers, all 26 libgcc functions rebuilt byte for byte), 2.96-ee-001003-1 (newlib `exit`) and SN 2.95.3 (its own code).

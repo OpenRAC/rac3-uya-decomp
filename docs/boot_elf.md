@@ -79,9 +79,13 @@ another flag set). Things to know:
   its file. That is needed before a core function with a `switch` can become
   C. Until then those stay INCLUDE_ASM.
 - 43 core functions end in a sibling call (`j func_...` after the epilogue),
-  which SN ee-gcc 2.95.3 never emits: at least those parts of the core were
-  built with a later Sony compiler. `tools/triage.py` lists them as `sibcall`;
-  see Matching-Patterns, "Code from another compiler".
+  which SN ee-gcc 2.95.3 never emits: those parts of the core were built with
+  another compiler, most likely Sony's 2.9-ee-991111 (the library compiler
+  i5bootn's matrix found). `tools/triage.py` lists them as `sibcall`; see
+  Matching-Patterns, "Code from another compiler".
+- 56 core functions (0x4568 bytes) are byte-identical to objects in the
+  prebuilt `libgcc.a` (C++ exception runtime, soft-float, 64-bit division);
+  see [`docs/compiler_matrix_i5bootn.md`](compiler_matrix_i5bootn.md).
 
 ## Seeding from frontbin
 

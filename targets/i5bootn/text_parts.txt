@@ -4,5 +4,7 @@
 0x00800000     -O2 -G0 -fopt-stack -mno-check-zero-division
 0x00800160     -O2 -G0 -fopt-stack -mno-check-zero-division
 0x00800488     -O2 -G0 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x00800698     -O0 -G0 -mno-check-zero-division   # single-function override: main at -O0, no -fopt-stack (sq $fp frame)
+0x008006E0     -O2 -G0 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x00800800     -O2 -G0 -fopt-stack -mno-check-zero-division
 0x008010A8     -O2 -G0 -fopt-stack -mno-check-zero-division

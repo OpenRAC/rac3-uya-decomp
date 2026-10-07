@@ -21,8 +21,9 @@ gets one bucket, the first that applies:
   sibcall      Ends in a sibling call: `j func_...` after the epilogue, with the
                stack restore in the delay slot or the $ra reload just before.
                SN ee-gcc 2.95.3 never emits that (it calls with jal and returns),
-               so these were built by a later compiler (Sony 2.96 or 3.x, not in
-               the toolchain yet). Seen in boot_elf's engine core and i5bootn;
+               so another compiler built these: in practice Sony's 2.9-ee-991111
+               (library code; docs/compiler_matrix_i5bootn.md), which isn't in the
+               toolchain yet. Seen in boot_elf's engine core and i5bootn;
                frontbin has none.
   switch       Uses a jump table. Works in C since tools/migrate_jtbls.py;
                delete the INCLUDE_RODATA line(s) with the INCLUDE_ASM.

@@ -19,6 +19,7 @@ extern void func_0038DC08(s32, s32, s32, s32);
 extern void func_0038E030(s32, s32);
 extern void func_0038DEB0(void);
 extern void func_00391FD8(void);
+extern void func_00389908(void);
 extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
@@ -239,7 +240,70 @@ s32 func_00389B98(u8 *str, s32 len, f32 scale) {
 }
 /* localdecomp:end func_00389B98 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00389D18);
+/* localdecomp:start func_00389D18 */
+typedef struct { u32 w0; u32 w4; } E_389D18;
+typedef struct { s16 ch; s8 adj; u8 end; } K_389D18;
+s32 func_00389D18(u8 *str, s32 len, f32 scale) {
+    s32 idx[2];
+    f32 q = scale * 0.25f;
+    s32 i;
+    s32 ok;
+    f32 kern;
+    f32 x;
+    f32 first;
+    idx[0] = 0;
+    idx[1] = 0;
+    func_003898C0(str, 0, &idx[0]);
+    kern = 0.0f;
+    first = (f32)(-(s32)(((E_389D18 *)D_001D55C4[0])[idx[0]].w0 >> 25)) * q;
+    x = 0.0f;
+    ok = 1;
+    i = 0;
+    for (; ok && i != len; i++) {
+        if (str[i] == 0) {
+            ok = 0;
+        } else {
+            E_389D18 *e;
+            f32 w, b, c, adv;
+            i += func_003898C0(str, i, &idx[0]);
+            e = &((E_389D18 *)D_001D55C4[0])[idx[0]];
+            w = (f32)((e->w4 >> 23) & 0x3F) * scale;
+            b = (f32)(s32)(((e->w0 >> 25) + 2) & 0xFC) * q;
+            c = (f32)(((e->w4 >> 29) + 2) & 0xFC);
+            x += w - b;
+            adv = (kern + c) * q;
+            if (i != len - 1) {
+                s32 nx;
+                func_003898C0(str, i + 1, &idx[1]);
+                nx = idx[1];
+                if (nx >= 0x10) {
+                    f32 t;
+                    if (e->w0 & 0xFFF0) {
+                        K_389D18 *k = (K_389D18 *)((u8 *)D_001D55C8 + ((e->w0 >> 2) & 0x3FFC));
+                        s32 r;
+                        t = x + adv;
+                        if (k != 0) {
+                            s32 j;
+                            for (j = 0; k[j].end == 0; j++) {
+                                if (k[j].ch == nx) { r = k[j].adj; goto done; }
+                            }
+                        }
+                        r = 0;
+                    done:
+                        kern = (f32)r;
+                        kern = kern * q;
+                    } else {
+                        t = x + adv;
+                        kern = 0.0f;
+                    }
+                    x = t;
+                }
+            }
+        }
+    }
+    return (s32)(x - first);
+}
+/* localdecomp:end func_00389D18 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_00389FB8);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003180C0);

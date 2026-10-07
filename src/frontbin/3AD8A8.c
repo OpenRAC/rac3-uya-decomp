@@ -550,8 +550,135 @@ void func_003AE430(void) {
 }
 /* localdecomp:end func_003AE430 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AE438);
-INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_003186C0);
+/* localdecomp:start func_003AE438 */
+extern s32 D_001D4CE8_003AE438;
+extern u8 D_001DA020_003AE438;
+extern u8 D_001D5BDC_003AE438;
+extern u8 D_001D5BDD_003AE438;
+extern u8 D_001D88A0[];
+extern u8 D_0023C8A0[];
+extern u8 D_001D88A8[];
+extern u8 D_001D88B8[];
+extern u8 D_001D88D0[];
+extern s32 func_0037DF98();
+extern void func_11B2E8();
+extern void func_00389FB8_003AE438(f32, f32, f32, unsigned long, s32, s32, f32, s32, s32, unsigned long, f32, f32);
+void func_003AE438(void) {
+    s32 title = (s32)D_001D88A0;
+    s32 left = 0;
+    s32 show = 1;
+    s32 right = 0;
+    switch (D_001D4CE8_003AE438) {
+    case 8:
+        left = func_0037DF98(0x8E3);
+        right = func_0037DF98(0x8DF);
+        title = func_0037DF98(0x1A3);
+        break;
+    case 14:
+        if (D_001DA020_003AE438 != 0) {
+            title = func_0037DF98(0x195);
+            left = func_0037DF98(0x197);
+            break;
+        }
+    case 15:
+        left = func_0037DF98(0x8E3);
+        right = func_0037DF98(0x8DF);
+        title = func_0037DF98(0x19F);
+        break;
+    case 12: case 13: case 31: case 32:
+        title = func_0037DF98(0x1AF);
+        break;
+    case 9: case 10:
+        title = func_0037DF98(0x1AD);
+        break;
+    case 16: case 17:
+        title = func_0037DF98(0x1AE);
+        break;
+    case 25: case 29:
+        title = func_0037DF98(0x1AB);
+        break;
+    case 23: case 30:
+        title = func_0037DF98(0x1AC);
+        break;
+    case 19:
+        title = func_0037DF98(0x1B0);
+        left = func_0037DF98(0x8DE);
+        break;
+    case 20:
+        title = func_0037DF98(0x1B2);
+        left = func_0037DF98(0x8DE);
+        break;
+    case 3:
+        title = func_0037DF98(0x194);
+        break;
+    case 21:
+        if (D_001DA020_003AE438 != 0) {
+            title = func_0037DF98(0x195);
+            left = func_0037DF98(0x197);
+            break;
+        }
+        if (D_001D5BDC_003AE438 != 0) {
+            func_11B2E8(D_0023C8A0, D_001D88A8, D_001D88B8, 1, 1, func_0037DF98(0x19A));
+            title = (s32)D_0023C8A0;
+            left = func_0037DF98(0x8E2);
+            right = func_0037DF98(0x8DF);
+            break;
+        }
+        func_11B2E8(D_0023C8A0, D_001D88A8, D_001D88B8, 1, 1, func_0037DF98(0x19A));
+        title = (s32)D_0023C8A0;
+        left = func_0037DF98(0x8E2);
+        break;
+    case 24:
+        title = func_0037DF98(0x1B3);
+        left = func_0037DF98(0x8DE);
+        break;
+    case 22:
+        title = func_0037DF98(0x1B1);
+        left = func_0037DF98(0x8DE);
+        break;
+    case 27:
+        left = func_0037DF98(0x8E2);
+        right = func_0037DF98(0x8DF);
+        func_11B2E8(D_0023C8A0, D_001D88A8, D_001D88D0, 1, 1, func_0037DF98(0x11E8));
+        title = (s32)D_0023C8A0;
+        break;
+    case 26:
+        left = func_0037DF98(0x8E2);
+        right = func_0037DF98(0x8DF);
+        title = func_0037DF98(0x1A5);
+        break;
+    case 4: case 5: case 6:
+        if (D_001D5BDC_003AE438 != 0 && D_001DA020_003AE438 == 0) {
+            left = func_0037DF98(0x8E2);
+            right = func_0037DF98(0x8DF);
+            title = func_0037DF98(0x19B);
+            break;
+        }
+        if (D_001D5BDD_003AE438 != 0) {
+            left = func_0037DF98(0x8E2);
+            title = func_0037DF98(0x19B);
+            break;
+        }
+        if (D_001DA020_003AE438 == 0) {
+            title = func_0037DF98(0x19D);
+            left = func_0037DF98(0x197);
+            break;
+        }
+    case 7:
+        title = func_0037DF98(0x195);
+        left = func_0037DF98(0x197);
+        break;
+    default:
+        show = 0;
+        break;
+    }
+    if (show) {
+        if (title) func_00389FB8_003AE438((f32)*(s32 *)0x1D4BC8, (f32)*(s32 *)0x1D4BCC, 1.0f, 0x8066CCFF, title, -1, 1.0f, 1, 0, 0x80000000, 0.0f, 0.0f);
+        if (left) func_00389FB8_003AE438((f32)(*(s32 *)0x1D4BC8 - 100), (f32)(*(s32 *)0x1D4BCC + 70), 1.0f, 0x8066CCFF, left, -1, 1.0f, 1, 0, 0x80000000, 0.0f, 0.0f);
+        if (right) func_00389FB8_003AE438((f32)(*(s32 *)0x1D4BC8 + 100), (f32)(*(s32 *)0x1D4BCC + 70), 1.0f, 0x8066CCFF, right, -1, 1.0f, 1, 0, 0x80000000, 0.0f, 0.0f);
+    }
+}
+/* localdecomp:end func_003AE438 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003AE8A8);
 INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318740);

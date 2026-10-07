@@ -395,11 +395,11 @@ s32 func_003A13B0(s32 a) {
 /* localdecomp:end func_003A13B0 */
 
 /* localdecomp:start func_003A1438 */
-/* PROVISIONAL, VU0 j-constraint form: each VU0 instruction is a separate non-volatile __asm__
-   using the "j" (VU0 register) constraint, which needs -mvu0-use-vf0-vf2 (override in
+/* VU0 j-form: each VU0 instruction is a separate non-volatile __asm__
+   using the "j" (VU0 register) constraint, which needs -mvu0-use-vf0-vf2 (on every line of
    tools/text_parts.txt). With -mvu0-use-vf0-vf31 loop.c hoists and strength-reduces differently
-   (234 diffs). Uses one plain-C volatile read of D.f34. See Matching-Patterns, "VU0 instructions
-   as separate asm statements". */
+   (234 diffs). Uses one plain-C volatile read of D.f34. See Matching-Patterns,
+   "VU0 j-form". */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3A1438;
 typedef struct {
     u8 pad[0x10]; V4_3A1438 f10; u8 pad20[0x40 - 0x20]; u8 f40; u8 f41; u8 pad42[2]; f32 f44;

@@ -21,8 +21,11 @@ import os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import srcfiles  # noqa: E402
-NM = os.path.join(ROOT, "asm", "nonmatchings", "text")
-REM = os.path.join(ROOT, "asm", "remnants")
+import targets  # noqa: E402
+
+
+def NM_for(name):
+    return os.path.join(ROOT, targets.get().unit_for(int(name[5:], 16)).asm_dir)
 INS = re.compile(r'^\s*/\* [0-9A-F]+ ([0-9A-F]{8}) ([0-9A-F]{8}) \*/\s*(.*)$')
 BRANCH = re.compile(r'^(j|jr|jal|jalr|b\w*|bc\d\w*)\s')
 
@@ -57,13 +60,15 @@ def prefix_pairs(ins):
 
 
 def main():
+    t = targets.from_argv()   # --target boot_elf
+    REM = t.path("remnants")
     apply = "--apply" in sys.argv
     text = srcfiles.read_all(ROOT)
     edits = []
-    names = re.findall(r'^INCLUDE_ASM\("asm/nonmatchings/text", (func_[0-9A-F]{8})\);', text, re.M)
+    names = re.findall(r'^INCLUDE_ASM\("[^"]+", (func_[0-9A-F]{8})\);', text, re.M)
     todo = []
     for n in names:
-        p = os.path.join(NM, n + ".s")
+        p = os.path.join(NM_for(n), n + ".s")
         if not os.path.exists(p):
             continue
         lines, ins = parse(p)
@@ -95,16 +100,17 @@ def main():
         fn = (".align 3" + lnl + f"nonmatching {new}, 0x{total - (real - start):X}" + lnl + lnl
               + f"glabel {new}" + lnl + body)
         open(os.path.join(REM, n + ".s"), "w", newline="").write(rem)
-        open(os.path.join(NM, new + ".s"), "w", newline="").write(fn)
-        os.remove(os.path.join(NM, n + ".s"))
+        open(os.path.join(NM_for(n), new + ".s"), "w", newline="").write(fn)
+        os.remove(os.path.join(NM_for(n), n + ".s"))
         edits.append((n, new))
 
     def edit(text):
         nl = "\r\n" if "\r\n" in text else "\n"
         for n, new in edits:
-            text = text.replace(f'INCLUDE_ASM("asm/nonmatchings/text", {n});',
-                                f'LINKER_REMNANT("asm/remnants", {n});{nl}{nl}'
-                                f'INCLUDE_ASM("asm/nonmatchings/text", {new});', 1)
+            folder = targets.get().unit_for(int(n[5:], 16)).asm_dir
+            text = text.replace(f'INCLUDE_ASM("{folder}", {n});',
+                                f'LINKER_REMNANT("{targets.get().remnants}", {n});{nl}{nl}'
+                                f'INCLUDE_ASM("{folder}", {new});', 1)
         return text
 
     srcfiles.transform_all(edit, ROOT)

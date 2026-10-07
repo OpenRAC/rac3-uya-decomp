@@ -23,7 +23,18 @@ import os
 import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FILES_LIST = os.path.join(ROOT, "tools", "src_files.txt")
+import sys  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import targets  # noqa: E402
+
+
+def __getattr__(name):
+    # FILES_LIST is the current target's list (tools/targets.py), looked up when
+    # it is used, so a tool that picks its target from --target / UYA_TARGET
+    # after importing this module still gets the right one.
+    if name == "FILES_LIST":
+        return targets.get().path("files")
+    raise AttributeError(name)
 
 EXT_BEGIN = "/* --- declarations from other files (tools/split_text.py --refresh) --- */"
 EXT_END = "/* --- end of declarations from other files --- */"
@@ -31,8 +42,9 @@ EXT_END = "/* --- end of declarations from other files --- */"
 
 # ---------------------------------------------------------------- file list
 
-def read_file_list(path=FILES_LIST):
-    """[(relative path, start address)] in link order."""
+def read_file_list(path=None):
+    """[(relative path, start address)] in link order (the current target's list by default)."""
+    path = path or targets.get().path("files")
     out = []
     for line in open(path):
         line = line.split("#", 1)[0].strip()

@@ -1,0 +1,134 @@
+#include "common.h"
+
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9AC0[2])(s32);
+extern void func_0038D5C8();
+extern void func_003CF340(void);
+extern void func_003CF2A0(void);
+extern void (*D_00226880[])(s32);
+extern void (*D_00226C80[])(s32);
+extern void (*D_00226E80[])(s32);
+extern void (*D_00226A80[])(s32);
+extern void func_003CF340();
+extern void func_003CF2A0();
+/* --- end of declarations from other files --- */
+
+INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003CF048);
+
+/* localdecomp:start func_003CF190 */
+extern u32 *D_001DA0D0;
+extern u32 *D_001DA70C;
+extern s32 D_001DA714;
+extern s32 D_001D4BB0;
+extern void func_003D0020(void);
+extern s32 func_003D0188(s32);
+extern void func_003A9888(void);
+void func_003CF190(void) {
+    u32 *save = D_001DA0D0;
+    s32 r;
+    D_001DA0D0 += 4;
+    D_001DA70C[0] = 0x20000000;
+    D_001DA70C[1] = (u32)D_001DA0D0;
+    D_001DA70C[2] = 0;
+    D_001DA70C[3] = 0;
+    func_003D0020();
+    r = func_003D0188(D_001D4BB0);
+    func_003A9888();
+    if (D_001DA714 < r) { D_001DA714 = r; }
+    D_001DA0D0[0] = 0x20000000;
+    D_001DA0D0[1] = (u32)(D_001DA70C + 4);
+    D_001DA0D0[2] = 0;
+    D_001DA0D0[3] = 0;
+    D_001DA0D0 += 4;
+    save[0] = 0x20000000;
+    save[1] = (u32)D_001DA0D0;
+    save[2] = 0;
+    save[3] = 0;
+}
+/* localdecomp:end func_003CF190 */
+
+/* localdecomp:start func_003CF2A0 */
+typedef struct {
+    u32 word0;
+    u8 pad4[0x1F];
+    u8 index23;
+    u8 pad24[0xC];
+    u32 word30;
+    u8 pad34[0x1C];
+} Item_003C9AE0;
+
+typedef struct {
+    Item_003C9AE0 *items;
+    s32 count;
+} Group_003C9AE0;
+
+typedef struct {
+    s16 first;
+    s16 second;
+} Pair_003C9AE0;
+
+extern Group_003C9AE0 D_002FD880[];
+extern Pair_003C9AE0 D_002FD580[];
+
+void func_003CF2A0(void) {
+    Group_003C9AE0 *group = D_002FD880;
+
+    if (group->items != 0) {
+        do {
+            Item_003C9AE0 *item = group->items;
+            register s32 loaded_count __asm__("$2") = group->count;
+
+            if (loaded_count > 0) {
+                register s32 count __asm__("$7") = loaded_count;
+                do {
+                    Pair_003C9AE0 *pair = &D_002FD580[item->index23];
+                    s16 value = pair->first;
+
+                    if (value != 0) {
+                        item->word0 = (item->word0 & 0xFFFFC000) | value;
+                    }
+
+                    value = pair->second;
+                    count--;
+                    if (value != 0) {
+                        item->word30 = (item->word30 & 0xFFFFC000) | value;
+                    }
+                    item++;
+                } while (count != 0);
+            }
+            group++;
+        } while (group->items != 0);
+    }
+}
+/* localdecomp:end func_003CF2A0 */
+
+/* localdecomp:start func_003CF340 */
+extern s32 D_001D4BB4;
+extern u8 D_00222480[];
+extern u8 D_002FDC80[];
+extern void func_0038D148(f32 *, void *, f32);
+extern void func_0038D968();
+extern void func_0038D0A8();
+extern void func_11F0A0(s32);
+extern void func_003CF418();
+void func_003CF340(void) {
+    u8 v[0x40];
+    u32 *o = D_001DA0D0;
+    s32 t = D_001D4BB4;
+    D_001DA70C = o;
+    o += 4;
+    D_001D4BB0 = t;
+    D_001DA0D0 = o;
+    func_0038D5C8(v);
+    func_0038D148((f32 *)(v + 0x30), D_00222480, -1024.0f);
+    *(f32 *)(v + 0x3C) = 1.0f;
+    func_0038D968(v, D_00222480 - 0x100, v);
+    func_003A9600(5, (s32)v, 4);
+    func_003A9600(0x14D, (s32)v, 4);
+    func_11F0A0(0);
+    func_003CF418();
+    func_003CF190();
+    func_0038D0A8(D_002FDC80, 0x3000, 0x40);
+}
+/* localdecomp:end func_003CF340 */
+TEXT_PADDING(2);

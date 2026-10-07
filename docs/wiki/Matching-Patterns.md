@@ -143,6 +143,12 @@ extern f32 D_001D950C;           /* 0x1DC8B0 - 0x33A4 */
 
 A few such loads reach below 0x1D5680, into the main executable's small data; declare those the same way. Constants written in the source come out inline (`lui`/`ori`/`mtc1`) and need `@ps2as`, as above.
 
+## boot_elf's engine core
+
+- Some core functions start on a 4-byte boundary. A source file's object starts 8-aligned, so a file can only begin at an 8-aligned function; inside a file gcc places the functions itself.
+- Some core code reloads `$gp` (`lw $gp, %lo(sym)($v0)`): it is library code that switches small-data bases. Leave those as INCLUDE_ASM for now.
+- `core.rdata` isn't split, so a core function with a `switch` (a `jtbl_` in its `.s`) stays INCLUDE_ASM until it is.
+
 ## Switch statements
 
 `switch` works in C. The jump tables used to sit inside the data blob; since `tools/migrate_jtbls.py` they come from the source files, in function order, exactly where retail has them (the start of `.data`). Each asm function with a table has an `INCLUDE_RODATA(...)` line right after its `INCLUDE_ASM`. When you convert the function, delete both lines: gcc's table takes the same place. `pr_check.py` catches a leftover `INCLUDE_RODATA`.

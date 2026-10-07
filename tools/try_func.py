@@ -43,6 +43,8 @@ except ImportError:
     sys.exit("try_func.py needs pyelftools and capstone: pip install -r tools/requirements.txt")
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import targets  # noqa: E402
 DEFAULT_TOOLCHAIN = os.environ.get("UYA_TOOLCHAIN", "C:/tools/eegcc_2.95.3_sn_v1.36")
 FUNC_DEF_RE = re.compile(
     r'^(?!extern|typedef|static inline)[^\n;]*\b(func_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{', re.M)
@@ -65,11 +67,12 @@ def read_table(path, keyed_by_name=False):
 
 def flags_for(addr):
     """Same lookup localdecomp uses: localdecomp_flags.txt, then text_parts.txt."""
-    for name, fl in read_table(os.path.join(ROOT, "tools", "localdecomp_flags.txt"), True):
+    t = targets.get()
+    for name, fl in read_table(t.path("localdecomp_flags"), True):
         if name == "func_%08x" % addr:
             return fl
     best = None
-    for start, fl in read_table(os.path.join(ROOT, "tools", "text_parts.txt")):
+    for start, fl in read_table(t.path("parts")):
         if addr >= start and (best is None or start >= best[0]):
             best = (start, fl)
     return best[1] if best else ["-O2", "-G8"]
@@ -106,7 +109,7 @@ def expand(flags, toolchain):
 class Retail:
     def __init__(self, path):
         if not os.path.exists(path):
-            sys.exit(f"{path} not found. Copy your own retail frontbin.elf to the repo root "
+            sys.exit(f"{path} not found. Copy your own retail {os.path.basename(path)} to the repo root "
                      "(it is gitignored and must never be committed).")
         elf = ELFFile(open(path, "rb"))
         self.segs = [(s["p_vaddr"], s.data()) for s in elf.iter_segments() if s["p_type"] == "PT_LOAD"]
@@ -119,11 +122,14 @@ class Retail:
 
 
 def retail_size(name, fallback):
-    p = os.path.join(ROOT, "asm", "nonmatchings", "text", name + ".s")
-    if os.path.exists(p):
-        m = re.search(r"nonmatching \w+, (0x[0-9A-Fa-f]+)", open(p, errors="ignore").read())
-        if m:
-            return int(m.group(1), 16)
+    t = targets.get()
+    unit = t.unit_for(int(name[5:], 16))
+    for d in ([unit.asm_dir] if unit else []) + [t.handwritten, t.remnants]:
+        p = os.path.join(ROOT, d, name + ".s")
+        if os.path.exists(p):
+            m = re.search(r"nonmatching \w+, (0x[0-9A-Fa-f]+)", open(p, errors="ignore").read())
+            if m:
+                return int(m.group(1), 16)
     return fallback
 
 
@@ -198,7 +204,7 @@ def text_c_context(name, own_src):
     spec = importlib.util.spec_from_file_location("build_text", os.path.join(ROOT, "tools", "build_text.py"))
     bt = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(bt)
-    parts = bt.read_parts(os.path.join(ROOT, "tools", "text_parts.txt"))
+    parts = bt.read_parts(targets.get().path("parts"))
     ctx = bt.function_context(None, parts, name, own_src=own_src)
     return ctx, bt.drop_repeated_typedefs(ctx, own_src)
 
@@ -302,7 +308,7 @@ def symbol_address(name):
     global _ADDRS
     if _ADDRS is None:
         _ADDRS = {}
-        p = os.path.join(ROOT, "symbol_addrs_resolved.txt")
+        p = targets.get().path("symbols_resolved")
         if os.path.exists(p):
             for m in re.finditer(r"^\s*(\w+)\s*=\s*(0x[0-9A-Fa-f]+)", open(p).read(), re.M):
                 _ADDRS[m.group(1)] = int(m.group(2), 16)
@@ -354,7 +360,7 @@ def resolve_relocations(elf, text):
             pending_hi = [h for h in pending_hi if h[1] != sym.name]
             resolved[off] = (ins & 0xFFFF0000) | ((addr + lo) & 0xFFFF)
         elif t == 7:  # R_MIPS_GPREL16
-            resolved[off] = (ins & 0xFFFF0000) | ((addr + sext16(ins & 0xFFFF) - GP) & 0xFFFF)
+            resolved[off] = (ins & 0xFFFF0000) | ((addr + sext16(ins & 0xFFFF) - targets.get().gp) & 0xFFFF)
         else:
             mask[off] = 0
     for hoff, _, _ in pending_hi:  # HI16 without a LO16: fall back to masking
@@ -396,6 +402,7 @@ def diff_object(o_path, names, retail, quiet):
 
 
 def main():
+    t = targets.from_argv()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("file")
     ap.add_argument("names", nargs="*")
@@ -410,7 +417,7 @@ def main():
                     help="compile the file alone, without the declarations its source file (src/frontbin/) puts in front of it")
     ap.add_argument("--toolchain", default=DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
-    ap.add_argument("--retail", default=os.path.join(ROOT, "frontbin.elf"))
+    ap.add_argument("--retail", default=t.path("elf"))
     args = ap.parse_args()
     args.early_extern_sizes = {}
     for symbol, size in args.early_extern_size:

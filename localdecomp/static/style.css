@@ -331,3 +331,22 @@ main {
 .check-lost b, .check-warn { color: #ff8080; }
 .check-list { font-family: Consolas, monospace; font-size: 12px; max-height: 180px; overflow: auto; margin-top: 4px; color: #c8c8cf; }
 .check-log { font-size: 11px; background: #1b1b1f; padding: 8px; overflow: auto; max-height: 240px; white-space: pre-wrap; }
+
+/* the executable picker that heads the function list */
+.target-title {
+  padding: 4px 8px;
+}
+#target-select {
+  width: 100%;
+  background: #18181b;
+  color: #d8d8de;
+  border: 1px solid #38383f;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+#target-select option:disabled {
+  color: #6a6a72;
+}

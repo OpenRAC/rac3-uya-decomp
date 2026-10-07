@@ -12,15 +12,61 @@ const funcSidebar = document.getElementById("func-sidebar");
 
 let currentFunc = null;
 let allFunctions = [];
+// Which splatted executable is open (tools/targets.py). Every request names
+// it; function names repeat between executables (func_00381180 in frontbin
+// and in boot_elf are unrelated functions).
+const targetSelect = document.getElementById("target-select");
+let currentTarget = "frontbin";
+try { currentTarget = localStorage.getItem("localdecomp.target") || "frontbin"; } catch (e) {}
+const lastFuncByTarget = {};
+let lastCheck = null; // last full check result, re-shown for the picked target
 let lastBuildDiff = null; // full diff JSON from the most recent successful /api/build, for export
 
 sidebarToggleBtn.addEventListener("click", () => {
   funcSidebar.classList.toggle("collapsed");
 });
 
+function tq() { return "target=" + encodeURIComponent(currentTarget); }
+
+async function loadTargets() {
+  try {
+    const data = await (await fetch("/api/targets")).json();
+    const list = data.targets || [];
+    targetSelect.innerHTML = list.map((t) =>
+      `<option value="${escapeHtml(t.name)}"${t.available ? "" : " disabled"} title="${escapeHtml(t.reason || t.label)}">` +
+      `${escapeHtml(t.label)}${t.available ? "" : " (not set up)"}</option>`).join("");
+    const ok = list.filter((t) => t.available).map((t) => t.name);
+    if (!ok.includes(currentTarget)) currentTarget = ok[0] || "frontbin";
+  } catch (e) {
+    // an older server without /api/targets: frontbin only
+    currentTarget = "frontbin";
+  }
+  targetSelect.value = currentTarget;
+}
+
+targetSelect.addEventListener("change", async () => {
+  if (currentFunc) lastFuncByTarget[currentTarget] = currentFunc;
+  currentTarget = targetSelect.value;
+  try { localStorage.setItem("localdecomp.target", currentTarget); } catch (e) {}
+  currentFunc = null;
+  allFunctions = [];
+  sidebarList.innerHTML = "";
+  cEditor.value = "";
+  syncHighlight();
+  diffView.innerHTML = '<div class="empty-hint">Pick a function and click Build.</div>';
+  scoreBadge.textContent = "no build yet";
+  scoreBadge.className = "score-badge";
+  lastBuildDiff = null;
+  exportDiffBtn.disabled = true;
+  if (lastCheck) renderCheck(lastCheck);
+  await loadFunctions();
+});
+
 async function loadFunctions() {
-  const res = await fetch("/api/functions");
+  const target = currentTarget;
+  const res = await fetch("/api/functions?" + tq());
   const data = await res.json();
+  if (target !== currentTarget) return; // the picker changed while this loaded
   if (data.error) {
     statusEl.textContent = "Error: " + data.error;
     return;
@@ -29,7 +75,9 @@ async function loadFunctions() {
   renderProgressBar();
   renderSidebar();
   if (!currentFunc && allFunctions.length > 0) {
-    await selectFunction(allFunctions[0].name);
+    const last = lastFuncByTarget[currentTarget];
+    const first = allFunctions.find((f) => f.name === last) || allFunctions[0];
+    await selectFunction(first.name);
   }
 }
 
@@ -159,7 +207,7 @@ function matchPercent(current_score, max_score) {
 async function selectFunction(name) {
   currentFunc = name;
   statusEl.textContent = "Loading " + name + "...";
-  const res = await fetch("/api/function?name=" + encodeURIComponent(name));
+  const res = await fetch("/api/function?" + tq() + "&name=" + encodeURIComponent(name));
   const data = await res.json();
   if (data.error) {
     statusEl.textContent = "Error: " + data.error;
@@ -184,7 +232,7 @@ async function doBuild() {
     const res = await fetch("/api/build", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: currentFunc, c: cEditor.value }),
+      body: JSON.stringify({ target: currentTarget, name: currentFunc, c: cEditor.value }),
     });
     const data = await res.json();
     if (!data.ok) {
@@ -274,7 +322,7 @@ async function doSave() {
     const res = await fetch("/api/save", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: currentFunc, c: cEditor.value }),
+      body: JSON.stringify({ target: currentTarget, name: currentFunc, c: cEditor.value }),
     });
     const data = await res.json();
     if (!data.ok) {
@@ -366,6 +414,7 @@ function buildDiffExportText(name, diffData, cSource) {
 
   const lines = [];
   lines.push(`FUNCTION: ${name}`);
+  lines.push(`EXECUTABLE: ${currentTarget}`);
   lines.push(`MATCH: ${pct}% (current_score=${current_score}, max_score=${max_score})`);
   lines.push("");
   lines.push("=== CURRENT C SOURCE (as last built) ===");
@@ -417,8 +466,9 @@ function downloadTextFile(filename, text) {
 function doExportDiff() {
   if (!currentFunc || !lastBuildDiff) return;
   const text = buildDiffExportText(currentFunc, lastBuildDiff, cEditor.value);
-  downloadTextFile(`${currentFunc}_diff.txt`, text);
-  statusEl.textContent = `Exported ${currentFunc}_diff.txt`;
+  const fname = (currentTarget === "frontbin" ? "" : currentTarget + "_") + `${currentFunc}_diff.txt`;
+  downloadTextFile(fname, text);
+  statusEl.textContent = `Exported ${fname}`;
 }
 
 exportDiffBtn.addEventListener("click", doExportDiff);
@@ -558,7 +608,7 @@ function highlightMipsText(src) {
   return out;
 }
 
-loadFunctions();
+loadTargets().then(loadFunctions);
 
 
 // ---------------------------------------------------------------------------
@@ -576,13 +626,20 @@ document.getElementById("check-close").addEventListener("click", () => { checkPa
 function fmtPct(x) { return (Number(x) || 0).toFixed(4) + "%"; }
 
 function renderCheck(r) {
+  lastCheck = r;
+  // the numbers and gains of the executable picked in the function list (the
+  // check itself builds and compares everything)
+  const t = r.by_target && r.by_target[currentTarget];
+  const shown = t ? { current: t.current, baseline: t.baseline, newly_matched: t.newly_matched }
+                  : (currentTarget === "frontbin" ? r : {});
   const parts = [];
   if (r.head) parts.push(`<div class="check-meta">Commit ${escapeHtml(r.head.slice(0, 10))} &middot; ${r.unpushed ? r.unpushed.length : 0} unpushed commit(s)</div>`);
   if (r.dirty && r.dirty.length) parts.push(`<div class="check-warn">Uncommitted changes (Push stays locked until these are committed and re-checked): ${escapeHtml(r.dirty.join(", "))}</div>`);
   parts.push('<ul class="check-steps">' + (r.steps || []).map(s =>
     `<li class="${s.ok ? "ok" : "bad"}">${s.ok ? "&#10003;" : "&#10007;"} ${escapeHtml(s.name)}${s.detail ? ` <span class="detail">${escapeHtml(s.detail)}</span>` : ""}</li>`).join("") + "</ul>");
-  if (r.current) {
-    const c = r.current, b = r.baseline;
+  if (r.by_target || r.current) parts.push(`<div class="check-meta">Numbers for ${escapeHtml(targetSelect.selectedOptions[0] ? targetSelect.selectedOptions[0].textContent : currentTarget)}; lost functions are checked in every unit</div>`);
+  if (shown.current) {
+    const c = shown.current, b = shown.baseline;
     const row = (label, cur, base) => `<tr><td>${label}</td><td>${base === undefined ? "&ndash;" : base}</td><td>${cur}</td></tr>`;
     parts.push(`<table class="check-table"><tr><th></th><th>Last push</th><th>Now</th></tr>
       ${row("Matched functions", c.matched_functions + " / " + c.total_functions, b ? b.matched_functions + " / " + b.total_functions : undefined)}
@@ -592,7 +649,7 @@ function renderCheck(r) {
   }
   const list = (title, items, cls) => items && items.length
     ? `<div class="${cls}"><b>${title} (${items.length})</b><div class="check-list">${items.map(escapeHtml).join("<br>")}</div></div>` : "";
-  parts.push(list("Newly matched", r.newly_matched, "check-gained"));
+  parts.push(list("Newly matched", shown.newly_matched, "check-gained"));
   parts.push(list("No longer matching", r.lost, "check-lost"));
   if (r.unpushed && r.unpushed.length) parts.push(list("Commits that Push will send", r.unpushed, "check-commits"));
   if (!r.ok && r.build_log_tail) parts.push(`<pre class="check-log">${escapeHtml(r.build_log_tail)}</pre>`);

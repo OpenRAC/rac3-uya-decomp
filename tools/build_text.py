@@ -32,6 +32,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import asm_filter  # noqa: E402
 import srcfiles as sf  # noqa: E402
+import targets  # noqa: E402
 from srcfiles import strip_comments, declarations_only, EXTERN_HINT_RE  # noqa: E402,F401
 
 FUNC_RE = re.compile(r'func_([0-9A-Fa-f]{8})')
@@ -249,9 +250,12 @@ def compile_one(cc, flags, cflags, cpath, spath, opath, label):
 
 
 def main():
+    T = targets.from_argv()
     ap = argparse.ArgumentParser()
-    ap.add_argument('--files', default=sf.FILES_LIST)
-    ap.add_argument('--parts', default='tools/text_parts.txt')
+    ap.add_argument('--files', default=None, help="file list (default: the target's)")
+    ap.add_argument('--parts', default=None, help="flags table (default: the target's)")
+    ap.add_argument('--unit', default=None,
+                    help="code section to build (boot_elf: core or text); needed when the target has several")
     ap.add_argument('--cc', required=True)
     ap.add_argument('--ld', required=True)
     ap.add_argument('--cflags', default='')
@@ -260,9 +264,28 @@ def main():
     ap.add_argument('-o', '--output', required=True)
     a = ap.parse_args()
 
-    parts = read_parts(a.parts)
-    files = sf.read_file_list(a.files)
-    workdir = a.workdir or os.path.join(os.path.dirname(a.output) or '.', 'frontbin')
+    parts = read_parts(a.parts or T.path('parts'))
+    files = sf.read_file_list(a.files or T.path('files'))
+    if a.unit:
+        unit = T.unit(a.unit)
+    elif len(T.units) == 1:
+        unit = T.units[0]
+    else:
+        sys.exit('build_text: %s has several code sections; pass --unit (%s)'
+                 % (T.name, ', '.join(u.name for u in T.units)))
+    files = [(rel, start) for rel, start in files if unit.contains(start)]
+    if not files:
+        sys.exit('build_text: no source files for %s %s' % (T.name, unit.name))
+    if a.workdir:
+        workdir = a.workdir
+    elif a.base:
+        # objdiff base build: per-file objects next to the output
+        # (build/objdiff/base/frontbin/, build/objdiff/base/boot_elf/core/, ...),
+        # never over the real build's
+        workdir = os.path.join(os.path.dirname(a.output) or '.', unit.objdir)
+    else:
+        # build/src/frontbin/, build/boot_elf/src/core/, ...
+        workdir = T.workdir(unit)
     os.makedirs(workdir, exist_ok=True)
     cflags = shlex.split(a.cflags, posix=False)
     if a.base:

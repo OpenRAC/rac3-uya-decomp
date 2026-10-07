@@ -14,8 +14,8 @@ decompiled. --all adds every function.
 import glob, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ASM = os.path.join(ROOT, "asm", "nonmatchings", "text")
-OUT = os.path.join(ROOT, "tools", "divs_nops.txt")
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import targets  # noqa: E402
 
 INSN = re.compile(r"/\*[^*]*\*/\s+([a-z][a-z0-9.]*)\b")
 BRANCH = re.compile(r"^(b|bc1[tf]l?|beq|bne|bgez|bgtz|blez|bltz|beql|bnel|bgezl|bgtzl|blezl|bltzl|bgezal|bltzal|j|jal|jr|jalr)$")
@@ -44,11 +44,12 @@ def counts(path):
 
 
 def main():
+    t = targets.from_argv()   # --target boot_elf: that target's sources and table
+    OUT = t.path("divs_nops")
     allf = "--all" in sys.argv
-    sys.path.insert(0, os.path.join(ROOT, "tools"))
     import srcfiles
     text = srcfiles.read_all(ROOT)
-    todo = set(re.findall(r'INCLUDE_ASM\("asm/nonmatchings/text",\s*(func_[0-9A-Fa-f]+)\)', text))
+    todo = set(re.findall(r'INCLUDE_ASM\("[^"]+",\s*(func_[0-9A-Fa-f]+)\)', text))
     keep = {}
     if os.path.exists(OUT):
         for l in open(OUT):
@@ -56,7 +57,10 @@ def main():
             if l:
                 keep[l.split()[0]] = l
     rows = []
-    for p in sorted(glob.glob(os.path.join(ASM, "func_*.s"))):
+    paths = []
+    for u in t.units:
+        paths += glob.glob(os.path.join(ROOT, u.asm_dir, "func_*.s"))
+    for p in sorted(paths, key=os.path.basename):
         name = os.path.basename(p)[:-2]
         if not allf and name not in todo:
             continue

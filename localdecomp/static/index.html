@@ -24,7 +24,11 @@
 
   <main>
     <aside id="func-sidebar">
-      <div class="pane-title">All functions</div>
+      <div class="pane-title target-title">
+        <select id="target-select" title="Which executable's functions to list (each splatted ELF has its own list, editor and progress bar)">
+          <option value="frontbin">frontbin</option>
+        </select>
+      </div>
       <input id="sidebar-filter" type="text" placeholder="Filter..." autocomplete="off">
       <div id="sidebar-list"></div>
     </aside>

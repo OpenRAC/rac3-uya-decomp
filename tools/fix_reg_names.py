@@ -84,7 +84,10 @@ NAME_ADDR_RE = re.compile(r"^(?:D|func|jtbl|L|B|jlabel)_([0-9A-Fa-f]{5,8})(?:_\w
 GP_REL_MEM = re.compile(r"%gp_rel\(([^()]*)\)\(\$gp\)")
 GP_REL_PLAIN = re.compile(r"%gp_rel\(([^()]*)\)")
 OLD_MEM = re.compile(r"(?<![\w%)])([A-Za-z_][A-Za-z0-9_]*(?:\s*[+-]\s*(?:0x[0-9A-Fa-f]+|\d+))?)\(\$gp\)")
-OLD_LO = re.compile(r"(\$gp\s*,\s*)%lo\(([^()]*)\)")
+# $gp as a source operand only (`addiu $a0, $gp, %lo(SYM)`): a load INTO $gp, as in
+# boot_elf's `lw $gp, %lo(SYM)($v0)` (Sony library code switching $gp for a
+# callback), is an ordinary absolute access and must stay as it is.
+OLD_LO = re.compile(r"(,\s*\$gp\s*,\s*)%lo\(([^()]*)\)")
 
 
 def load_symbols(paths):

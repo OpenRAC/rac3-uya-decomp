@@ -238,24 +238,46 @@ def git_commit_and_push(root: Path, func_name: str, paths) -> GitSyncResult:
 # ---------------------------------------------------------------------------
 
 
+# One executable can be worked on at a time per request; the repo's tools
+# read the current one from UYA_TARGET (tools/targets.py), so every request
+# that reaches into them runs with this lock held and UYA_TARGET set.
+_target_lock = threading.RLock()
+
+
 class Project:
-    def __init__(self, root: Path, toolbin: Path, gp_value: int, git_sync: bool = True,
+    """One splatted executable (a target in tools/targets.py): its ELF, its
+    asm folders, its source-file list and flag tables, and its own
+    localdecomp work folder (editor cache and scores). Function names are
+    only unique within one target, so nothing here is shared between them."""
+
+    def __init__(self, root: Path, target, toolbin: Path, gp_value=None, git_sync: bool = True,
                  refs_dir: str = r"C:\decomp-refs", objdiff_cli: str = "objdiff-cli.exe"):
         self.root = root
+        self.target = target
+        self.name = target.name
+        self.label = getattr(target, "label", target.name)
         self.refs_dir = refs_dir
         self.objdiff_cli = objdiff_cli
         self.check_state = None  # result of the last /api/check, gates /api/push
         self.toolbin = toolbin
-        self.gp_value = gp_value
-        self.target_elf = root / "frontbin.elf"
-        self.asm_dir = root / "asm" / "nonmatchings"
-        # .text sources: one C file per original source file, listed in link
-        # order in tools/src_files.txt (see tools/srcfiles.py).
-        self.src_dir = root / "src" / "frontbin"
+        self.gp_value = gp_value if gp_value is not None else target.gp
+        self.target_elf = root / target.elf
+        # INCLUDE_ASM folders, one per code section (unit) of the target
+        self.asm_dirs = [root / u.asm_dir for u in target.units]
+        # final assembly (tools/migrate_asm_sources.py)
+        self.asm_source_dirs = (("handwritten", root / target.handwritten),
+                                ("remnant", root / target.remnants))
+        # sources: one C file per original source file, listed in link
+        # order in the target's file list (see tools/srcfiles.py).
+        self.files_list = root / target.files
+        self.parts_path = root / target.parts
+        self.ldflags_path = root / target.localdecomp_flags
         self._srcfiles = None
-        self.work_dir = root / ".localdecomp_work"
-        self.work_dir.mkdir(exist_ok=True)
-        self.symbol_addrs_path = root / "symbol_addrs.txt"
+        # frontbin keeps the folder it always had; other targets get their own
+        base = root / ".localdecomp_work"
+        self.work_dir = base if target.name == "frontbin" else base / target.name
+        self.work_dir.mkdir(parents=True, exist_ok=True)
+        self.symbol_addrs_path = root / target.symbol_addrs
         self.git_sync = git_sync and is_git_repo(root)
         if git_sync and not self.git_sync:
             sys.stderr.write(
@@ -271,10 +293,29 @@ class Project:
         self.funcs_dir.mkdir(exist_ok=True)
         self.status_path = self.work_dir / "status.json"
 
-        if not self.target_elf.exists():
-            raise SystemExit(f"Target ELF not found: {self.target_elf}")
-        if not self.asm_dir.exists():
-            raise SystemExit(f"asm/nonmatchings not found under: {root}")
+        missing = [str(p) for p in [self.target_elf] + self.asm_dirs if not p.exists()]
+        if missing:
+            raise FileNotFoundError("not found: " + ", ".join(missing))
+
+    def active(self):
+        """Hold the target lock with UYA_TARGET set to this target, so the
+        repo tools this server imports (srcfiles, split_text, build_text,
+        asm_filter) read this target's tables."""
+        project = self
+
+        class _Active:
+            def __enter__(self):
+                _target_lock.acquire()
+                self.old = os.environ.get("UYA_TARGET")
+                os.environ["UYA_TARGET"] = project.name
+
+            def __exit__(self, *exc):
+                if self.old is None:
+                    os.environ.pop("UYA_TARGET", None)
+                else:
+                    os.environ["UYA_TARGET"] = self.old
+                _target_lock.release()
+        return _Active()
 
     def srcfiles(self):
         """tools/srcfiles.py, loaded from the project."""
@@ -288,7 +329,7 @@ class Project:
 
     def src_files(self):
         sf = self.srcfiles()
-        return [self.root / rel for rel, _ in sf.read_file_list(str(self.root / "tools" / "src_files.txt"))]
+        return [self.root / rel for rel, _ in sf.read_file_list(str(self.files_list))]
 
     def all_src_text(self) -> str:
         """Every source file, concatenated in link order (for searches)."""
@@ -297,7 +338,7 @@ class Project:
     def src_file_for(self, name: str) -> Path:
         """The source file that holds (or, for a new address, should hold) `name`."""
         sf = self.srcfiles()
-        files = sf.read_file_list(str(self.root / "tools" / "src_files.txt"))
+        files = sf.read_file_list(str(self.files_list))
         found = sf.find_function(name, files, str(self.root))
         if found:
             return self.root / found[0]
@@ -312,7 +353,7 @@ class Project:
             sys.path.insert(0, tools)
         import split_text
         rel = str(path.relative_to(self.root)).replace("\\", "/")
-        split_text.refresh_one(rel, None, str(self.root))
+        split_text.refresh_one(rel, split_text.sf.read_file_list(str(self.files_list)), str(self.root))
 
     def load_status(self):
         if not self.status_path.exists():
@@ -328,7 +369,7 @@ class Project:
         self.status_path.write_text(json.dumps(status, indent=2))
 
     def flags_for(self, name: str):
-        """Compiler flags for a function, from tools/text_parts.txt.
+        """Compiler flags for a function, from the target's text_parts.txt.
 
         the sources are built with with per-range flags (see
         tools/build_text.py). Each line of text_parts.txt is
@@ -337,14 +378,14 @@ class Project:
         with the flags its range really uses."""
         default = ["-O2", "-G8"]
         m = re.search(r"func_([0-9A-Fa-f]{8})", name or "")
-        path = self.root / "tools" / "text_parts.txt"
+        path = self.parts_path
         if not m or not path.exists():
             return default
         addr = int(m.group(1), 16)
         # Work-in-progress overrides for functions still INCLUDE_ASM in the source files
         # (text_parts.txt can't carry @ps2as for them: the asm needs macro.inc).
         # tools/localdecomp_flags.txt lines: `func_XXXXXXXX <flags...>`
-        ov = self.root / "tools" / "localdecomp_flags.txt"
+        ov = self.ldflags_path
         if ov.exists():
             for line in ov.read_text().splitlines():
                 fields = line.split("#", 1)[0].split()
@@ -404,11 +445,11 @@ class Project:
         # would otherwise show up a second time, as "unverified".
         asm_sources = {
             p.stem
-            for sub in ("handwritten", "remnants")
-            for p in (self.root / "asm" / sub).glob("*.s")
+            for _, d in self.asm_source_dirs
+            for p in d.glob("*.s")
         }
 
-        for s_path in sorted(self.asm_dir.rglob("*.s")):
+        for s_path in sorted(p for d in self.asm_dirs for p in d.rglob("*.s")):
             if s_path.stem in asm_sources:
                 continue
             content = s_path.read_text()
@@ -424,7 +465,9 @@ class Project:
             m_addr = re.search(
                 r"/\*\s*[0-9A-Fa-f]+\s+([0-9A-Fa-f]+)\s+[0-9A-Fa-f]+\s*\*/", content
             )
-            if not (m_name and m_addr):
+            # (a one-word function written as a raw .word has no address
+            # comment; its name still gives the address)
+            if not m_name or not (m_addr or re.fullmatch(r"func_[0-9A-Fa-f]{8}", m_name.group(1))):
                 continue
             name = m_name.group(1)
             vaddr = _func_vaddr(name, content)
@@ -461,8 +504,8 @@ class Project:
         # (tools/migrate_asm_sources.py): hand-written functions and the
         # leftovers of functions the original linker stripped. They count as
         # done, the same way the objdiff base build counts them.
-        for kind, sub in (("handwritten", "handwritten"), ("remnant", "remnants")):
-            for s_path in sorted((self.root / "asm" / sub).glob("*.s")):
+        for kind, d in self.asm_source_dirs:
+            for s_path in sorted(d.glob("*.s")):
                 content = s_path.read_text()
                 m_name = re.search(r"^(?:glabel|dlabel)\s+(\S+)", content, re.MULTILINE)
                 m_size = re.search(r"nonmatching\s+\S+,\s*(0x[0-9A-Fa-f]+)", content)
@@ -485,9 +528,10 @@ class Project:
 
     def get_function_asm(self, name: str) -> str:
         paths = []
-        for sub in ("handwritten", "remnants"):
-            paths += list((self.root / "asm" / sub).glob("*.s"))
-        paths += list(self.asm_dir.rglob("*.s"))
+        for _, d in self.asm_source_dirs:
+            paths += list(d.glob("*.s"))
+        for d in self.asm_dirs:
+            paths += list(d.rglob("*.s"))
         for s_path in paths:
             content = s_path.read_text()
             if re.search(rf"^(?:glabel|dlabel)\s+{re.escape(name)}\b", content, re.MULTILINE):
@@ -708,7 +752,10 @@ class Project:
             return GitSyncResult(False, True, "not a perfect match yet")
 
         paths = [self.src_file_for(name), self._func_store_path(name)]
-        return git_commit_and_push(self.root, name, paths)
+        # frontbin's commits keep their old message; other targets say which
+        # executable (func_ names repeat between targets)
+        label = name if self.name == "frontbin" else f"{self.name} {name}"
+        return git_commit_and_push(self.root, label, paths)
 
     def find_referenced_symbols(self, asm_text: str, c_source: str):
         """
@@ -813,7 +860,7 @@ def _text_c_context(project, func_name, c_source):
             "build_text", str(project.root / "tools" / "build_text.py"))
         bt = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(bt)
-        parts = bt.read_parts(str(project.root / "tools" / "text_parts.txt"))
+        parts = bt.read_parts(str(project.parts_path))
         ctx = bt.function_context(None, parts, func_name, own_src=c_source)
         c_source = bt.drop_repeated_typedefs(ctx, c_source)
     except Exception as e:  # never block a build on this
@@ -1162,12 +1209,10 @@ SECTIONS
     if size < len(source_raw) <= size + ALIGN_SLOP and not any(source_raw[size:]):
         source_bin.write_bytes(source_raw[:size])
 
-    # target side: slice the real frontbin.elf at vaddr's file offset.
-    # We need .text's vaddr/fileoff to convert; read them once from the ELF
-    # program header (assumes single PT_LOAD like frontbin.elf's real layout;
-    # adjust here if your target binary has multiple LOAD segments).
-    text_vaddr, text_fileoff = get_text_section_info(project.target_elf, project.toolbin)
-    file_off = text_fileoff + (vaddr - text_vaddr)
+    # target side: slice the retail ELF at vaddr's file offset, through the
+    # section that holds vaddr (boot_elf has two code sections, core.text and
+    # .text).
+    file_off = _vaddr_to_fileoff(project.target_elf, vaddr)
     raw = project.target_elf.read_bytes()
     target_bin.write_bytes(raw[file_off : file_off + size])
 
@@ -1237,6 +1282,27 @@ def _elf_section_bytes(elf_path: Path, section: str) -> bytes:
     return b""
 
 
+def _vaddr_to_fileoff(elf_path: Path, vaddr: int) -> int:
+    """File offset of `vaddr`, from the section headers of a little-endian
+    ELF32 file (the section that has file bytes and contains the address)."""
+    import struct
+    key = ("sections", str(elf_path))
+    if key not in _text_section_cache:
+        data = elf_path.read_bytes()
+        shoff, = struct.unpack_from("<I", data, 0x20)
+        shentsize, shnum = struct.unpack_from("<HH", data, 0x2E)
+        secs = []
+        for i in range(shnum):
+            _, typ, _, addr, off, size = struct.unpack_from("<IIIIII", data, shoff + i * shentsize)
+            if typ != 8 and addr and size:  # not NOBITS, loaded
+                secs.append((addr, off, size))
+        _text_section_cache[key] = secs
+    for addr, off, size in _text_section_cache[key]:
+        if addr <= vaddr < addr + size:
+            return off + vaddr - addr
+    raise BuildError("setup", f"0x{vaddr:08X} is not inside any section of {elf_path}")
+
+
 def get_text_section_info(elf_path: Path, toolbin: Path):
     key = str(elf_path)
     if key in _text_section_cache:
@@ -1277,7 +1343,7 @@ DEFAULT_OBJDIFF_CLI = "objdiff-cli.exe"
 BUILD_INPUTS = ["src", "include", "asm", "linker_scripts", "Makefile",
                 "objdiff.json", "symbol_addrs.txt", "undefined_syms_auto.txt",
                 "undefined_funcs_auto.txt", "symbol_addrs_resolved.txt",
-                "reloc_addrs.txt", "tools"]
+                "reloc_addrs.txt", "tools", "targets"]
 
 _check_lock = threading.Lock()
 
@@ -1292,16 +1358,31 @@ def _dirty_build_inputs(root):
     return [l[3:] for l in out.stdout.splitlines() if l.strip()] if out.returncode == 0 else ["(git status failed)"]
 
 
+# objdiff unit name prefixes of each decompiled target ({target: [prefix]});
+# main() fills it from tools/targets.py (objdiff_units).
+_UNIT_PREFIXES = {"frontbin": ["frontbin/src/"]}
+
+
+def _target_of_unit(name):
+    """The decompiled target an objdiff unit belongs to, or None (levels,
+    executables that are only reference objects)."""
+    if name == "frontbin/text":  # before frontbin was split into source files
+        return "frontbin"
+    for t, prefixes in _UNIT_PREFIXES.items():
+        if any(name.startswith(p) for p in prefixes):
+            return t
+    return None
+
+
 def _matched_by_unit(report):
     """{unit name: set of function names at 100%} plus overall measures."""
     units = {}
     for u in report.get("units", []):
         name = u.get("name") or ""
-        # frontbin's .text was one unit (frontbin/text) and is one unit per
-        # source file now (frontbin/src/<file>); compare them as one pool so
-        # moving a function between files is not reported as lost.
-        if name == "frontbin/text" or name.startswith("frontbin/src/"):
-            name = "frontbin/text"
+        # A target's code is one objdiff unit per source file; compare each
+        # target's files as one pool (named after the target) so moving a
+        # function between files is not reported as lost.
+        name = _target_of_unit(name) or name
         units.setdefault(name, set()).update(
             f.get("name") for f in u.get("functions", [])
             if float(f.get("fuzzy_match_percent", 0) or 0) == 100.0
@@ -1310,17 +1391,18 @@ def _matched_by_unit(report):
 
 
 def _is_frontbin_unit(name):
-    return name == "frontbin/text" or name.startswith("frontbin/src/")
+    return _target_of_unit(name) == "frontbin"
 
 
-def _summary(report):
-    """Totals over the frontbin units only (the report also holds the levels
-    and executables, which would otherwise be mixed into these numbers)."""
+def _summary(report, target="frontbin"):
+    """Totals over one target's units only (the report also holds the levels,
+    the executables and the other targets, which would otherwise be mixed
+    into these numbers)."""
     keys = ("matched_functions", "total_functions", "matched_code", "total_code",
             "matched_data", "total_data")
     tot = dict.fromkeys(keys, 0)
     for u in report.get("units", []):
-        if not _is_frontbin_unit(u.get("name") or ""):
+        if _target_of_unit(u.get("name") or "") != target:
             continue
         m = u.get("measures", {})
         for k in keys:
@@ -1405,19 +1487,28 @@ def run_full_check(project):
         return result
     cur = json.loads(cur_path.read_text(encoding="utf-8"))
     result["current"] = _summary(cur)
+    # the same numbers per target, for the target picked in the page
+    by_target = result["by_target"] = {
+        t: {"current": _summary(cur, t), "baseline": None, "newly_matched": []}
+        for t in _UNIT_PREFIXES}
 
     # 4. compare with the report saved at the last successful push
     base_path = work / "report_pushed.json"
     if base_path.exists():
         base = json.loads(base_path.read_text(encoding="utf-8"))
         result["baseline"] = _summary(base)
+        for t in by_target:
+            by_target[t]["baseline"] = _summary(base, t)
         bu, cu = _matched_by_unit(base), _matched_by_unit(cur)
         gained, lost = [], []
-        # gains are counted for frontbin only, like the table; losses are
-        # checked in every unit so a regression in level code still fails
+        # gains are counted for frontbin only at the top level, like the
+        # table (and per target in by_target); losses are checked in every
+        # unit so a regression in level code still fails
         for unit in sorted(set(bu) | set(cu)):
             b, c = bu.get(unit, set()), cu.get(unit, set())
-            if _is_frontbin_unit(unit):
+            if unit in by_target:
+                by_target[unit]["newly_matched"] = [f"{unit}: {f}" for f in sorted(c - b)]
+            if unit == "frontbin":
                 gained += [f"{unit}: {f}" for f in sorted(c - b)]
             lost += [f"{unit}: {f}" for f in sorted(b - c)]
         result["newly_matched"], result["lost"] = gained, lost
@@ -1457,7 +1548,24 @@ STATIC_DIR = Path(__file__).parent / "static"
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
-    project: Project = None  # set by main()
+    # set by main(): one Project per target that is set up in this repo,
+    # the targets that aren't ({name: reason}), and the project that owns the
+    # repo-wide full check and push (frontbin's work folder).
+    projects: dict = {}
+    unavailable: dict = {}
+    repo: Project = None
+    labels: dict = {}
+
+    def _target(self, name):
+        """The Project for a request's `target` (frontbin when not given), or
+        None after sending an error."""
+        name = name or "frontbin"
+        if name in self.projects:
+            return self.projects[name]
+        why = self.unavailable.get(name, "unknown target")
+        self._send_json({"ok": False, "error": f"{name}: {why}", "stage": "target",
+                         "message": f"{name}: {why}"}, 404)
+        return None
 
     def _send_json(self, obj, status=200):
         body = json.dumps(obj).encode("utf-8")
@@ -1481,32 +1589,48 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if parsed.path == "/style.css":
             self._serve_static("style.css", "text/css")
             return
+        qs = urllib.parse.parse_qs(parsed.query)
         if parsed.path == "/api/check_state":
-            self._send_json({"state": self.project.check_state})
+            self._send_json({"state": self.repo.check_state if self.repo else None})
+            return
+        if parsed.path == "/api/targets":
+            # every target in tools/targets.py, in that order
+            self._send_json({"targets": [
+                {"name": n, "label": self.labels.get(n, n),
+                 "available": n in self.projects, "reason": self.unavailable.get(n)}
+                for n in self.labels]})
             return
         if parsed.path == "/api/functions":
+            project = self._target(qs.get("target", [None])[0])
+            if not project:
+                return
             try:
-                funcs = self.project.list_functions()
-                self._send_json({"functions": funcs})
+                with project.active():
+                    funcs = project.list_functions()
+                self._send_json({"target": project.name, "functions": funcs})
             except Exception as e:
                 self._send_json({"error": str(e)}, 500)
             return
         if parsed.path == "/api/function":
-            qs = urllib.parse.parse_qs(parsed.query)
+            project = self._target(qs.get("target", [None])[0])
+            if not project:
+                return
             name = qs.get("name", [None])[0]
             if not name:
                 self._send_json({"error": "missing name"}, 400)
                 return
             try:
-                self._send_json(
-                    {
-                        "name": name,
-                        "asm": self.project.get_function_asm(name),
-                        "c": self.project.get_function_c(name),
-                    }
-                )
+                with project.active():
+                    self._send_json(
+                        {
+                            "target": project.name,
+                            "name": name,
+                            "asm": project.get_function_asm(name),
+                            "c": project.get_function_c(name),
+                        }
+                    )
             except KeyError:
-                self._send_json({"error": f"unknown function {name}"}, 404)
+                self._send_json({"error": f"unknown function {name} in {project.name}"}, 404)
             return
         self.send_response(404)
         self.end_headers()
@@ -1516,11 +1640,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if parsed.path == "/api/build":
             length = int(self.headers.get("Content-Length", 0))
             body = json.loads(self.rfile.read(length))
+            project = self._target(body.get("target"))
+            if not project:
+                return
             name = body.get("name")
             c_source = body.get("c", "")
-            flags = body.get("flags") or self.project.flags_for(name)
             try:
-                result = build_and_diff(self.project, name, c_source, flags)
+                with project.active():
+                    flags = body.get("flags") or project.flags_for(name)
+                    result = build_and_diff(project, name, c_source, flags)
                 self._send_json({"ok": True, "diff": result})
             except BuildError as e:
                 self._send_json({"ok": False, "stage": e.stage, "message": e.message})
@@ -1532,8 +1660,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send_json({"ok": False, "steps": [{"name": "check", "ok": False, "detail": "a check or push is already running"}]})
                 return
             try:
-                res = run_full_check(self.project)
-                self.project.check_state = res
+                res = run_full_check(self.repo)
+                self.repo.check_state = res
                 self._send_json(res)
             except Exception as e:
                 self._send_json({"ok": False, "steps": [{"name": "internal", "ok": False, "detail": str(e)}]})
@@ -1545,7 +1673,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send_json({"ok": False, "message": "a check or push is already running"})
                 return
             try:
-                self._send_json(run_push(self.project))
+                self._send_json(run_push(self.repo))
             except Exception as e:
                 self._send_json({"ok": False, "message": str(e)})
             finally:
@@ -1554,24 +1682,28 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if parsed.path == "/api/save":
             length = int(self.headers.get("Content-Length", 0))
             body = json.loads(self.rfile.read(length))
+            project = self._target(body.get("target"))
+            if not project:
+                return
             name = body.get("name")
             c_source = body.get("c", "")
             try:
-                # Only perfect matches go into its source file: a non-matching body
-                # there breaks the full build for everyone. Keep work in
-                # progress in the editor (it is cached) instead.
-                if not body.get("force"):
-                    diff = build_and_diff(self.project, name, c_source)
-                    score = diff.get("current_score") if isinstance(diff, dict) else None
-                    if score != 0:
-                        raise BuildError("save", f"{name} does not match yet (score {score}); "
-                                         "only perfect matches are saved into the source files, "
-                                         "because anything else breaks the full build. "
-                                         "Your code is kept in the editor.")
-                self.project.save_function_c(name, c_source)
-                git_result = self.project.sync_function_to_git(name)
-                src_rel = self.project.src_file_for(name).relative_to(self.project.root).as_posix()
-                self._send_json({"ok": True, "git": git_result.to_json(), "file": src_rel})
+                with project.active():
+                    # Only perfect matches go into its source file: a non-matching body
+                    # there breaks the full build for everyone. Keep work in
+                    # progress in the editor (it is cached) instead.
+                    if not body.get("force"):
+                        diff = build_and_diff(project, name, c_source)
+                        score = diff.get("current_score") if isinstance(diff, dict) else None
+                        if score != 0:
+                            raise BuildError("save", f"{name} does not match yet (score {score}); "
+                                             "only perfect matches are saved into the source files, "
+                                             "because anything else breaks the full build. "
+                                             "Your code is kept in the editor.")
+                    project.save_function_c(name, c_source)
+                    git_result = project.sync_function_to_git(name)
+                    src_rel = project.src_file_for(name).relative_to(project.root).as_posix()
+                    self._send_json({"ok": True, "git": git_result.to_json(), "file": src_rel})
             except BuildError as e:
                 self._send_json({"ok": False, "stage": e.stage, "message": e.message})
             except Exception as e:
@@ -1598,7 +1730,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--project", default=".", help="splat project root")
     ap.add_argument("--toolbin", default=DEFAULT_TOOLBIN, help="ee-gcc2953 etc bin folder")
-    ap.add_argument("--gp", default=hex(DEFAULT_GP_VALUE), help="real _gp value, e.g. 0x1DC8B0")
+    ap.add_argument("--gp", default=None,
+                    help="real _gp value, e.g. 0x1DC8B0 (default: each target's, from tools/targets.py)")
     ap.add_argument("--port", type=int, default=DEFAULT_PORT)
     ap.add_argument(
         "--no-git-sync",
@@ -1615,17 +1748,34 @@ def main():
 
     root = Path(args.project).resolve()
     toolbin = Path(args.toolbin)
-    gp_value = int(args.gp, 16)
+    gp_value = int(args.gp, 16) if args.gp else None
 
-    project = Project(root, toolbin, gp_value, git_sync=args.git_sync,
-                      refs_dir=args.refs, objdiff_cli=args.objdiff_cli)
-    Handler.project = project
+    # the executables this repo decompiles (tools/targets.py)
+    tools = str(root / "tools")
+    if tools not in sys.path:
+        sys.path.insert(0, tools)
+    import targets
+    for name, t in targets.TARGETS.items():
+        Handler.labels[name] = getattr(t, "label", name)
+        _UNIT_PREFIXES[name] = list(t.objdiff_units.values())
+        try:
+            Handler.projects[name] = Project(root, t, toolbin, gp_value, git_sync=args.git_sync,
+                                             refs_dir=args.refs, objdiff_cli=args.objdiff_cli)
+        except FileNotFoundError as e:
+            Handler.unavailable[name] = (f"not set up ({e}); put {t.elf} in the repo root and run "
+                                         f"python tools/setup_asm.py --target {name}")
+    if not Handler.projects:
+        raise SystemExit("no target is set up: " + "; ".join(Handler.unavailable.values()))
+    Handler.repo = Handler.projects.get("frontbin") or next(iter(Handler.projects.values()))
 
     server = http.server.ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     print(f"localdecomp running at http://127.0.0.1:{args.port}")
     print(f"project root: {root}")
     print(f"toolchain:    {toolbin}")
-    print(f"gp value:     0x{gp_value:08X}")
+    for name, p in Handler.projects.items():
+        print(f"target:       {name} ({p.target_elf.name}, gp 0x{p.gp_value:08X})")
+    for name, why in Handler.unavailable.items():
+        print(f"target:       {name}: {why}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

@@ -32,6 +32,8 @@ declare them sized (`extern f32 D_001D950C;`).
 import argparse, collections, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import targets  # noqa: E402
 GP = 0x1DC8B0
 LIT_START = 0x1D5680
 VU = re.compile(r"^(v[a-z0-9]+(\.[xyzw]+)?|cop2|lqc2|sqc2|qmtc2.*|qmfc2.*|cfc2.*|ctc2.*|vcallms.*|bc2[ft]l?)$")
@@ -62,7 +64,8 @@ def raw_instruction(word, operands):
 
 
 def classify(name):
-    s = open(os.path.join(ROOT, "asm", "nonmatchings", "text", name + ".s"), errors="ignore").read()
+    unit = targets.get().unit_for(int(name[5:], 16))
+    s = open(os.path.join(ROOT, unit.asm_dir, name + ".s"), errors="ignore").read()
     ins = []
     for line in s.splitlines():
         m = INS.search(line)
@@ -119,13 +122,16 @@ def classify(name):
 
 
 def main():
+    t = targets.from_argv()   # --target boot_elf
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--tsv", help="write name, address, size, bucket to this file")
+    ap.add_argument("--unit", help="only this code section (boot_elf: core or text)")
     args = ap.parse_args()
-    sys.path.insert(0, os.path.join(ROOT, "tools"))
     import srcfiles
     text = srcfiles.read_all(ROOT)
     names = re.findall(r'INCLUDE_ASM\("[^"]+",\s*(func_[0-9A-Fa-f]{8})\)', text)
+    if args.unit:
+        names = [n for n in names if t.unit(args.unit).contains(int(n[5:], 16))]
     rows = [(n,) + classify(n) for n in names]
     count, size = collections.Counter(), collections.Counter()
     for _, b, sz in rows:

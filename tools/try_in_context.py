@@ -45,6 +45,8 @@ def substitute(text, name, body):
 
 
 def main():
+    import targets
+    t = targets.from_argv()   # --target boot_elf
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("file")
     ap.add_argument("name", nargs="?")
@@ -55,7 +57,7 @@ def main():
                     help="skip compiling the rest of the file and the later files that get this block's declarations")
     ap.add_argument("--toolchain", default=tf.DEFAULT_TOOLCHAIN)
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
-    ap.add_argument("--retail", default=os.path.join(ROOT, "frontbin.elf"))
+    ap.add_argument("--retail", default=t.path("elf"))
     args = ap.parse_args()
 
     body = open(args.file).read()
@@ -76,7 +78,7 @@ def main():
                                            split_text.file_needs(chunks))
     text = split_text.render(ext, chunks, prelude)
     prelude, _, chunks = sf.split_file(text)
-    parts = bt.read_parts(os.path.join(ROOT, "tools", "text_parts.txt"))
+    parts = bt.read_parts(__import__("targets").get().path("parts"))
     slices = bt.file_slices(chunks, parts)
     idx = next(i for i, (a, _, b) in enumerate(chunks) if sf.is_own_chunk(b, name))
     k = next(n for n, (_, ids) in enumerate(slices) if idx in ids)
@@ -127,7 +129,7 @@ def check_files(rel, text, files, gcc_cmd, args):
         before = {r: sf.read_source(r, tmp) for r, _ in files}
         split_text.refresh(files, tmp)
         check = [rel] + [r for r, _ in files if r != rel and sf.read_source(r, tmp) != before[r]]
-        parts = bt.read_parts(os.path.join(ROOT, "tools", "text_parts.txt"))
+        parts = bt.read_parts(__import__("targets").get().path("parts"))
         cflags = [f for f in CFLAGS if not f.startswith("-Wa,")]
         bad = []
         for r in check:

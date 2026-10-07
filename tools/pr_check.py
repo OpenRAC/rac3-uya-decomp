@@ -47,7 +47,9 @@ import shutil, os, re, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import srcfiles as sf  # noqa: E402
-FILES = sf.read_file_list()
+import targets  # noqa: E402
+FILES = None   # the target's source files, set in main() (--target boot_elf)
+T = None
 
 
 def all_text():
@@ -172,7 +174,7 @@ def check_sources():
         for name in list(a) + list(d):
             want = sf.file_for_address(FILES, int(name[5:], 16))
             if want != rel:
-                err(f"{rel}: {name} belongs in {want} (tools/src_files.txt address ranges)")
+                err(f"{rel}: {name} belongs in {want} ({T.files} address ranges)")
     for name in sorted(set(asm) & set(defined)):
         err(f"{defined[name][0]}: {name} is both C and INCLUDE_ASM ({asm[name][0]}); "
             "remove the INCLUDE_ASM line")
@@ -275,20 +277,20 @@ def check_file(raw, label):
             bodies[name] = (m.start(), norm)
 
     # aliases
-    sym_path = os.path.join(ROOT, "symbol_addrs_resolved.txt")
+    sym_path = targets.get().path("symbols_resolved")
     known = set(re.findall(r"^\s*(\w+)\s*=", open(sym_path).read(), re.M)) if os.path.exists(sym_path) else set()
     # D_ and func_ aliases, with the address written in 6 or 8 digits (D_1CCFD0_x, D_001CCFD0_x)
     for name, hexaddr in sorted(set(re.findall(r"\b((?:D|func)_([0-9A-Fa-f]{6,8})_\w+)\b", code))):
         if name not in known and name not in macros:
             m = re.search(r"\b%s\b" % name, code)
             err(f"{label}:{lineno(raw, m.start())}: alias {name} has no address; add "
-                f"`{name} = 0x{int(hexaddr, 16):08X};` to symbol_addrs_resolved.txt")
+                f"`{name} = 0x{int(hexaddr, 16):08X};` to {targets.get().symbols_resolved}")
     return raw, code, asm, defined
 
 
 def check_parts(asm, defined):
     parts = []
-    for line in open(os.path.join(ROOT, "tools", "text_parts.txt")):
+    for line in open(T.path("parts")):
         f = line.split("#", 1)[0].split()
         if f:
             parts.append((int(f[0], 16), f[1:]))
@@ -301,7 +303,7 @@ def check_parts(asm, defined):
         if bad:
             err(f"text_parts.txt: range 0x{start:08X} uses @ps2as but contains INCLUDE_ASM "
                 f"{', '.join(sorted(bad)[:4])}; end the range after the C function(s)")
-    ov = os.path.join(ROOT, "tools", "localdecomp_flags.txt")
+    ov = T.path("localdecomp_flags")
     if os.path.exists(ov):
         for line in open(ov):
             f = line.split("#", 1)[0].split()
@@ -314,7 +316,8 @@ def check_status(defined, asm):
     """localdecomp's status.json vs text.c: a function it scored 0 but that is
     still INCLUDE_ASM here is either not saved yet, or was scored before a
     server fix (see localdecomp/server.py's trailing-padding note)."""
-    path = os.path.join(ROOT, ".localdecomp_work", "status.json")
+    path = os.path.join(ROOT, ".localdecomp_work", "status.json") if T.name == targets.DEFAULT \
+        else os.path.join(ROOT, ".localdecomp_work", T.name, "status.json")
     if not os.path.exists(path):
         return
     try:
@@ -345,7 +348,7 @@ def check_sq_ra(defined):
     save $ra with sq") must be listed in tools/sq_ra_funcs.txt: asm_filter
     rewrites those saves, and without the line the function keeps a
     two-instruction diff that reads like a C mistake."""
-    path = os.path.join(ROOT, "frontbin.elf")
+    path = T.path("elf")
     if not os.path.exists(path):
         return
     try:
@@ -353,7 +356,7 @@ def check_sq_ra(defined):
     except ImportError:
         return
     listed = set()
-    list_path = os.path.join(ROOT, "tools", "sq_ra_funcs.txt")
+    list_path = T.path("sq_ra_funcs")
     if os.path.exists(list_path):
         for line in open(list_path):
             f = line.split("#", 1)[0].split()
@@ -438,7 +441,7 @@ def check_compile(toolchain, runner):
         warn(f"compile check skipped: {gcc} not found (set UYA_TOOLCHAIN, or pass --no-compile)")
         return
     cmd = ([runner] if runner else []) + [gcc]
-    parts = bt.read_parts(os.path.join(ROOT, "tools", "text_parts.txt"))
+    parts = bt.read_parts(T.path("parts"))
     cflags = ["-I", "include", "-I", ".", "-DINCLUDE_ASM_USE_MACRO_INC=1"]
     tmp = tempfile.mkdtemp(prefix="pr_check_")
     cwd = os.getcwd()
@@ -454,6 +457,9 @@ def check_compile(toolchain, runner):
 
 
 def main():
+    global FILES, T
+    T = targets.from_argv()   # --target boot_elf
+    FILES = sf.read_file_list()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--obj", help="built object to check, e.g. build/src/text.c.o")
     ap.add_argument("--no-git", action="store_true", help="skip the git tracked-file check")

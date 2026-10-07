@@ -1,12 +1,14 @@
 # Ratchet & Clank: Up Your Arsenal decompilation
 
-A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arsenal* (PS2, NTSC-U, SCUS-97353). The build produces a file byte-for-byte identical to retail (SHA-1 `3bc94ee895e4b4af9b5602a229af599c1103b542`).
+A matching C decompilation of `frontbin.elf` and `boot_elf.elf` from *Ratchet & Clank: Up Your Arsenal* (PS2, NTSC-U, SCUS-97353). The build produces files byte-for-byte identical to retail (SHA-1 `3bc94ee895e4b4af9b5602a229af599c1103b542` for frontbin, `487975305f8a263c750dfede50391b575ed07835` for boot_elf).
 
 This repo contains no game code or assets. To build it you need your own copy of the game.
 
 ## Status
 
 1607 of 31316 functions (5.1%) are fully matched (2026-10-06). `python tools/pr_check.py` prints the current count for frontbin (the file being worked on). 1226 functions are matched fully in C with the rest matched being confirmed handwritten assembly as currently no known compiler or set of flags generates matching assembly.
+
+boot_elf (the main executable: the engine core and a second copy of the front end) is split the same way, in `src/boot_elf/core/` and `src/boot_elf/text/`, and its front end was seeded from frontbin's C; see [`docs/boot_elf.md`](docs/boot_elf.md). `python tools/pr_check.py --target boot_elf` prints its count.
 
 frontbin's code is in `src/frontbin/`, one C file per original source file (see [`docs/source_files.md`](docs/source_files.md)). Until 2026-10-03 it was a single `src/text.c`; branches or notes that mention that file are older than the split.
 
@@ -15,12 +17,14 @@ frontbin's code is in `src/frontbin/`, one C file per original source file (see 
 ## Quick start (Windows)
 
 1. Install SN Systems ee-gcc 2.95.3 v1.36 to `C:\tools\eegcc_2.95.3_sn_v1.36`.
-2. Put your own `frontbin.elf` in the repo root.
+2. Put your own `frontbin.elf` and `boot_elf.elf` in the repo root.
 3. `pip install -r tools/requirements.txt` (this includes splat)
-4. `python tools/setup_asm.py`. This generates the `asm/` folder from your `frontbin.elf` (it is gitignored, so a fresh clone has none; without it `make` stops with "No rule to make target `asm/header.s'"). It takes a few minutes.
-5. `& "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe"`. The last line should be `MATCH: ...`.
+4. `python tools/setup_asm.py`, then `python tools/setup_asm.py --target boot_elf`. These generate the `asm/` folder from your `frontbin.elf` and `asm/boot_elf/` from your `boot_elf.elf` (they are gitignored, so a fresh clone has none; without them `make` stops with "No rule to make target `asm/header.s'"). Each takes a few minutes.
+5. `& "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe"`. The last two lines should be `MATCH: ...`, one per executable.
 
-Linux and macOS: run `python3 tools/setup_asm.py`, then `python3 tools/build.py --toolchain <dir> --runner <wibo>`.
+Linux and macOS: run both `setup_asm.py` commands with `python3`, then `python3 tools/build.py --toolchain <dir> --runner <wibo>` and the same with `--target boot_elf`.
+
+Every tool works on frontbin unless you pass `--target boot_elf` (or set `UYA_TARGET=boot_elf`); the targets and their paths are listed in `tools/targets.py`.
 
 ## Contributing
 
@@ -47,3 +51,5 @@ The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in 
 | `tools/build_text.py` | Builds `src/frontbin/*.c`, one object per source file, with per-function flags (`tools/text_parts.txt`) |
 | `tools/split_text.py` | Keeps each source file's declarations from other files up to date (`--refresh`) |
 | `tools/check_match.py` | Compares the built binary with retail |
+| `tools/targets.py` | The executables the repo builds (frontbin, boot_elf) and where each one's files live |
+| `tools/seed_boot_elf.py` | Copies frontbin's matched C into boot_elf's front end; rerun it when frontbin gains matches |

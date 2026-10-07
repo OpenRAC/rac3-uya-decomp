@@ -1,13 +1,22 @@
 # Ratchet & Clank: Up Your Arsenal decompilation
 
-A matching C decompilation of `frontbin.elf` from *Ratchet & Clank: Up Your Arsenal* (PS2, NTSC-U, SCUS-97353). "Matching" means the C in this repo compiles and links to a file that is byte-for-byte identical to the retail one. Every pull request has to keep it that way.
+A matching C decompilation of `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf` from *Ratchet & Clank: Up Your Arsenal* (PS2, NTSC-U, SCUS-97353). "Matching" means the C in this repo compiles and links to files that are byte-for-byte identical to the retail ones. Every pull request has to keep it that way.
 
 ## Where things stand
 
 - `src/frontbin/*.c` hold every function in the `.text` section, one file per original source file (`tools/src_files.txt`, see [docs/source_files.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/source_files.md)). Functions that are done are C. The rest are `INCLUDE_ASM(...)` stubs that pull in the retail assembly from `asm/nonmatchings/text/`.
-- As of 2026-10-06, 1,607 of the 1,867 functions are final source: 1226 in C, plus 156 hand-written assembly functions (`ASM_FUNC`) and 225 linker remnants (`LINKER_REMNANT`). Run `python tools/pr_check.py` for the current count.
+- As of 2026-10-07, all three targets build byte-identical:
+
+  | Target | In C | `INCLUDE_ASM` left | % in C | Final source (C + `ASM_FUNC` + `LINKER_REMNANT`) |
+  |---|---|---|---|---|
+  | frontbin | 1,414 | 72 | 75.7% | 1,795 of 1,867 (156 hand-written, 225 remnants) |
+  | boot_elf | 1,479 | 650 | 52.5% | 2,165 of 2,815 (358 hand-written, 328 remnants) |
+  | i5bootn | 2 | 42 | 1.0% | 157 of 199 (147 hand-written, 8 remnants) |
+
+  frontbin's 72 are near misses with drafts (one of them, `func_003ECDF0`, is a data blob); see `docs/permuter_todo.md`. Most of what is left in boot_elf's engine core and in i5bootn is Sony library code built with other compilers. Run `python tools/pr_check.py --target all` for the current counts.
+- boot_elf (the main executable: the engine core in `src/boot_elf/core/` and a second copy of the front end in `src/boot_elf/text/`, seeded from frontbin's C) and i5bootn (the bootstrap launcher, `src/i5bootn/`) are described in [docs/boot_elf.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/boot_elf.md) and [docs/i5bootn.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/i5bootn.md). Every tool takes `--target boot_elf` / `--target i5bootn`, many also `--target all` ([docs/targets.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/targets.md)).
 - Until 2026-10-03 all of this was one file, `src/text.c`. Anything that still refers to it (an old branch, an old note) predates the split; see [docs/source_files.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/source_files.md) for how to carry it over.
-- The toolchain is fully identified: SN Systems ee-gcc 2.95.3 v1.36, plus the right assembler per function. See [Toolchain and build](Toolchain-and-Build).
+- The toolchain is fully identified: SN Systems ee-gcc 2.95.3 v1.36, plus the right assembler per function. Since 2026-10-07 every frontbin and boot_elf range also has `-mvu0-use-vf0-vf2`, the VU0 register range the original build most likely used. See [Toolchain and build](Toolchain-and-Build).
 - The level overlays are tracked for progress. Work on their shared code has started with a few verified functions in `src/levels/common/`, built by an opt-in tool ([docs/common_level_c.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/common_level_c.md)); it is not part of `make`.
 
 ## Pages

@@ -1,225 +1,144 @@
 # decomp-permuter worklist
 
-Near misses found while matching on 2026-09-30/10-01. Every instruction is right (or nearly) and the difference is register allocation or scheduling, so these are decomp-permuter targets (see `docs/permuter.md`). Scores are the localdecomp score at the best flag mode (0 = match, lower is closer); sizes are in bytes.
+The frontbin near misses. The status list below (2026-10-07) is the current one: every frontbin function that is still `INCLUDE_ASM`, its best diff and what is left. The sections after it are a log, oldest first; rows for functions matched since have been removed.
 
-The sections below are a log, oldest first, so many of their rows are matched by now. Check the status list here before picking one.
+## Status 2026-10-07
 
-## Status 2026-10-02
+72 `INCLUDE_ASM` entries are left in `src/frontbin/` (`docs/remaining_functions.tsv`); `func_003ECDF0` (0x1B4, the last entry) ends in data and is not a real function, so 71 functions remain. Every one has a near-miss C draft with a header (flags, diff count, what is left, what was tried) in the reports bundles of the final passes (f, g) and round k.
 
-Matched since they were listed here (no longer `INCLUDE_ASM` in `src/`): `func_0038C888`, `0038C9D8`, `0038EA58`, `00393380`, `003958A0`, `00396F18`, `0039C1C8`, `003A2E40`, `003A32E0`, `003AAEC8`, `003AAF88`, `003ADF88`, `003AE098`, `003AE120`, `003AE1A8`, `003AED40`, `003B11C0`, `003B1518`, `003B42D0`, `003B46F0`, `003B8A68`, `003BA3E8`, `003BC0F0`, `003BF4F8`, `003C0B10`, `003CB890`, `003D27C0`, `003E0478`, `003E0870`, `003E18C0`, `003E1D68`, `003E8718`, `003E9BA8`, `003EA9B0`, `003EC6E0`, the table-lookup family and the mod-3 hash lookups (below).
+- Diffs are aligned instruction diffs (the measure `tools/permuter_scorer.py` uses), from the latest report: g1 to g4 (second final pass), k2 for `func_003AA4B0` and `func_003953F0`, and m1's compiler-matrix re-measurement where it differs (marked m1).
+- Most were measured before `-mvu0-use-vf0-vf2` became a base flag on 2026-10-07. That flag changes loop code, so re-measure a draft before working on it. m1 measured three that get closer with it: `func_003B1EB0`, `func_003A8230`, `func_0038FDC0`.
+- "S" is split addresses, "N" `-mno-split-addresses`; "ps2as" the `@ps2as` assembler; "jform" the VU0 j-form (Matching-Patterns).
+- Check `tools/text_parts.txt` for the function's range before trusting a draft's header: some headers had the mode wrong.
+- Three blockers from the final passes are gone since round k: the prototypes for `func_00399A00`, `func_003ACB00` and `func_003B9DA8` in other functions' blocks are fixed, and `func_003BC218`'s extra rodata words can be written as a `const` array after the function.
 
-Every other function in this file is still open. Biggest leftover groups: the mod-3 hash inserts (`func_003E5F00`, `003E6680`, `003E67B8`), the `func_003DFB40` family (six functions), `func_003E1F40`, and the `sq`-saving functions other than the four matched ones.
+| Function | Size | Bucket | Best | Flags | What is left |
+|---|---|---|---|---|---|
+| `func_003BC218` | 0x350 | switch | 1 | ps2as | Case 2's `r = 1` should reuse the constant-1 pseudo (`$s1`); 30 variants of the case-2 temporary and the switch index tried. When inserting, write the 42 data words after its jump table (0x318A18 to 0x318ABC) as `const u32 D_00318A18[42]` right after the function (text in the round k bundle, `k2/`). |
+| `func_003B0A60` | 0x1E0 | plain | 2 | file flags (S), no override | Order of the `lui`/`addiu` of `D_0037B850` and the `move $a1` before the 5th sprintf. A double `do { } while (0)` around the table-base load got it from 12 to 2. |
+| `func_003E09D8` | 0x1A0 | plain | 2 | default | Retail forms one address and `move $v1, $a2`; ours computes it twice. Looks like a gcse PRE copy; not reproduced. |
+| `func_003E89F0` | 0xDC | plain | 2 | S ps2as | The `0x5C` store is issued early because it is the last use of the 1.0f constant (sched1 tie-breaker). Two-variable constants and store orders tried. The draft compiles in context (the file declares the function `s32`). |
+| `func_00391E78` | 0x15C | plain | 3 | S ps2as | Local allocation gives the 0x25E4 byte `$v0` (retail `$v1`, with the 2 in `$a0`). |
+| `func_003B43C0` | 0x1EC | plain | 3 | ps2as | The switch value lands in `$v0`, retail `$v1`; a 10-minute permuter run found nothing. |
+| `func_003E0E90` | 0x138 | plain | 3 | S ps2as | Reorg steals the move into the `beqz` slot. Uses `static inline` helpers. |
+| `func_0039CEA8` | 0x624 | switch | 4 | ps2as | `D.e[0].h` is read directly in the h1 helper; retail does not CSE that load to `e`. |
+| `func_0039CAB8` | 0xE4 | plain | 4 | file flags | sched1 order of the constant loads versus the 12th argument's `dsll32`. 2.9-ee-990721 scores 2, read as noise (m1). |
+| `func_0038DC08` | 0x2A8 | plain | 4 | S ps2as | The `0xE` register: the fake-lifetime adjacency of the `0x8000` constant (local-alloc's `find_free_reg` with sched2). Early locals `w`/`v` fixed the tail. |
+| `func_003B9DA8` | 0xF0 | vu0 | 6 (4 in N mode, m1) | ps2as, jform | One float constant load is scheduled at the first stall instead of after the first `vadd`. Its blocking prototype is fixed. |
+| `func_0038E930` | 0x128 | plain | 5 | ps2as | Head `sll` register and the second `sll` placement. The draft has volatile `pos` and `D_001D9F20` and a dead `else { pos = 0; }`. |
+| `func_003ACB00` | 0x130 | plain | 5 | file flags (S) | Local allocation of the mult / `f50` / `f14` values at the loop bottom. The `func_003ACC30` prototype it needed is fixed. |
+| `func_003B7B50` | 0x35C | mmi | 5 | S ps2as | Order of the three zero argument moves; a statement climb and argument variables didn't help. Uses the documented `sq $0` `"=m"` asm. The permuter's base score didn't agree with the aligned count here. |
+| `func_003AA4B0` | 0x32C | plain | 5 (k2; was 13) | S ps2as | Before k2: sched1 put the `sp[3]` load before `$a2 = k`, so `k` lost `$v0`. k2's draft is in the round k bundle. |
+| `func_003953F0` | 0x238 | switch | 7 (k2; was 15) | ps2as | Case 0's registers; all 90 statement orders of case 0 were tried before k2. |
+| `func_003E0B78` | 0x148 | plain | 7 | default | Loop 2's table entry is in `$a0` where retail has `$v1`. One permuter output reused `j` (changed the meaning). |
+| `func_003C1130` | 0x30C | vu0 | 8 | ps2as, no `-fopt-stack` | Listed in `sq_ra_funcs.txt`. Struct copies as statements in slot order got it from 49 to 8. |
+| `func_003C9078` | 0x190 | plain | 8 | S ps2as | Retail loads `f1A` fourth and computes `b` in the `jal` slot; ours loads `f1A` second (more dependents in sched1's ranking). Same problem as `func_003C8ED0`. |
+| `func_003EB180` | 0x1D4 | plain | 8 | S ps2as | All 120 orders of the first 5 stores and the constant-variable forms tried; a K&R zero-argument call to `func_003E16B8` fixed the `jal` slot. |
+| `func_003A04A0` | 0x87C | vu0 | 8 | jform | Three scheduling spots. Not reworked since round d. |
+| `func_00390730` | 0x4E8 | plain | 9 | S ps2as | The FP schedule in the angle block (`D_001D52FC->f1C4` read at every test, `do { } while (0)` around the angle statement). |
+| `func_003BE1A0` | 0xBC | plain | 9 | S ps2as | Both permuter results changed the meaning and were rejected. |
+| `func_00399A00` | 0x290 | plain | 9 | S, `-fforce-mem` | gcse PRE hoists the lone tail `%hi(D_142430)` before the first loop; with `-fno-gcse` the tail is retail's, but no C form stops the hoist. Its prototype in the `func_003972A0` block is fixed. |
+| `func_003C8ED0` | 0x1A8 | plain | 11 | S ps2as | Only the loop body; the same `f1A` load-order problem as `func_003C9078`. Needs the alias `D_001D9388_003C8ED0`. |
+| `func_003A21C0` | 0x2A0 | plain | 12 | S ps2as | sched1 moves `idx<<4` / `+arr` above the calls; `do { } while (0)` barriers fix that but break the `D_00225780` high-half copy (CSE is cut). Needs a scalar alias for `D_0022766C`. |
+| `func_003921D8` | 0x224 | plain | 12 | S ps2as | Local-alloc order in the TEX0 tail. |
+| `func_003B8560` | 0x19C | vu0 | 12 | S, jform | Retail copies the base into `$s5` after the guard; guard and in-loop forms tried. |
+| `func_0038F3F8` | 0x9C4 | plain | 14 | S ps2as | 2 of the 14 are artifacts of the agents' diff tool (a retail `lui ..., 0x32` read as a jump-table high half). |
+| `func_003B07B8` | 0x2A4 | plain | 15 | ps2as | Order of the local float constants. |
+| `func_00382F90` | 0x154 | plain | 15 | S ps2as | Retail computes the h1 values before h0; uses constant-address stores; a dependency-aware climb gained nothing. |
+| `func_00389FB8` | 0x890 | switch | 16 | S ps2as | A `kp = (volatile s32 *)&D_001D55C8;` pointer at the loop top fixed f16/f17; the rest is allocation. |
+| `func_00395C48` | 0x1C4 | plain | 20 | file flags | First-block global allocation. |
+| `func_003D1570` | 0xE0 | plain | 21 | default | Only the loop's register allocation; a rewrite in the style of its matched sibling `func_003D14D0` was worse. |
+| `func_003D3428` | 0x358 | plain | 21 | | Declaration swaps and a climb gave nothing. |
+| `func_0038FDC0` | 0x928 | switch | 22 (20 with vf2, m1) | S ps2as | Clamp constant, spill order. |
+| `func_003E92D8` | 0x5DC | plain | 23 | ps2as | Not reworked in the final passes. |
+| `func_00385E40` | 0x3CC | plain | 23 | | The CSE copy swap (set REG0 REG1) picks the other register. |
+| `func_003ACD38` | 0x194 | plain | 24 | file flags | Prologue and pre-loop code match; the loop's globals start at `$a2` where retail starts at `$t0`. Keeps one volatile read from an earlier draft. |
+| `func_003AE8A8` | 0x3F8 | switch | 25 | S ps2as | Block order in case 6. |
+| `func_0039C548` | 0x1C4 | mmi | 25 (19 at `-G0`, m1) | | Store schedule through `p->` and registers. m1: the gp-relative address of a small-data object changes the schedule, so check its declaration. |
+| `func_003EAC88` | 0x448 | plain | 26 | N ps2as | Float register order of w/sy/ay/sx/ax. |
+| `func_003EA290` | 0x3B4 | switch | 27 | S ps2as | Registers for the four alpha bytes. `-fno-gcse` only fixes the word count, so it isn't needed. |
+| `func_0038A848` | 0x964 | switch | 27 | S ps2as | Which of f16/f17 ends in `$f31`. Calls `func_00387118` through a floats-first alias: needs the symbol line `func_00387118_0038A848 = 0x387118;`. |
+| `func_003AB3A8` | 0x260 | plain | 29 | S | Register numbering only; m1: needs a VU0 range of N <= 2 (the base flag now). Not reworked. |
+| `func_00383FD8` | 0x440 | mmi | 29 | | Global-alloc placement of HIGH pseudos (2 diffs with only registers compared). |
+| `func_003B9730` | 0x150 | vu0 | 31 | N ps2as, vf2 | |
+| `func_00394C58` | 0x31C | mmi | 34 | | Loop-counter copies (analysis in the draft header). |
+| `func_0037F978` | 0x570 | vu0 | 36 | jform | The `&v10` gcse reaching-register shape and the PRE of the 1e-5 constant. |
+| `func_00381C18` | 0x178 | plain | 40 | | Combine's `lbu` narrowing versus retail's store order (CC6 first). |
+| `func_003B6528` | 0xA00 | mmi | 41 | S ps2as | Reload's spare-register order (Matching-Patterns, batches 27 and 29). |
+| `func_003AC6F0` | 0x30C | plain | 44 | S | Global alloc's first pass skips `$a2`/`$a3` for `sz` because the local pseudo `p0 - madr` prefers them. Probably wants the `func_003ACD38` rewrite (separate local for the position math). |
+| `func_003DE560` | 0x30C | vu0 | 45 | S ps2as, jform | Not reworked. |
+| `func_00394368` | 0x2F4 | mmi | 47 | ps2as | Global-alloc order (th, the k copy, an extra `$s7`). |
+| `func_0038CC68` | 0x1D4 | plain | 50 | | The then-arm givs; a constant-address `0x1D4CF8`, a store climb and a non-replaceable `m0` giv got it from 104. |
+| `func_00380D48` | 0x378 | plain | 56 (51 with N + `-fforce-addr`, m1) | S ps2as | Loop giv / strength-reduction shape. |
+| `func_003A4E70` | 0x540 | mmi | 62 | S ps2as | Clamp on `sh`; needs the alias `func_003A4860_003A4E70`. |
+| `func_003A35C0` | 0x440 | plain | 64 | S ps2as | Retail spills `lo` and `n` and keeps `q+0xC` in `$s6`. |
+| `func_003830E8` | 0x754 | mmi | 76 | ps2as | Not worked: `div.s` issue order, store order. |
+| `func_00395090` | 0x2C4 | mmi | 105 | ps2as | Its inner loop is `func_00394368`'s packet builder; match that first. |
+| `func_003E9D78` | 0x300 | plain | 117 (113 with `-fno-schedule-insns2`, m1) | N ps2as | First call through a varargs cast; not reworked further. |
+| `func_003B1EB0` | 0x410 | plain | 117 (79 with vf2, m1) | S | Layout of the spilled givs. Rework under the base VU0 flag. |
+| `func_00390C18` | 0xDC8 | switch | 121 | | First 0x4E8 bytes match; case 2 tail and the i/sel tie looked at only. |
+| `func_003BA9A0` | 0x4F8 | vu0 | 146 (124 in N mode, m1) | ps2as, vf2 | Retail spills six values; the draft was tuned in S. |
+| `func_003B3558` | 0x860 | plain | 135 | S ps2as | Save-data serializer (0xC00 frame); surveyed only. |
+| `func_003A8230` | 0x136C | plain | 141 (131 with vf2, m1) | S ps2as | Register allocation. Rework under the base VU0 flag. |
+| `func_003A26D0` | 0x4EC | vu0 | 186 (169 with `-fno-gcse`, m1) | S ps2as, jform | Spills in the main loop and register pressure. Its `divs_nops.txt` line has the sixth count since round k. |
+| `func_003C1440` | 0x4B4 | vu0 | 236 (229, m1) | ps2as, jform | First complete draft only. |
+| `func_0038CE40` | 0xBE8 | mmi | ~330 (311 with `-fno-rerun-loop-opt`, m1) | | First draft (GS display / double-buffer setup). |
+| `func_0039EE68` | 0xC8C | vu0 | 398 | ps2as, jform | Only the missing `func_0039ED50` prototype added since round d. |
+| `func_0038B1E8` | 0x968 | mmi | ~400 (393 with `-fno-expensive-optimizations`, m1) | | First draft; the caller-saves `sq`/`lq` allocation isn't reproduced. |
 
-## Table-lookup family (done except `func_003E1F40`)
+## Log
 
-Each looks up an object through the `D_001DA9B8` singleton, checks it with a virtual call, then calls a function found by a hash lookup. 15 of the 16 match with the template in `Matching-Patterns.md` ("Singleton vtable wrappers"): `func_003E29B8`, `003E2118`, `003E2728`, `003E28E0`, `003E2808`, `003E21F8`, `003E2028`, `003E1E50`, `003E2C88`, `003E2B98`, `003E22D0`, `003E23C0`, `003E30C8`, `003E2A90`, `003E2618`. `func_003E1F40` is still open (see the fourth pass below).
+Older entries, oldest first. The diffs in them are from the day they were written; the status list above supersedes them.
 
-## Mod-3 hash lookups (done)
+### Individual near misses (2026-09-30/10-01)
 
-`func_003E4890`, `003E4918` and `003E4DA0` matched by naming the hoisted constants as locals and assigning them in retail's order (`Matching-Patterns.md`, "Init order before a loop").
-
-## Mod-3 hash inserts (3 functions)
-
-Same loop as above plus a call to the lookup; the `key & 1` and base-pointer setup are scheduled earlier in retail.
-
-| Function | Score |
-|---|---|
-| `func_003E5F00` | 285 |
-| `func_003E6680` | 285 |
-| `func_003E67B8` | 285 |
-
-## Individual near misses
+Scores in this and the 2026-10-01 sections are the localdecomp score at the best flag mode (0 = match, lower is closer); sizes are in bytes.
 
 | Function | Size | Score |
 |---|---|---|
-| `func_003ADAE0` | 0x5C | 20 |
-| `func_003AE1A8` | 0x94 | 20 |
-| `func_003E9BA8` | 0xA4 | 25 |
-| `func_003958A0` | 0x50 | 30 |
-| `func_003B8A68` | 0xA4 | 30 |
-| `func_003CB890` | 0xC4 | 40 |
-| `func_003B1430` | 0x60 | 60 |
-| `func_003AAEC8` | 0xC0 | 60 |
-| `func_003E8718` | 0x70 | 65 |
-| `func_003E91F8` | 0x64 | 90 |
-| `func_003B11C0` | 0x50 | 105 |
-| `func_003E18C0` | 0x68 | 180 |
-| `func_003B42D0` | 0xE0 | 180 |
-| `func_0038EA58` | 0x2C | 210 |
-| `func_003AE120` | 0x84 | 230 |
-| `func_003ADF88` | 0xDC | 240 |
-| `func_003EC6E0` | 0x80 | 245 |
-| `func_003EA9B0` | 0x84 | 265 |
-| `func_003A32E0` | 0x88 | 355 |
-| `func_003B9B60` | 0x88 | 365 |
-| `func_003BA2A8` | 0xA8 | 365 |
-| `func_003C1A40` | 0x20 | 425 |
-| `func_003AE098` | 0x84 | 450 |
-| `func_003A2E40` | 0xA0 | 535 |
-| `func_003A9CF8` | 0xE4 | 570 |
-| `func_003B6368` | 0xA8 | 620 |
-| `func_003E0FC8` | 0x11C | 630 |
-| `func_003B1518` | 0x9C | 785 |
-| `func_0039C1C8` | 0x48 | 795 |
-| `func_003E0870` | 0x90 | 830 |
-| `func_003B7618` | 0x258 | 1000 |
-| `func_0039CC98` | 0x20C | 1000 |
-| `func_003B5440` | 0x284 | 1000 |
 | `func_003EB180` | 0x1D4 | 1000 |
-| `func_003BA3E8` | 0xA8 | 1000 |
 
-## Update 2026-10-01 (second pass)
+### Update 2026-10-01 (second pass)
 
-Matched since the list above was written: `func_003AE1A8`, `003E9BA8`, `003B8A68`, `003E18C0`, `003AAEC8`, `003E8718`, `003B42D0`, `003EA9B0`, `003B11C0`, `003EC6E0` (permuter or by hand), plus 14 plain functions from the by-hand pass. Closest remaining, with the best score reached (the sources are in the gitignored `scratch/permuter_bests/<func>.c`, first line = score and flag mode; start the permuter from those, not from a fresh m2c draft):
+Matched in this pass: `func_003AE1A8`, `003E9BA8`, `003B8A68`, `003E18C0`, `003AAEC8`, `003E8718`, `003B42D0`, `003EA9B0`, `003B11C0`, `003EC6E0` (permuter or by hand), plus 14 plain functions from the by-hand pass. Hand-search tricks that matched things: drop temporaries (`func_003B8A68`, `003AAEC8`), `(a1 << 2)` for the index (`003E18C0`), reorder stores (`003E9BA8`, `003EA9B0`). Two idioms: `*(s32 *)0x1D4B4C = 0;` gives `lui $at; sw lo($at)` where a declared global gives `$gp` or `$v1`; chain `&` over call results with a separate temp (`t = f() != 0; r = r & t;`), because `r &= f() != 0` becomes `movz` (`func_003E3700`).
 
-| Function | Score | Mode |
-|---|---|---|
-| `func_003ADAE0` | 10 | N (only the `lui` temp register differs) |
-| `func_003958A0` | 20 | S |
-| `func_003ADF88` | 40 | default |
-| `func_003CB890` | 40 | default |
-| `func_003B1430` | 60 | S |
-| `func_003AE120` | 135 | PS |
-| `func_003E91F8` | 170 | NPS |
+### Update 2026-10-01 (third pass)
 
-Not touched yet: the mod-3 hash lookups/inserts and the 16-function table-lookup family above. Hand-search tricks that matched things in this pass: drop temporaries (`func_003B8A68`, `003AAEC8`), `(a1 << 2)` for the index (`003E18C0`), reorder stores (`003E9BA8`, `003EA9B0`).
+Matched: `func_003BF4F8` (declare the locals in `r, g, b` order and store in natural order; `@ps2as`).
 
-More near misses from the by-hand pass (not saved in `scratch/permuter_bests/`, rewrite from the m2c draft):
+### The `sq`-saving functions (`tools/sq_ra_funcs.txt`)
 
-| Function | Score | Note |
-|---|---|---|
-| `func_003BF4F8` | 20 (PS) | only the stack-byte store/load order differs |
-| `func_003AED40` | 100 | one missing `nop` in a short loop containing a `jal` |
-| `func_003BC0F0` | 120 (default) | one swapped `daddu $4/$5` pair in the third `func_0011B754` call |
-| `func_003D27C0` | 205 (N) | scheduling of one `lw` from `D_001A1ED4` |
-| `func_00396F18` | 60 (NPS) | position of `sd $ra` in the prologue |
-| `func_003B2958` | 340 | second loop has pointer/counter registers swapped |
+All of them are matched now except `func_003C1130` (8 diffs, see the status list).
 
-Tooling gap: `tools/asm_filter.py` does not pad short loops that contain a `jal` (`jal` is not in its simple-op list), but retail has the pad `nop` there (`func_003AED40`, `func_003B46F0`). Fixing the filter would unlock these without inline asm. Two idioms from this pass: `*(s32 *)0x1D4B4C = 0;` gives `lui $at; sw lo($at)` where a declared global gives `$gp` or `$v1`; chain `&` over call results with a separate temp (`t = f() != 0; r = r & t;`), because `r &= f() != 0` becomes `movz` (`func_003E3700`).
-
-## Update 2026-10-01 (third pass)
-
-Matched: `func_003BF4F8` (declare the locals in `r, g, b` order and store in natural order; `@ps2as`). Permuter runs of 400 s gave no improvement on `func_003958A0` (20), `003ADF88` (40), `003CB890` (40) or `003B1430` (60). New or improved near misses:
-
-| Function | Score | Note |
-|---|---|---|
-| `func_00391A18` | 20 (S) | two separate locals `s32 x, y;` (not an array), first call is `func_0038EDE8(a0, &x, &y)`; only the register order of two loads differs |
-| `func_00396F18` | 60 (NPS) | only the position of `sd $ra` in the prologue differs |
-| `func_003AED40` | 100 | loop padding `nop` after the `jal` delay slot; needs the `asm_filter.py` `jal` fix |
-| `func_00389468` | 360 (PS) | `__asm__("" : "+f"(pi));` before `pi + pi` stops gcc folding it; retail uses `$f0`/`$f1`, mine `$f12`/`$f0` |
-| `func_0038C888` | 400 | retail saves `$ra` with `sq`/`lq`; no flag mode emits it, likely needs inline asm |
-
-## Update 2026-10-01 (fourth pass, 50 functions)
-
-Matched by hand or by the permuter: see `Matching-Patterns.md`, "Patterns from the hand pass". Still open, best first (all within a few instructions of retail; sources are in `scratch/permuter_bests` if you kept them):
-
-| Function | Score | Note |
-|---|---|---|
-| `func_003B8968` | 5 (def) | `addiu $s0,$s2,0x1a0` uses `$v0` for the base; retail copies `&D_00225780` into `$s2` in the `blez` delay slot. The permuter's `do { i = 0; ... } while (0)` prologue got it from 65 to 5 |
-| `func_003B27A8` | 5 (PS) | case 6: retail's first arm jumps to the second arm's tail (`b ec`); mine merges into the third arm's. Needs `.extern` hints for the four `$gp` globals and byte globals as scalars |
-| `func_003ADAE0` | 10 (N) | retail is split-address (`lui $v1; addiu $a0,$v1`) but then gcc merges the base into `$v0`; N mode gets the structure |
-| `func_003B0DA0` | 20 (PS) | store order around the first call |
-| `func_003AE120` | 30 (PS) | the two final stores come out in the other order |
-| `func_003E8420` | 55 (NPS) | order of the first stores and the two `lui`s |
-| ~~`func_003E4890`, `003E4918`, `003E4DA0`~~ | matched | see "Mod-3 hash lookups" above |
-| `func_003AD650` | 60 (S) | retail fills the `blez` delay slot with `lui`; mine with the `sw` |
-| `func_003DFB40` and `003DFCA8`, `003DFE10`, `003E50A8`, `003E5210`, `003AFAA8` | 140 (S) | use the result of `func_003E1770` (a pointer pass-through). Left: the register order of the middle `vt->f8(o, 2)` call (`lw $v0,8($s0); lw $v1,8($v0)` in retail) and where `li $a0,0x48` lands. Do not use the permuter's 25: it moved `s2 = func_003E1898(b1)` inside an `if` |
-| `func_003E1F40` | 100 (S) | sibling of the matched `D_001DA9B8` wrappers; the table address is built `lui; addiu; jal; daddu` here, not `lui; daddu; jal; addiu` |
-| `func_003E5F00`, `003E6680`, `003E67B8` | 120, 285 | mod-3 hash inserts: invariants (`key & 1`, base pointers) are hoisted in a different order |
-| `func_003B8E10` | 210 (PS) | same base-register copy as `func_003B8968` |
-| `func_003A4DC8` | 285 | two float temporaries swap `$f22`/`$f23` |
-| `func_003B1430` | 10 (S) | `return D = 1` gives `v1` for the stored constant and `v0` for the return; retail shares `v0` and puts `addiu $sp` before the `lui` |
-| `func_003C1A40` | 3 | `unsigned long` shift/or chain; retail does `dsll` of the last arg before the first `or` (returns the stored value) |
-| `func_003EB6B0` | 12 | midpoint of a box; retail loads `b[0]` into `$f12` first and stores `sw 0x34` before `sb 0x30` |
-| `func_0037DFD8`, `func_0038E730`, `func_0038E6D0` | 12-19 | table lookups; retail peels the first loop iteration (0038E730), merges the final select with `movz` (0037DFD8) |
-| `func_003A9E60` | 19 diff (S, no `-fopt-stack`) | in `sq_ra_funcs.txt`; only the argument-copy registers differ (retail `$a0`->`$t5`, mine `$s1`) |
-
-## The `sq`-saving functions (`tools/sq_ra_funcs.txt`)
-
-`func_0038C888`, `0038C9D8`, `003AAF88` and `003C0B10` are matched. Status of the rest (C drafts are in `scratch/`, gitignored; each has a line in `tools/localdecomp_flags.txt` with the right flags):
-
-| Function | Status |
-|---|---|
-| `func_003A9E60` | 19 diffs (S, no `-fopt-stack`): only the argument-copy registers differ (retail `$a0`->`$t5`, mine `$s1`) |
-| `func_003B82C0` | 48 diffs (S, `@ps2as`): right code, `$s` registers allocated in a different order (retail `$s0..$s7` = a7, a6, a4, a5, a3, a2, a1, ctx); statement-order and expression variants and 10 minutes of permuter did not move it |
-| `func_003BA5B8` | 73 diffs (`@ps2as`): `a7` is spilled to `0x10($sp)` in retail but kept in `$fp` by gcc; the 128-bit copies and the `vadd.xyz` block are done |
-| `func_003D1B10` | 95 diffs (`@ps2as`): same instructions as retail modulo registers (a multiset check), only scheduling and allocation differ; locals for the three packed words change the frame (0x70 instead of 0x80), so do not use them |
-| `func_003D2370` | not started; sibling of `003D1B10` (same GIF packet style), m2c draft works |
-| `func_003B3DB8`, `func_003869E8` | not started; m2c drafts work (`003869E8` has VU0 code) |
-| `func_003C1130`, `func_003A6C30` | not started; m2c fails on them ("two delay slot instructions in a row") |
-
-Lessons from the two that matched:
+Lessons from the first two that matched (`func_003AAF88`, `func_003C0B10`):
 
 - Do not cache a field chain in a local if retail re-reads it: `func_003C0B10` only matched with `obj->set->n` and `obj->set->arr[j]->e` written out each time (a local `s` kept a different register assignment). The permuter found this by inlining the local.
 - A loop counter that retail keeps separate from the loop test needs its own variable (`j` for the first loop, `i` for the second).
 - `$fp` shows up in gcc's output as `$fp`, not `$30`, which `asm_filter` had to learn before the slot remap worked.
 
-## Near misses from the third hand pass (2026-10)
+### Near misses from the third hand pass (2026-10)
 
 | Function | Diffs | What is left |
 |---|---|---|
-| `func_0038E508` | 3 (S) | retail does not thread the `*st == 0xD` test into the `== 3` test (jumps to the second compare); gcc threads it |
-| `func_00385908` | 4 (S) | retail computes each loop base with `lui $s; addiu $s, $s` (two registers in sequence); gcc interleaves through temporaries |
-| ~~`func_00393380`~~ | matched | plain C once `tools/divs_nops.txt` took over the `div.s` padding |
-| `func_0037F4F8` | 2 (S) | VU0 pointer: retail adds the base after the first `lqc2`, gcc before |
-| `func_003BFBA8` | 21 (S, `@ps2as`) | VU asm at the top of the function is scheduled above the register saves in retail |
-| `func_003C8CE0` | 20 (S, `@ps2as`) | store order of the `lui $at` macro stores |
-| `func_003C9AE0` | 23 (S) | nested table loops; counted inner loop form not found |
-| `func_003A5CA8` | 16 (N) | order of the byte stores at the end and where `lw $a0, 0x20($s0)` is placed |
-| `func_003B60F0` | 35 (S, `@ps2as`) | float clamp with two stores; retail uses `$f4`/`$f1` select form |
-| `func_003B9B60`, `func_003BA2A8` | 6, 10 (S) | sibling init functions: retail puts `move $a1, $zero` in the first call's delay slot after the `lui $at` byte stores; gcc fills the slot with the last byte store instead. Same fix would do both |
 | `func_003E89F0` | 8 (N) | constructor on the `D_001DA9B8` singleton template; the vtable store is interleaved with the singleton address calculation in retail and `$v0`/`$v1` are swapped |
-| `func_0037E878` | 7 (N) | retail keeps the counter address in `$a0` (then `$s3`); gcc uses `$v1` |
-| `func_003E0478` | 4 (S) | the loop is right; `$s1`/`$s2` (`n - 1` and the next element pointer) are swapped |
-| `func_003BE418` | 4 (S) | min/clamp of two bytes: `$v0`/`$v1`/`$a1` assigned differently |
-| `func_003E5F00` | 5 (S) | hash insert with the zero-argument call and the `$gp` tombstone address; only the order of the four loop-setup moves differs |
-| `func_003BD428` | 6 (S, `@ps2as`) | `$v0`/`$v1` swapped between the end pointer and the copy of `p` |
-| `func_003A3430` | 8 (S, `@ps2as`) | argument-to-`$s` register order (retail `$s0..$s4` = a..e) |
-| `func_003E0798` | 52 | singleton wrapper; retail keeps four `$s` registers (`o` distinct from `p`, `idx*4` saved) |
-| `func_003822C8` | 43 | three-level `u16` table lookup; gcc folds the `+4` into the base, retail keeps `l` and adds `4` per load |
-
-Near misses from the `div.s` pass (the padding itself is solved, see `tools/divs_nops.txt`):
-
-| Function | Diffs | What is left |
-|---|---|---|
-| `func_003A6640` | 3 (S) | retail loads `$a2`, then `sltu`, then `move $a3, $a2`; mine loads `$a3` and copies to `$a2` |
-| `func_003D3EE0` | 9 (S) | `$s1`/`$s2` swapped between the float source pointer and the quad source pointer |
-| `func_003B5AB0` | 61 | callee-saved float registers `$f20-$f23`: retail has 11.0, 0.49, 6.0 and the scale in that order |
-| `func_003BF910` | 36 | the `max(abs)` chain: retail keeps `abs.s` results in `$f1/$f0/$f2` and branches with `bc1tl` |
-| `func_003B6410`, `func_003B6368` | 4, 14 | `sll` for the index lands in the `beqz` delay slot in retail, `lui` in mine |
-| `func_003E1D68` etc. | matched | needed `@ps2as` plus `.extern X, 4` for the `$gp` floats |
 
 Large-function pass (2026-10-02, largest plain functions first). Matched: `func_0039DB38`, `func_003E3F08`, `func_003DF038`, `func_003DE8F0`, `func_00384420`, `func_003CBE40` (`volatile` on `D_001D9384` keeps its load out of delay slots and loops). Parked, with drafts in `scratch/` (gitignored):
 
 | Function | Size | State | What is left |
 |---|---|---|---|
 | `func_0038F3F8` | 0x9C4 | 66 aligned diffs (S, `@ps2as`), 615 of 625 instructions | retail keeps a second copy of `&o->st` (`$s7` and `$s3`, frame 0x70 not 0x60); the per-direction chain loads into a temporary then `move`s it; the counter clamp is `slti` + `movn` where gcc gives `slt -1` + `movz`. Permuter running from 3550, best 3000 |
-| `func_003EB728` | 0xCA4 | about 105 aligned diffs (N, `@ps2as`), frame and saves right | text layout with two inline helpers (parameters evaluated into `$s` registers first); retail re-reads `o->p` at a two-predecessor block that mine CSEs. Permuter: 7600 to 6800 in an hour |
 | `func_003A8230` | 0x136C | every instruction right, 718 aligned diffs | register allocation only: retail keeps widget pointers in `$s0..$s7` in a reuse pattern a flat `s + off` source does not reproduce |
-| `func_003BC568` | 0xA3C | 250 aligned diffs | HUD layout; retail keeps `&D_002CE0E0` in `$s5` and rederives it later from `&D_002CE100 - 0x20` |
 | `func_003B3558` | 0x860 | not started | save-data serializer, 0xC00 frame, unaligned `ldl`/`ldr` copies |
-| `func_003B49E8` | 0x478 | 2 diffs (S, `@ps2as`) | `$a0`/`$a1` argument moves swapped before the `func_003E3A80` call. Keys found: `func_003E30C8` must return `s32`, and `func_003E3BD0` takes its `0` integer argument last (`(s32, u32, f32, f32, f32, f32, s32)`) |
 | `func_003D3428` | 0x358 | 2 diffs (S, `@ps2as`) | GS packet writer; two loop increments swapped. Retail's register increments need `long step` variables: `u += step; w += step2;` with `x2` taken from the second induction variable `w` |
-| `func_00384EC0` | 0x578 | 2 instructions short (S, `@ps2as`) | GS TEX0 builder, uses a `SCE_GS_SET_TEX0`-style macro. Packet pointer `D_001DA0D0` must be declared `[1]` so stores reload it. Left: retail stores `D_001D4BB0` before the bound check and puts `e->x0`'s `sd` in the delay slot |
 | `func_003B1EB0` | 0x410 | 45 diffs (S) | save-slot list; spilled induction variables and the slot base `&D_142430` reached two ways |
 
-## Near misses from the blocker pass (2026-10-05)
-
-| Function | Size | Best | Notes |
-|---|---|---|---|
-| `func_003A2DF8` | 0x44 | matched 2026-10-06 (batch 21, S `@ps2as` with a `s32[2]` declaration for the `la` macro); was 3 diffs (S, default assembler) | `sq $zero` via the non-volatile `QZERO` form (`__asm__("sq $0,%0" : "=m"(*(u128 *)p))`) after `D_001D6EF0 = 1.0f;`. Left: retail builds the `1.0f` (`lui $at; mtc1`) before the `lui $v0` of the asm address. It MATCHES with `-fno-schedule-insns2`, but both neighbours (`func_003A2BC0`, `func_003A2E40`) need sched2 on, so that would mean a one-function source file; not applied. Drafts for all four: `scratch/near_misses/` (local, not in git) |
-| `func_003A0010` | 0xC0 | matched 2026-10-05 | `QZERO(D_1A3100 + i * 0x10)`, index in the address, not a running pointer |
-| `func_003959A8` | 0x11C | 2 diffs (S) | stores through `o + 0x18` base; retail folds the offset into the symbol |
-| `func_003B10A8` | 0xB0 | 41 diffs (S) | `ldl`/`ldr` unaligned copy; structure right, register allocation off |
-
-## Large-function near misses (batch 3, 2026-10-06)
+### Large-function near misses (batch 3, 2026-10-06)
 
 Drafts are in the agents' `near_misses/` folders, each with a header (diff count, flags, what is left). Not inserted.
 
 | Function | Diffs | Notes |
 |---|---|---|
 | `func_0039CEA8` | 5 | |
-| `func_003A7690` | 6 | |
 | `func_003A04A0` | 8 | vu0, uses the provisional `j` form |
 | `func_0038F3F8` | 14 | 2 are tool artifacts |
 | `func_00389FB8` | 20 | |
@@ -231,25 +150,20 @@ Drafts are in the agents' `near_misses/` folders, each with a header (diff count
 | `func_00390C18` | 121 | |
 | `func_003B3558` | 135 | |
 | `func_003A8230` | 141 | |
-| `func_0038BB50` | 217 | |
 | `func_0039EE68` | 409 | vu0; uses `__asm__("sq $0, %0")` |
 
 Some c1 drafts rely on `volatile` reads to steer scheduling; check those against the sanctioned forms before inserting.
 
-## MMI near misses after batch 29 (2026-10-06)
+### MMI near misses after batch 29 (2026-10-06)
 
 Aligned diffs (difflib over the disassembly). `.permuter.c` drafts are decomp-permuter output converted back to the draft style; check their semantics.
 
 | Function | Diffs | Draft |
 |---|---|---|
 | `func_003B7B50` | 3 positional | hand |
-| `func_00393878` | 6 positional | hand |
-| `func_003D1D40` | 9 | permuter |
-| `func_003BDEA8` | 13 | permuter |
 | `func_00383FD8` | 27 | permuter; hand draft at 29 needs an `@ps2as` override at 0x383FD8 with a restore line at 0x384418 |
 | `func_00394C58` | 32 | permuter |
 | `func_0039C548` | 36 | permuter |
-| `func_0039FBD8` | 50 | permuter |
 | `func_003A4E70` | 60 | permuter |
 | `func_00395090` | 104 | permuter |
 | `func_00394368` | 121 | permuter |

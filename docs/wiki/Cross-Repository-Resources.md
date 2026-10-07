@@ -10,6 +10,29 @@ Dates are Git committer timestamps (`%cI`), retaining their original UTC offsets
 | R | llesieur99 / rac2-decomp | `8c781ebf62b5ceff9615ad20373ba14d4070abc9` | `2026-10-03T00:48:47-04:00` |
 | L | mateuszklysz / Lombyte | `f10ca43d95edef7596bbc1b745a28aa5129703fe` | `2026-10-03T01:44:38+02:00` |
 | P | Veradictus / rac1-decomp, originating from Kryštof “Lynder063” Malinda's work | `82cc82dd4fc81725c2d0057e28beb264c84f66d2` | `2026-10-02T22:19:18-06:00` |
+| O | OpenRAC / rac1-decomp (the organisation repository that P's fork merges into) | `661bb60c1fb2e8f4e335a577193b8ee4a165b8fc` | `2026-10-06T18:07:21-06:00` |
+
+## O: libgcc and Sony library code in rac1-decomp (checked 2026-10-07)
+
+O rebuilds RAC1's `libgcc` from GCC's own sources ([O libgcc README][o-libgcc]) and builds most of its Sony library code (newlib, libkernl, libcdvd, libgraph, libmpeg and more) with Sony's 2.9-ee compiler. UYA links the same kind of code: 56 boot_elf core functions are byte-identical to `libgcc.a` members, and about 440 more core functions carry Sony 2.9-ee or 2.96 fingerprints (see [boot_elf.md](https://github.com/vetusmagnus/ratchet-uya-decomp/blob/main/docs/boot_elf.md)). What carries over:
+
+| What O does | Where | Use for UYA |
+|---|---|---|
+| `libgcc2.c`, `gbl-ctors.h`, `longlong.h` from GCC trunk `31cf01446d` (1999-09-09); `fp-bit.c` from GCC 2.95.3 with `NO_DENORMALS` backported and one shared `__thenan_df`; stand-in build headers | [`src/libgcc/`][o-libgcc] | The same sources build UYA's libgcc modules. Our i5bootn matrix used the 2.95.2 release `libgcc2.c` and Sony's no-denormals change written in place; both work. GPLv2 with the libgcc exception. |
+| Flags `-O2 -G2 -S`, `-DIN_LIBGCC2 -DL_<module>`, one object per `L_` module; `FP_DEFS := -DFLOAT_BIT_ORDER_MISMATCH -DNO_DENORMALS -DUS_SOFTWARE_GOFAST`, `fp-bit.c` built twice (`-DFLOAT` for fp-bit.o) | [`Makefile.sn`][o-make] | One object per module reproduces the 8-byte alignment gaps between modules. Each division module has its own static `__clz_tab` in rodata, which needs its own rodata placement. |
+| Compile through the 2.9-ee **driver** (`ee-gcc.exe`), never `cc1` directly | O libgcc README | The driver supplies `__mips__`/`__R5900__`, which `longlong.h` needs; through `cc1` alone `__divdi3` and `__muldi3` come out wrong. |
+| Per-file compiler: a third column `ee29` in `config/core_text.objects` selects a static pattern rule that compiles with 2.9-ee and an explicit `-I.../gcc-lib/ee/2.9-ee-991111/include` (the driver under Wine doesn't find its own include dir) | [`Makefile.sn`][o-make], `config/core_text.objects` | The model for our planned per-file compiler pseudo-flag in `text_parts.txt`, next to `@ps2as`. |
+| Linker dead-stripping rule: an unreferenced function lost its first `floor(size/8)*8` bytes, leaving the last word plus alignment `nop` when its size is 4 mod 8; fill between objects is `0xCDCDCDCD` | `tools/strip_dead.py`, O libgcc README | Explains linker remnants inside library ranges, the same rule our remnants follow. |
+| A function that matches a member of Sony's prebuilt `.a` archives is 2.9-ee code; the archives also give real names | O docs | Same method as our `libgcc.a` comparison; their names can label UYA's library functions. |
+
+**Their three open modules match with our compiler.** O keeps `__moddi3`, `__udivdi3` and `__umoddi3` as stubs: with the Windows `2.9-ee-991111b/r4` `cc1` they get the right instructions but smaller stack frames, and their README notes Sony's objects were built on Linux. Compiled from O's own `libgcc2.c` with the **Linux 2.9-ee-991111-01** driver (`-O2 -G0 -DIN_LIBGCC2 -DL_<module>`), `_udivdi3.o`, `_umoddi3.o`, `_moddi3.o` and `_divdi3.o` are word-for-word identical to the members of Sony's `libgcc.a` (same frames: 0x10, 0x30, 0x40). This agrees with our i5bootn matrix (26 of 26 libgcc functions with 2.9-ee-991111-01, 23 of 26 with the Windows 2.9-991111). `_eh.o` needs GCC's `gthr.h`/`gthr-single.h` from the same era, which O's tree doesn't have; `frame.c` isn't in O either.
+
+Other findings in O worth knowing (from its docs, not re-verified here):
+- Sony's 2.96-ee-001003-1 pads `div.s`/`sqrt.s`/`rsqrt.s` with `nop; nop` by default (`-mno-handle-ee-div-pipeline-bug` turns it off); SN 2.95.x and 2.9-ee never do. A function with padded divides is a 2.96 candidate.
+- 2.9-ee tail-calls a void function that ends in a call but never `return f(...)`; it has `-fstrict-aliasing` on by default; it saves registers with `sd` in 16-byte-stride slots. These match the library signs our boot_elf core pass found.
+- O's 989snd (`989snd.c`, about 42 functions in C) is most likely an earlier build of the sound library in UYA's SN-compiled range at 0x13B330 to 0x13D420 (inferred from names and layout, not compared): a starting point for those functions.
+- `__sclose` and the other stdio internals right after `sprintf` match only under 2.95.3, while `sprintf.c` matches only under 2.9-ee: compiler boundaries can fall inside a library.
+- License: MIT for project code (keep the notice); `libgcc` sources GPLv2+ with the libgcc exception; `include/moby_pvars.h` is GPL-3.0 (from Wrench).
 
 ## Confirmed reference relationships: already C in UYA
 
@@ -117,3 +140,5 @@ This note describes relationships and methods. It distributes no new shared impl
 [u-level-vector]: https://github.com/llesieur99/ratchet-uya-decomp/blob/df121cd88669b9de716e857336ad5c44d30ef438/src/levels/common/func_00444F70.c
 [u-level-cosine]: https://github.com/llesieur99/ratchet-uya-decomp/blob/df121cd88669b9de716e857336ad5c44d30ef438/src/levels/common/func_004421E8.c
 [u-pr8]: https://github.com/vetusmagnus/ratchet-uya-decomp/pull/8
+[o-libgcc]: https://github.com/OpenRAC/rac1-decomp/blob/661bb60c1fb2e8f4e335a577193b8ee4a165b8fc/src/libgcc/README.md
+[o-make]: https://github.com/OpenRAC/rac1-decomp/blob/661bb60c1fb2e8f4e335a577193b8ee4a165b8fc/Makefile.sn

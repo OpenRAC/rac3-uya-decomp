@@ -301,3 +301,58 @@ The full breakdown and plan are in `docs/full_match_roadmap.md`. The findings in
 ## i5bootn
 
 See [compiler_matrix_i5bootn.md](compiler_matrix_i5bootn.md): i5bootn mixes Sony ee-gcc 2.9-ee-991111-01 (libgcc and libc helpers, all 26 libgcc functions rebuilt byte for byte), 2.96-ee-001003-1 (newlib `exit`) and SN 2.95.3 (its own code).
+
+## Update 2026-10-07: the remaining frontbin drafts, the VU0 range, boot_elf's core
+
+Agent m1, round k.
+
+### The 74 remaining frontbin drafts
+
+Every near-miss draft that was left after the second final pass (74 functions), compiled in its file context with 13 compilers x {`-O1`, `-O2`} x {`-G0`, `-G8`} x {split, no-split}, each assembled with both SN `ee-as` and Ps2EeAs and scored by aligned diffs (`tools/permuter_scorer.py`'s measure): about 15,000 builds, plus a single-flag pass and a VU0 range sweep.
+
+- **SN is the best, or tied for best, on 73 of 74.** Sony 2.95.3-136 gives the same output as SN everywhere. The closest non-SN compiler is 2.95.2-273a (best non-SN for 57 functions); its gap to SN is more than 2 diffs on 64 functions, 0 to 2 on 9, and negative on 1.
+- The exception, `func_0039CAB8`: 2.9-ee-990721 scores 2 against SN's 4, and the only difference is where the `dsll32` and `ori` are scheduled. Read as noise.
+- **No hidden library code in frontbin.** None of the 74 retail functions has sibling calls, 16-byte save slots or any other library fingerprint.
+- **`-O2` is best for all 74.** `-G0` only ties or wins where a function has no `$gp` access.
+- **`-fopt-stack` confirmed:** removing it makes 59 functions worse.
+- 17 drafts in N-mode files score best in S: the known single-function override pattern, nothing new.
+
+**Single-flag observations.** Flags that make most functions worse can't be global settings: `-fno-delayed-branch` (worse on 74), `-fno-schedule-insns` / `-fno-schedule-insns2` (72 / 73), `-fno-omit-frame-pointer` (72), `-fno-rerun-cse-after-loop` (51), `-fno-gcse` (46). Single-flag gains on drafts with hundreds of diffs may only reflect how those drafts are written. Rows worth a look:
+
+| Function | Draft header | Measured | Note |
+|---|---|---|---|
+| func_00390730 | 26 | **9** | S + `@ps2as` at HEAD |
+| func_003BA9A0 | 146 | **124** in N mode | draft was tuned in S |
+| func_003B9DA8 | 6 | 4 in N mode | |
+| func_0039C548 | 25 | 19 at `-G0` | the gp-relative address of a small-data object changes the schedule; check its declaration |
+| func_003B1EB0 | 117 | **79** with vf2 | also 85 with `-fno-expensive-optimizations` |
+| func_003A8230 | 141 | 131 with vf2 | |
+| func_0038CE40 | 330 | 311 with `-fno-rerun-loop-opt` | |
+| func_003A26D0 | 186 | 169 with `-fno-gcse` | j-form; 182 with vf31 |
+| func_0038B1E8 | ~400 | 393 with `-fno-expensive-optimizations` | 411 without; compiled without context |
+| func_00380D48 | 56 | 51 with N + `-fforce-addr` | 52 with `-fno-rerun-cse-after-loop` |
+| func_003E9D78 | 117 | 113 with `-fno-schedule-insns2` | |
+| func_003C1440 | 229 | 222 with `-fno-expensive-optimizations` | |
+| func_003A9B10 | 16 | 14 with `-fno-omit-frame-pointer` | matched since (round k) without that flag |
+| func_0038FDC0 | 22 | 20 with vf2 | |
+
+The VU0 range sweep on the drafts: N = 2 also helps code with no VU0 instructions (`func_003B1EB0` 117 to 79 for N from 2 to 15, `func_003A8230` 141 to 131 for N 2 to 4, `func_0038FDC0` 22 to 20 for N 1 to 3); `func_00383FD8` needs N <= 3 and `func_003AB3A8` N <= 2.
+
+### `-mvu0-use-vf0-vfN` in the compiler builds
+
+The option is Sony's (cc1 help text "Specify the range of vu0 registers to use", build path `C:\usr\PS2\gcc-2.95.3\gcc` inside SN's cc1). Sony's Windows builds (2.9-ee-991111 Win, 2.95.2-273a/274, 2.95.3-107/114/136) accept it and the `j` constraint with identical behaviour and error text. 3.2-040921 has a rewritten version (`-mvu0-use-REG1-REG2`, class `VU0_REGS`, letters `j` and `C` plus Q/R/Y/Z, and real VU0 instruction patterns; in gdb `n_non_fixed_regs` is 66 without the option, 68 with vf2 and 97 with vf31). The Linux builds (990721, 991111-01, -dtls, 991111a, 2.96) reject it, and `j` isn't a register constraint there. Next to it in SN's option table are `-mexplicit-type-size` and `-m[no-]check-range-division`.
+
+Global builds with the flag on every `text_parts.txt` line (slice boundaries kept), functions that stop matching:
+
+| N | frontbin | boot_elf | i5bootn |
+|---|---|---|---|
+| none | MATCH | MATCH | MATCH |
+| 2 | func_003B22C0 only | func_003B7A80 only (its twin) | MATCH |
+| 3, 4 | 5 (00381A50, 00383BB0, 00392A40, 00392DD8, 003B22C0) | 5 | MATCH |
+| 8 / 16 / 31 | 9 / 13 / 22 | 22 at N = 31 | MATCH |
+
+With the one-line rewrite of `func_003B22C0` and `func_003B7A80`, N = 2 builds all three targets to MATCH, and that is the project setting since 2026-10-07. The mechanism, the j-form sweep and how to write the form are in [Matching patterns, "VU0 j-form"](wiki/Matching-Patterns.md#vu0-j-form-one-asm-statement-per-instruction).
+
+### boot_elf's engine core
+
+Fingerprints calibrated on frontbin (SN), on frontbin sources recompiled with SN, 2.96, 2.9-991111-01 and 3.2, and on the 56 libgcc hits separate the compilers by 16-byte save slots, `$ra` restored before the s-registers, sibling calls, tail calls left as `jal`, and `$gp` use. The resulting region map (newlib likely 2.96; libkernl/libc and the Sony libraries 2.9-ee-991111; libgcc 2.9-ee-991111-01; 989snd SN) and the class counts are in [`docs/boot_elf.md`](boot_elf.md).

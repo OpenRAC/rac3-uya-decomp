@@ -169,4 +169,6 @@ The compiler and binutils are Windows executables. [wibo](https://github.com/dec
 2. Test a function: `export UYA_TOOLCHAIN=~/sn UYA_RUNNER=~/bin/wibo`, then `python3 tools/try_func.py some.c`.
 3. Full build: `python3 tools/build.py --target all` (or one `--target`). It runs the same steps as the Makefile and ends each target with the same `MATCH` line.
 
+wibo occasionally hangs, in Ps2EeAs or in the ee-gcc driver, most often on a busy machine. `try_func.py` and the build have no timeout of their own, so wrap scripted runs in one (`timeout 120 python3 tools/try_func.py ...`) and rerun a build that stops without printing `MATCH` after a clean `rm -rf build`.
+
 localdecomp's `server.py` assumes Windows paths and executables. On Linux, use `tools/try_func.py` for matching.

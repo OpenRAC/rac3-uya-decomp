@@ -79,6 +79,7 @@
 0x00124DA8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00124DB8     @ee29 -O2 -G0   # single-function override
 0x00124ED0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00124ED8     @ee29 -O2 -G0   # single-function override, func_00124ED8 (Q3)
 0x00124F20     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl), sibling call
 0x00124F48     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00124F70     @ee29 -O2 -G0   # single-function override
@@ -91,6 +92,8 @@
 0x00125328     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001254B8     @ee29 -O2 -G0   # single-function override
 0x00125540     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00125878     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl), func_00125878 (Q4)
+0x001258E8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00125B68     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
 0x00125BE8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00125D18     @ee29 -O2 -G0   # single-function override
@@ -162,7 +165,7 @@
 0x0012EB38     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012EB40     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libmtap)
 0x0012EBB8     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libmtap), func_0012EBB8
-0x0012EC28     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012EC28     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libmtap), func_0012EC28
 0x0012EC90     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libpad)
 0x0012EDD0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012F2A0     @ee29 -O2 -G0   # single-function override
@@ -259,7 +262,10 @@
 0x0013AA20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0013AA40     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libscf), func_0013AA40
 0x0013AAA8     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libscf)
-0x0013AB10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013AB10     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libscf), func_0013AB10
+0x0013ABC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013AD58     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libscf)
+0x0013ADA8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0013B330     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0013B3F8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x0013B620     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override

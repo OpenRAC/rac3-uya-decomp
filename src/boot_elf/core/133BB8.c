@@ -2111,7 +2111,38 @@ void func_0013AAA8(u8 *p) {
 }
 /* localdecomp:end func_0013AAA8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013AB10);
+/* localdecomp:start func_0013AB10 */
+typedef struct {
+    s8 d[12];
+} Days_13AB10;
+
+extern Days_13AB10 D_00152280;
+
+void func_0013AB10(u8 *t)
+{
+    Days_13AB10 days;
+    s32 y;
+
+    y = t[7];
+    days = D_00152280;
+    t[5]++;
+    if ((y & 3) == 0) {
+        days.d[1] = 29;
+    }
+    if (days.d[t[6] - 1] < t[5]) {
+        t[5] = 1;
+        t[6]++;
+        if (t[6] == 13) {
+            if (t[7] == 99) {
+                t[7] = 0;
+            } else {
+                t[7]++;
+            }
+            t[6] = 1;
+        }
+    }
+}
+/* localdecomp:end func_0013AB10 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013ABC8);
 
@@ -2121,7 +2152,14 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013ACA0);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013ACC8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013AD58);
+/* localdecomp:start func_0013AD58 */
+extern void func_0013ACC8(void *, s32);
+void func_0013AD58(void *a) {
+    s32 x = func_0013A930();
+    s32 k = func_0013A988();
+    func_0013ACC8(a, x - 0x21C + k * 0x3C);
+}
+/* localdecomp:end func_0013AD58 */
 TEXT_PADDING(2);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0013ADA8);

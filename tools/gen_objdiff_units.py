@@ -25,12 +25,19 @@ import targets  # noqa: E402
 
 PATH = os.path.join(sf.ROOT, "objdiff.json")
 
-# progress categories the boot_elf units use (added when missing)
+# progress categories the target units use (added when missing, names kept
+# up to date). "menu" is everything the game runs to reach the main menu:
+# i5bootn (launcher), boot_elf (engine core and its front end copy) and
+# frontbin (the front end), so it gets its own progress bar. It goes first.
+MENU = {"id": "menu", "name": "Menu (i5bootn + boot_elf + frontbin)"}
 CATEGORIES = [
+    {"id": "frontend", "name": "Front end (frontbin)"},
     {"id": "boot_elf", "name": "Boot ELF"},
-    {"id": "boot_elf_core", "name": "Boot ELF: engine core"},
+    {"id": "boot_elf_core", "name": "Engine (boot_elf core)"},
     {"id": "boot_elf_frontend", "name": "Boot ELF: front end"},
 ]
+# reference-only data units of the menu executables (not written here)
+MENU_DATA_UNITS = ["frontbin/data", "exes/boot_elf (data)", "exes/i5bootn (data)"]
 
 
 def ours(name):
@@ -75,6 +82,12 @@ def main():
             have[c["id"]]["name"] = c["name"]
         else:
             cats.append(dict(c))
+    cats[:] = [dict(MENU)] + [c for c in cats if c["id"] != "menu"]
+    for u in keep:
+        if u["name"] in MENU_DATA_UNITS:
+            pc = u.setdefault("metadata", {}).setdefault("progress_categories", [])
+            if "menu" not in pc:
+                pc.insert(0, "menu")
     # code units first (frontbin, then the other targets, in link order),
     # then everything else as before
     cfg["units"] = new + keep

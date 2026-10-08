@@ -255,3 +255,9 @@ numbers for the executable that is picked.
 every target), in the progress categories `boot_elf`, `boot_elf_core` and
 `boot_elf_frontend`. They replace the old reference-only `exes/boot_elf`
 code unit; `exes/boot_elf (data)` stays.
+
+All units of the three executables the game runs to reach the main menu
+(i5bootn, boot_elf and frontbin, code and data) are also in the `menu`
+category, "Menu (i5bootn + boot_elf + frontbin)", so it has one progress bar.
+`boot_elf_core` is shown as "Engine (boot_elf core)" and frontbin's
+`frontend` as "Front end (frontbin)".

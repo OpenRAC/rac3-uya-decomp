@@ -525,7 +525,27 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00120730);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00120908);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00121620);
+/* localdecomp:start func_00121620 */
+s32 func_00121620(char **pp, s32 *cnt, s32 x) {
+    char *p;
+    if (*cnt == 0) {
+        return 1;
+    }
+    if (x < 0x100) {
+        if (*cnt == 1) {
+            x = 0;
+        }
+        p = *pp;
+        *p = x;
+        p++;
+        *pp = p;
+        *cnt = *cnt - 1;
+        return 1;
+    }
+    *(*pp) = 0;
+    return 0;
+}
+/* localdecomp:end func_00121620 */
 
 /* localdecomp:start func_00121678 */
 extern void func_001205B8(s32);
@@ -549,11 +569,52 @@ s32 func_001216A0(s32 a, s32 b, s32 c) {
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001216C8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00121718);
+/* localdecomp:start func_00121718 */
+extern s32 func_00120908_00121718(void *, void *, s32, s32, void *);
+extern void func_00121620(void);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00121760);
+s32 func_00121718(s32 a0, s32 a1, s32 a2, ...) {
+    return func_00120908_00121718(func_00121620, &a0, a1, a2, (char *)__builtin_next_arg(a2) - 0x28);
+}
+/* localdecomp:end func_00121718 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001217E0);
+/* localdecomp:start func_00121760 */
+extern s32 func_00121678();
+extern s32 func_00120908();
+extern s32 func_00124920();
+extern s32 func_00124970();
+void func_00121760(char *fmt, ...) {
+    s32 cnt;
+    s32 s;
+    char *ap;
+    cnt = 0;
+    s = func_00124920();
+    ap = (char *)__builtin_next_arg(fmt) - 0x38;
+    func_00120908(func_00121678, &cnt, 0xFFFFFFFF, fmt, ap);
+    if (s != 0) {
+        func_00124970();
+    }
+}
+/* localdecomp:end func_00121760 */
+
+/* localdecomp:start func_001217E0 */
+extern s32 func_001216A0();
+extern s32 func_00120908();
+extern s32 func_00124920();
+extern s32 func_00124970();
+void func_001217E0(const char *fmt, ...) {
+    s32 cnt;
+    s32 s;
+    char *ap;
+    cnt = 0;
+    s = func_00124920();
+    ap = (char *)__builtin_next_arg(fmt) - 0x38;
+    func_00120908(func_001216A0, &cnt, 0xFFFFFFFF, fmt, ap);
+    if (s != 0) {
+        func_00124970();
+    }
+}
+/* localdecomp:end func_001217E0 */
 
 /* localdecomp:start func_00121860 */
 typedef struct { u8 pad[0x10]; s32 x10; s32 x14; } A_121860;
@@ -1235,7 +1296,31 @@ s32 func_00122B68(void *cd, s32 fno, s32 mode, void *send, s32 ssize, void *recv
 }
 /* localdecomp:end func_00122B68 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00122C58);
+/* localdecomp:start func_00122C58 */
+/* func_00122C58 (boot_elf, 0x6C bytes). MATCH with @ee29 -O2 -G0 (2.9-ee-991111, libkernl).
+ * Earlier near miss: the compare temp was $v0 instead of $v1 because the file declares func_0011EE60 void.
+ * The permuter showed that an s32 callee (result discarded) gives retail's $v1. The per-function alias
+ * func_0011EE60_00122C58 keeps the file's void declaration for the other blocks.
+ */
+extern void func_00122A68(void);
+extern s32 func_0011EE60_00122C58(s32);
+extern s32 func_0011EE40(s32);
+extern s32 D_0013DC90;
+extern u8 D_156100[];
+
+u8 *func_00122C58(s32 fd) {
+    u8 *p;
+    func_00122A68();
+    func_0011EE60_00122C58(D_0013DC90);
+    if ((u32)fd >= 0x20) {
+        func_0011EE40(D_0013DC90);
+        return 0;
+    }
+    p = D_156100 + (fd << 4);
+    func_0011EE40(D_0013DC90);
+    return p;
+}
+/* localdecomp:end func_00122C58 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00122CC8);
 

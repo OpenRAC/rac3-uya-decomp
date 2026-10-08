@@ -99,7 +99,7 @@ TARGETS = {
         # and progress categories, per code section (tools/gen_objdiff_units.py)
         objdiff_units={"text": "frontbin/src/"},
         objdiff_dirs={"text": "frontbin"},
-        objdiff_categories={"text": ["frontend"]},
+        objdiff_categories={"text": ["menu", "frontend"]},
         # raw byte ranges of the file that aren't code or data: (asm name, start, end)
         raw_blobs=[("header", 0x0, 0x1000)],
         splat_src="src",
@@ -135,8 +135,8 @@ TARGETS = {
         ],
         objdiff_units={"core": "boot_elf/core/", "text": "boot_elf/text/"},
         objdiff_dirs={"core": "boot_elf/core", "text": "boot_elf/text"},
-        objdiff_categories={"core": ["executables", "boot_elf", "boot_elf_core"],
-                            "text": ["executables", "boot_elf", "boot_elf_frontend"]},
+        objdiff_categories={"core": ["menu", "executables", "boot_elf", "boot_elf_core"],
+                            "text": ["menu", "executables", "boot_elf", "boot_elf_frontend"]},
         # objdiff.json units this target's per-file units replace (the old
         # reference-only unit for the whole code)
         objdiff_replaces=["exes/boot_elf"],
@@ -178,7 +178,7 @@ TARGETS = {
         units=[Unit("text", 0x800000, 0x804FD8, "src/i5bootn", "asm/i5bootn/nonmatchings/text", ".text", objdir="i5bootn")],
         objdiff_units={"text": "i5bootn/src/"},
         objdiff_dirs={"text": "i5bootn"},
-        objdiff_categories={"text": ["executables", "i5bootn"]},
+        objdiff_categories={"text": ["menu", "executables", "i5bootn"]},
         objdiff_replaces=["exes/i5bootn"],
         # 0x0..0x1000: ELF and program headers; 0xC59C4..: .reginfo, .shstrtab and
         # the section header table

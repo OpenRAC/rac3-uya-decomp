@@ -19,6 +19,12 @@
 0x001204C0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001205B8     @ee29 -O2 -G0   # single-function override
 0x00120668     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00121620     @ee29 -O2 -G0   # single-function override
+0x00121678     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00121718     @ee29 -O2 -G0   # single-function override: varargs wrapper (test)
+0x00121760     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x001217E0     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x00121860     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001218B8     @ee29 -O2 -G0   # single-function override
 0x00121B38     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00121C38     @ee29 -O2 -G0   # single-function override
@@ -35,7 +41,8 @@
 0x00122A68     @ee29 -O2 -G0   # single-function override
 0x00122AE0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00122B68     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
-0x00122C58     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00122C58     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x00122CC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00123080     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
 0x001230D8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00123368     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
@@ -82,6 +89,8 @@
 0x00125288     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00125290     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
 0x00125328     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001254B8     @ee29 -O2 -G0   # single-function override
+0x00125540     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00125B68     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
 0x00125BE8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00125D18     @ee29 -O2 -G0   # single-function override
@@ -97,14 +106,17 @@
 0x0012AB88     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012AC40     @ee29 -O2 -G0   # single-function override
 0x0012AD28     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012AE20     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libcdvd)
 0x0012AEA8     @ee29 -O2 -G0   # single-function override
-0x0012B000     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012B000     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libcdvd)
+0x0012B098     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012B138     @ee29 -O2 -G0   # single-function override
 0x0012B1A8     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libcdvd)
 0x0012B300     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012B5E8     @ee29 -O2 -G0   # single-function override
 0x0012B800     @ee29 -O2 -G0   # single-function override
 0x0012BA20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012BC00     @ee29 -O2 -G0   # single-function override
 0x0012BC98     @ee29 -O2 -G0   # single-function override
 0x0012BD50     @ee29 -O2 -G0   # single-function override
 0x0012BE20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -117,7 +129,8 @@
 0x0012C570     @ee29 -O2 -G0   # single-function override
 0x0012C638     @ee29 -O2 -G0   # single-function override
 0x0012C820     @ee29 -O2 -G0   # single-function override
-0x0012C908     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012C908     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libgraph)
+0x0012C9A0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012CCC8     @ee29 -O2 -G0   # single-function override
 0x0012D4D8     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libgraph)
 0x0012D578     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -154,6 +167,7 @@
 0x0012EDD0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012F2A0     @ee29 -O2 -G0   # single-function override
 0x0012F3F8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012F470     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libpad)
 0x0012F4F0     @ee29 -O2 -G0   # single-function override
 0x0012F5A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012F608     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libpad)
@@ -164,7 +178,8 @@
 0x0012F9E0     @ee29 -O2 -G0   # single-function override
 0x0012FAB8     @ee29 -O2 -G0   # single-function override
 0x0012FB68     @ee29 -O2 -G0   # single-function override
-0x0012FC18     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012FC18     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libpad)
+0x0012FC78     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012FCE8     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libpad), func_0012FCE8
 0x0012FD50     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libpad)
 0x0012FE78     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -231,7 +246,7 @@
 0x0013A030     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0013A150     @ee29 -O2 -G0   # single-function override
 0x0013A190     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libmpeg), func_0013A190
-0x0013A208     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013A208     @ee29 -O2 -G0   # single-function override (Z5)
 0x0013A280     @ee29 -O2 -G0   # single-function override
 0x0013A368     @ee29 -O2 -G0   # single-function override
 0x0013A4B8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division

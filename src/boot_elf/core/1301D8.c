@@ -921,9 +921,49 @@ u32 func_00132888(S_132428 *p, s32 n) {
 }
 /* localdecomp:end func_00132888 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00132970);
+/* localdecomp:start func_00132970 */
+extern void func_00132A98();
+extern long func_00132708();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00132A00);
+s32 func_00132970(S_132428 *s, s32 n) {
+    u8 *p;
+    long v;
+    volatile s32 *hw;
+    p = (u8 *)s;
+    if (*(s32 *)(p + 0x828) != 0 || *(s32 *)(p + 0x84C) < n) {
+        func_00132A98(p);
+        hw = (volatile s32 *)0x10002000; *hw = 0x40000000;
+        *(s32 *)(p + 0x828) = 0;
+        *(s32 *)(p + 0x82C) = 0x40000000;
+        v = func_00132708(p);
+        *(s32 *)(p + 0x848) = (s32)v;
+        *(s32 *)(p + 0x84C) = 0x20;
+    }
+    return (s32)((u32)*(s32 *)(p + 0x848) >> (-n));
+}
+/* localdecomp:end func_00132970 */
+
+/* localdecomp:start func_00132A00 */
+extern void func_00132A98();
+void func_00132A00(u8 *p, s32 a1) {
+    s32 t;
+    func_00132A98(p, a1);
+    a1 = a1 | 0x40000000;
+    *(volatile u32 *)0x10002000 = a1;
+    t = a1 & 0xF0000000;
+    *(s32 *)(p + 0x82C) = t;
+    if (t == 0x20000000 || t == 0x30000000 || t == 0x40000000) {
+        *(s32 *)(p + 0x828) = 0;
+    } else {
+        *(s32 *)(p + 0x828) = 1;
+    }
+    {
+        long r = func_00132708(p);
+        *(s32 *)(p + 0x848) = (s32)r;
+        *(s32 *)(p + 0x84C) = 0x20;
+    }
+}
+/* localdecomp:end func_00132A00 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00132A98);
 

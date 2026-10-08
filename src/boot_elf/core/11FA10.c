@@ -563,7 +563,13 @@ void func_00121860(A_121860 *a, B_121860 *b) {
 }
 /* localdecomp:end func_00121860 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00121880);
+/* localdecomp:start func_00121880 */
+typedef struct { u8 pad[0x10]; s32 x10; } A_121880;
+typedef struct { u8 pad[0x8]; s32 x8; } B_121880;
+void func_00121880(A_121880 *a, B_121880 *b) {
+    b->x8 = a->x10;
+}
+/* localdecomp:end func_00121880 */
 
 /* localdecomp:start func_00121890 */
 extern s32 D_153300[];
@@ -1175,7 +1181,26 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00122A50);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00122A60);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00122A68);
+/* localdecomp:start func_00122A68 */
+typedef struct { s32 f0; s32 f4; s32 f8; s32 fc; s32 f10; s32 f14; } S_122A68;
+extern s32 D_0013DC90_00122A68[];
+extern s32 D_0013DC94_00122A68[];
+extern char D_00150A50_00122A68[];
+extern char D_00150A60_00122A68[];
+extern int func_0011EE20();
+
+void func_00122A68(void) {
+    S_122A68 sp;
+    if (D_0013DC90_00122A68[0] == -1) {
+        sp.f8 = 1;
+        sp.f14 = (s32)D_00150A50_00122A68;
+        sp.f4 = 1;
+        D_0013DC90_00122A68[0] = func_0011EE20(&sp);
+        sp.f14 = (s32)D_00150A60_00122A68;
+        D_0013DC94_00122A68[0] = func_0011EE20(&sp);
+    }
+}
+/* localdecomp:end func_00122A68 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00122AD8);
 
@@ -1214,7 +1239,21 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00122C58);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00122CC8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123080);
+/* localdecomp:start func_00123080 */
+typedef struct { s32 pad0; s32 f4; s32 f8; s32 fc; s32 f10; void *f14; } S_00123080;
+extern s32 D_0013DC8C[];
+extern u8 D_00150AD8[];
+extern s32 func_0011EE20(void *);
+void func_00123080(void) {
+    S_00123080 s;
+    if (D_0013DC8C[0] == -1) {
+        s.f8 = 1;
+        s.f4 = 1;
+        s.f14 = D_00150AD8;
+        D_0013DC8C[0] = func_0011EE20(&s);
+    }
+}
+/* localdecomp:end func_00123080 */
 
 /* localdecomp:start func_001230D8 */
 extern void func_00123080(void);
@@ -1233,7 +1272,23 @@ ASM_FUNC("asm/boot_elf/handwritten", func_00123118);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123160);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123368);
+/* localdecomp:start func_00123368 */
+extern u8 D_156328[];
+extern u8 D_0013DBE4[];
+extern s32 D_0013DC98[];
+extern s32 func_0011A01C();
+s32 func_00123368(void) {
+    u8 *pb = D_0013DBE4;
+    u8 *pa = D_156328;
+    s32 r = 0;
+    if (func_0011A01C(pa, pb, 4) != 0) {
+        if (func_0011A01C(pa, D_0013DC98[0], 4) != 0) {
+            r = func_0011A01C(pb, D_0013DC98[0], 4) != 0;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_00123368 */
 
 /* localdecomp:start func_001233F8 */
 extern s32 func_0011A264(s32, s32, s32);
@@ -1437,13 +1492,65 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00123B08);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123B10);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123B98);
+/* localdecomp:start func_00123B98 */
+extern s32 D_0013DC9C_00123B98[];
+extern s32 D_00156480_00123B98[];
+extern s32 D_00156400_00123B98[];
+extern s32 D_00156440_00123B98[];
+extern s32 func_00122810();
+
+s32 func_00123B98(s32 a0, s32 a1, s32 a2) {
+    s32 r;
+    if (D_0013DC9C_00123B98[0] < 0) {
+        return 0;
+    }
+    D_00156480_00123B98[0] = a1;
+    D_00156480_00123B98[1] = a0;
+    D_00156480_00123B98[2] = a2;
+    r = func_00122810(D_00156400_00123B98, 4, 0, D_00156480_00123B98, 0xC, D_00156440_00123B98, 4, 0, 0);
+    if (r >= 0) {
+        return D_00156440_00123B98[0];
+    }
+    return 0;
+}
+/* localdecomp:end func_00123B98 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00123C18);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123C20);
+/* localdecomp:start func_00123C20 */
+extern s32 D_0013DC9C[];
+extern u8 D_156400[];
+extern s32 D_156440[];
+extern s32 func_00122810();
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123C90);
+u32 func_00123C20(void) {
+    s32 r;
+
+    if (D_0013DC9C[0] < 0) {
+        return 0;
+    }
+    r = func_00122810(D_156400, 6, 0, 0, 0, D_156440, 4, 0, 0);
+    if (r < 0) {
+        return 0xFFFFFFFF;
+    }
+    return D_156440[0];
+}
+/* localdecomp:end func_00123C20 */
+
+/* localdecomp:start func_00123C90 */
+extern s32 D_0013DC9C[];
+extern u8 D_156400[];
+extern s32 D_156440[];
+u32 func_00123C90(void) {
+    if (D_0013DC9C[0] < 0) {
+        return 0;
+    }
+    if (func_00122810(D_156400, 7, 0, 0, 0, D_156440, 4, 0, 0) < 0) {
+        return 0xFFFFFFFF;
+    }
+    return D_156440[0];
+}
+/* localdecomp:end func_00123C90 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00123D00);
 
@@ -1487,7 +1594,24 @@ s32 func_00123D10(void)
 }
 /* localdecomp:end func_00123D10 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123E10);
+/* localdecomp:start func_00123E10 */
+extern u8 D_1567E8[];
+extern u8 D_0013DBE4[];
+extern s32 D_0013DCA4;
+extern s32 func_0011A01C(void *, s32, s32);
+
+s32 func_00123E10(void) {
+    s32 r = 0;
+    u8 *b = D_0013DBE4;
+
+    if (func_0011A01C(D_1567E8, (s32)b, 4) != 0) {
+        if (func_0011A01C(D_1567E8, D_0013DCA4, 4) != 0) {
+            r = func_0011A01C(b, D_0013DCA4, 4) != 0;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_00123E10 */
 
 /* localdecomp:start func_00123EA0 */
 extern s32 func_0011A264(s32, s32, s32);
@@ -1654,7 +1778,22 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00124418);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00124420);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00124430);
+/* localdecomp:start func_00124430 */
+s32 func_00124430(s32 *dst, s32 *src, u32 n) {
+    u32 i = 0;
+    n >>= 2;
+    if (n != 0) {
+        do {
+            s32 v = src[0];
+            i++;
+            src++;
+            dst[0] = v;
+            dst++;
+        } while (i < n);
+    }
+    return 0;
+}
+/* localdecomp:end func_00124430 */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00124468);
 

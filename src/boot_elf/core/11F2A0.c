@@ -3,7 +3,12 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F2A0);
+/* localdecomp:start func_0011F2A0 */
+extern s32 D_0013DBE8;
+void func_0011F2A0(void) {
+    D_0013DBE8 = 0;
+}
+/* localdecomp:end func_0011F2A0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F2B0);
 

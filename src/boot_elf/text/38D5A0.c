@@ -39,9 +39,25 @@ void func_0038D5C8(void) {
 }
 /* localdecomp:end func_0038D5C8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D5F8);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D62C);
+/* localdecomp:start func_0038D5F8 */
+void func_0038D5F8(void) {
+    __asm__ __volatile__(
+        "mfc1 $at, $f12\n"
+        "qmtc2.ni $at, $vf5\n"
+        "vmulx.xyzw $vf1, $vf0, $vf0x\n"
+        "vmulx.xyzw $vf2, $vf0, $vf0x\n"
+        "vmulx.xyzw $vf3, $vf0, $vf0x\n"
+        "vmove.xyzw $vf4, $vf0\n"
+        "vaddx.x $vf1, $vf1, $vf5x\n"
+        "vaddx.y $vf2, $vf2, $vf5x\n"
+        "vaddx.z $vf3, $vf3, $vf5x\n"
+        "sqc2 $vf1, 0($4)\n"
+        "sqc2 $vf2, 16($4)\n"
+        "sqc2 $vf3, 32($4)\n"
+        "sqc2 $vf4, 48($4)\n"
+    );
+}
+/* localdecomp:end func_0038D5F8 */
 
 /* localdecomp:start func_0038D630 */
 void func_0038D630(void) {
@@ -58,9 +74,21 @@ void func_0038D630(void) {
 }
 /* localdecomp:end func_0038D630 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D650);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D66C);
+/* localdecomp:start func_0038D650 */
+/* VU0 one-block volatile form, as frontbin func_00388BF0. The last sqc2 is the
+   jr delay slot (split off as func_0038D66C by splat). */
+void func_0038D650(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0($5)\n"
+        "vcallms 0xC80\n"
+        "qmfc2.i $at, $vf20\n"
+        "sqc2 $vf20, 0($4)\n"
+        "sqc2 $vf21, 16($4)\n"
+        "sqc2 $vf22, 32($4)\n"
+        "sqc2 $vf23, 48($4)\n"
+    );
+}
+/* localdecomp:end func_0038D650 */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D670);
 
@@ -70,9 +98,32 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D8B4);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0038D8B8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D8D8);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038D914);
+/* localdecomp:start func_0038D8D8 */
+/* MMI/VU0 body as frontbin func_00388E78. The final sq is the jr delay slot
+   (split off as func_0038D914 by splat). */
+typedef int u128_t __attribute__((mode(TI)));
+void func_0038D8D8(u8 *p, void *b) {
+    register u128_t v __asm__("$10");
+    __asm__ __volatile__(
+        "lq $8, 0($5)\n"
+        "lq $9, 16($5)\n"
+        "lq $10, 32($5)\n"
+        "pextlw $12, $9, $8\n"
+        "sqc2 $vf0, 48($4)\n"
+        "pextuw $13, $9, $8\n"
+        "pextlw $14, $0, $10\n"
+        "pextuw $15, $0, $10\n"
+        "pcpyld $8, $14, $12\n"
+        "pcpyud $9, $12, $14\n"
+        "sq $8, 0($4)\n"
+        "pcpyld $10, $15, $13\n"
+        "sq $9, 16($4)\n"
+        "nop\n"
+        : "=r"(v) : : "memory"
+    );
+    *(u128_t *)(p + 0x20) = v;
+}
+/* localdecomp:end func_0038D8D8 */
 
 /* localdecomp:start func_0038D918 */
 void func_0038D918(void) {
@@ -183,13 +234,39 @@ void func_0038DB38(void) {
 }
 /* localdecomp:end func_0038DB38 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DB58);
+/* localdecomp:start func_0038DB58 */
+void func_0038DB58(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf8, 0($4)\n"
+        "vcallms 0xE98\n"
+        "vnop\n"
+        "sqc2 $vf14, 0($5)\n"
+        "sqc2 $vf15, 16($5)\n"
+        "sqc2 $vf16, 32($5)\n"
+        "sqc2 $vf0, 48($5)\n"
+    );
+}
+/* localdecomp:end func_0038DB58 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DB74);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DB78);
-
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0038DBAC);
+/* localdecomp:start func_0038DB78 */
+void func_0038DB78(void) {
+    __asm__ __volatile__(
+        "lqc2 $vf4, 0($6)\n"
+        "lui $8, 0x3fb5\n"
+        "lqc2 $vf5, 0($5)\n"
+        "ori $8, $8, 0x4f3\n"
+        "qmtc2.ni $8, $vf6\n"
+        "vmulx.xyzw $vf4, $vf4, $vf6x\n"
+        "vopmula.xyz ACC, $vf4, $vf5\n"
+        "vmaddaw.xyz ACC, $vf5, $vf4w\n"
+        "vopmsub.xyz $vf6, $vf5, $vf4\n"
+        "vopmula.xyz ACC, $vf4, $vf6\n"
+        "vmaddaw.xyz ACC, $vf5, $vf0w\n"
+        "vopmsub.xyz $vf5, $vf6, $vf4\n"
+        "sqc2 $vf5, 0($4)\n"
+    );
+}
+/* localdecomp:end func_0038DB78 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0038DBB0);
 

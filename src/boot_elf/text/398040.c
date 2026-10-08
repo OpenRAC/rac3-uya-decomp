@@ -42,7 +42,15 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003980C0);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003980C4);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003980C8);
+/* localdecomp:start func_003980C8 */
+extern void func_00123C90(void);
+extern void func_00123C20(void);
+
+void func_003980C8(void) {
+    func_00123C90();
+    func_00123C20();
+}
+/* localdecomp:end func_003980C8 */
 
 /* localdecomp:start func_003980F0 */
 extern s32 func_11F1E0();
@@ -296,7 +304,13 @@ void func_003982E0(void) {
 }
 /* localdecomp:end func_003982E0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00398738);
+/* localdecomp:start func_00398738 */
+extern void func_0038E410();
+s32 func_00398738(s32 p) {
+    func_0038E410(p);
+    return p;
+}
+/* localdecomp:end func_00398738 */
 
 /* localdecomp:start func_00398760 */
 /* MATCH */

@@ -305,7 +305,12 @@ void func_003A12E8(u32 *a0) {
 }
 /* localdecomp:end func_003A12E8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A1418);
+/* localdecomp:start func_003A1418 */
+extern s32 func_0013CA30(s32, s32, s32, s32);
+void func_003A1418(void) {
+    func_0013CA30(7, 0xA000, 0, 1);
+}
+/* localdecomp:end func_003A1418 */
 
 /* localdecomp:start func_003A1440 */
 void func_003A1440(s32 a0, long a1) {
@@ -367,7 +372,51 @@ void func_003A14F8(s32 idx) {
 }
 /* localdecomp:end func_003A14F8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A1590);
+/* localdecomp:start func_003A1590 */
+typedef struct {
+    u8 p0[0x24];
+    s32 f24;
+    u8 p28[0x3C - 0x28];
+    s16 f3C;
+    u8 p3E[2];
+    u8 f40;
+    u8 f41;
+    u8 f42;
+    u8 f43;
+    s32 f44;
+    u8 p48[0x4E - 0x48];
+    s16 f4E;
+    u8 p50[0x6C - 0x50];
+    s32 f6C;
+    u8 p70[0x76 - 0x70];
+    s16 f76;
+    u8 p78[0xBC - 0x78];
+    s32 fBC;
+    u8 pC0[0xC6 - 0xC0];
+    s16 fC6;
+} S_1CCFD0_003A1590;
+extern S_1CCFD0_003A1590 D_1CCFD0_003A1590;
+extern void func_003A1418(void);
+extern void func_003A15F0(void);
+
+void func_003A1590(void) {
+    s32 m = -1;
+    D_1CCFD0_003A1590.f40 = 0x20;
+    D_1CCFD0_003A1590.f41 = 0;
+    D_1CCFD0_003A1590.f42 = 0;
+    D_1CCFD0_003A1590.f43 = 0;
+    D_1CCFD0_003A1590.f44 = 0;
+    D_1CCFD0_003A1590.f4E = 0;
+    D_1CCFD0_003A1590.f6C = 0;
+    D_1CCFD0_003A1590.f76 = 0;
+    D_1CCFD0_003A1590.fBC = 0;
+    D_1CCFD0_003A1590.fC6 = 0;
+    D_1CCFD0_003A1590.f24 = m;
+    D_1CCFD0_003A1590.f3C = m;
+    func_003A1418();
+    func_003A15F0();
+}
+/* localdecomp:end func_003A1590 */
 
 /* localdecomp:start func_003A15F0 */
 extern void func_13CF40(void (*)());

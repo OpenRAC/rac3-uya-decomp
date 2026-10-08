@@ -54,9 +54,45 @@ void func_008014D8(int c) {
 
 INCLUDE_ASM("asm/i5bootn/nonmatchings/text", func_00801510);
 
-INCLUDE_ASM("asm/i5bootn/nonmatchings/text", func_008015A0);
+/* localdecomp:start func_008015A0 */
+typedef int (*putc_fn_8015A0)(void *, int *, int);
+extern int func_008024B8_008015A0(void *, void *, int *, const char *, ...);
+extern int func_00801510(unsigned long);
+int func_008015A0(putc_fn_8015A0 out, void *ctx, int *n, double x) {
+    int count = 0;
+    int e = 0;
+    int m;
+    if (*n == 0) return 0;
+    if (x < 0.0) {
+        x = -x;
+        count = 1;
+        out(ctx, n, '-');
+        (*n)--;
+    }
+    if (x < 0.1) {
+        while (x < 0.1) {
+            x = x * 10.0;
+            e--;
+        }
+    } else if (x >= 1.0) {
+        while (x >= 1.0) {
+            x = x / 10.0;
+            e++;
+        }
+    }
+    m = func_00801510((unsigned long)(x * 1000000.0));
+    count += func_008024B8_008015A0(out, ctx, n, "0.%d", m);
+    if (e >= 0)
+        count += func_008024B8_008015A0(out, ctx, n, "e+%d", e);
+    else
+        count += func_008024B8_008015A0(out, ctx, n, "e%d", e);
+    return count;
+}
+/* localdecomp:end func_008015A0 */
 
 INCLUDE_ASM("asm/i5bootn/nonmatchings/text", func_00801778);
+INCLUDE_RODATA("asm/i5bootn/nonmatchings/text/rodata", D_00805AC0);
+INCLUDE_RODATA("asm/i5bootn/nonmatchings/text/rodata", D_00805AD8);
 INCLUDE_RODATA("asm/i5bootn/nonmatchings/text/rodata", jtbl_00805AF0);
 
 /* localdecomp:start func_00802490 */

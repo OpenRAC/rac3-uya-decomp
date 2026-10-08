@@ -31,3 +31,4 @@ dptoul = 0x00804C08;
 dptofp = 0x00804CD8;
 fptodp = 0x00804F30;
 __muldi3 = 0x00804F70;
+func_008024B8_008015A0 = 0x8024B8;

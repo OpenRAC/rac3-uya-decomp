@@ -42,4 +42,20 @@ Boston, MA 02111-1307, USA.  */
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/i5bootn/nonmatchings/text", func_00803BC0);
+/* localdecomp:start func_00803BC0 */
+UDItype __udivmoddi4 ();
+/* __umoddi3 */
+UDItype func_00803BC0 (UDItype u, UDItype v)
+{
+  /* i5bootn: Sony's prebuilt libgcc.a was compiled by a 2.9-ee build that left
+     32 bytes of dead stack after w (slots of the inlined __udivmoddi4's
+     locals). The Windows 2.9-ee-991111 frees them, so w gets this padding
+     to give the same 0x30 frame with w at 0($sp). Every instruction is
+     GCC's own.  */
+  struct { UDItype w; UDItype pad[5]; } s;
+
+  (void) __udivmoddi4 (u, v, &s.w);
+
+  return s.w;
+}
+/* localdecomp:end func_00803BC0 */

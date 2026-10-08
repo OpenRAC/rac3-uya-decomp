@@ -187,6 +187,11 @@ TARGETS = {
         # .rodata starts with the code's read-only data (one jump table) and then
         # holds the payload
         jtbl_segments={"rodata": "text"},
+        # ...and the read-only data of the functions just before the switch's
+        # function starts at 0x805A90 (func_008015A0's strings and double
+        # literals, then func_00801778's digit strings): cut out with the jump
+        # table so it can come from src/i5bootn/8010A8.c (tools/setup_asm.py)
+        rodata_cut={"rodata": 0x805A90},
         # flat binary from tools/elf2bin.py: SN's ee-objcopy corrupts 21 bytes of
         # this file's section-name table (see tools/elf2bin.py)
         flatten="elf2bin",

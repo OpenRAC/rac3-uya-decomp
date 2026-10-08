@@ -1,3 +1,55 @@
+========================================================================
+PROJECT LICENSING TERMS
+========================================================================
+The contents of this repository are split-licensed. Paths below are
+relative to the repository root.
+
+1. PROJECT TOOLING, BUILD FILES AND DOCUMENTATION (GPL-3.0):
+
+   Original work written by this project's contributors is licensed
+   under the GNU General Public License, version 3, reproduced below.
+   This covers:
+
+   - tools/ and localdecomp/ (the project's scripts and programs,
+     including tools/decomp-permuter-aligned-scorer.patch)
+   - the build system: Makefile, linker_scripts/, *.splat.yaml,
+     objdiff.json and .github/
+   - include/ (the project's headers and assembler macros)
+   - the project's tables: targets/, symbol_addrs*.txt,
+     undefined_*_auto.txt, reloc_addrs.txt and the *.txt tables in
+     tools/
+   - docs/, README.md and CONTRIBUTING.md
+
+   The tables and linker scripts record facts about the original
+   executables (addresses, sizes, section layout, compiler flags);
+   they contain no game code.
+
+2. DECOMPILED GAME SOURCE CODE (NOT LICENSED):
+
+   All decompiled source code, matching C rewrites and assembly files
+   located in the src/ directory (except the GCC files listed in
+   section 3), and the asm/ directory that tools/setup_asm.py generates
+   locally, are excluded from this license. This code is a derivative
+   work of Ratchet & Clank: Up Your Arsenal, whose copyright is owned
+   by Sony Interactive Entertainment LLC, and of the libraries linked
+   into the original executables. The project's contributors claim no
+   copyright over this code and grant no license to it. It is provided
+   strictly for educational, preservation and research purposes.
+
+   This repository contains no game executables, assets or other retail
+   data. Ratchet & Clank and related names are trademarks of Sony
+   Interactive Entertainment LLC. This project is not affiliated with
+   or endorsed by Sony Interactive Entertainment or Insomniac Games.
+
+3. GCC RUNTIME LIBRARY SOURCE (GPL-2.0-or-later, runtime exception):
+
+   src/libgcc/ (except its README.md), src/i5bootn/libgcc/ and
+   src/boot_elf/core/libgcc/ hold source from GCC 2.95.2 (libgcc),
+   copyright the Free Software Foundation, Inc., under the GNU General
+   Public License version 2 or later with the libgcc runtime exception,
+   as each file's header states. It is used here under those terms.
+========================================================================
+
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 

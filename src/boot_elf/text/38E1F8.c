@@ -2,6 +2,7 @@
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern s32 func_0011A264(s32, s32, s32);
+extern s32 func_0011A264();
 extern void func_00392580(s32, long, long);
 extern void func_003925D8(void);
 extern void func_00392670(s32);

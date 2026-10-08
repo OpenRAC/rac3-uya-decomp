@@ -128,6 +128,17 @@ def split_data(t, seg, unit):
     first, last = jt[0], jt[-1]
     if any(not n.startswith("jtbl_") for n, _ in blocks[first:last + 1]):
         sys.exit("%s: non-jtbl data inside the jump table block; aborting" % seg)
+    # Target.rodata_cut[seg] = ADDR: the blocks from ADDR up to the jump tables are
+    # the code's own read-only data too (strings and literals of functions that sit
+    # before the jump tables' functions), so they go to the source side as well:
+    # one rodata/<name>.s each, for INCLUDE_RODATA or for C that emits them.
+    cut_from = getattr(t, "rodata_cut", {}).get(seg)
+    lead = []
+    if cut_from is not None:
+        addr = lambda n: int(n.split("_")[1], 16) if re.match(r"D_[0-9A-Fa-f]{8}$", n) else None
+        lead = [k for k in range(first) if addr(blocks[k][0]) is not None and addr(blocks[k][0]) >= cut_from]
+        if lead and lead != list(range(lead[0], first)):
+            sys.exit("%s: unnamed data between 0x%X and the jump tables; aborting" % (seg, cut_from))
     name, body = blocks[last]
     cut = next((i for i, l in enumerate(body) if "0xCDCDCDCD" in l), None)
     tail = []
@@ -135,6 +146,9 @@ def split_data(t, seg, unit):
         tail = ["", "/* linker fill after .rdata (0xCD) */"] + body[cut:]
         blocks[last] = (name, body[:cut])
     os.makedirs(rodir, exist_ok=True)
+    for name, body in blocks[lead[0]:first] if lead else []:
+        open(os.path.join(rodir, name + ".s"), "w").write(
+            "\n".join([".align 3", ""] + [l.rstrip() for l in body]).rstrip() + "\n")
     for name, body in blocks[first:last + 1]:
         out = [".align 4", ""]
         for l in body:
@@ -151,11 +165,12 @@ def split_data(t, seg, unit):
         open(path, "w").write(text.rstrip() + "\n")
 
     d = os.path.dirname(data)
-    write(os.path.join(d, seg + "_a.data.s"), blocks[:first])
+    write(os.path.join(d, seg + "_a.data.s"), blocks[:lead[0] if lead else first])
     write(os.path.join(d, seg + "_b.data.s"), [],
           extra=tail + [""] + ["\n".join(b) for _, b in blocks[last + 1:]])
     os.replace(data, data + ".premigrate")
-    print("split %s.data.s into %s_a / %s_b and wrote %d jump tables" % (seg, seg, seg, last - first + 1))
+    print("split %s.data.s into %s_a / %s_b and wrote %d jump tables" % (seg, seg, seg, last - first + 1)
+          + (" and %d data blocks from 0x%X" % (len(lead), cut_from) if lead else ""))
 
 
 def fix_alignment(t):

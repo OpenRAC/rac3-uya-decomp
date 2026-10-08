@@ -195,7 +195,17 @@ char *func_00124DB8(char *name, int argc, char **argv)
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00124ED0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00124ED8);
+/* localdecomp:start func_00124ED8 */
+extern void func_0011EA60(char *p, s32 argc, char *s);
+extern void func_00124ED0();
+
+void func_00124ED8(char *name, s32 argc, char **argv) {
+    char *p;
+    p = func_00124DB8(name, argc, argv);
+    func_00124ED0();
+    func_0011EA60(p, argc, D_0013E020 + 4);
+}
+/* localdecomp:end func_00124ED8 */
 
 /* localdecomp:start func_00124F20 */
 extern void func_00124ED0(s32);
@@ -438,7 +448,51 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125820);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00125870);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125878);
+/* localdecomp:start func_00125878 */
+typedef struct {
+    u8 p0[0xC];
+    s32 xC;
+    s32 x10;
+    s32 x14;
+} G_125878;
+typedef struct {
+    s32 next;
+    u8 p4[0x4];
+    s32 x8;
+    s32 xC;
+    u8 p10[0x8];
+    s32 x18;
+    s32 x1C;
+    s32 x20;
+    s32 x24;
+    s32 x28;
+} N_125878;
+extern G_125878 D_0013F288_125878;
+
+s32 func_00125878(void) {
+    N_125878 *n;
+    s32 i; s32 v; s32 c; s32 u; s32 t;
+    n = (N_125878 *)D_0013F288_125878.x14;
+    if (n == 0) {
+        return 0x80008005;
+    }
+    i = *(volatile s32 *)&D_0013F288_125878.x10;
+    u = (s32)n << 4;
+    v = *(volatile s32 *)&n->next;
+    t = i + 1;
+    do {
+        *(volatile s32 *)&n->x28 = 0;
+        D_0013F288_125878.x10 = t;
+        n->xC = 0;
+        D_0013F288_125878.x14 = v;
+        c = D_0013F288_125878.xC;
+        *(unsigned long *)&n->x18 = 0;
+        D_0013F288_125878.xC = c + 1;
+        n->x8 = (((*(volatile s32 *)&D_0013F288_125878.xC) << 1) & 0x3FE) | 1;
+        return u | *(volatile s32 *)&n->x8;
+    } while (0);
+}
+/* localdecomp:end func_00125878 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001258E8);
 

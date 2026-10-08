@@ -1843,7 +1843,23 @@ s32 func_0012EBB8(s32 a) {
 }
 /* localdecomp:end func_0012EBB8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012EC28);
+/* localdecomp:start func_0012EC28 */
+extern s32 func_00122810();
+extern s32 D_0015BA00[];
+extern s32 D_0015BA40[];
+extern u8 D_00151B10[];
+extern void func_0012E9B0();
+
+s32 func_0012EC28(void) {
+    s32 r;
+    r = func_00122810(D_0015BA00, 5, 0, D_0015BA40, 0x80, D_0015BA40, 0x80, 0, 0);
+    if (r < 0) {
+        func_0012E9B0(D_00151B10);
+        return 0;
+    }
+    return D_0015BA40[0];
+}
+/* localdecomp:end func_0012EC28 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012EC8C);
 

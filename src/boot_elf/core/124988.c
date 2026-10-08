@@ -363,7 +363,56 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00125320);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125328);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001254B8);
+/* localdecomp:start func_001254B8 */
+typedef struct Blk_1254B8 {
+    struct Blk_1254B8 *next;
+    struct Blk_1254B8 *prev;
+    u8 pad8[8];
+    unsigned long f10;
+    unsigned long f18;
+    unsigned long f20;
+} Blk_1254B8;
+
+void *func_001254B8(Blk_1254B8 *h)
+{
+    Blk_1254B8 *cur;
+    Blk_1254B8 *prev;
+    unsigned long want;
+    void *ret;
+
+    prev = 0;
+    want = h->f20 + h->f10 - h->f18;
+    {
+        u8 *q = (u8 *)&D_0013F288;
+        cur = *(Blk_1254B8 **)(q + 0x18);
+    }
+    for (;;) {
+        if (cur == 0) {
+            break;
+        }
+        if (want < cur->f20 + cur->f10 - cur->f18) {
+            break;
+        }
+        prev = cur;
+        cur = prev->next;
+    }
+    h->prev = prev;
+    h->next = cur;
+    if (cur != 0) {
+        cur->prev = h;
+    }
+    ret = &D_0013F288;
+    if (prev != 0) {
+        prev->next = h;
+    } else {
+        {
+            u8 *q = (u8 *)&D_0013F288;
+            *(Blk_1254B8 **)(q + 0x18) = h;
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_001254B8 */
 
 /* localdecomp:start func_00125540 */
 typedef struct N_125540 { struct N_125540 *next; struct N_125540 *prev; } N_125540;

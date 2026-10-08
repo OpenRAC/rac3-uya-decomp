@@ -1812,7 +1812,20 @@ void func_0013A190(s32 a) {
 }
 /* localdecomp:end func_0013A190 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013A208);
+/* localdecomp:start func_0013A208 */
+extern s32 func_00124920(void);
+extern s32 func_00124970(void);
+void func_0013A208(s32 x) {
+    s32 r;
+    r = func_00124920();
+    *(volatile u32 *)0x1000F590 = *(volatile u32 *)0x1000F520 | 0x10000;
+    *(volatile s32 *)0x1000B400 = x;
+    *(volatile u32 *)0x1000F590 = *(volatile u32 *)0x1000F520 & 0xFFFEFFFF;
+    if (r != 0) {
+        func_00124970();
+    }
+}
+/* localdecomp:end func_0013A208 */
 
 /* localdecomp:start func_0013A280 */
 extern void func_0013A208(s32);
@@ -2058,7 +2071,13 @@ u8 func_0013A9F0(u8 a) {
 }
 /* localdecomp:end func_0013A9F0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013AA20);
+/* localdecomp:start func_0013AA20 */
+u8 func_0013AA20(u8 x) {
+    u32 q = x >> 4;
+    u8 r = (u8)(q * 6);
+    return x - r;
+}
+/* localdecomp:end func_0013AA20 */
 
 /* localdecomp:start func_0013AA40 */
 typedef struct {

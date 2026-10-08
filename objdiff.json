@@ -12,8 +12,12 @@
   ],
   "progress_categories": [
     {
+      "id": "menu",
+      "name": "Menu (i5bootn + boot_elf + frontbin)"
+    },
+    {
       "id": "frontend",
-      "name": "Frontend / Menu"
+      "name": "Front end (frontbin)"
     },
     {
       "id": "singleplayer",
@@ -269,7 +273,7 @@
     },
     {
       "id": "boot_elf_core",
-      "name": "Boot ELF: engine core"
+      "name": "Engine (boot_elf core)"
     },
     {
       "id": "boot_elf_frontend",
@@ -284,6 +288,7 @@
       "metadata": {
         "source_path": "src/frontbin/37D100.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -295,6 +300,7 @@
       "metadata": {
         "source_path": "src/frontbin/37E0F0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -306,6 +312,7 @@
       "metadata": {
         "source_path": "src/frontbin/3882D0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -317,6 +324,7 @@
       "metadata": {
         "source_path": "src/frontbin/388680.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -328,6 +336,7 @@
       "metadata": {
         "source_path": "src/frontbin/388770.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -339,6 +348,7 @@
       "metadata": {
         "source_path": "src/frontbin/388830.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -350,6 +360,7 @@
       "metadata": {
         "source_path": "src/frontbin/388960.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -361,6 +372,7 @@
       "metadata": {
         "source_path": "src/frontbin/388A28.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -372,6 +384,7 @@
       "metadata": {
         "source_path": "src/frontbin/388B40.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -383,6 +396,7 @@
       "metadata": {
         "source_path": "src/frontbin/389380.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -394,6 +408,7 @@
       "metadata": {
         "source_path": "src/frontbin/389468.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -405,6 +420,7 @@
       "metadata": {
         "source_path": "src/frontbin/3894A0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -416,6 +432,7 @@
       "metadata": {
         "source_path": "src/frontbin/3896E8.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -427,6 +444,7 @@
       "metadata": {
         "source_path": "src/frontbin/3934E8.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -438,6 +456,7 @@
       "metadata": {
         "source_path": "src/frontbin/3958F0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -449,6 +468,7 @@
       "metadata": {
         "source_path": "src/frontbin/39B198.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -460,6 +480,7 @@
       "metadata": {
         "source_path": "src/frontbin/39B200.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -471,6 +492,7 @@
       "metadata": {
         "source_path": "src/frontbin/39BC00.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -482,6 +504,7 @@
       "metadata": {
         "source_path": "src/frontbin/39DB38.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -493,6 +516,7 @@
       "metadata": {
         "source_path": "src/frontbin/39FFC8.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -504,6 +528,7 @@
       "metadata": {
         "source_path": "src/frontbin/3A4758.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -515,6 +540,7 @@
       "metadata": {
         "source_path": "src/frontbin/3A53B0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -526,6 +552,7 @@
       "metadata": {
         "source_path": "src/frontbin/3A5478.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -537,6 +564,7 @@
       "metadata": {
         "source_path": "src/frontbin/3A6790.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -548,6 +576,7 @@
       "metadata": {
         "source_path": "src/frontbin/3A7690.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -559,6 +588,7 @@
       "metadata": {
         "source_path": "src/frontbin/3A9CF8.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -570,6 +600,7 @@
       "metadata": {
         "source_path": "src/frontbin/3AAAA0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -581,6 +612,7 @@
       "metadata": {
         "source_path": "src/frontbin/3ABA48.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -592,6 +624,7 @@
       "metadata": {
         "source_path": "src/frontbin/3AD430.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -603,6 +636,7 @@
       "metadata": {
         "source_path": "src/frontbin/3AD458.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -614,6 +648,7 @@
       "metadata": {
         "source_path": "src/frontbin/3AD8A8.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -625,6 +660,7 @@
       "metadata": {
         "source_path": "src/frontbin/3B1068.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -636,6 +672,7 @@
       "metadata": {
         "source_path": "src/frontbin/3B1518.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -647,6 +684,7 @@
       "metadata": {
         "source_path": "src/frontbin/3B46F0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -658,6 +696,7 @@
       "metadata": {
         "source_path": "src/frontbin/3B5BF8.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -669,6 +708,7 @@
       "metadata": {
         "source_path": "src/frontbin/3B8F50.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -680,6 +720,7 @@
       "metadata": {
         "source_path": "src/frontbin/3BDAC0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -691,6 +732,7 @@
       "metadata": {
         "source_path": "src/frontbin/3BF5D0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -702,6 +744,7 @@
       "metadata": {
         "source_path": "src/frontbin/3C0E08.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -713,6 +756,7 @@
       "metadata": {
         "source_path": "src/frontbin/3C1A60.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -724,6 +768,7 @@
       "metadata": {
         "source_path": "src/frontbin/3C79F0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -735,6 +780,7 @@
       "metadata": {
         "source_path": "src/frontbin/3C7B98.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -746,6 +792,7 @@
       "metadata": {
         "source_path": "src/frontbin/3C8B28.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -757,6 +804,7 @@
       "metadata": {
         "source_path": "src/frontbin/3C9210.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -768,6 +816,7 @@
       "metadata": {
         "source_path": "src/frontbin/3C9888.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -779,6 +828,7 @@
       "metadata": {
         "source_path": "src/frontbin/3C9C58.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -790,6 +840,7 @@
       "metadata": {
         "source_path": "src/frontbin/3CB5A0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -801,6 +852,7 @@
       "metadata": {
         "source_path": "src/frontbin/3CB890.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -812,6 +864,7 @@
       "metadata": {
         "source_path": "src/frontbin/3CC198.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -823,6 +876,7 @@
       "metadata": {
         "source_path": "src/frontbin/3CC838.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -834,6 +888,7 @@
       "metadata": {
         "source_path": "src/frontbin/3CC880.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -845,6 +900,7 @@
       "metadata": {
         "source_path": "src/frontbin/3CD710.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -856,6 +912,7 @@
       "metadata": {
         "source_path": "src/frontbin/3CD830.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -867,6 +924,7 @@
       "metadata": {
         "source_path": "src/frontbin/3CE740.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -878,6 +936,7 @@
       "metadata": {
         "source_path": "src/frontbin/3D14B0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -889,6 +948,7 @@
       "metadata": {
         "source_path": "src/frontbin/3D48D8.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -900,6 +960,7 @@
       "metadata": {
         "source_path": "src/frontbin/3D97C8.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -911,6 +972,7 @@
       "metadata": {
         "source_path": "src/frontbin/3D9A40.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -922,6 +984,7 @@
       "metadata": {
         "source_path": "src/frontbin/3DBDF0.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -933,6 +996,7 @@
       "metadata": {
         "source_path": "src/frontbin/3E0190.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -944,6 +1008,7 @@
       "metadata": {
         "source_path": "src/frontbin/3E1150.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -955,6 +1020,7 @@
       "metadata": {
         "source_path": "src/frontbin/3E1C38.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -966,6 +1032,7 @@
       "metadata": {
         "source_path": "src/frontbin/3E1E38.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -977,6 +1044,7 @@
       "metadata": {
         "source_path": "src/frontbin/3E5378.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -988,6 +1056,7 @@
       "metadata": {
         "source_path": "src/frontbin/3ECC70.c",
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -999,6 +1068,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/116F80.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1012,6 +1082,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/11EA10.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1025,6 +1096,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/11F2A0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1038,6 +1110,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/11F5F0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1051,6 +1124,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/11F848.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1064,6 +1138,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/11F860.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1077,6 +1152,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/11FA10.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1090,6 +1166,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/1245A0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1103,6 +1180,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/124988.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1116,6 +1194,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/_main.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1129,6 +1208,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/_divdi3.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1142,6 +1222,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/_eh.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1155,6 +1236,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/_fixunsdfdi.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1168,6 +1250,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/_floatdidf.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1181,6 +1264,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/_moddi3.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1194,6 +1278,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/_muldi3.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1207,6 +1292,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/_pure.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1220,6 +1306,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/_udivdi3.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1233,6 +1320,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/_umoddi3.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1246,6 +1334,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/dp-bit.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1259,6 +1348,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/fp-bit.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1272,6 +1362,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/libgcc/frame.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1285,6 +1376,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/12A948.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1298,6 +1390,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/12FFE0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1311,6 +1404,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/1301D8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1324,6 +1418,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/132EC8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1337,6 +1432,7 @@
       "metadata": {
         "source_path": "src/boot_elf/core/133BB8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_core"
@@ -1350,6 +1446,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/381180.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1363,6 +1460,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/382780.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1376,6 +1474,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38CD30.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1389,6 +1488,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38D0E0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1402,6 +1502,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38D1D0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1415,6 +1516,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38D290.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1428,6 +1530,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38D3C0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1441,6 +1544,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38D488.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1454,6 +1558,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38D5A0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1467,6 +1572,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38DDE0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1480,6 +1586,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38DEC8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1493,6 +1600,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38DF00.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1506,6 +1614,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/38E1F8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1519,6 +1628,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/398040.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1532,6 +1642,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/39A9A8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1545,6 +1656,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3A03F8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1558,6 +1670,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3A0440.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1571,6 +1684,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3A0EC0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1584,6 +1698,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3A2E80.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1597,6 +1712,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3A56A8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1610,6 +1726,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3A9F18.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1623,6 +1740,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3AAB70.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1636,6 +1754,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3AAC38.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1649,6 +1768,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3ABF50.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1662,6 +1782,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3ACE50.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1675,6 +1796,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3AF4B8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1688,6 +1810,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3B0260.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1701,6 +1824,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3B1208.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1714,6 +1838,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3B2BF0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1727,6 +1852,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3B2C18.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1740,6 +1866,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3B3068.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1753,6 +1880,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3B6828.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1766,6 +1894,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3B6CD8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1779,6 +1908,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3B9EB0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1792,6 +1922,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3BB3B8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1805,6 +1936,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3BE710.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1818,6 +1950,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3C3280.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1831,6 +1964,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3C4D90.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1844,6 +1978,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3C65C8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1857,6 +1992,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3C7220.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1870,6 +2006,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3CD1B0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1883,6 +2020,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3CD358.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1896,6 +2034,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3CE2E8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1909,6 +2048,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3CE9D0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1922,6 +2062,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3CF048.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1935,6 +2076,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3CF418.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1948,6 +2090,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3D0D60.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1961,6 +2104,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3D1050.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1974,6 +2118,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3D1958.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -1987,6 +2132,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3D1FF8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2000,6 +2146,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3D2040.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2013,6 +2160,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3D2ED0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2026,6 +2174,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3D2FF0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2039,6 +2188,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3D3F00.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2052,6 +2202,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3D6C70.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2065,6 +2216,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3DA098.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2078,6 +2230,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3DEF88.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2091,6 +2244,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3DF200.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2104,6 +2258,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3E15B0.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2117,6 +2272,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3E5950.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2130,6 +2286,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3E6910.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2143,6 +2300,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3E73F8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2156,6 +2314,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3E75F8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2169,6 +2328,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3EAB38.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2182,6 +2342,7 @@
       "metadata": {
         "source_path": "src/boot_elf/text/3F2430.c",
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf",
           "boot_elf_frontend"
@@ -2195,6 +2356,7 @@
       "metadata": {
         "source_path": "src/i5bootn/800000.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2207,6 +2369,7 @@
       "metadata": {
         "source_path": "src/i5bootn/800160.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2219,6 +2382,7 @@
       "metadata": {
         "source_path": "src/i5bootn/800488.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2231,6 +2395,7 @@
       "metadata": {
         "source_path": "src/i5bootn/800800.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2243,6 +2408,7 @@
       "metadata": {
         "source_path": "src/i5bootn/8010A8.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2255,6 +2421,7 @@
       "metadata": {
         "source_path": "src/i5bootn/libgcc/_main.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2267,6 +2434,7 @@
       "metadata": {
         "source_path": "src/i5bootn/libgcc/_divdi3.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2279,6 +2447,7 @@
       "metadata": {
         "source_path": "src/i5bootn/libgcc/_fixunsdfdi.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2291,6 +2460,7 @@
       "metadata": {
         "source_path": "src/i5bootn/libgcc/_floatdidf.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2303,6 +2473,7 @@
       "metadata": {
         "source_path": "src/i5bootn/libgcc/_moddi3.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2315,6 +2486,7 @@
       "metadata": {
         "source_path": "src/i5bootn/libgcc/_udivdi3.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2327,6 +2499,7 @@
       "metadata": {
         "source_path": "src/i5bootn/libgcc/_umoddi3.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2339,6 +2512,7 @@
       "metadata": {
         "source_path": "src/i5bootn/libgcc/dp-bit.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2351,6 +2525,7 @@
       "metadata": {
         "source_path": "src/i5bootn/libgcc/fp-bit.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2363,6 +2538,7 @@
       "metadata": {
         "source_path": "src/i5bootn/libgcc/_muldi3.c",
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]
@@ -2373,6 +2549,7 @@
       "target_path": "build/objdiff/target/frontbin_data.o",
       "metadata": {
         "progress_categories": [
+          "menu",
           "frontend"
         ]
       }
@@ -3525,6 +3702,7 @@
       "target_path": "build/objdiff/target/exes/boot_elf_data.o",
       "metadata": {
         "progress_categories": [
+          "menu",
           "executables",
           "boot_elf"
         ]
@@ -3535,6 +3713,7 @@
       "target_path": "build/objdiff/target/exes/i5bootn_data.o",
       "metadata": {
         "progress_categories": [
+          "menu",
           "executables",
           "i5bootn"
         ]

@@ -57,3 +57,7 @@ The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in 
 | `tools/bootstrap_target.py` | Makes a new target's source tree from its ELF (how i5bootn was set up) |
 | `tools/elf2bin.py` | `objcopy -O binary` in Python (i5bootn's flat binary; SN's objcopy corrupts it) |
 | `tools/seed_boot_elf.py` | Copies frontbin's matched C into boot_elf's front end; rerun it when frontbin gains matches |
+
+## License
+
+The repository is split-licensed; [`LICENSE`](LICENSE) has the exact terms. The project's own tooling, build files, tables and documentation are GPL-3.0. The decompiled game code in `src/` is a derivative of the original game (copyright Sony Interactive Entertainment LLC): no copyright is claimed over it and it is not licensed; it is provided for educational, preservation and research purposes. The GCC runtime library source in the `libgcc/` folders keeps its own license (GPL-2.0-or-later with the libgcc runtime exception).

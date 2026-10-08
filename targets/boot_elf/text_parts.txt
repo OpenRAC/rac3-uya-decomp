@@ -7,21 +7,178 @@
 0x0011F5F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0011F848     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0011F860     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x0011FA10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0011FA10     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x0011FAE8     @ee29 -O2 -G0   # single-function override
+0x0011FBD8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0011FD40     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x0011FEB8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001200E0     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x00120278     @ee29 -O2 -G0   # single-function override
+0x001203F0     @ee29 -O2 -G0   # single-function override
+0x001204C0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001205B8     @ee29 -O2 -G0   # single-function override
+0x00120668     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001218B8     @ee29 -O2 -G0   # single-function override
+0x00121B38     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00121C38     @ee29 -O2 -G0   # single-function override
+0x00121D70     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00122278     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack   # single-function override
 0x001222A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001223F8     @ee29 -O2 -G0   # single-function override
+0x001224C8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00122560     @ee29 -O2 -G0   # single-function override
+0x00122630     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x00122780     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00122810     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x00122A10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00122B68     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x00122C58     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00123430     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x001236C0     @ee29 -O2 -G0   # single-function override
+0x00123838     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00123D10     @ee29 -O2 -G0   # single-function override
+0x00123E10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00123ED8     @ee29 -O2 -G0   # single-function override
+0x001240E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00124138     @ee29 -O2 -G0   # single-function override
+0x00124290     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00124488     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x00124550     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001245A0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00124988     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00124A80     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x00124B80     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00124DB8     @ee29 -O2 -G0   # single-function override
+0x00124ED0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00124FB8     @ee29 -O2 -G0   # override for func_00124FB8; extends over the hand-written func_0012508C so the next slice starts 8-aligned
+0x00125100     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00125130     @ee29 -O2 -G0   # single-function override
+0x00125288     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00125D18     @ee29 -O2 -G0   # single-function override
+0x00125E48     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libkernl)
+0x00125F38     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00126020     @ee29 -O2 -G0   # libgcc (src/boot_elf/core/libgcc/): Sony's ee-gcc 2.9-ee-991111 (tools/ee29.py)
 0x001267F0     @ee29 -O2 -G0 -fexceptions   # _eh.c: GCC's build compiles L_eh with -fexceptions
 0x00127750     @ee29 -O2 -G0
 0x0012A948     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012AC40     @ee29 -O2 -G0   # single-function override
+0x0012AD28     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012AEA8     @ee29 -O2 -G0   # single-function override
+0x0012B000     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012B1A8     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libcdvd)
+0x0012B300     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012B5E8     @ee29 -O2 -G0   # single-function override
+0x0012B800     @ee29 -O2 -G0   # single-function override
+0x0012BA20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012BC98     @ee29 -O2 -G0   # single-function override
+0x0012BD50     @ee29 -O2 -G0   # single-function override
+0x0012BE20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012BE28     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libcdvd)
+0x0012BEE8     @ee29 -O2 -G0   # single-function override
+0x0012C078     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012C4B0     @ee29 -O2 -G0   # single-function override
+0x0012C570     @ee29 -O2 -G0   # single-function override
+0x0012C638     @ee29 -O2 -G0   # single-function override
+0x0012C820     @ee29 -O2 -G0   # single-function override
+0x0012C908     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012CCC8     @ee29 -O2 -G0   # single-function override
+0x0012D4D8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012D678     @ee29 -O2 -G0   # single-function override
+0x0012D758     @ee29 -O2 -G0   # single-function override
+0x0012D930     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012DA60     @ee29 -O2 -G0   # single-function override
+0x0012DC88     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012DCA0     @ee29 -O2 -G0   # single-function override
+0x0012DDC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012DE00     @ee29 -O2 -G0   # single-function override
+0x0012DEC0     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libmc)
+0x0012DFA0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012E050     @ee29 -O2 -G0   # single-function override
+0x0012E168     @ee29 -O2 -G0   # single-function override
+0x0012E2E0     @ee29 -O2 -G0   # single-function override
+0x0012E3A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012E400     @ee29 -O2 -G0   # single-function override
+0x0012E580     @ee29 -O2 -G0   # single-function override
+0x0012E6D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012E6D8     @ee29 -O2 -G0   # single-function override
+0x0012E7A8     @ee29 -O2 -G0   # single-function override
+0x0012E8C8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012E8D8     @ee29 -O2 -G0   # single-function override
+0x0012E9A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012EA38     @ee29 -O2 -G0   # single-function override
+0x0012EB38     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012EC90     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libpad)
+0x0012EDD0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012F2A0     @ee29 -O2 -G0   # single-function override
+0x0012F3F8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012F4F0     @ee29 -O2 -G0   # single-function override
+0x0012F5A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012F608     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libpad)
+0x0012F720     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012F728     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libpad)
+0x0012F860     @ee29 -O2 -G0   # single-function override
+0x0012F918     @ee29 -O2 -G0   # single-function override
+0x0012F9E0     @ee29 -O2 -G0   # single-function override
+0x0012FAB8     @ee29 -O2 -G0   # single-function override
+0x0012FB68     @ee29 -O2 -G0   # single-function override
+0x0012FC18     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0012FD50     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libpad)
+0x0012FE78     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0012FFE0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x001301D8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00130210     @ee29 -O2 -G0   # single-function override
+0x00130398     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00130AA0     @ee29 -O2 -G0   # single-function override
+0x00130CF0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00131178     @ee29 -O2 -G0   # single-function override
+0x00131398     @ee29 -O2 -G0   # single-function override
+0x001315D8     @ee29 -O2 -G0   # single-function override
+0x00131908     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libmpeg)
+0x00131D30     @ee29 -O2 -G0   # single-function override
+0x00131ED0     @ee29 -O2 -G0   # single-function override
+0x00132428     @ee29 -O2 -G0   # single-function override
+0x001325A0     @ee29 -O2 -G0   # single-function override
+0x00132708     @ee29 -O2 -G0   # single-function override
+0x00132888     @ee29 -O2 -G0   # single-function override
+0x00132970     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00132AD8     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libmpeg)
+0x00132B98     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00132D48     @ee29 -O2 -G0   # single-function override
 0x00132EC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00133BB8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00133C58     @ee29 -O2 -G0   # single-function override
+0x00133DF8     @ee29 -O2 -G0   # single-function override
+0x00134110     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00134460     @ee29 -O2 -G0   # single-function override
+0x001345A8     @ee29 -O2 -G0   # single-function override
+0x001346E8     @ee29 -O2 -G0   # single-function override
+0x001347D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001349F8     @ee29 -O2 -G0   # single-function override
+0x00134BC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00134C08     @ee29 -O2 -G0   # single-function override
+0x00134D60     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00134EE0     @ee29 -O2 -G0   # single-function override
+0x00134FD8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001350A8     @ee29 -O2 -G0   # single-function override
+0x001352E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00135F08     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libmpeg)
+0x00135FD8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00136010     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack   # single-function override
 0x00136080     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x001360D0     @ee29 -O2 -G0   # single-function override
+0x00136360     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00136620     @ee29 -O2 -G0   # single-function override
+0x00136A40     @ee29 -O2 -G0   # single-function override
+0x00136B00     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00137450     @ee29 -O2 -G0   # single-function override
+0x00137620     @ee29 -O2 -G0   # single-function override: Sony 2.9-ee-991111 (libmpeg)
+0x00137CC8     @ee29 -O2 -G0   # single-function override: Sony library code (libmpeg)
+0x00139A70     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013A280     @ee29 -O2 -G0   # single-function override
+0x0013A368     @ee29 -O2 -G0   # single-function override
+0x0013A4B8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0013A598     @ee29 -O2 -G0   # single-function override
+0x0013A7D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0013A9F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack   # single-function override
 0x0013AA20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0013B330     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override

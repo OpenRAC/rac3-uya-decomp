@@ -227,8 +227,10 @@ def main():
         c_count += len(c_names)
         stubs = b"".join(b'\nINCLUDE_ASM("%s", %s);' % (u.asm_dir.encode(), n) for n in sorted(c_names)) + b"\n"
         # Function boundaries: the names in the sources (func_<address>) are the project's
-        # units, and every .s must end exactly where the next one starts.
-        names |= {int(m, 16) for m in re.findall(rb"func_([0-9A-F]{8})", text) if u.contains(int(m, 16))}
+        # units, and every .s must end exactly where the next one starts. A name that is
+        # only called, declared extern or mentioned in a comment isn't a boundary: it can
+        # be another target's function or a label inside a function.
+        names |= {int(n[5:], 16) for n in have | c_names if u.contains(int(n[5:], 16))}
         body = re.sub(rb'(?:ASM_FUNC|LINKER_REMNANT)\("[^"]+",', b'INCLUDE_ASM("%s",' % u.asm_dir.encode(), text)
         temps.append((os.path.join(ROOT, t.splat_src, u.name + ".c"), body + stubs))
     print("%d functions are already C; adding temporary stubs so each gets a .s" % c_count)

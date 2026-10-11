@@ -421,6 +421,15 @@ __udivmoddi4 (UDItype n, UDItype d, UDItype *rp)
 	      if (rp != 0)
 		{
 		  sub_ddmmss (n1, n0, n1, n0, m1, m0);
+#ifdef DECOMP_UDIVMODDI4_CLEAR_RR
+		  /* decomp: GCC's text leaves rr uninitialized here. With
+		     Sony's Windows 2.9-ee, combine then leaves a USE of a dead
+		     mask register that lands in $2 and keeps reorg from filling
+		     a branch delay slot that Sony's own build filled. Clearing
+		     rr first produces the same code without that USE. Only the
+		     modules that need it define this.  */
+		  rr.ll = 0;
+#endif
 		  rr.s.low = (n1 << b) | (n0 >> bm);
 		  rr.s.high = n1 >> bm;
 		  *rp = rr.ll;
@@ -429,6 +438,14 @@ __udivmoddi4 (UDItype n, UDItype d, UDItype *rp)
 	}
     }
 
+#ifdef DECOMP_UDIVMODDI4_WW_HIGH_TWICE
+  /* decomp: an extra store of the high word first. With Sony's Windows
+     2.9-ee the plain text leaves a USE of a dead mask register in $2 at
+     this join, and sched2 then puts q1's shift before q0's; Sony's own
+     build spilled that register instead. This store gives the same code as
+     Sony's build. Only the modules that need it define this.  */
+  ww.s.high = q1;
+#endif
   ww.s.low = q0;
   ww.s.high = q1;
   return ww.ll;

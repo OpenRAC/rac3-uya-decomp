@@ -61,8 +61,11 @@ and boot_elf, but those keep ee-objcopy.
   syscall; jr $ra`).
 - 8 linker remnants.
 - 44 compiled functions: libgcc (26), small libc and SIO helpers, newlib
-  `exit`, a printf-style formatter, the loader and `main`. 2 are C so far
-  (`main`, `func_008010F8`); the rest are `INCLUDE_ASM`.
+  `exit`, a printf-style formatter, the loader and `main`. All are C except
+  newlib `exit()` (`func_008006E0`): it needs Sony's 2.96 (8-byte save slots
+  and a sibling call), which exists only as a Linux build, so it stays
+  `INCLUDE_ASM`. Its C (byte-identical with 2.96-ee-001003-1 `-O2 -G0`) is
+  kept as a near miss outside the build.
 
 The source-file split (5 files) and the flags in `targets/i5bootn/text_parts.txt`
 are estimates from `tools/bootstrap_target.py` (the target's base flags,
@@ -92,10 +95,35 @@ compiled with Sony's Windows 2.9-ee-991111 through the `@ee29` pseudo-flag in
 `targets/i5bootn/text_parts.txt` (`tools/ee29.py`; the compiler's folder is
 `C:/tools/testfolder/ee-gcc2.9-991111` unless `EE29` / `UYA_EE29` says
 otherwise). See `src/libgcc/README.md`. The Windows build matches 23 of
-the 26 libgcc functions; `__moddi3`, `__udivdi3` and `__umoddi3` reserve stack
-that only the Linux 2.9-ee-991111-01 build reproduces, so they stay assembly.
+the 26 libgcc functions directly. `__moddi3`, `__udivdi3` and `__umoddi3`
+reserve stack that Sony's build left (dead slots of the inlined
+`__udivmoddi4`); their files give the same frame with an unused padding local.
+`__moddi3` and `__udivdi3` also need one of the two `DECOMP_UDIVMODDI4_*`
+switches in `src/libgcc/libgcc2.h` (see "Patterns" below).
 The small libc and SIO helpers can use `@ee29` the same way (a range override
 in their own files).
+
+## Patterns (2026-10-11)
+
+- **A USE left by combine.** When an uninitialized union (`DIunion rr`, `ww`)
+  gets its two halves assigned one after the other, combine drops the dead
+  first mask and leaves a `(use (reg))` of the mask's pseudo at the block's
+  label. Sony's build gave that pseudo no register (a dead stack slot, the
+  "reserved stack"); the Windows 2.9-ee gives it `$v0`, which then looks live
+  to the delay-slot pass and the scheduler. `__moddi3` clears `rr` first
+  (`DECOMP_UDIVMODDI4_CLEAR_RR`), `__udivdi3` stores `ww`'s high word twice
+  (`DECOMP_UDIVMODDI4_WW_HIGH_TWICE`); both give Sony's code.
+- **The printf core (`func_00801778`).** The re-read of the next format
+  character is a labelled block inside the `'e'`/`'f'` case (where retail has
+  it), and the paths that already hold it in `c` skip it. The loop test reads
+  into `t` and copies to `c`, with the first read before the loop and a
+  statement in between, so cse keeps `t`. An empty asm on `c` in `default`
+  stops gcse's copy propagation from replacing `ch` there; it emits nothing.
+  The range uses `@ee29 @newas`: the default assembler puts a `nop` before
+  `c.eq.s`.
+- **Empty asm instead of a volatile.** `func_008014A0` and `func_00801510`
+  need a delay slot that Sony's assembler filled by swapping; a non-volatile
+  operation plus `__asm__("" : "+r"(x))` lets gcc's own delay-slot pass do it.
 
 ## Starting the tree again
 

@@ -36,9 +36,26 @@ Boston, MA 02111-1307, USA.  */
 #define L_udivdi3
 /* boot_elf: this module's copy of libgcc2.c's static __clz_tab, in .rodata */
 #define __clz_tab D_00150FE8
+/* boot_elf: see src/libgcc/libgcc2.h (__udivmoddi4) */
+#define DECOMP_UDIVMODDI4_WW_HIGH_TWICE
 #include "src/libgcc/libgcc2.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00127FB0);
+/* localdecomp:start func_00127FB0 */
+UDItype __udivmoddi4 ();
+/* __udivdi3 */
+UDItype func_00127FB0 (UDItype n, UDItype d)
+{
+  /* boot_elf: Sony's prebuilt libgcc.a was compiled by a 2.9-ee build that
+     left a 16-byte dead stack slot here (a spilled register of the inlined
+     __udivmoddi4 that no instruction uses). The Windows 2.9-ee-991111 has no
+     such slot; an unused addressable local gives the same 0x10 frame.
+     Every instruction is GCC's own.  */
+  UDItype pad[2];
+
+  (void) &pad;
+  return __udivmoddi4 (n, d, (UDItype *) 0);
+}
+/* localdecomp:end func_00127FB0 */

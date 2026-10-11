@@ -11,10 +11,10 @@
 0x00800800     -O2 -G0 -fopt-stack -mno-check-zero-division
 0x008010A8     @ee29 -O2 -G0   # Sony 2.9-ee library code: word copy loop
 0x008010F8     -O2 -G0 -fopt-stack -mno-check-zero-division
-0x008014D8     @ee29 -O2 -G0   # Sony 2.9-ee library code: SIO putc with \n to \r\n
+0x008014A0     @ee29 -O2 -G0   # Sony 2.9-ee library code: SIO putc (func_008014A0) and putc with \n to \r\n (func_008014D8)
 0x00801510     -O2 -G0 -fopt-stack -mno-check-zero-division
 0x008015A0     @ee29 -O2 -G0   # Sony 2.9-ee library code: func_008015A0 (prints a double); its strings and literals are its object's .rodata (0x805A90)
-0x00801778     -O2 -G0 -fopt-stack -mno-check-zero-division
+0x00801778     @ee29 @newas -O2 -G0   # Sony 2.9-ee library code: printf core (func_00801778); its digit strings and jump table are its .rodata (0x805AC0). @newas: the default assembler puts a nop before c.eq.s that retail doesn't have
 0x00802490     @ee29 -O2 -G0   # Sony 2.9-ee library code: printf output callback, varargs printf wrappers
 # libgcc (src/i5bootn/libgcc/): Sony's ee-gcc 2.9-ee-991111 (@ee29, tools/ee29.py), -O2 -G0
 0x00802640     @ee29 -O2 -G0

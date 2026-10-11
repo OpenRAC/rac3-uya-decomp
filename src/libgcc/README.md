@@ -53,8 +53,11 @@ GCC's source with that compiler instead of being decompiled
 `_muldi3.c`. Dead-stripped: `__do_global_dtors` (end of `func_008025F0`),
 `dptoli` (`func_00804C00`), `__negdf2` (nothing left) and most of fp-bit.o
 (`func_00804ED0`, `func_00804EF8`). `__moddi3`, `__udivdi3` and
-`__umoddi3` stay assembly: they reserve stack that only Sony's Linux
-2.9-ee-991111-01 reproduces, not the Windows 2.9-ee-991111 the build uses.
+`__umoddi3` reserve stack that Sony's build left and the Windows
+2.9-ee-991111 doesn't: their files add an unused padding local for the frame.
+`__moddi3` defines `DECOMP_UDIVMODDI4_CLEAR_RR` and `__udivdi3` defines
+`DECOMP_UDIVMODDI4_WW_HIGH_TWICE` before including `libgcc2.h` (see the
+comments there and `docs/i5bootn.md`, "Patterns").
 
 ## boot_elf (`src/boot_elf/core/libgcc/`)
 
@@ -69,7 +72,7 @@ sizes `frame_state` as retail has it); the module files define them. The linker 
 `__do_global_dtors` (`func_00126018`, in 124988.c), `__negdf2`, and most of
 fp-bit.o (`func_00129920`). `_eh.c` is compiled with `-fexceptions` (its
 own `text_parts.txt` line), as GCC's build compiles `L_eh`; without it the
-2.9-ee turns some calls into sibling calls retail doesn't have. Still
-assembly: `__moddi3`, `__udivdi3` and `__umoddi3` (as in i5bootn),
+2.9-ee turns some calls into sibling calls retail doesn't have. `__moddi3`,
+`__udivdi3` and `__umoddi3` are C as in i5bootn. Still assembly:
 `_eh.o`'s `copy_reg`, `throw_helper`, `__throw`, `__rethrow`, and
 `frame.o`'s `execute_cfa_insn` (switch table in `.rdata`).

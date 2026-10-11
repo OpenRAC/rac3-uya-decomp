@@ -36,9 +36,39 @@ Boston, MA 02111-1307, USA.  */
 #define L_moddi3
 /* boot_elf: this module's copy of libgcc2.c's static __clz_tab, in .rodata */
 #define __clz_tab D_00150EE8
+/* boot_elf: see src/libgcc/libgcc2.h (__udivmoddi4) */
+#define DECOMP_UDIVMODDI4_CLEAR_RR
 #include "src/libgcc/libgcc2.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001278E0);
+/* localdecomp:start func_001278E0 */
+UDItype __udivmoddi4 ();
+/* __moddi3 */
+DItype func_001278E0 (DItype u, DItype v)
+{
+  word_type c = 0;
+  DIunion uu, vv;
+  /* boot_elf: as in __umoddi3 (_umoddi3.c): Sony's build left 40 bytes of
+     dead stack after w (slots of the inlined __udivmoddi4's locals), the
+     Windows 2.9-ee-991111 frees them, so w gets this padding to give the
+     same 0x40 frame with w at 0($sp).  */
+  struct { DItype w; DItype pad[5]; } s;
+
+  uu.ll = u;
+  vv.ll = v;
+
+  if (uu.s.high < 0)
+    c = ~c,
+    uu.ll = __negdi2 (uu.ll);
+  if (vv.s.high < 0)
+    vv.ll = __negdi2 (vv.ll);
+
+  (void) __udivmoddi4 (uu.ll, vv.ll, &s.w);
+  if (c)
+    s.w = __negdi2 (s.w);
+
+  return s.w;
+}
+/* localdecomp:end func_001278E0 */

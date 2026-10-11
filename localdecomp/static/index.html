@@ -12,6 +12,7 @@
     <button id="build-btn">Build &amp; Diff (Ctrl+Enter)</button>
     <button id="save-btn">Save to project</button>
     <button id="export-diff-btn" disabled>Export diff</button>
+    <button id="permuter-btn" title="Random search for a closer variant of the editor's code (decomp-permuter), with live progress">Permuter</button>
     <button id="check-btn" title="Full build + MATCH + full objdiff report, compared with your last push">Full check</button>
     <button id="push-btn" disabled title="Unlocks after a passing full check of the current commit">Push</button>
     <span id="status"></span>
@@ -50,6 +51,43 @@
     </section>
   </main>
 
+  <section id="perm-panel" hidden>
+    <div class="perm-head">
+      <span class="perm-title">Permuter</span>
+      <span id="perm-func"></span>
+      <select id="perm-search" title="Random: decomp-permuter's random rewrites, until stopped. Exhaustive: every empty-asm fence, volatile barrier, do-while wrap and statement swap, then pairs of the best (tools/fence_search.py); finishes on its own.">
+        <option value="random">Random search</option>
+        <option value="exhaustive">Every fence &amp; barrier</option>
+      </select>
+      <label title="Worker processes; each compiles one candidate at a time">Workers <input id="perm-jobs" type="number" min="1" max="64"></label>
+      <label title="Stop after this many minutes (0 = until stopped or matched)">Minutes <input id="perm-mins" type="number" min="0" value="10"></label>
+      <label title="Also try empty register fences and volatile barriers (inline asm; commits that use them need the (asm) tag)"><input id="perm-asm" type="checkbox" checked> Fence/barrier passes</label>
+      <button id="perm-start" disabled>Start from editor code</button>
+      <button id="perm-stop" disabled>Stop</button>
+      <span id="perm-state" class="score-badge">idle</span>
+      <span id="perm-note" class="perm-note"></span>
+      <button id="perm-close" title="Hide (the run keeps going)">&times;</button>
+    </div>
+    <div id="perm-stats"></div>
+    <div class="perm-body">
+      <div class="perm-col">
+        <div class="perm-sub">Aligned diffs over time <span class="perm-key"><i class="k-best"></i>best <i class="k-dot"></i>candidates <i class="k-base"></i>base</span></div>
+        <svg id="perm-chart" preserveAspectRatio="none"></svg>
+        <div class="perm-sub">Passes</div>
+        <div class="perm-scroll"><table id="perm-passes"></table></div>
+      </div>
+      <div class="perm-col">
+        <div class="perm-sub">Activity (newest first)</div>
+        <div id="perm-feed" class="perm-scroll"></div>
+      </div>
+      <div class="perm-col wide">
+        <div class="perm-sub">Results</div>
+        <div id="perm-results" class="perm-scroll short"></div>
+        <div id="perm-output" class="perm-scroll"></div>
+      </div>
+    </div>
+  </section>
+
   <div id="check-panel" hidden>
     <div id="check-card">
       <div class="check-head">
@@ -61,5 +99,6 @@
   </div>
 
   <script src="/app.js"></script>
+  <script src="/permuter.js"></script>
 </body>
 </html>

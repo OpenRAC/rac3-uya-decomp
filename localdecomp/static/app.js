@@ -222,6 +222,7 @@ async function selectFunction(name) {
   lastBuildDiff = null;
   exportDiffBtn.disabled = true;
   renderSidebar();
+  if (typeof permOpen === "function" && !permPanel.hidden) permOpen();  // permuter.js
 }
 
 async function doBuild() {

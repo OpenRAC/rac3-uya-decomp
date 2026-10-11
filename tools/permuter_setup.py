@@ -118,6 +118,54 @@ def reattach(attrs_path, c_path):
     open(c_path, "w").write("".join(out))
 
 
+def default_cpp(toolchain=None, runner=None):
+    """Host `gcc -E` when there is one, else the EE toolchain's own ee-gcc -E
+    (on Windows, where there usually is no host gcc)."""
+    import shutil
+    if shutil.which("gcc"):
+        return ["gcc", "-E"]
+    if shutil.which("cpp"):
+        return ["cpp"]
+    toolchain = toolchain or os.environ.get("UYA_TOOLCHAIN", "C:/tools/eegcc_2.95.3_sn_v1.36")
+    runner = runner or os.environ.get("UYA_RUNNER")
+    return ([runner] if runner else []) + [os.path.join(toolchain, "bin", "ee-gcc2953.exe"), "-E"]
+
+
+def build_base(src, name, cpp, no_context, tf):
+    """The permuter's base.c for snippet SRC: the full-build context in front of
+    it, preprocessed so pycparser can read it. Returns (base, extern hints,
+    typedef attributes)."""
+    ctx = ""
+    if not no_context:
+        ctx, src = tf.text_c_context(name, src)
+    hints = HINT_RE.findall(ctx) + HINT_RE.findall(src)
+    ctx, src = HINT_RE.sub("", ctx), HINT_RE.sub("", src)
+    raw = '#include "common.h"\n' + ctx + "\n" + src
+    tmp = tempfile.mkdtemp(prefix="perm_setup_")
+    raw_path = os.path.join(tmp, "raw.c")
+    open(raw_path, "w").write(raw)
+    # relative include paths from the repo root: SN's cpp.exe can't take a path
+    # with spaces ("RATCHET DECOMP DIRECTORY" gives "cpp.exe: Too many arguments")
+    cmd = list(cpp) + ["-P", "-DM2CTX", "-D__attribute__(x)=", "-D__extension__=",
+                       "-I", "include", "-I", ".", raw_path]
+    p = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)
+    if p.returncode:
+        raise RuntimeError("preprocessing failed:\n" + p.stderr)
+    base = p.stdout
+    # pycparser can't read __attribute__, so base.c is preprocessed with it
+    # defined away. That silently turns `typedef int Q __attribute__((mode(TI)))`
+    # into a plain int and drops aligned(16) on vector structs, so the permuter
+    # would score different code than the real build. Record each typedef's
+    # attributes from an unstripped preprocessing pass; compile.sh puts them back
+    # (tools/permuter_setup.py --reattach) before compiling a candidate.
+    cmd_full = [c for c in cmd if c not in ("-D__attribute__(x)=",)]
+    pf = subprocess.run(cmd_full, capture_output=True, text=True, cwd=ROOT)
+    attrs = typedef_attributes(pf.stdout) if not pf.returncode else {}
+    import shutil
+    shutil.rmtree(tmp, ignore_errors=True)
+    return base, hints, attrs
+
+
 def main():
     if len(sys.argv) == 4 and sys.argv[1] == "--reattach":
         return reattach(sys.argv[2], sys.argv[3])
@@ -133,8 +181,10 @@ def main():
     ap.add_argument("--toolchain", default=os.environ.get("UYA_TOOLCHAIN", "C:/tools/eegcc_2.95.3_sn_v1.36"))
     ap.add_argument("--runner", default=os.environ.get("UYA_RUNNER"))
     ap.add_argument("--ee29", default=None, help="Sony ee-gcc 2.9-ee folder for @ee29 ranges (tools/ee29.py)")
-    ap.add_argument("--cpp", default=os.environ.get("CPP_CMD", "gcc -E"))
+    ap.add_argument("--cpp", default=os.environ.get("CPP_CMD"), help="preprocessor command (default: host gcc -E, else ee-gcc -E)")
     ap.add_argument("--no-context", action="store_true")
+    ap.add_argument("--no-asm-passes", action="store_true",
+                    help="don't enable the empty-asm passes (perm_reg_fence, perm_sched_barrier)")
     args = ap.parse_args()
 
     tf = load("try_func")
@@ -151,30 +201,12 @@ def main():
     os.makedirs(d, exist_ok=True)
 
     # ---- base.c: context + snippet, preprocessed ----
-    ctx = ""
-    if not args.no_context:
-        ctx, src = tf.text_c_context(name, src)
-    hints = HINT_RE.findall(ctx) + HINT_RE.findall(src)
-    ctx, src = HINT_RE.sub("", ctx), HINT_RE.sub("", src)
-    raw = '#include "common.h"\n' + ctx + "\n" + src
+    cpp = shlex.split(args.cpp) if args.cpp else default_cpp(args.toolchain, args.runner)
+    try:
+        base, hints, attrs = build_base(src, name, cpp, args.no_context, tf)
+    except RuntimeError as e:
+        sys.exit(str(e))
     tmp = tempfile.mkdtemp(prefix="perm_setup_")
-    raw_path = os.path.join(tmp, "raw.c")
-    open(raw_path, "w").write(raw)
-    cmd = shlex.split(args.cpp) + ["-P", "-DM2CTX", "-D__attribute__(x)=", "-D__extension__=",
-                                   "-I", os.path.join(ROOT, "include"), "-I", ROOT, raw_path]
-    p = subprocess.run(cmd, capture_output=True, text=True)
-    if p.returncode:
-        sys.exit("preprocessing failed:\n" + p.stderr)
-    base = p.stdout
-    # pycparser can't read __attribute__, so base.c is preprocessed with it
-    # defined away. That silently turns `typedef int Q __attribute__((mode(TI)))`
-    # into a plain int and drops aligned(16) on vector structs, so the permuter
-    # would score different code than the real build. Record each typedef's
-    # attributes from an unstripped preprocessing pass; compile.sh puts them back
-    # (tools/permuter_setup.py --reattach) before compiling a candidate.
-    cmd_full = [c for c in cmd if c not in ("-D__attribute__(x)=",)]
-    pf = subprocess.run(cmd_full, capture_output=True, text=True)
-    attrs = typedef_attributes(pf.stdout) if not pf.returncode else {}
     import json
     open(os.path.join(d, "attrs.json"), "w").write(json.dumps(attrs, indent=1))
     open(os.path.join(d, "base.c"), "w").write(base)
@@ -249,9 +281,13 @@ cp "$TMP/out.o" "$OUT"
     sh_path = os.path.join(d, "compile.sh")
     open(sh_path, "w", newline="\n").write(sh)
     os.chmod(sh_path, 0o755)
+    weights = "" if args.no_asm_passes else (
+        # turn on the empty-asm passes from tools/decomp-permuter-asm-passes.patch
+        # (a permuter without the patch ignores unknown weight names)
+        "\n[weight_overrides]\nperm_reg_fence = 15\nperm_sched_barrier = 10\n")
     open(os.path.join(d, "settings.toml"), "w").write(
         f'func_name = "{name}"\ncompiler_type = "gcc"\n'
-        f'objdump_command = "mips-linux-gnu-objdump -drz -m mips:5900"\n')
+        f'objdump_command = "mips-linux-gnu-objdump -drz -m mips:5900"\n' + weights)
     print(f"{d}: flags {' '.join(flags)}")
     print(f"next: python3 <decomp-permuter>/permuter.py {d} -j{os.cpu_count() or 2}")
 

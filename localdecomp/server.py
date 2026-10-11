@@ -9,6 +9,9 @@ etc) or point --project at it. It starts a local web server; open the printed
 URL in a browser.
 
 Requirements: Python 3.9+, no third-party pip packages (uses only stdlib).
+The optional Permuter panel also needs a decomp-permuter checkout (--permuter)
+with tools/decomp-permuter-asm-passes.patch, toml (or Python 3.11+) and the
+repo tools' pyelftools; see docs/permuter.md.
 The compiler toolchain and asm-differ ("python -m diff") must already work --
 this reuses the exact same test_func.ld-style single-function link+diff
 approach that was validated by hand earlier in this project.
@@ -1566,6 +1569,79 @@ def run_push(project):
 
 # ---------------------------------------------------------------------------
 
+
+# ---------------------------------------------------------------------------
+# Permuter panel: runs tools/permuter_engine.py jobs (decomp-permuter's random
+# search, compiled with this project's toolchain and scored by aligned
+# instruction diffs) and reports their progress live to the browser.
+# ---------------------------------------------------------------------------
+
+_perm_jobs = {}            # job id -> permuter_engine.Job
+_perm_lock = threading.Lock()
+PERMUTER_PATH = None       # --permuter; else permuter_engine.find_permuter()
+
+
+def _perm_engine(project):
+    tools = str(project.root / "tools")
+    if tools not in sys.path:
+        sys.path.insert(0, tools)
+    import permuter_engine
+    return permuter_engine
+
+
+def permuter_info(project):
+    eng = _perm_engine(project)
+    path = eng.find_permuter(PERMUTER_PATH)
+    ok, msg, has_asm = eng.check_permuter(path)
+    return {"available": ok, "message": msg, "path": path, "asm_passes": has_asm,
+            "cpus": os.cpu_count() or 1}
+
+
+def permuter_start(project, name, c_source, jobs, seconds, asm_passes=True, mode=None, asm=None,
+                   search="random"):
+    eng = _perm_engine(project)
+    path = eng.find_permuter(PERMUTER_PATH)
+    if search != "exhaustive":
+        ok, msg, has_asm = eng.check_permuter(path)
+        if not ok:
+            raise BuildError("permuter", msg)
+    with _perm_lock:
+        for j in _perm_jobs.values():
+            if j.cfg["func"] == name and j.cfg["target"] == project.name and \
+                    j.state["status"] in ("starting", "running"):
+                raise BuildError("permuter", f"a permuter job for {name} is already running")
+    toolchain = str(project.toolbin.parent)
+    runner = os.environ.get("UYA_RUNNER")   # wibo, when the server runs on Linux
+    # base.c is built from the full-build context like a build is
+    with _build_lock, project.active():
+        old = os.getcwd()
+        try:
+            if search == "exhaustive":
+                cfg = eng.prepare_exhaustive(c_source, name, project.name, toolchain, runner, mode, asm)
+            else:
+                cfg = eng.prepare(c_source, name, project.name, toolchain, runner, mode, asm)
+        except Exception as e:
+            raise BuildError("permuter", str(e))
+        finally:
+            os.chdir(old)
+    out_dir = str(project.root / "scratch" / "permuter" / project.name / name)
+    if search == "exhaustive":
+        job = eng.ExhaustiveJob(cfg, jobs, seconds, out_dir=out_dir)
+    else:
+        cfg["permuter"] = path
+        cfg["weights"] = dict(eng.ASM_PASS_WEIGHTS) if (asm_passes and has_asm) else {}
+        job = eng.Job(cfg, jobs, seconds, out_dir=out_dir)
+    job.state["search"] = search
+    with _perm_lock:
+        _perm_jobs[job.id] = job
+    job.start()
+    return job
+
+
+def _perm_job(job_id):
+    with _perm_lock:
+        return _perm_jobs.get(job_id)
+
 STATIC_DIR = Path(__file__).parent / "static"
 
 
@@ -1608,6 +1684,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if parsed.path == "/app.js":
             self._serve_static("app.js", "application/javascript")
             return
+        if parsed.path == "/permuter.js":
+            self._serve_static("permuter.js", "application/javascript")
+            return
         if parsed.path == "/style.css":
             self._serve_static("style.css", "text/css")
             return
@@ -1621,6 +1700,40 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 {"name": n, "label": self.labels.get(n, n),
                  "available": n in self.projects, "reason": self.unavailable.get(n)}
                 for n in self.labels]})
+            return
+        if parsed.path == "/api/permuter/info":
+            project = self._target(qs.get("target", [None])[0])
+            if not project:
+                return
+            try:
+                self._send_json(permuter_info(project))
+            except Exception as e:
+                self._send_json({"available": False, "message": str(e)})
+            return
+        if parsed.path == "/api/permuter/jobs":
+            with _perm_lock:
+                jobs = list(_perm_jobs.values())
+            out = []
+            for j in jobs:
+                st = j.snapshot(10 ** 12)
+                out.append({k: st[k] for k in ("id", "func", "target", "status", "elapsed", "iterations",
+                                                "base_score", "best_score", "jobs")})
+            self._send_json({"jobs": out})
+            return
+        if parsed.path == "/api/permuter/status":
+            job = _perm_job(qs.get("id", [""])[0])
+            if not job:
+                self._send_json({"error": "no such permuter job"}, 404)
+                return
+            self._send_json(job.snapshot(int(qs.get("since", ["0"])[0] or 0)))
+            return
+        if parsed.path == "/api/permuter/output":
+            job = _perm_job(qs.get("id", [""])[0])
+            out = job.output(qs.get("n", ["0"])[0]) if job else None
+            if not out:
+                self._send_json({"error": "no such output"}, 404)
+                return
+            self._send_json(out)
             return
         if parsed.path == "/api/functions":
             project = self._target(qs.get("target", [None])[0])
@@ -1676,6 +1789,33 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send_json({"ok": False, "stage": e.stage, "message": e.message})
             except Exception as e:
                 self._send_json({"ok": False, "stage": "internal", "message": str(e)})
+            return
+        if parsed.path == "/api/permuter/start":
+            length = int(self.headers.get("Content-Length", 0))
+            body = json.loads(self.rfile.read(length))
+            project = self._target(body.get("target"))
+            if not project:
+                return
+            try:
+                job = permuter_start(project, body.get("name"), body.get("c", ""),
+                                     int(body.get("jobs") or 1), float(body.get("seconds") or 0),
+                                     bool(body.get("asm_passes", True)), body.get("mode") or None,
+                                     body.get("as") or None, body.get("search") or "random")
+                self._send_json({"ok": True, "id": job.id})
+            except BuildError as e:
+                self._send_json({"ok": False, "stage": e.stage, "message": e.message})
+            except Exception as e:
+                self._send_json({"ok": False, "stage": "internal", "message": str(e)})
+            return
+        if parsed.path == "/api/permuter/stop":
+            length = int(self.headers.get("Content-Length", 0))
+            body = json.loads(self.rfile.read(length))
+            job = _perm_job(body.get("id", ""))
+            if not job:
+                self._send_json({"ok": False, "message": "no such permuter job"})
+                return
+            job.stop()
+            self._send_json({"ok": True})
             return
         if parsed.path == "/api/check":
             if not _check_lock.acquire(blocking=False):
@@ -1766,7 +1906,12 @@ def main():
     ap.add_argument("--refs", default=DEFAULT_REFS_DIR,
                     help="folder holding level-targets-split\\*.o, exe-targets\\*.o and frontbin_data.o (same as CI)")
     ap.add_argument("--objdiff-cli", default=DEFAULT_OBJDIFF_CLI, help="objdiff-cli executable")
+    ap.add_argument("--permuter", default=None,
+                    help="decomp-permuter checkout for the Permuter panel (default: $DECOMP_PERMUTER, "
+                         "then ../Tools/decomp-permuter or ../decomp-permuter next to the repo)")
     args = ap.parse_args()
+    global PERMUTER_PATH
+    PERMUTER_PATH = args.permuter
 
     root = Path(args.project).resolve()
     toolbin = Path(args.toolbin)
@@ -1802,6 +1947,10 @@ def main():
         server.serve_forever()
     except KeyboardInterrupt:
         pass
+    finally:
+        with _perm_lock:
+            for j in _perm_jobs.values():
+                j.stop()
 
 
 if __name__ == "__main__":

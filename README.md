@@ -44,7 +44,11 @@ The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in 
 
 | Tool | Purpose |
 |---|---|
-| `localdecomp/server.py` | Local web editor: build one function with its real flags and diff against retail |
+| `localdecomp/server.py` | Local web editor: build one function with its real flags and diff against retail; its Permuter panel runs decomp-permuter on the editor's code with live progress ([docs/permuter.md](docs/permuter.md)) |
+| `tools/permuter_engine.py` | The permuter search from the command line (Windows or Linux), with the fence and barrier passes |
+| `tools/fence_search.py` | Tries every empty register fence, volatile barrier, `do { } while (0)` wrap and statement swap (and pairs) on a near miss |
+| `tools/sched_explain.py` | Shows why gcc's scheduler ordered two instructions the way it did (priority, register weight, ...) |
+| `tools/flags_probe.py` | Finds the mode and assembler a near miss wants and records them in `tools/localdecomp_flags.txt` |
 | `tools/try_func.py` | The same compile and diff from the command line (Windows, or Linux via wibo) |
 | `tools/build_common_c.py` | Opt-in common-level C build with canonical ownership and strict retail-byte gates; see [common-level C](docs/common_level_c.md) |
 | `tools/pr_check.py` | Catches the usual full-build failures before a PR |

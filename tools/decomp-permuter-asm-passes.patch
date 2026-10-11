@@ -1,0 +1,156 @@
+diff --git a/default_weights.toml b/default_weights.toml
+index 9e8d106..d5f2439 100644
+--- a/default_weights.toml
++++ b/default_weights.toml
+@@ -38,6 +38,10 @@ perm_inline = 10
+ perm_var_cond_block = 5
+ perm_alias_array = 1
+ perm_remove_var = 5
++# Empty asm statements (register fence, volatile barrier). 0 by default: they put
++# inline asm in the source, so a project enables them in its settings.toml.
++perm_reg_fence = 0
++perm_sched_barrier = 0
+ 
+ [ido]
+ perm_float_literal = 10
+diff --git a/src/randomizer.py b/src/randomizer.py
+index e88808d..7cb4acb 100644
+--- a/src/randomizer.py
++++ b/src/randomizer.py
+@@ -2589,6 +2589,127 @@ def perm_remove_var(
+ 
+ RandomizationPass = Callable[[ca.FuncDef, ca.FileAST, Indices, Region, Random], None]
+ 
++
++def _asm_operand_constraint(name: str, typemap: TypeMap) -> Optional[str]:
++    """'r' or 'f' for a local scalar variable, None for anything a register
++    constraint can't hold (structs, arrays, unknown names)."""
++    if name not in typemap.var_types:
++        return None
++    t = resolve_typedefs(typemap.var_types[name], typemap)
++    if isinstance(t, ca.PtrDecl):
++        return "r"
++    if isinstance(t, ca.TypeDecl) and isinstance(t.type, ca.IdentifierType):
++        names = t.type.names
++        if "float" in names or "double" in names:
++            return "f"
++        return "r"
++    return None
++
++
++def _empty_asm(volatile: bool, outputs: List[ca.AsmOperand]) -> ca.Asm:
++    return ca.Asm(
++        quals=["volatile"] if volatile else [],
++        asm=ca.Constant(type="string", value='""'),
++        output_operands=outputs,
++        input_operands=[],
++        clobbers=[],
++        gotos=[],
++    )
++
++
++def _is_empty_asm(stmt: ca.Node) -> bool:
++    return (
++        isinstance(stmt, ca.Asm)
++        and isinstance(stmt.asm, ca.Constant)
++        and stmt.asm.value == '""'
++        and not stmt.input_operands
++        and not stmt.clobbers
++    )
++
++
++def perm_reg_fence(
++    fn: ca.FuncDef, ast: ca.FileAST, indices: Indices, region: Region, random: Random
++) -> None:
++    """Insert an empty register fence `asm("" : "+r"(x));` for a local scalar x,
++    usually right after an assignment to x. gcc can't see through it: x keeps
++    its own pseudo (combine can't fold its value into a later insn) and the
++    fence lengthens x's dependency chain, which changes sched1's priorities and
++    local-alloc's choices. Or, sometimes, remove such a fence again."""
++    typemap = build_typemap(ast, fn)
++    ins = get_insertion_points(fn, region)
++    ensure(ins)
++
++    existing: List[Tuple[Block, int]] = []
++
++    def rec(block: Block) -> None:
++        stmts = ast_util.get_block_stmts(block, False)
++        for i, stmt in enumerate(stmts):
++            if _is_empty_asm(stmt) and stmt.output_operands and region.contains_node(stmt):
++                existing.append((block, i))
++            ast_util.for_nested_blocks(stmt, rec)
++
++    rec(fn.body)
++    if existing and random_bool(random, 0.25):
++        block, i = random.choice(existing)
++        del ast_util.get_block_stmts(block, True)[i]
++        return
++
++    after_assign = []
++    for (block, i, prev, nxt) in ins:
++        if isinstance(prev, ca.Assignment) and isinstance(prev.lvalue, ca.ID):
++            after_assign.append((block, i, prev.lvalue.name))
++        elif (
++            isinstance(prev, ca.Decl)
++            and prev.init is not None
++            and prev.name
++        ):
++            after_assign.append((block, i, prev.name))
++    if after_assign and random_bool(random, 0.75):
++        block, i, name = random.choice(after_assign)
++    else:
++        names = sorted(
++            {
++                e.name
++                for e in get_block_expressions(fn.body, region)
++                if isinstance(e, ca.ID) and e.name in typemap.local_vars
++            }
++        )
++        ensure(names)
++        name = random.choice(names)
++        block, i, _, _ = random.choice(ins)
++    ensure(name in typemap.local_vars)
++    cons = _asm_operand_constraint(name, typemap)
++    ensure(cons is not None)
++    op = ca.AsmOperand(None, ca.Constant(type="string", value='"+%s"' % cons), ca.ID(name))
++    ast_util.insert_statement(block, i, _empty_asm(False, [op]))
++
++
++def perm_sched_barrier(
++    fn: ca.FuncDef, ast: ca.FileAST, indices: Indices, region: Region, random: Random
++) -> None:
++    """Insert `asm volatile("");` between two statements, or remove one.
++    gcc's schedulers treat a volatile asm as using and clobbering everything,
++    so nothing moves across it, and reorg won't fill a delay slot across it."""
++    existing: List[Tuple[Block, int]] = []
++
++    def rec(block: Block) -> None:
++        stmts = ast_util.get_block_stmts(block, False)
++        for i, stmt in enumerate(stmts):
++            if _is_empty_asm(stmt) and not stmt.output_operands and region.contains_node(stmt):
++                existing.append((block, i))
++            ast_util.for_nested_blocks(stmt, rec)
++
++    rec(fn.body)
++    if existing and random_bool(random, 0.25):
++        block, i = random.choice(existing)
++        del ast_util.get_block_stmts(block, True)[i]
++        return
++    ins = get_insertion_points(fn, region)
++    ensure(ins)
++    block, i, _, _ = random.choice(ins)
++    ast_util.insert_statement(block, i, _empty_asm(True, []))
++
++
+ RANDOMIZATION_PASSES: List[RandomizationPass] = [
+     perm_temp_for_expr,
+     perm_expand_expr,
+@@ -2626,6 +2747,8 @@ RANDOMIZATION_PASSES: List[RandomizationPass] = [
+     perm_var_cond_block,
+     perm_alias_array,
+     perm_remove_var,
++    perm_reg_fence,
++    perm_sched_barrier,
+ ]
+ 
+ 

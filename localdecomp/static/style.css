@@ -350,3 +350,95 @@ main {
 #target-select option:disabled {
   color: #6a6a72;
 }
+
+/* ---- Permuter panel (permuter.js) ---- */
+#perm-panel {
+  flex: none;
+  height: 46vh;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  background: #222227;
+  border-top: 2px solid #45454f;
+  font-size: 12px;
+}
+#perm-panel[hidden] { display: none; }
+.perm-head {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 6px 12px; background: #26262c; border-bottom: 1px solid #38383f;
+}
+.perm-title { font-weight: 600; color: #9fa8ff; font-size: 13px; }
+#perm-func { font-family: "Cascadia Code", Consolas, monospace; color: #c8c8d0; }
+.perm-head label { display: flex; align-items: center; gap: 5px; color: #9a9aa3; }
+.perm-head input[type="number"] {
+  width: 56px; font-size: 12px; padding: 4px 6px; background: #33333b; color: #d8d8dc;
+  border: 1px solid #45454f; border-radius: 4px;
+}
+#perm-close { margin-left: auto; padding: 2px 9px; }
+.perm-note { color: #8a8a94; font-size: 11px; max-width: 520px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.perm-note.bad { color: #ff9a9a; white-space: normal; }
+.score-badge.live { background: #263a5c; color: #9fc4ff; animation: perm-pulse 1.6s ease-in-out infinite; }
+@keyframes perm-pulse { 50% { background: #30487a; } }
+#perm-stats {
+  display: flex; gap: 18px; align-items: baseline; flex-wrap: wrap;
+  padding: 6px 12px; border-bottom: 1px solid #33333a;
+}
+.perm-stat span { color: #7d7d88; margin-right: 6px; }
+.perm-stat b { font-family: "Cascadia Code", Consolas, monospace; font-weight: 500; color: #e2e2e8; }
+.perm-flags { margin-left: auto; color: #6a6a74; font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; }
+.perm-body { flex: 1; min-height: 0; display: flex; }
+.perm-col {
+  flex: 1; min-width: 0; display: flex; flex-direction: column;
+  padding: 6px 10px; border-right: 1px solid #33333a;
+}
+.perm-col.wide { flex: 1.5; border-right: none; }
+.perm-sub { color: #9a9aa3; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; margin: 2px 0 4px; }
+.perm-key { text-transform: none; letter-spacing: 0; margin-left: 8px; color: #6a6a74; }
+.perm-key i { display: inline-block; width: 10px; height: 3px; margin: 0 3px 2px 8px; vertical-align: middle; }
+.perm-key .k-best { background: #7fd88f; }
+.perm-key .k-dot { background: #6c7cbf; height: 5px; width: 5px; border-radius: 50%; }
+.perm-key .k-base { background: #d8a94a; }
+#perm-chart { width: 100%; height: 140px; flex: none; background: #1c1c20; border: 1px solid #33333a; border-radius: 4px; }
+#perm-chart .perm-grid { stroke: #2e2e35; stroke-width: 1; }
+#perm-chart .perm-axis { fill: #6a6a74; font-size: 10px; font-family: "Cascadia Code", Consolas, monospace; }
+#perm-chart .perm-base { stroke: #d8a94a; stroke-width: 1; stroke-dasharray: 4 3; }
+#perm-chart .perm-dot { fill: #6c7cbf; opacity: 0.45; }
+#perm-chart .perm-dot.over { fill: #5a5a66; opacity: 0.3; }
+#perm-chart .perm-best { fill: none; stroke: #7fd88f; stroke-width: 2; }
+.perm-scroll { flex: 1; min-height: 0; overflow: auto; }
+.perm-scroll.short { flex: none; max-height: 30%; border-bottom: 1px solid #33333a; margin-bottom: 4px; }
+#perm-passes { border-collapse: collapse; width: 100%; font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; }
+#perm-passes th { text-align: left; color: #7d7d88; font-weight: 500; position: sticky; top: 0; background: #222227; }
+#perm-passes td, #perm-passes th { padding: 1px 6px; }
+#perm-passes td:not(:first-child), #perm-passes th:not(:first-child) { text-align: right; }
+#perm-passes tr.asm td:first-child { color: #e0b2ff; }
+#perm-passes tr.hit td { color: #8fe3a3; }
+#perm-feed { font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; white-space: pre; color: #8a8a94; }
+.perm-ev { padding: 0 2px; }
+.perm-ev.asm { color: #b9a2d6; }
+.perm-ev.fail { color: #7a5a5a; }
+.perm-ev.good { color: #8fe3a3; background: #1f3326; }
+.perm-ev.same { color: #9fc4ff; }
+.perm-ev.base { color: #d8a94a; }
+.perm-ev.bad { color: #ff9a9a; }
+.perm-res {
+  display: flex; gap: 8px; align-items: baseline; padding: 3px 6px; cursor: pointer;
+  border-radius: 3px; font-family: "Cascadia Code", Consolas, monospace;
+}
+.perm-res b { color: #e2e2e8; min-width: 22px; text-align: right; }
+.perm-res span { color: #8a8a94; }
+.perm-res:hover { background: #2c2c33; }
+.perm-res.sel { background: #33334a; }
+.perm-res.match b { color: #8fe3a3; }
+.perm-out-head { display: flex; gap: 8px; align-items: center; color: #9a9aa3; margin: 2px 0 4px; flex-wrap: wrap; }
+.perm-out-head button { padding: 3px 8px; font-size: 12px; }
+.perm-diff { font-family: "Cascadia Code", Consolas, monospace; font-size: 11px; white-space: pre; }
+.perm-dl.add { background: #1f3326; color: #a7e8b4; }
+.perm-dl.del { background: #3a2023; color: #e8a7ad; }
+.perm-dl.hunk { color: #6c7cbf; }
+.perm-dl.asm { box-shadow: inset 3px 0 0 #c08bff; }
+.perm-error { color: #ff9a9a; white-space: pre-wrap; font-size: 11px; }
+@media (max-width: 900px) {
+  .perm-body { flex-direction: column; overflow: auto; }
+  .perm-col { border-right: none; border-bottom: 1px solid #33333a; min-height: 180px; }
+}

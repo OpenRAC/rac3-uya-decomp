@@ -162,6 +162,7 @@ A function that ends `ld $ra, ...; j func_X; addiu $sp, $sp, N` (or `j func_X` s
   - `mult $0` + `mflo` (our gcc always uses the 3-operand `mult`).
 - Three core functions (`func_00122278`, `func_0013A9F0`, `func_00136010`) match with SN gcc only with `-mcheck-zero-division` (the project's `-mno-check-zero-division` dropped), which suggests libraries built with their compiler's default flags. They have single-function overrides.
 - 989snd's EE side (0x13B330 to 0x13D420) is SN code at `-O2 -G8 -fopt-stack` and matches with our toolchain; start core work there.
+- **A wait loop that re-reads a `$gp` global with `lui`** (`func_0013BD58`, `@ps2as`): retail tests `D_1D4A00` through `$gp`, then polls it in a 6-word loop with `lui`/`lw`. Write the first test plainly and the loop's read as a volatile cast, `do { func_0011F0A0(0); } while (*(volatile u32 *)&D_1D4A00 == 0xFFFFFFFF);`. With an unsized alias or a literal address, gcc builds the address in a register before the loop, and a `goto` loop gets merged with the first test. The loop's load is an assembler macro, which `tools/asm_filter.py` counts as two words in `@ps2as` ranges (see [Tools](Tools#asm_filterpy)).
 
 ## Switch statements
 

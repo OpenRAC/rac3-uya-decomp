@@ -299,7 +299,7 @@ def compile_c(src_path, flags, args, name=None):
             print("METADATA ERROR: " + str(error))
             return None
         # no short-loop padding for @ee29 ranges (tools/ee29.py)
-        filtered = assembly if "@ee29" in flags else asm_filter.filter_asm(assembly)
+        filtered = assembly if "@ee29" in flags else asm_filter.filter_asm(assembly, "@ps2as" in flags)
         open(s_path, "w", newline="").write(filtered)
         cmd = base[:head] + ["-c"] + base[head:] + ["-o", o_path, s_path]
         p2 = subprocess.run(cmd, capture_output=True, text=True, cwd=ROOT)

@@ -106,7 +106,7 @@ def main():
         import asm_filter
         st = open(spath, newline="").read()
         # no short-loop padding for @ee29 ranges (tools/ee29.py)
-        open(spath, "w", newline="").write(st if "@ee29" in flags else asm_filter.filter_asm(st))
+        open(spath, "w", newline="").write(st if "@ee29" in flags else asm_filter.filter_asm(st, "@ps2as" in flags))
         p = subprocess.run(base + ["-c"] + fl + ["-o", opath, spath], cwd=ROOT, capture_output=True, text=True)
     if p.returncode or not os.path.exists(opath):
         errs = [l for l in (p.stdout + p.stderr).splitlines() if "error" in l or ": " in l and "warning" not in l]

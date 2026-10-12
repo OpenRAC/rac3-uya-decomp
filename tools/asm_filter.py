@@ -20,7 +20,8 @@ branch bytes are the ones the assembler would have produced. In reorder mode
 the delay-slot nop the assembler would have added is written out after it.
 
 Loops whose body contains a macro instruction (a load from a symbol, `li`,
-...) are left alone, since their length isn't known before assembly. Inline asm
+...) are left alone, since their length isn't known before assembly (unless
+insn_count can tell how the assembler will expand them). Inline asm
 (#APP ... #NO_APP) and .include'd asm files are left alone; the INCLUDE_ASM
 files already carry raw branches (tools/fix_short_loops.py).
 
@@ -29,6 +30,7 @@ tools/permuter_setup.py, so every path compiles C the same way:
 
     ee-gcc -S ... -o part.s part.c
     python tools/asm_filter.py part.s          # rewrites in place
+    python tools/asm_filter.py --ps2as part.s  # an @ps2as range
     ee-gcc -c ... -o part.o part.s
 """
 import os, re, sys
@@ -74,13 +76,18 @@ SIMPLE_OPS = re.compile(r"^(addu|addiu|subu|and|andi|or|ori|xor|xori|nor|slt|slt
                         r"movz|movn|mult|multu|mult1|multu1|div|divu|mflo|mfhi|nop)$")
 
 
-def insn_count(lines, noreorder=True, small=frozenset()):
+def insn_count(lines, noreorder=True, small=frozenset(), ps2as=False, defined=frozenset()):
     """Number of machine instructions in these .s lines, or None if unsure
     (macro instructions, which may expand to more than one word).
 
     `noreorder` is the .set mode at the first line. In reorder mode the
     assembler gives every branch and jump its own delay-slot nop (ee-as never
-    moves an instruction into the slot), so there they count as two words."""
+    moves an instruction into the slot), so there they count as two words.
+
+    With `ps2as`, a reorder-mode load or store of a global that is neither
+    `.extern`ed small (`small`) nor defined (`defined`) earlier counts as two
+    words: single-pass Ps2EeAs doesn't know it is small yet, so it expands the
+    macro to `lui` and the access (docs/compiler_matrix_findings.md)."""
     n = 0
     for l in lines:
         s = l.split("#", 1)[0].strip()
@@ -118,9 +125,13 @@ def insn_count(lines, noreorder=True, small=frozenset()):
             # earlier `.extern SYM, N` with N <= 8, the -G8 limit) is a single
             # $gp-relative word, not a lui/op macro pair.
             sm = re.match(r"^([A-Za-z_.$][\w.$]*)(\s*[+-]\s*(\d+|0x[0-9a-fA-F]+))?$", last)
-            if not (sm and sm.group(1) in small
-                    and re.match(r"^(l[bhwd]u?|s[bhwd]|lwc1|swc1|l\.s|s\.s)$", m.group(1))):
+            if not (sm and re.match(r"^(l[bhwd]u?|s[bhwd]|lwc1|swc1|l\.s|s\.s)$", m.group(1))):
                 return None
+            if sm.group(1) not in small:
+                if not (ps2as and not noreorder and re.match(r"^[A-Za-z_]", sm.group(1))
+                        and sm.group(1) not in defined):
+                    return None
+                n += 1  # Ps2EeAs's lui (the access itself is counted below)
         if m.group(1) in ("li",):
             return None
         if m.group(1) in ("div", "divu"):
@@ -277,7 +288,21 @@ def small_externs(lines, limit=8):
     return frozenset(out)
 
 
-def filter_asm(text):
+COMM_RE = re.compile(r"^\s*\.(?:l?comm|globl)\s+([A-Za-z_.$][\w.$]*)")
+
+
+def defined_symbols(lines):
+    """Symbols this file defines (a label, .comm/.lcomm or .globl) in these lines."""
+    out = set()
+    for l in lines:
+        m = LABEL_RE.match(l) or COMM_RE.match(l)
+        if m:
+            out.add(m.group(1))
+    return frozenset(out)
+
+
+def filter_asm(text, ps2as=False):
+    """`ps2as`: the output goes to Ps2EeAs (an @ps2as range); see insn_count."""
     out, labels, noreorder, app = [], {}, False, False
     text = sq_pass(text)
     text = divs_pass(text)
@@ -311,7 +336,8 @@ def filter_asm(text):
                 except KeyError:
                     bits = None
                 at, mode = labels[target]
-                n = (insn_count(out[at + 1:], mode, small_externs(out[:at + 1]))
+                n = (insn_count(out[at + 1:], mode, small_externs(out[:at + 1]),
+                                ps2as, defined_symbols(out[:at + 1]) if ps2as else frozenset())
                      if bits is not None else None)
                 if n is not None and n + 2 <= 6:
                     ind = bm.group(1)
@@ -328,9 +354,11 @@ def filter_asm(text):
 
 
 def main():
-    for p in sys.argv[1:]:
+    args = sys.argv[1:]
+    ps2as = "--ps2as" in args
+    for p in (a for a in args if a != "--ps2as"):
         t = open(p, newline="").read()
-        open(p, "w", newline="").write(filter_asm(t))
+        open(p, "w", newline="").write(filter_asm(t, ps2as))
 
 
 if __name__ == "__main__":

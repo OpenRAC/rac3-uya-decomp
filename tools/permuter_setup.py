@@ -274,7 +274,7 @@ cd {shlex.quote(ROOT)}
 python3 tools/permuter_setup.py --reattach "$DIR/attrs.json" "$TMP/in.c"
 export UYA_TARGET={t.name}
 {s_cmd} -o "$TMP/out.s" "$TMP/in.c"
-{'' if "@ee29" in flags else 'python3 tools/asm_filter.py "$TMP/out.s"'}
+{'' if "@ee29" in flags else 'python3 tools/asm_filter.py ' + ('--ps2as ' if "@ps2as" in flags else '') + '"$TMP/out.s"'}
 {q(runner + [gcc, "-c", "-I", "include", "-I", "."] + cc_flags)} -o "$TMP/out.o" "$TMP/out.s"
 cp "$TMP/out.o" "$OUT"
 """

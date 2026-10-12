@@ -153,7 +153,8 @@ class _Compiler:
         if p.returncode or not os.path.exists(s):
             self.last_error = (p.stderr or p.stdout)[-2000:]
             return None
-        subprocess.run([sys.executable, os.path.join(TOOLS, "asm_filter.py"), s], cwd=ROOT,
+        subprocess.run([sys.executable, os.path.join(TOOLS, "asm_filter.py")]
+                       + (["--ps2as"] if "@ps2as" in self.cfg["flags"] else []) + [s], cwd=ROOT,
                        capture_output=True)
         p = subprocess.run(self.base + ["-c", "-I", "include", "-I", "."] + self.cc_flags + ["-o", o, s],
                            cwd=ROOT, capture_output=True, text=True)

@@ -255,7 +255,7 @@ Runs between gcc and the assembler in every build path (`build_text.py`, `try_fu
 
 Without it, no C function containing a short loop could match. With it, loops match with no special C.
 
-A load or store of a symbol (`lw $4, D_X`) inside such a loop counts as one word when an earlier `.extern D_X, N` with N <= 8 declares it small, since Ps2EeAs then uses `$gp` (one instruction). Before 2026-10-07 the filter gave up on those loops and Ps2EeAs padded them to 7 words (`func_003B8840`, `func_003AD288`).
+A load or store of a symbol (`lw $4, D_X`) inside such a loop counts as one word when an earlier `.extern D_X, N` with N <= 8 declares it small, since Ps2EeAs then uses `$gp` (one instruction). Before 2026-10-07 the filter gave up on those loops and Ps2EeAs padded them to 7 words (`func_003B8840`, `func_003AD288`). In an `@ps2as` range, a reorder-mode load or store of a symbol that isn't defined or `.extern`ed small earlier in the file counts as two words, since single-pass Ps2EeAs expands it to `lui` plus the access (`func_0013BD58` in boot_elf, whose wait loop reads with `lui` a global that its delay-slot reads reach through `$gp`).
 
 The filter also rewrites the callee-saved saves of the functions listed in `sq_ra_funcs.txt` (retail's `sq` slots; see [Matching patterns](Matching-Patterns#functions-that-save-ra-with-sq)), and inserts the `nop`s before `div.s`/`sqrt.s` that `divs_nops.txt` lists.
 

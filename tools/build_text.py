@@ -259,7 +259,7 @@ def compile_one(cc, flags, cflags, cpath, spath, opath, label):
     with open(spath, 'w', newline='') as f:
         # retail's short-loop padding is SN's assembler's; Sony's 2.9-ee
         # library objects (@ee29) don't have it (tools/ee29.py)
-        f.write(stext if ee29.wanted(flags) else asm_filter.filter_asm(stext))
+        f.write(stext if ee29.wanted(flags) else asm_filter.filter_asm(stext, '@ps2as' in flags))
     cmd = [cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, spath]
     print(' '.join(cmd), flush=True)
     if subprocess.run(cmd).returncode != 0:

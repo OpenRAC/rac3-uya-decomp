@@ -1150,6 +1150,7 @@ SECTIONS
     if "@ps2as" in extra_cflags and "-DNO_MACRO_INC" not in extra_cflags:
         extra_cflags = list(extra_cflags) + ["-DNO_MACRO_INC"]
         extra_cflags = [f for f in extra_cflags if not f.startswith("-Wa,")]
+    ps2as_range = "@ps2as" in extra_cflags
     extra_cflags = [as_flags.get(f, f) for f in extra_cflags]
     # compile to assembly, apply retail's loop padding (tools/asm_filter.py,
     # same as the full build), then assemble
@@ -1181,7 +1182,7 @@ SECTIONS
         spec.loader.exec_module(af)
         s_text = s_path.read_text()
         # no short-loop padding for @ee29 ranges (tools/ee29.py)
-        s_path.write_text(s_text if ee29_range else af.filter_asm(s_text))
+        s_path.write_text(s_text if ee29_range else af.filter_asm(s_text, ps2as_range))
     except FileNotFoundError:
         pass
     cmd = base[:1] + ["-c"] + base[1:] + ["-o", o_path.name, s_path.name]

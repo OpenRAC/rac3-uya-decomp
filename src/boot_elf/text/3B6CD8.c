@@ -1242,7 +1242,57 @@ void func_003B9B70(void) {
 }
 /* localdecomp:end func_003B9B70 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B9B80);
+/* localdecomp:start func_003B9B80 */
+__asm__(".extern D_001D8BEC, 4");
+__asm__(".extern D_001D8BE8, 4");
+__asm__(".extern D_001D8BF4, 4");
+__asm__(".extern D_001D8BF8, 4");
+__asm__(".extern D_001D8BFC, 4");
+__asm__(".extern D_001D8C00, 1");
+__asm__(".extern D_001D8C0C, 4");
+__asm__(".extern D_001D8C10, 4");
+extern void func_0038E478(s32);
+extern s32 func_003823F0(s32);
+extern void func_003913E0(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+extern void func_003AF620(void *, u32, void *, s32, s32, s32, s32, void *, void *, s32);
+extern s32 D_001D8BEC;
+extern s32 D_001D8BE8;
+extern s32 D_001D8BF4;
+extern s32 D_001D8BF8;
+extern s32 D_001D8BFC;
+extern s8 D_001D8C00;
+extern s32 D_001D8C0C;
+extern s32 D_001D8C10;
+extern f32 D_001DA0F4;
+extern s32 D_001DA0F0;
+void func_003B9B80(void) {
+    s16 buf[16];
+    s32 v;
+    if (D_001D8BEC == 1) return;
+    func_0038E478(1);
+    switch (D_001D8BE8) {
+    case 0: {
+        char *a, *b, *c;
+        { f32 z0 = 0.0f, z1 = 0.0f; v = (s32)(D_001DA0F4 * 100.0f + 0.5f + (D_001DA0F0 == 1 ? z0 : z1)); }
+        func_003913E0(buf, 0xF0, 0x1E0, D_001D8C0C, D_001D8C10, 0x100, v, 0x10, 3);
+        if ((a = (char *)D_001D8BF4) == 0) a = (char *)func_003823F0(0x8E2);
+        if ((b = (char *)D_001D8BF8) == 0) b = (char *)func_003823F0(0x8DF);
+        if ((c = (char *)D_001D8BFC) == 0) c = (char *)func_003823F0(0x17C);
+        func_003AF620(buf, 0x8066CCFF, c, 1, 1, -1, 0, a, b, *(u8 *)&D_001D8C00);
+        break;
+    }
+    case 1: {
+        char *a, *c;
+        { f32 z0 = 0.0f, z1 = 0.0f; v = (s32)(D_001DA0F4 * 100.0f + 0.5f + (D_001DA0F0 == 1 ? z0 : z1)); }
+        func_003913E0(buf, 0xF0, 0x1E0, D_001D8C0C, D_001D8C10, 0x100, v, 0x10, 3);
+        if ((a = (char *)D_001D8BF4) == 0) a = (char *)func_003823F0(0x8E2);
+        if ((c = (char *)D_001D8BFC) == 0) c = (char *)func_003823F0(0x17C);
+        func_003AF620(buf, 0x8066CCFF, c, 1, 1, -1, 0, a, 0, *(u8 *)&D_001D8C00);
+        break;
+    }
+    }
+}
+/* localdecomp:end func_003B9B80 */
 
 /* localdecomp:start func_003B9D70 */
 typedef struct { u8 p0[0x20]; s32 x[4]; s32 y[4]; s32 z[4]; } O_B45B0;

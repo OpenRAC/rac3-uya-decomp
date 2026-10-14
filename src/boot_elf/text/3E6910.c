@@ -27,6 +27,7 @@ extern void func_003E7378();
 extern s32 func_003E7110();
 extern s32 func_003E6990();
 extern void *func_003E6910();
+extern void *func_003E6A68();
 extern s32 *func_003E70F0();
 /* --- end of declarations from other files --- */
 

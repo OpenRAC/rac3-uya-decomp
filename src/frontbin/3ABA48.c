@@ -485,7 +485,65 @@ void func_003ACAA8(S_ACAA8 *p) {
 }
 /* localdecomp:end func_003ACAA8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ACB00);
+/* localdecomp:start func_003ACB00 */
+typedef struct { long f0; long f8; s32 f10; s32 f14; } S_ACB00b;
+typedef struct { u8 p0[0x8]; s32 f8; u8 pC[0x44]; S_ACB00b *f50; s32 f54; s32 f58; s32 f5C; } S_ACB00a;
+s32 func_003ACB00(S_ACB00a *a, S_ACB00b *b) {
+    s32 size;
+    s32 idx;
+    s32 ok;
+    S_ACB00b *e;
+    s32 t;
+    s32 pos;
+    s32 rem;
+    s32 c;
+    long lim;
+
+    ok = 1;
+    idx = (a->f5C - a->f58 + a->f54) % a->f54;
+    size = a->f8 << 11;
+    if (a->f58 > 0) {
+        e = &a->f50[idx];
+        if (e->f14 != 0 && b->f14 != 0) {
+            lim = -1;
+            do {
+                pos = e->f10;
+                if ((pos + size - b->f10) % size < b->f14) {
+                    t = b->f10 + b->f14 - pos;
+                    if (e->f14 < t) t = e->f14;
+                    rem = e->f14 - t;
+                    e->f14 = rem;
+                    e->f10 = (pos + t) % size;
+                    if (rem == 0) {
+                        if (e->f0 >= 0) {
+                            e->f0 = lim;
+                            e->f8 = lim;
+                            e->f10 = 0;
+                            e->f14 = 0;
+                        }
+                        c = a->f58 - 1;
+                        if (c < 0) c = 0;
+                        a->f58 = c;
+                    }
+                } else {
+                    ok = 0;
+                }
+                idx = (idx + 1) % a->f54;
+                if (!ok) break;
+                {
+                    s32 off = idx * sizeof(S_ACB00b);
+                    /* fence: keeps retail's $v0/$v1 for the offset and the f50 load */
+                    __asm__("" : "+r"(off));
+                    e = (S_ACB00b *)((u8 *)a->f50 + off);
+                }
+                pos = e->f14;
+                if (pos == 0) break;
+            } while (b->f14 != 0);
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_003ACB00 */
 
 /* localdecomp:start func_003ACC30 */
 typedef struct { long f0; long f8; s32 f10; s32 f14; } S_CCb;

@@ -1240,7 +1240,7 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_0039C4D0);
 extern u8 D_00332408[];
 extern u8 D_00332698[];
 extern s32 func_0039E970();
-extern void func_0039EC60();
+extern s32 func_0039EC60();
 extern void func_0039F1A0();
 void func_0039C4E8(u8 *arg) {
     s32 a, b, t, i;
@@ -2401,7 +2401,61 @@ void func_0039EBA8(u8 *a, s32 i, s32 j) {
 }
 /* localdecomp:end func_0039EBA8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_0039EC60);
+/* localdecomp:start func_0039EC60 */
+typedef struct { u8 *f0; s32 f4, f8, fC; } E_399A00;
+extern s32 D_001D6310;
+extern s32 func_0039EA50();
+extern s32 func_0039E970();
+extern s32 func_0011A01C();
+extern void func_0038CFB0();
+s32 func_0039EC60(u8 *p, u8 *end, s32 idx, E_399A00 *tab) {
+    s32 fail, total, i, n;
+    u8 *dst, *data;
+
+    if (func_0039EA50(p) == 0) return 1;
+    p += 8;
+    fail = 0;
+    total = 8;
+    for (i = 0; tab[i].f0 != 0; i++) tab[i].fC = 0;
+    while (p < end && *(s32 *)p != -1) {
+        for (i = 0; tab[i].f0 != 0; i++) {
+            if (tab[i].f8 == *(s32 *)p) break;
+        }
+        if (tab[i].f0 != 0) {
+            dst = tab[i].f0 + idx * tab[i].f4;
+            if (((s32 *)p)[1] == tab[i].f4) {
+                tab[i].fC = 1;
+                n = tab[i].f4;
+            } else if (((s32 *)p)[1] < tab[i].f4) {
+                n = ((s32 *)p)[1];
+                tab[i].fC = -1;
+            } else {
+                tab[i].fC = -2;
+                n = tab[i].f4;
+            }
+            data = p + 8;
+            if (func_0011A01C(dst, data, n)) D_001D6310++;
+            if (tab[i].f8 != 0x1770) {
+                func_0038CFB0(dst, data, n);
+                total += 8 + ((n + 3) & ~3);
+            } else {
+                total += 8 + ((((s32 *)p)[1] + 3) & ~3);
+            }
+        } else {
+            fail++;
+        }
+        p += 8 + ((((s32 *)p)[1] + 3) & ~3);
+    }
+    total += 8;
+    if (total != func_0039E970(tab)) fail++;
+    p += 8;
+    for (i = 0; tab[i].f0 != 0 && tab[i].f8 != *(s32 *)p; i++) {
+        if (tab[i].fC <= 0) fail++;
+    }
+    D_142430_0039C6D8.c[D_142430_0039C6D8.f14C].f24 += fail;
+    return fail;
+}
+/* localdecomp:end func_0039EC60 */
 
 /* localdecomp:start func_0039EEF0 */
 extern s32 func_0039EEF0(s32, s32);

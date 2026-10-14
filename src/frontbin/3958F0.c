@@ -2375,7 +2375,61 @@ void func_00399948(u8 *a, s32 i, s32 j) {
 }
 /* localdecomp:end func_00399948 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00399A00);
+/* localdecomp:start func_00399A00 */
+typedef struct { u8 *f0; s32 f4, f8, fC; } E_399A00;
+extern s32 D_001D6310;
+extern s32 func_003997F0();
+extern s32 func_00399710();
+extern s32 func_0011A01C();
+extern void func_00388550();
+s32 func_00399A00(u8 *p, u8 *end, s32 idx, E_399A00 *tab) {
+    s32 fail, total, i, n;
+    u8 *dst, *data;
+
+    if (func_003997F0(p) == 0) return 1;
+    p += 8;
+    fail = 0;
+    total = 8;
+    for (i = 0; tab[i].f0 != 0; i++) tab[i].fC = 0;
+    while (p < end && *(s32 *)p != -1) {
+        for (i = 0; tab[i].f0 != 0; i++) {
+            if (tab[i].f8 == *(s32 *)p) break;
+        }
+        if (tab[i].f0 != 0) {
+            dst = tab[i].f0 + idx * tab[i].f4;
+            if (((s32 *)p)[1] == tab[i].f4) {
+                tab[i].fC = 1;
+                n = tab[i].f4;
+            } else if (((s32 *)p)[1] < tab[i].f4) {
+                n = ((s32 *)p)[1];
+                tab[i].fC = -1;
+            } else {
+                tab[i].fC = -2;
+                n = tab[i].f4;
+            }
+            data = p + 8;
+            if (func_0011A01C(dst, data, n)) D_001D6310++;
+            if (tab[i].f8 != 0x1770) {
+                func_00388550(dst, data, n);
+                total += 8 + ((n + 3) & ~3);
+            } else {
+                total += 8 + ((((s32 *)p)[1] + 3) & ~3);
+            }
+        } else {
+            fail++;
+        }
+        p += 8 + ((((s32 *)p)[1] + 3) & ~3);
+    }
+    total += 8;
+    if (total != func_00399710(tab)) fail++;
+    p += 8;
+    for (i = 0; tab[i].f0 != 0 && tab[i].f8 != *(s32 *)p; i++) {
+        if (tab[i].fC <= 0) fail++;
+    }
+    D_142430_00397490.c[D_142430_00397490.f14C].f24 += fail;
+    return fail;
+}
+/* localdecomp:end func_00399A00 */
 
 /* localdecomp:start func_00399C90 */
 extern s32 func_00399C90(s32, s32);

@@ -232,7 +232,117 @@ s32 func_003AFAA8(s32 a, s32 b, s32 (*alloc)(s32, s32), s32 c, s32 flag) {
 }
 /* localdecomp:end func_003AFAA8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003AFC70);
+/* localdecomp:start func_003AFC70 */
+typedef struct { u8 p0[0x1A0]; s32 f1A0; s32 f1A4; } P_3AA4B0;
+extern P_3AA4B0 *D_001D52FC_003AFC70;
+extern s32 D_001D4D40;
+extern volatile s32 D_1DA14C; /* volatile: retail keeps every access out of delay slots (lui, not $gp) */
+extern s32 D_001DA108_003AFAA8;
+extern s32 D_001DA134_003AFAA8;
+extern s32 D_001DA138_003AFAA8;
+extern void func_003A3E30(void);
+extern void func_003B0348();
+extern void func_003B2838(void *);
+extern s32 func_003B1540(u8 *, void **);
+extern s32 func_003B1658();
+extern void func_003B1570(u8 *, s32);
+extern void func_003AFFA0(void);
+extern s32 func_003B15B0(u8 *, u8 **);
+extern s32 func_00139A70(void *, u8 *, s32, u8 *, s32);
+extern s32 func_003B15F0();
+extern void func_003B0260(void);
+extern s32 func_003B2E80(void *);
+extern s32 func_003AFFC0_003AFC70(void); /* defined void, but returns func_003B05C0's result */
+extern void func_003B11A8(s32);
+extern s32 func_003B2848(void *);
+extern s32 func_003B28C8();
+extern s32 func_003B2998(void *);
+extern void func_003B11F8(void);
+extern void func_003B03E8(s32 *);
+s32 func_003AFC70(void *a, u8 *b, s32 *c) {
+    void *rd;
+    u8 *wr;
+    s32 started;
+    s32 done;
+    s32 left;
+    s32 sent;
+    s32 armed;
+    s32 go;
+    s32 flags;
+    s32 n;
+    s32 k;
+    s32 m;
+
+    done = 0;
+    armed = 0;
+    go = 0;
+    left = *c;
+    started = 0;
+    sent = left;
+    D_1DA14C = 0;
+    while (left >= 5 && func_003B2848(a) != 3) {
+        func_003A3E30();
+        flags = 0;
+        if (D_001D52FC_003AFC70->f1A0 == 0 && done && go) armed = 1;
+        if (armed && !(D_001D4D40 & 0x80)) {
+            s32 st = D_001D4D40 & ~0xC0;
+            if (st != 2) {
+                if (st == 0 && D_001D52FC_003AFC70->f1A0 != 0 && D_001D52FC_003AFC70->f1A4 == 0) flags = 1;
+                else if (D_001D52FC_003AFC70->f1A4 & 0x800) flags = 1;
+            }
+        }
+        if (!done && D_1DA14C >= 10) {
+            done = 1;
+            func_003B0348(D_001DA138_003AFAA8);
+        }
+        if (flags && !started) {
+            started = 1;
+            func_003B2838((void *)D_001DA134_003AFAA8);
+        }
+        if (!done && D_1DA14C >= 10) {
+            done = 1;
+            func_003B0348(D_001DA138_003AFAA8);
+        }
+        n = func_003B1540(b, &rd);
+        if (sent > 0 && n > 0xFFFF) {
+            m = func_003B1658(c, rd, 0x10000);
+            sent -= m;
+            func_003B1570(b, m);
+        }
+        func_003AFFA0();
+        if (!done && D_1DA14C >= 10) {
+            done = 1;
+            func_003B0348(D_001DA138_003AFAA8);
+        }
+        k = func_003B15B0(b, &wr);
+        if (k > 0) {
+            m = func_00139A70(a, wr, k, b, *(s32 *)(b + 0x50008));
+            left -= m;
+            func_003B15F0(b, m);
+        }
+        func_003B0260();
+        if (!done && D_1DA14C >= 10) {
+            done = 1;
+            func_003B0348(D_001DA138_003AFAA8);
+        }
+        if (!go && func_003B2E80((void *)D_001DA108_003AFAA8) && func_003AFFC0_003AFC70()) {
+            func_003B11A8(1);
+            go = 1;
+        }
+    }
+    while (func_003B28C8(a) == 0) {
+        func_003B0260();
+        func_003AFFA0();
+    }
+    while (func_003B2998(a) == 0 && func_003B2848(a) != 3) {
+        func_003B0260();
+        func_003AFFA0();
+    }
+    func_003B11F8();
+    func_003B03E8((s32 *)D_001DA138_003AFAA8);
+    return started;
+}
+/* localdecomp:end func_003AFC70 */
 
 /* localdecomp:start func_003AFFA0 */
 // Declare the external game function target matching address 0x0011ECD0

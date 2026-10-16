@@ -17,6 +17,8 @@ extern void func_0039D4D0(void);
 extern void func_0039CBA0(void);
 extern s32 func_0039D668(s32, s32, s32);
 extern s32 func_0039D5F8();
+extern void func_0039C170(void);
+extern void func_0039C210(s32);
 extern s32 func_0039D5A8();
 extern s32 func_0039D668();
 /* --- end of declarations from other files --- */

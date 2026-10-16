@@ -12,12 +12,14 @@ extern void func_003B5BE8();
 extern void func_003B5018(void *, s32);
 extern s32 *func_003B46F0(s32);
 extern s32 func_003B4778(s32 *);
-extern void func_003B5A70();
-extern s32 func_003B5BE0(void);
-extern void func_003B5BE8(void);
+extern s32 func_003B4788();
 extern void func_003B56D0(s32 *arg0, float float1, float float2, float float3, float float4, float float5);
 extern void func_003B56F0(void *, f32, f32, f32, f32);
 extern void func_003B5000(void *, s32, f32, f32, f32);
+extern void func_003B4E78();
+extern void func_003B5A70();
+extern s32 func_003B5BE0(void);
+extern void func_003B5BE8(void);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003B46F0 */

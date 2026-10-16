@@ -1243,7 +1243,68 @@ TEXT_PADDING(2);
 
 LINKER_REMNANT("asm/remnants", func_00380D28);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00380D48);
+/* localdecomp:start func_00380D48 */
+typedef struct { u8 p0[0x10]; u8 pos[0x10]; u8 b20; } O_380D48;
+typedef struct {
+    O_380D48 *obj; s32 state; f32 f8; s32 pC;
+    s16 h10[16]; s16 h30[16]; s32 c50[16]; f32 f90[16]; f32 fD0[16];
+} S_380D48;
+extern S_380D48 D_00222980;
+extern s32 D_001D4BC8_00380D48, D_001D4BCC_00380D48, D_001D4BD0_00380D48, D_001D4BD4_00380D48;
+extern f32 func_003887C8(void *, void *);
+extern void func_00381DD0(f32 *, void *);
+extern long func_00384EC0(s32);
+extern void func_00386D98(s32, s32, s32, s32, s32, s32, s32, s32, long, long);
+void func_00380D48(void) {
+    f32 scr[2];
+    f32 ctr[2];
+    f32 d[2];
+    f32 o[2];
+    f32 p[2];
+    f32 dist, a, b, c, half, h;
+    s32 i, size, w, col;
+    long tex;
+    if (D_00222980.state != 1 || (D_00222980.obj->b20 & 0x80)) {
+        D_00222980.state = 0;
+        return;
+    }
+    if (D_00222980.f8 <= 0.0f) return;
+    dist = func_003887C8(D_00222500, D_00222980.obj->pos);
+    ctr[0] = (f32)D_001D4BC8_00380D48;
+    ctr[1] = (f32)D_001D4BCC_00380D48;
+    func_00381DD0(scr, D_00222980.obj->pos);
+    scr[0] = (scr[0] - (f32)D_001D4BD0_00380D48) * 0.0625f;
+    scr[1] = (scr[1] - (f32)D_001D4BD4_00380D48) * 0.0625f;
+    d[0] = ctr[0] - scr[0];
+    d[1] = ctr[1] - scr[1];
+    for (i = 0; i < 16; i++) {
+        tex = func_00384EC0(D_00222980.h30[i] + 6);
+        o[0] = d[0] * D_00222980.f90[i];
+        o[1] = d[1] * D_00222980.f90[i];
+        p[0] = ctr[0] + o[0];
+        p[1] = ctr[1] + o[1];
+        size = 0x40;
+        if (i != 0) size = 0x20;
+        a = dist - 5.0f;
+        if (a > 1.0f) a = 1.0f;
+        else if (a < 0.0f) a = 0.0f;
+        b = __builtin_fabsf(d[0]) / ctr[0] * -5.0f + 5.5f;
+        if (b > 1.0f) b = 1.0f;
+        else if (b < 0.0f) b = 0.0f;
+        c = __builtin_fabsf(d[1]) / ctr[1] * -5.0f + 5.5f;
+        if (c > 1.0f) c = 1.0f;
+        else if (c < 0.0f) c = 0.0f;
+        a *= b * c;
+        h = (f32)D_00222980.h10[i];
+        col = D_00222980.c50[i] & 0xFFFFFF;
+        w = (s32)((f32)size * D_00222980.fD0[i]);
+        half = (f32)(w >> 1);
+        func_00386D98((s32)(p[0] - half), (s32)(p[1] - half), w, w, 0, 0, size, size,
+                      ((s32)(a * h) << 24) | col, tex);
+    }
+    D_00222980.f8 = 0.0f;
+}
+/* localdecomp:end func_00380D48 */
 
 /* localdecomp:start func_003810C0 */
 typedef struct {
@@ -1848,7 +1909,48 @@ void func_00382F40(void) {
 }
 /* localdecomp:end func_00382F40 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00382F90);
+/* localdecomp:start func_00382F90 */
+typedef struct { u8 p0[0x150]; u16 f150, f152; } C_00382F90;
+extern C_00382F90 D_001CFEC0_00382F90;
+typedef struct {
+    u8 p0[0xA0]; f32 fA0; f32 fA4; u8 pA8[8]; f32 fB0;
+    u8 pB4[0x1A0 - 0xB4]; f32 f1A0; f32 f1A4;
+    u8 p1A8[0x210 - 0x1A8]; f32 f210; f32 f214; f32 f218; f32 f21C;
+    u8 p220[8]; f32 f228; f32 f22C; u8 p230[8]; f32 f238; f32 f23C;
+    s32 f240; s32 f244; s32 f248; s32 f24C; u8 p250[0x18]; s32 f268;
+} S_00382F90;
+extern S_00382F90 D_00225980_00382F90;
+extern s32 D_001D4BC0_00382F90, D_001D4BC4_00382F90, D_001D4BC8_00382F90, D_001D4BCC_00382F90;
+extern s32 D_001D4BD0_00382F90, D_001D4BD4_00382F90, D_001D4BD8_00382F90, D_001D4BDC_00382F90;
+void func_00382F90(void) {
+    D_001D4BC0_00382F90 = (s16)D_001CFEC0_00382F90.f150;
+    D_001D4BC4_00382F90 = (s16)D_001CFEC0_00382F90.f152;
+    D_001D4BC8_00382F90 = D_001D4BC0_00382F90 >> 1;
+    D_001D4BCC_00382F90 = D_001D4BC4_00382F90 >> 1;
+    D_001D4BD0_00382F90 = (0x800 - D_001D4BC8_00382F90) << 4;
+    D_001D4BD4_00382F90 = (0x800 - D_001D4BCC_00382F90) << 4;
+    D_001D4BD8_00382F90 = (D_001D4BC8_00382F90 + 0x800) << 4;
+    D_001D4BDC_00382F90 = (D_001D4BCC_00382F90 + 0x800) << 4;
+    D_00225980_00382F90.fA0 = 32.0f;
+    D_00225980_00382F90.fA4 = 1048576.0f;
+    D_00225980_00382F90.fB0 = 0.62f;
+    D_00225980_00382F90.f210 = (f32)D_001D4BC0_00382F90 * 0.5f;
+    D_00225980_00382F90.f214 = (f32)D_001D4BC4_00382F90 * 0.5f;
+    D_00225980_00382F90.f1A0 = 2048.0f;
+    D_00225980_00382F90.f1A4 = 2048.0f;
+    D_00225980_00382F90.f218 = D_00225980_00382F90.f210 * 4.0f;
+    D_00225980_00382F90.f21C = D_00225980_00382F90.f214 * 4.0f;
+    D_00225980_00382F90.f22C = 524288.0f;
+    D_00225980_00382F90.f238 = 255.0f;
+    D_00225980_00382F90.f244 = D_001D4BC0_00382F90 - 1;
+    D_00225980_00382F90.f24C = D_001D4BC4_00382F90 - 1;
+    D_00225980_00382F90.f228 = 0.0f;
+    D_00225980_00382F90.f23C = 0.0f;
+    D_00225980_00382F90.f240 = 0;
+    D_00225980_00382F90.f248 = 0;
+    D_00225980_00382F90.f268 = 0;
+}
+/* localdecomp:end func_00382F90 */
 
 INCLUDE_ASM("asm/nonmatchings/text", func_003830E8);
 

@@ -456,7 +456,77 @@ s32 func_003AC5E0(s32 *p) {
 }
 /* localdecomp:end func_003AC5E0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003AC6F0);
+/* localdecomp:start func_003AC6F0 */
+typedef struct { u32 f0; u32 f4; s32 f8; s32 fC; s32 f10; s32 f14; s32 f18; u32 f1C; u32 f20; u32 f24; u32 f28; u32 f2C; u32 f30; u32 f34; u32 f38; u32 f3C; s32 f40; s32 f44; } O_3AC6F0;
+extern s32 func_11EE60(s32);
+extern void func_11EE40(s32);
+extern void func_003AC040(s32);
+extern void func_003ABFD0(s32);
+extern s32 func_003ABF88();
+s32 func_003AC6F0(O_3AC6F0 *p) {
+    u32 v = p->f38;
+    u32 bits = v & 0x7F;
+    u32 t = ((v >> 16) & 3) + ((v >> 8) & 0xF);
+    u32 madr = p->f1C - t * 16;
+    u32 qwc = p->f24 + t;
+    u32 chcr = p->f28 | 0x100;
+    u32 tadr = p->f20;
+    func_11EE60(p->f40);
+    if (madr < p->f0) {
+        s32 tag;
+        s32 m;
+        qwc = (p->f0 - madr) >> 4;
+        tadr = p->f4 & 0xFFFFFFF;
+        madr += p->f8 << 11;
+        tag = 0;
+        if (p->f1C != p->f0) {
+            tag = p->f1C == p->f0 + (p->f8 << 11) ? 0 : 3;
+        }
+        chcr = (p->f28 & 0xFFFFFFF) | (tag << 28) | 0x100;
+        m = (p->f8 - p->fC) % p->f8;
+        if (m < 0 || m >= p->f10) {
+            p->fC = p->f8 - 1;
+            p->f10 = p->f10 + 1;
+        }
+    } else {
+        s32 a = func_003ABF88(p, p->f1C);
+        s32 b = func_003ABF88(p, madr);
+        if (a != b) {
+            s32 tag;
+            s32 m;
+            tadr = (p->f4 + a * 16) & 0xFFFFFFF;
+            qwc = (p->f0 + (a << 11) - madr) >> 4;
+            tag = p->f0 + (p->f1C - p->f0) % (u32)(p->f8 << 11) == p->f0 + (((p->fC + p->f10) % p->f8) << 11) ? 0 : 3;
+            chcr = (p->f28 & 0xFFFFFFF) | (tag << 28) | 0x100;
+            m = (b + p->f8 - p->fC) % p->f8;
+            if (m < 0 || m >= p->f10) {
+                p->fC = b;
+                p->f10 = p->f10 + 1;
+            }
+        }
+    }
+    if (p->f2C != 0 && p->f30 != 0) {
+        *(volatile u32 *)0x1000B010 = p->f2C;
+        *(volatile u32 *)0x1000B020 = p->f30;
+        func_003ABFD0(p->f34 | 0x100);
+    }
+    if (p->f10 != 0) {
+        if (*(volatile s32 *)0x10002010 < 0) { do {} while (*(volatile s32 *)0x10002010 < 0); }
+        *(volatile u32 *)0x10002000 = bits;
+        if (*(volatile s32 *)0x10002010 < 0) { do {} while (*(volatile s32 *)0x10002010 < 0); }
+    }
+    *(volatile u32 *)0x1000B410 = madr;
+    *(volatile u32 *)0x1000B430 = tadr;
+    *(volatile u32 *)0x1000B420 = qwc;
+    if (p->f10 != 0) {
+        func_003AC040(chcr);
+    }
+    *(volatile u32 *)0x10002010 = p->f3C;
+    p->f44 = 1;
+    func_11EE40(p->f40);
+    return 1;
+}
+/* localdecomp:end func_003AC6F0 */
 
 /* localdecomp:start func_003ACA00 */
 extern void func_003AC040(s32);
@@ -580,7 +650,46 @@ s32 func_003ACC30(S_CCa *a, S_CCb *b) {
 }
 /* localdecomp:end func_003ACC30 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003ACD38);
+/* localdecomp:start func_003ACD38 */
+typedef struct { long f0; long f8; s32 f10; s32 f14; } E_3ACD38;
+typedef struct { u8 *f0; u8 p4[4]; s32 f8; u8 pC[0x2C]; s32 f38; u8 p3C[4]; s32 f40; u8 p44[0xC]; E_3ACD38 *f50; s32 f54; s32 f58; s32 f5C; } S_3ACD38;
+typedef struct { long a, b; } R_3ACD38;
+extern s32 func_11EE60(s32);
+extern void func_11EE40(s32);
+s32 func_003ACD38(S_3ACD38 *p, R_3ACD38 *out) {
+    s32 found = 0;
+    u32 pos;
+    s32 size;
+    s32 n, i, idx;
+    u32 st;
+    s32 off;
+    s32 rem, head;
+    pos = *(volatile u32 *)0x1000B410;
+    st = *(volatile u32 *)0x10002020;
+    off = p->f38 & 0x7F;
+    size = p->f8 << 11;
+    pos -= (((st >> 16) & 3) + ((st >> 8) & 0xF)) << 4;
+    func_11EE60(p->f40);
+    out->a = -1;
+    out->b = -1;
+    rem = (pos + (off >> 3) + size - (u32)p->f0) % size;
+    n = p->f58;
+    head = p->f5C;
+    for (i = 0; i < n && !found; i++) {
+        idx = (head - n + p->f54 + i) % p->f54;
+        if ((rem + size - p->f50[idx].f10) % size < p->f50[idx].f14) {
+            found = 1;
+            out->a = p->f50[idx].f0;
+            out->b = p->f50[idx].f8;
+            p->f50[idx].f0 = -1;
+            p->f50[idx].f8 = -1;
+            p->f58 -= p->f58 < 2 ? p->f58 : 1;
+        }
+    }
+    func_11EE40(p->f40);
+    return 1;
+}
+/* localdecomp:end func_003ACD38 */
 
 /* localdecomp:start func_003ACED0 */
 extern void func_003AD038(void *);

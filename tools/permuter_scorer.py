@@ -92,8 +92,9 @@ def score(o_path, func):
     o_path = os.path.abspath(o_path)
     cwd = os.getcwd()
     os.chdir(ROOT)
+    fh = open(o_path, "rb")
     try:
-        elf = ELFFile(open(o_path, "rb"))
+        elf = ELFFile(fh)
         text = elf.get_section_by_name(".text").data()
         resolved, mask = tf.resolve_relocations(elf, text)
         sym = [s for s in elf.get_section_by_name(".symtab").iter_symbols() if s.name == func][0]
@@ -125,6 +126,7 @@ def score(o_path, func):
             nd += max(i2 - i1, j2 - j1)
         return nd
     finally:
+        fh.close()  # Windows can't delete the .o while it is open
         os.chdir(cwd)
 
 

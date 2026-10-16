@@ -254,54 +254,69 @@ def overlay_entries():
     return sorted(set(out))
 
 
-def write_parts(fmap):
-    """Overlay lines of text_parts.txt from per-function flags: a C function gets
-    its frontbin twin's flags; an assembly function the same without @ps2as /
-    @newas (Ps2EeAs can't read INCLUDE_ASM stubs, see pr_check.py)."""
+_PARTS_BASE = None
+
+
+def write_parts(fmap, seeded):
+    """Give each seeded function its frontbin twin's flags in text_parts.txt.
+
+    The lines already in the file are kept as they are (they hold boot_elf-only
+    overrides that frontbin's flags can't reproduce); each seeded function gets
+    a single-function line with its twin's flags, and the next function gets a
+    line restoring the flags that were in effect there. Every call starts from
+    the file as it was before the first call, so a revert drops its lines."""
+    global _PARTS_BASE
+    path = BE.path("parts")
+    if _PARTS_BASE is None:
+        _PARTS_BASE = open(path, "rb").read().decode().replace("\r\n", "\n")
+    lines = [l for l in _PARTS_BASE.split("\n") if l != ""]
+    hdr = [l for l in lines if not l.startswith("0x")]
+    body = {int(l.split()[0], 16): l for l in lines if l.startswith("0x")}
+    base = sorted((int(l.split("#", 1)[0].split()[0], 16), l.split("#", 1)[0].split()[1:])
+                  for l in lines if l.startswith("0x"))
     fparts = bt.read_parts(FB.path("parts"))
     inv = {b: f for f, b in fmap.items()}
-    cset = overlay_c()
-    want, prev = [], None
-    for a in overlay_entries():
-        if a in inv:
-            fl = list(bt.flags_for(fparts, inv[a]))
-        else:
-            fl = list(prev or [])
-        if a not in cset:
-            fl = [f for f in fl if f not in ("@ps2as", "@newas")]
-        want.append((a, fl))
-        prev = fl
-    lines = []
-    runs = []
-    for a, fl in want:
-        if not runs or runs[-1][1] != fl:
-            runs.append([a, fl, 1])
-        else:
-            runs[-1][2] += 1
-    starts = {s for _, s in boot_files()}
-    for i, (a, fl, n) in enumerate(runs):
-        single = n == 1 and 0 < i < len(runs) - 1 and runs[i - 1][1] == runs[i + 1][1] and a not in starts
-        lines.append("0x%08X     %s%s" % (a, " ".join(fl), "   # single-function override" if single else ""))
-    # file starts keep a line even when the flags don't change, so each file states its flags
-    have = {int(l.split()[0], 16) for l in lines}
-    for s in starts:
-        if s not in have:
-            fl = dict(want).get(s)
-            lines.append("0x%08X     %s" % (s, " ".join(fl)))
-    lines.sort(key=lambda l: int(l.split()[0], 16))
-    path = BE.path("parts")
-    old = open(path, "rb").read().decode().split("\r\n")
-    keep = [l for l in old if not (l.startswith("0x") and BE.unit("text").contains(int(l.split()[0], 16)))]
-    keep = [l for l in keep if l != ""]
-    hdr = [l for l in keep if not l.startswith("0x")]
-    core = [l for l in keep if l.startswith("0x")]
-    open(path, "wb").write((NL.join(hdr + core + lines) + NL).encode())
+    entries = overlay_entries()
+    for a in sorted(seeded):
+        if a not in inv:
+            continue
+        fl = list(bt.flags_for(fparts, inv[a]))
+        if fl == list(bt.flags_for(base, a)):
+            continue
+        body[a] = "0x%08X     %s   # single-function override" % (a, " ".join(fl))
+        i = bisect.bisect_right(entries, a)
+        if i < len(entries):
+            n = entries[i]
+            if n not in body:
+                body[n] = "0x%08X     %s" % (n, " ".join(bt.flags_for(base, n)))
+    out = hdr + [body[k] for k in sorted(body)]
+    open(path, "wb").write((NL.join(out) + NL).encode())
 
 
 def write_symbols():
-    """bootstrap_boot_elf.write_symbols, plus the names the C sources use."""
-    bs.write_symbols()
+    """bootstrap_boot_elf.write_symbols, plus the names the C sources use.
+    Entries and comments added by hand (libgcc/libc names, odd-format names)
+    that the regeneration doesn't produce are carried over."""
     path = BE.path("symbols_resolved")
+    try:
+        old = open(path, "rb").read().decode().replace("\r\n", "\n").split("\n")
+    except OSError:
+        old = []
+    bs.write_symbols()
+    gen = open(path, "rb").read().decode().replace("\r\n", "\n").split("\n")
+    gen_names = set(re.findall(r"^(\w+)\s*=", "\n".join(gen), re.M))
+    gen_lines = set(l for l in gen if l.strip())
+    carry = []
+    for l in old:
+        if not l.strip() or l in gen_lines:
+            continue
+        m = re.match(r"^(\w+)\s*=", l)
+        if m and m.group(1) in gen_names:
+            continue
+        carry.append(l)
+    if carry:
+        with open(path, "ab") as f:
+            f.write((NL.join(carry) + NL).encode())
     have = set(re.findall(r"^(\w+)\s*=", open(path, "rb").read().decode(), re.M))
     defined = set()
     for d, _, fs in os.walk(BE.path("asm_root")):
@@ -432,7 +447,7 @@ def main():
             if not missing:
                 free[fmap[fa]] = tt
     print("free-standing declarations carried over: %d" % insert_free(free))
-    write_parts(fmap)
+    write_parts(fmap, inserted)
     subprocess.run([sys.executable, "tools/split_text.py", "--refresh", "--target", "boot_elf"], cwd=ROOT, check=True)
     write_symbols()
     if args.no_build:
@@ -461,7 +476,7 @@ def main():
         print("round %d: %d functions back to INCLUDE_ASM" % (rnd, len(bad)))
         revert_blocks(bad, rodata)
         alive -= bad
-        write_parts(fmap)
+        write_parts(fmap, alive)
         subprocess.run([sys.executable, "tools/split_text.py", "--refresh", "--target", "boot_elf"], cwd=ROOT, check=True)
     print("seeded: %d functions now C in boot_elf's overlay" % len(alive))
 

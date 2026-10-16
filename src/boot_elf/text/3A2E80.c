@@ -11,6 +11,7 @@ extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern void func_003A2E80(void);
 extern void func_003A4390(void);
+extern void func_003A4520(void);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003A2E80 */

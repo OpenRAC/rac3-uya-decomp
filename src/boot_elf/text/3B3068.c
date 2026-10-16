@@ -1754,7 +1754,52 @@ void func_003B5EE0(void) {
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B5F78);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B6220);
+/* localdecomp:start func_003B6220 */
+/* Empty asm register fence on p: keeps the D_0037F890 address in its own pseudo so sched1 issues it before the $a1 move (otherwise combine folds it into $a0 and it ranks last by reg weight). */
+extern u8 D_0037F8B0_003B6220[];
+extern s32 *func_003B9EB0(s32);
+extern u8 D_0037F810[];
+extern u8 D_0037F890[1];
+extern char D_001D8A38[];
+extern char D_001D8A40[];
+extern s32 D_00143950_b[];
+extern s32 func_003823F0();
+extern void func_11B2E8();
+extern s32 func_003B6788();
+extern void func_003E7EE8_003B6220();
+extern void *func_003BA110_003B6220();
+void func_003B6220(void) {
+    s32 *t;
+    s32 i;
+    u8 *d;
+    u8 *b = (u8 *)D_00143950_b;
+    ((s32 (*)())func_11B2E8)(D_0037F810, D_001D8A38, func_003823F0(b[0xAD] ? 0x175 : 0x176));
+    ((s32 (*)())func_11B2E8)(D_0037F810 + 0x20, D_001D8A38, func_003823F0(*(s32 *)0x1D5520 ? 0x175 : 0x176));
+    ((s32 (*)())func_11B2E8)(D_0037F810 + 0x40, D_001D8A38, func_003823F0(b[6] ? 0x175 : 0x176));
+    ((s32 (*)())func_11B2E8)(D_0037F810 + 0x60, D_001D8A38, func_003823F0(((s32 *)b)[2] ? 0x237 : 0x236));
+    {
+        s32 r = func_003823F0(func_003B6788());
+        u8 *p = D_0037F890;
+        __asm__("" : "+r"(p));
+        ((s32 (*)())func_11B2E8)(p, D_001D8A38, r);
+    }
+    t = (s32 *)D_0037F8B0_003B6220;
+    i = 0;
+    if (*t != 0) {
+        do { do { d = D_0037F810; } while (0); } while (0);
+        do {
+            void *q = func_003BA110_003B6220(func_003B9EB0(0), 0, i);
+            s32 id = *t;
+            t += 4;
+            ((s32 (*)())func_11B2E8)(q, D_001D8A40, func_003823F0(id));
+            ((s32 (*)())func_11B2E8)(func_003BA110_003B6220(func_003B9EB0(0), 1, i), D_001D8A38, d);
+            i++;
+            d += 0x20;
+        } while (*t != 0);
+    }
+    func_003E7EE8_003B6220(0x1C0004, func_003823F0(0x1EBD));
+}
+/* localdecomp:end func_003B6220 */
 
 /* localdecomp:start func_003B6400 */
 extern s32 D_00143950_b[];

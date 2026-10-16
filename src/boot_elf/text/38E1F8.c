@@ -1777,7 +1777,46 @@ u32 func_00393458(void) {
 }
 /* localdecomp:end func_00393458 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00393488);
+/* localdecomp:start func_00393488 */
+/* Two asm forms: an empty register fence on p0 lengthens the first load chain so sched1 issues it before the n copy (n*4 then avoids $a0), and an empty volatile asm keeps n*4 after the two loads so reorg puts it in the beqz delay slot. */
+typedef struct { u8 p0[0x14]; s32 a[8]; s32 b[16]; s32 c[1]; } S_38E930;
+typedef struct { u32 w0; u16 h4; u8 b6; u8 b7; } E_38E930;
+__asm__(".extern D_001D5D50, 4");
+extern S_38E930 * volatile D_001D9F20_00393488;
+extern E_38E930 *D_001D9F2C_00393488;
+extern volatile s32 D_001A1F08_00393488[];
+extern void func_003932F0_00393488();
+extern void func_00397C78(s32, s32, s32, s32, s32, s32);
+void func_00393488(s32 n, s32 a1, s32 a2) {
+    s32 i, j, end, pos, n4;
+    S_38E930 *p; s32 *q;
+    S_38E930 *p0 = D_001D9F20_00393488;
+    __asm__("" : "+r"(p0));
+    if (p0->c[n] == 0) {
+        func_003932F0_00393488(0);
+    } else {
+        pos = 0;
+    }
+    pos = D_001A1F08_00393488[0];
+    p = D_001D9F20_00393488;
+    __asm__ __volatile__("");
+    n4 = n * 4;
+    j = (n != 0) ? p->b[n - 1] : 0;
+    do {
+    end = *(s32 *)((u8 *)p + n4 + 0x34);
+    for (i = j; i < end; i++) {
+        s32 s = pos >> 8;
+        u32 b6 = D_001D9F2C_00393488[i].b6;
+        u32 b7 = D_001D9F2C_00393488[i].b7;
+        s32 sz = 1 << (b6 + b7);
+        func_00397C78(D_001D9F2C_00393488[i].w0, s, 0x1B, b6, b7, a2);
+        D_001D9F2C_00393488[i].h4 = s;
+        pos += sz << 2;
+        D_001D5D50 = pos;
+    }
+    } while (0);
+}
+/* localdecomp:end func_00393488 */
 
 /* localdecomp:start func_003935B0 */
 extern s32 D_00227680[];

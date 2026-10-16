@@ -2,7 +2,6 @@
 /* Each canonical address is emitted under both its unpadded and */
 /* zero-padded-to-8-hex-digit spellings, so either naming convention */
 /* text.c happens to use for a given reference will resolve. */
-
 func_0 = 0x0;
 func_00000000 = 0x0;
 D_0001DBC0 = 0x1DBC0;
@@ -3796,7 +3795,6 @@ D_70000020 = 0x70000020;
 D_70000040 = 0x70000040;
 D_FFE18000 = 0xFFE18000;
 D_FFFB8000 = 0xFFFB8000;
-
 /* Names resolved from their own embedded hex address: either a */
 /* _b-style disambiguation suffix over a cataloged base symbol, */
 /* or a <prefix>_<hex> name missing from both _auto.txt catalogs */
@@ -4177,7 +4175,6 @@ func_00389FB8_0038CA08 = 0x389FB8;
 D_00222500_003809F0 = 0x222500;
 D_00222500_0037E568 = 0x222500;
 D_001D4BE0_b_003ADCB0 = 0x1D4BE0;
-
 D_001DA9E8_003E3F08 = 0x1DA9E8;
 D_001DAA68_003E3F08 = 0x1DAA68;
 func_003E53E0_003E3F08 = 0x3E53E0;
@@ -4874,3 +4871,5 @@ D_001D9F20_0038E930 = 0x1D9F20;
 D_001D9F2C_0038E930 = 0x1D9F2C;
 func_0038E798_0038E930 = 0x38E798;
 D_001DAAC0_00391E78 = 0x1DAAC0;
+D_001D52FC_003AA4B0 = 0x1D52FC;
+func_003AA800_003AA4B0 = 0x3AA800;

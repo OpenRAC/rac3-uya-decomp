@@ -218,7 +218,7 @@ void func_003CE690(Q_3C8E70 *arg) {
 /* localdecomp:end func_003CE690 */
 
 /* localdecomp:start func_003CE838 */
-typedef struct { u8 pad[0x10]; u8 *base; s16 h14; s16 h16; s16 h18; s16 h1A; s16 h1C; s16 h1E; } E_3C9078;
+typedef E_3C8ED0 E_3C9078;
 typedef struct { s16 n; u16 flags; u8 pad[0xC]; E_3C9078 items[1]; } S_3C9078;
 extern u32 *D_001DA0D0_003CE838;
 extern u8 D_1422E0[];

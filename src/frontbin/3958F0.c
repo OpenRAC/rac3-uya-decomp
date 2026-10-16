@@ -144,7 +144,56 @@ void func_00395BC0(s32 a, s32 b) {
 }
 /* localdecomp:end func_00395BC0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00395C48);
+/* localdecomp:start func_00395C48 */
+typedef struct { u8 pad[0x10]; s32 f10; u8 pad2[0xDC]; } E_395C48;
+typedef struct { s32 id; s32 pad[4]; } F_395C48;
+typedef struct { u8 pad[0x4590]; F_395C48 e[0x30]; } S_395C48;
+typedef struct { u8 pad[0x34]; s32 v[3]; } T_395C48;
+typedef struct { u8 pad[0x25F8]; s32 f25F8; u8 pad2[0x18]; s32 f2614; } A_395C48;
+extern A_395C48 D_1A4BE0;
+extern u8 D_001425C0[];
+extern s32 D_00142674[];
+extern s16 D_001CCFD4[];
+extern E_395C48 D_001DAAC0[];
+extern S_395C48 D_160C40_00395C48;
+extern T_395C48 D_16C690_00395C48;
+extern s32 func_00395E18(s32);
+static __inline__ s32 get_395C48(s32 n) {
+    E_395C48 *e = &D_001DAAC0[D_001425C0[n]];
+    return e->f10;
+}
+void func_00395C48(s32 id) {
+    s32 a, b, x, y, i, t, k;
+    if (func_00395E18(id) != 0) return;
+    if (D_001CCFD4[0] != 0) return;
+    i = 0;
+    a = get_395C48(D_1A4BE0.f2614);
+    b = get_395C48(*(s32 *)0x1D4C40); /* an extern symbol here schedules differently */
+    if (b == a) {
+        b = get_395C48(D_00142674[0]);
+    }
+    y = -1;
+    if (a == id) a = -1;
+    if (b == id) b = -1;
+    x = -1;
+    for (; i < 3; i++) {
+        s32 e = D_160C40_00395C48.e[D_16C690_00395C48.v[i]].id;
+        if (a == e) x = i;
+        if (b == e) y = i;
+    }
+    for (i = 0; i == x || i == y; i++);
+    t = D_1A4BE0.f25F8;
+    if (t != 0) {
+        k = D_16C690_00395C48.v[i];
+        if (k != -1) {
+            if (get_395C48(t) == D_160C40_00395C48.e[k].id) {
+                D_1A4BE0.f25F8 = 0;
+            }
+        }
+    }
+    func_00395BC0(id, i);
+}
+/* localdecomp:end func_00395C48 */
 
 LINKER_REMNANT("asm/remnants", func_00395E10);
 

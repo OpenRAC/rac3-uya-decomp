@@ -869,8 +869,93 @@ TEXT_PADDING(2);
 
 LINKER_REMNANT("asm/remnants", func_003953E8);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003953F0);
-INCLUDE_RODATA("asm/nonmatchings/text/rodata", jtbl_00318170);
+/* localdecomp:start func_003953F0 */
+typedef struct { u8 p0[0x79A4]; s32 f79A4; u8 p79A8[8]; s32 f79B0; s32 f79B4; u8 p79B8[8]; s32 f79C0; s32 f79C4; } S_160C40_003953F0;
+typedef struct { u8 p0[0x90]; u32 f90; u32 f94; } S_1A30B0_003953F0;
+extern S_160C40_003953F0 D_160C40_003953F0;
+extern S_1A30B0_003953F0 D_001A30B0[];
+extern s32 D_0022766C[];
+extern s32 D_001D4D00;
+extern s32 D_001D4D04;
+extern s32 D_001D52E0;
+extern s32 D_001D4B48;
+extern s32 D_001D4B4C;
+extern s32 D_001D4B54;
+extern void func_13CA28(void);
+extern s32 func_13B620(void);
+extern s32 func_13CDF0(s32);
+extern s32 func_13CEB0(void);
+extern s32 func_12BC00(void);
+extern void func_0039EE40(void);
+extern void func_0039C170(void);
+extern void func_0039C210(s32);
+extern void func_13BED0(void);
+s32 func_003953F0(void) {
+    func_13CA28();
+    func_13B620();
+    if (func_13CDF0(1) != 0) {
+        D_001D4D00++;
+        if (D_001D52E0 != 1) return 0;
+        if (D_001D4D00 < 0x2D1) return 0;
+        D_001D4D04 = D_001D52E0;
+        D_001D52E0 = 0;
+        if (D_001D4B48 < 3) D_001D4B48--;
+        func_13CEB0();
+        return 0;
+    }
+    if (func_12BC00() != 0) {
+        if (D_001D4D04 == 0) {
+            D_001D4D04 = 1;
+            D_001D52E0 = 0;
+            if (D_001D4B48 < 3) D_001D4B48--;
+        }
+    }
+    switch (D_001D4B48) {
+    case 0: {
+        S_160C40_003953F0 *b = &D_160C40_003953F0;
+        u32 m = 0xFFFFF000;
+        s32 a, x, c;
+        x = ((b->f79C4 << 11) + 0xFFF) & m;
+        a = D_0022766C[0] - x;
+        D_001D4B54 = a;
+        x = ((b->f79B4 << 11) + 0xFFF) & m;
+        c = a - x;
+        /* D_001D4B50 by address: as a declared scalar, reorg moves this store into the b delay slot */
+        *(s32 *)0x1D4B50 = c;
+        func_0039D5F8(c, b->f79B0 + b->f79A4, b->f79B4);
+        D_001D4B48++;
+        break;
+    }
+    case 1: {
+        S_160C40_003953F0 *b = &D_160C40_003953F0;
+        func_0039D5F8(D_001D4B54, b->f79C0 + b->f79A4, b->f79C4);
+        D_001D4B48++;
+        break;
+    }
+    case 2:
+        if (D_001D4B4C != 0) return 0;
+        func_0039EE40();
+        func_0039C170();
+        D_001D4B48++;
+        break;
+    case 3:
+        func_13B620();
+        if (D_001A30B0[0].f90 == 0xFFFFFFFF) break;
+        D_001D4B48++;
+        break;
+    case 4:
+        func_0039C210(0);
+        D_001D4B48++;
+        break;
+    case 5:
+        func_13B620();
+        if (D_001A30B0[0].f94 == 0xFFFFFFFF) return 0;
+        func_13BED0();
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_003953F0 */
 
 LINKER_REMNANT("asm/remnants", func_00395628);
 

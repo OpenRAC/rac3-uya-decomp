@@ -12,6 +12,7 @@ extern void (*D_00226A80[])(s32);
 extern s32 func_0039D6C8();
 extern void *func_003AED40();
 extern s32 func_0037DF98();
+extern void func_00397380(void);
 extern s32 func_003B2AA0(void);
 extern s32 func_003E3040();
 extern s32 func_003E24B0(s32, s32);
@@ -24,7 +25,6 @@ extern s32 func_0037DCE8(void);
 extern void func_003B43C0();
 extern void *func_003AED40(s32);
 extern s32 func_003E24B0(s32 arg0, s32 arg1);
-extern void func_00397380(void);
 extern void func_003B3558(s32);
 /* --- end of declarations from other files --- */
 

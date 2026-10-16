@@ -639,7 +639,57 @@ class Project:
                     f" *\n * Built from {folder}/{name}.s via {macro}(...) in {self.src_file_for(name).relative_to(self.root).as_posix()}.\n"
                     f" * Nothing to decompile here. */\n")
 
-        return f"s32 {name}(void) {{\n    // TODO\n}}\n"
+        return self._starter_template(name)
+
+    def _starter_template(self, name: str) -> str:
+        """`// TODO` definition for an INCLUDE_ASM function, with the return
+        and parameter types of the prototype its source file already has in
+        front of it (an earlier block's `extern void func_X(s32);`, or the
+        declarations-from-other-files section). A guessed `s32 func_X(void)`
+        conflicts with such a prototype ("conflicting types for func_X"), so
+        the starter code must not even compile otherwise."""
+        protos = []
+        src = self.src_file_for(name)
+        if src.exists():
+            text = src.read_text()
+            m_inc = re.search(rf'INCLUDE_ASM\([^)]*\b{re.escape(name)}\s*\)', text)
+            before = text[:m_inc.start()] if m_inc else text
+            # plus what the build puts in front of it (target headers, earlier parts)
+            try:
+                with self.active():
+                    ctx, _ = _text_c_context(self, name, "")
+                before = ctx + "\n" + before
+            except Exception:
+                pass
+            for m in re.finditer(
+                    rf'^[ \t]*(?:extern\s+)?((?:const\s+|unsigned\s+|signed\s+|struct\s+|union\s+)*'
+                    rf'[A-Za-z_]\w*(?:\s*\*)*)\s*\b{re.escape(name)}\s*\(([^()]*)\)\s*;',
+                    before, re.MULTILINE):
+                if m.group(1).split()[0] in ("else", "return", "case", "goto", "do", "if", "while", "sizeof"):
+                    continue    # a call statement, not a prototype
+                protos.append((m.group(1).strip(), m.group(2).strip()))
+        # a prototype with parameter types fixes them; `()` doesn't
+        typed = [p for p in protos if p[1]]
+        proto = (typed or protos or [None])[-1]
+        if not proto:
+            return f"s32 {name}(void) {{\n    // TODO\n}}\n"
+        ret, params = proto
+        ret = re.sub(r"\s*\*\s*", " *", ret).replace("* *", "**")
+        sep = "" if ret.endswith("*") else " "
+        if params and params != "void":
+            named = []
+            for i, p in enumerate(x.strip() for x in params.split(",")):
+                if p == "...":
+                    named.append(p)
+                elif re.search(r"[A-Za-z_]\w*\s*(\[[^\]]*\]\s*)*$", p) and \
+                        len(re.findall(r"[A-Za-z_]\w*", p.replace("*", " "))) >= 2 and \
+                        not re.fullmatch(r"(unsigned|signed)\s+\w+|\w+\s+(int|long|char|short)|long\s+long", p):
+                    named.append(p)                     # already has a name
+                else:
+                    named.append(f"{p} arg{i}" if not p.endswith("*") else f"{p}arg{i}")
+            params = ", ".join(named)
+        return (f"/* types from the prototype already in {src.relative_to(self.root).as_posix()} */\n"
+                f"{ret}{sep}{name}({params}) {{\n    // TODO\n}}\n")
 
     def save_function_c(self, name: str, c_source: str):
         """

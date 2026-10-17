@@ -11,6 +11,8 @@ extern s32 func_003E89F0();
 extern void *func_003EC6E0();
 extern void *func_003E9BA8();
 extern void *func_003EA9B0();
+extern s32 func_003E8670();
+extern void func_003E8718();
 extern void **func_003ECC40(void **);
 void func_003EA930(void *, s32);
 extern void func_003EAA80(void *p, f32, f32);

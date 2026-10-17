@@ -26248,5 +26248,35 @@
     "flags_from": "func_003ABC30",
     "mode": "S",
     "assembler": "default"
+  },
+  {
+    "name": "func_0045FD70",
+    "source": "src/levels/common/func_0045FD70.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045FD70",
+    "size": 184,
+    "flags_from": "func_003ABC30",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00467730",
+    "source": "src/levels/common/func_00467730.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00467730",
+    "size": 184,
+    "flags_from": "func_003ABC30",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00522A40",
+    "source": "src/levels/common/func_00522A40.c",
+    "overlay": "multiplayer/39_multiplayer_menu",
+    "address": "0x00522A40",
+    "size": 188,
+    "flags_from": "func_003ABC30",
+    "mode": "N",
+    "assembler": "default"
   }
 ]

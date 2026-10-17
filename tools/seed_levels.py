@@ -205,8 +205,14 @@ def needed(decls, code):
     return [info[i][0] for i in sorted(keep)]
 
 
+EXTERN_RE = re.compile(r'__asm__\s*\(\s*"\.extern[^"]*"\s*\)\s*;[ \t]*\n?')
+
+
 def make_source(prelude, block, table, local=()):
-    """Standalone level source for a frontbin block, or None if unusable."""
+    """Standalone level source for a frontbin block, or None if unusable.
+    `.extern` size hints (for Ps2EeAs) are dropped: the level gates allow no
+    assembly at all, and a function that needed them fails the byte gates."""
+    block = EXTERN_RE.sub("", block)
     body = pr_check.strip_comments(block, keep_strings=True)
     if ASM_RE.search(body):
         return None

@@ -1,0 +1,6 @@
+#include "common.h"
+
+extern s32 D_001DC81C;
+
+extern s32 D_001DC81C;
+void func_00318198(void) { D_001DC81C = 0; }

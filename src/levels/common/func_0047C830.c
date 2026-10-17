@@ -1,0 +1,8 @@
+#include "common.h"
+
+extern u8 D_001D8340;
+
+extern u8 D_001D8340;
+void func_0047C830(void) {
+    D_001D8340 = 0;
+}

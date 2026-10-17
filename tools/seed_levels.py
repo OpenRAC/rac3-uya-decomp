@@ -205,7 +205,7 @@ def needed(decls, code):
     return [info[i][0] for i in sorted(keep)]
 
 
-def make_source(prelude, block, table):
+def make_source(prelude, block, table, local=()):
     """Standalone level source for a frontbin block, or None if unusable."""
     body = pr_check.strip_comments(block, keep_strings=True)
     if ASM_RE.search(body):
@@ -222,7 +222,14 @@ def make_source(prelude, block, table):
 
     def rename(m):
         a = int(m.group(2), 16)
-        return "%s_%08X%s" % (m.group(1), table[a], m.group(3)) if a in table else m.group(0)
+        if a in table:
+            return "%s_%08X%s" % (m.group(1), table[a], m.group(3))
+        # a symbol the function only reaches at an offset (a struct field):
+        # the function's own addresses just above it give its shift
+        near = {y - x for x, y in local if a <= x < a + 0x100}
+        if len(near) == 1:
+            return "%s_%08X%s" % (m.group(1), a + near.pop(), m.group(3))
+        return m.group(0)
     return NAME_RE.sub(rename, src)
 
 
@@ -259,6 +266,7 @@ def main():
     ap.add_argument("--refs", type=Path, default=Path(os.environ.get("UYA_REFS", r"C:\decomp-refs")))
     ap.add_argument("--jobs", type=int, default=os.cpu_count() or 4)
     ap.add_argument("--limit", type=int, default=0, help="try at most N candidates (smallest first)")
+    ap.add_argument("--report", type=Path, help="write each skipped candidate's donor, source and reason here (JSON)")
     a = ap.parse_args()
     levels_dir, targets_dir = a.refs / "levels", a.refs / "level-targets"
     catalogue_path = ROOT / "tools" / "common_c.json"
@@ -316,9 +324,16 @@ def main():
         if not donors:
             continue
         donor = donors[0]
+        # the function's own address pairs are exact for it; the level-wide
+        # table covers the rest (prototypes of callees it only declares)
+        local = set(address_pairs(fb[donor][1], fb[donor][0], code, laddr))
+        own = collections.defaultdict(set)
+        for x, y in local:
+            own[x].add(y)
         table = dict(tables[level.path])
+        table.update({x: next(iter(ys)) for x, ys in own.items() if len(ys) == 1})
         table[fb[donor][0]] = laddr
-        src = make_source(*blocks[donor], table)
+        src = make_source(*blocks[donor], table, local)
         if src is None:
             continue
         fl = matching.flags_for(fb[donor][0])
@@ -333,23 +348,34 @@ def main():
     print("candidates: %d" % len(jobs), flush=True)
 
     refs = (levels_dir, targets_dir, owners, common)
-    passed, reasons = [], collections.Counter()
+    passed, reasons, failed = [], collections.Counter(), []
+    sources = {e["name"]: src for e, src in jobs}
     if a.jobs > 1:
         # owners holds pyelftools objects that don't pickle; workers rebuild them
         with cf.ProcessPoolExecutor(a.jobs, initializer=_worker_init, initargs=(str(a.refs),)) as ex:
             for i, (entry, err) in enumerate(ex.map(_verify, jobs, chunksize=4)):
-                (passed.append(entry) if err is None else reasons.update([err.split(":")[0][:60]]))
+                if err is None:
+                    passed.append(entry)
+                else:
+                    reasons.update([err.split(":")[0][:60]])
+                    failed.append(dict(entry, reason=err, text=sources[entry["name"]]))
                 if i % 50 == 49:
                     print("  %d/%d tried, %d match" % (i + 1, len(jobs), len(passed)), flush=True)
     else:
         for i, job in enumerate(jobs):
             entry, err = verify((job[0], job[1], refs))
-            (passed.append(entry) if err is None else reasons.update([err.split(":")[0][:60]]))
+            if err is None:
+                passed.append(entry)
+            else:
+                reasons.update([err.split(":")[0][:60]])
+                failed.append(dict(entry, reason=err, text=sources[entry["name"]]))
     catalogue += sorted(passed, key=lambda e: int(e["address"], 16))
     catalogue_path.write_text(json.dumps(catalogue, indent=2) + "\n", encoding="utf-8")
     print("seeded: %d new common-level functions (%d bytes)" % (len(passed), sum(e["size"] for e in passed)))
     for r, n in reasons.most_common(12):
         print("  skipped %4d: %s" % (n, r))
+    if a.report:
+        a.report.write_text(json.dumps(failed, indent=1) + "\n", encoding="utf-8")
 
 
 def _worker_init(refs):

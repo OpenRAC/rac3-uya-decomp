@@ -1,0 +1,19 @@
+#include "common.h"
+
+extern void func_004C1FE8(s32, unsigned long);
+
+extern u32 *D_001E10E8_003A3EF0;
+void func_004C1FE8(s32 a0, unsigned long a1) {
+    D_001E10E8_003A3EF0[0] = 0x10000002;
+    D_001E10E8_003A3EF0[1] = 0;
+    D_001E10E8_003A3EF0[2] = 0;
+    D_001E10E8_003A3EF0[3] = 0x50000002;
+    D_001E10E8_003A3EF0[4] = 0x8001;
+    D_001E10E8_003A3EF0[5] = 0x10000000;
+    D_001E10E8_003A3EF0[6] = 0xE;
+    D_001E10E8_003A3EF0[7] = 0;
+    *(unsigned long *)(D_001E10E8_003A3EF0 + 8) = a1;
+    D_001E10E8_003A3EF0[10] = a0;
+    D_001E10E8_003A3EF0[11] = 0;
+    D_001E10E8_003A3EF0 += 12;
+}

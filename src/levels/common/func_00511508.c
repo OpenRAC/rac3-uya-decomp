@@ -1,0 +1,41 @@
+#include "common.h"
+
+extern s32 func_00511508(s32);
+
+extern s32 D_001DC0E0_003E0FC8;
+extern s32 D_001E15A8_003E0FC8;
+extern s32 D_001E15BC_003E0FC8;
+extern s32 D_001E15C0_003E0FC8;
+extern s32 D_001E15D4_003E0FC8;
+extern s32 D_001E15D8_003E0FC8;
+extern s32 D_001E15EC_003E0FC8;
+extern s32 D_001E15F0_003E0FC8;
+extern s32 D_001E1604_003E0FC8;
+extern s32 D_001E1608_003E0FC8;
+extern s32 D_001E161C_003E0FC8;
+
+extern s32 *func_00511EC0();
+extern s32 func_005113D0();
+s32 func_00511508(s32 a) {
+    if (D_001E15BC_003E0FC8 == 0) {
+        func_00511EC0(&D_001E15A8_003E0FC8, 0, 0x3FF, 0, func_005113D0);
+        D_001E15BC_003E0FC8 = 1;
+    }
+    if (D_001E15D4_003E0FC8 == 0) {
+        func_00511EC0(&D_001E15C0_003E0FC8, 0, 0x3FF, 1, func_005113D0);
+        D_001E15D4_003E0FC8 = 1;
+    }
+    if (D_001E15EC_003E0FC8 == 0) {
+        func_00511EC0(&D_001E15D8_003E0FC8, 0, 0x3FF, 2, func_005113D0);
+        D_001E15EC_003E0FC8 = 1;
+    }
+    if (D_001E1604_003E0FC8 == 0) {
+        func_00511EC0(&D_001E15F0_003E0FC8, 0, 0x3FF, 3, func_005113D0);
+        D_001E1604_003E0FC8 = 1;
+    }
+    if (D_001E161C_003E0FC8 == 0) {
+        func_00511EC0(&D_001E1608_003E0FC8, 0, 0x3FF, 3, func_005113D0);
+        D_001E161C_003E0FC8 = 1;
+    }
+    return ((s32 *)&D_001DC0E0_003E0FC8)[a];
+}

@@ -105,6 +105,51 @@ Together these thirty-three sources cover 6060 owned function bytes. The float f
 is still plain C: selecting the existing Ps2EeAs assembler is not inline ASM.
 Every source passes the same complete-size and raw/resolved-byte gates.
 
+## Seeded from frontbin
+
+About 1100 canonical owners have the same instructions as a frontbin function
+that is already C, apart from addresses. `tools/seed_levels.py` copies those:
+
+1. Owners and frontbin functions are paired by their instructions with the
+   address fields masked (j/jal targets, `lui` and the low halves that use a
+   `lui` register or `$gp`). Field offsets stay in the comparison.
+2. Each function's own pair gives the level address of every global and callee
+   it touches. Names it only declares come from a per-level table built from
+   every pair in that level; an address that pairs with two level addresses is
+   dropped.
+3. The frontbin block becomes a standalone source: the declarations it needs
+   (followed through typedefs and prototypes), then the block, with every
+   `func_`/`D_`/`jtbl_` name renamed. `.extern` size hints are dropped, since
+   the gates allow no assembly; a function that needed them fails the byte
+   gates.
+4. Every candidate goes through `build_common_c.py`'s gates. Only passing ones
+   are kept and added to `tools/common_c.json`; `--report FILE` lists the rest
+   with the reason.
+
+A donor in `tools/sq_ra_funcs.txt` or `tools/divs_nops.txt` passes its entry on
+to `tools/common_c_sq_ra_funcs.txt` / `tools/common_c_divs_nops.txt`, which
+`tools/asm_filter.py` reads alongside the target's own tables. The tool never
+adds a name that is also a function in a built target.
+
+    python tools/seed_levels.py --jobs 8
+
+Run it after `make` (it reads `build/frontbin.elf` for function sizes) and
+again whenever frontbin gains matches. The usual reasons a copy fails: the
+donor accesses globals as `D_X` plus a field offset, which the raw-encoding
+gate rejects because the target names each address; the donor needs Ps2EeAs's
+`.extern` hints; or a jump table or float constant needs a data section.
+
+## Trying one function
+
+`tools/try_level.py` is the level counterpart of `try_func.py`. It runs the
+gates for one source and, when the bytes differ, prints the compiled and
+retail listings side by side:
+
+    python tools/try_level.py src/levels/common/func_004D0538.c --flags-from func_003ABC30 --mode N --assembler default
+
+An entry already in the catalogue needs no options. An empty function body
+shows the retail listing. On a match it prints the catalogue entry to add.
+
 ## Private inputs
 
 Supply your own extracted NTSC-U levels and the reference objects made by

@@ -328,5 +328,6575 @@
     "flags_from": "func_0037E4B8",
     "mode": "S",
     "assembler": "default"
+  },
+  {
+    "name": "func_003F1220",
+    "source": "src/levels/common/func_003F1220.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003F1220",
+    "size": 148,
+    "flags_from": "func_0037E7D8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_003F12C0",
+    "source": "src/levels/common/func_003F12C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003F12C0",
+    "size": 164,
+    "flags_from": "func_0037E878",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_003F1550",
+    "source": "src/levels/common/func_003F1550.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003F1550",
+    "size": 120,
+    "flags_from": "func_0037EAA0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_003F1628",
+    "source": "src/levels/common/func_003F1628.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003F1628",
+    "size": 68,
+    "flags_from": "func_0037EB20",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_003F1BE0",
+    "source": "src/levels/common/func_003F1BE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003F1BE0",
+    "size": 336,
+    "flags_from": "func_0037F0D8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_003F1F28",
+    "source": "src/levels/common/func_003F1F28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003F1F28",
+    "size": 212,
+    "flags_from": "func_0037F420",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_003F2058",
+    "source": "src/levels/common/func_003F2058.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003F2058",
+    "size": 56,
+    "flags_from": "func_0037F550",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_003F43E0",
+    "source": "src/levels/common/func_003F43E0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003F43E0",
+    "size": 796,
+    "flags_from": "func_003810C0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_003FEBC8",
+    "source": "src/levels/common/func_003FEBC8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003FEBC8",
+    "size": 224,
+    "flags_from": "func_003821E8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_003FECA8",
+    "source": "src/levels/common/func_003FECA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003FECA8",
+    "size": 212,
+    "flags_from": "func_003822C8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_003FED80",
+    "source": "src/levels/common/func_003FED80.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003FED80",
+    "size": 184,
+    "flags_from": "func_003823A0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_003FF920",
+    "source": "src/levels/common/func_003FF920.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003FF920",
+    "size": 80,
+    "flags_from": "func_00382F40",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_003FF970",
+    "source": "src/levels/common/func_003FF970.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003FF970",
+    "size": 340,
+    "flags_from": "func_00382F90",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00400470",
+    "source": "src/levels/common/func_00400470.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00400470",
+    "size": 120,
+    "flags_from": "func_00383A90",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004004E8",
+    "source": "src/levels/common/func_004004E8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004004E8",
+    "size": 136,
+    "flags_from": "func_00383B08",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00401AA8",
+    "source": "src/levels/common/func_00401AA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00401AA8",
+    "size": 264,
+    "flags_from": "func_00384C98",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00402248",
+    "source": "src/levels/common/func_00402248.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00402248",
+    "size": 308,
+    "flags_from": "func_00385438",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00402380",
+    "source": "src/levels/common/func_00402380.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00402380",
+    "size": 184,
+    "flags_from": "func_00385570",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00402438",
+    "source": "src/levels/common/func_00402438.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00402438",
+    "size": 92,
+    "flags_from": "func_00385628",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00403518",
+    "source": "src/levels/common/func_00403518.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00403518",
+    "size": 224,
+    "flags_from": "func_00386608",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004035F8",
+    "source": "src/levels/common/func_004035F8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004035F8",
+    "size": 268,
+    "flags_from": "func_003866E8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004040D8",
+    "source": "src/levels/common/func_004040D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004040D8",
+    "size": 476,
+    "flags_from": "func_00386F38",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004042B8",
+    "source": "src/levels/common/func_004042B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004042B8",
+    "size": 480,
+    "flags_from": "func_00387118",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00404498",
+    "source": "src/levels/common/func_00404498.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00404498",
+    "size": 676,
+    "flags_from": "func_003872F8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00404BA0",
+    "source": "src/levels/common/func_00404BA0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00404BA0",
+    "size": 272,
+    "flags_from": "func_00387A00",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00404CB0",
+    "source": "src/levels/common/func_00404CB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00404CB0",
+    "size": 200,
+    "flags_from": "func_00387B10",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00404D78",
+    "source": "src/levels/common/func_00404D78.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00404D78",
+    "size": 156,
+    "flags_from": "func_00387BD8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00404E18",
+    "source": "src/levels/common/func_00404E18.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00404E18",
+    "size": 316,
+    "flags_from": "func_00387C78",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00405768",
+    "source": "src/levels/common/func_00405768.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00405768",
+    "size": 88,
+    "flags_from": "func_003B7870",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004075A8",
+    "source": "src/levels/common/func_004075A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004075A8",
+    "size": 160,
+    "flags_from": "func_003D3E40",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00407648",
+    "source": "src/levels/common/func_00407648.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00407648",
+    "size": 148,
+    "flags_from": "func_003D3EE0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0040D4E8",
+    "source": "src/levels/common/func_0040D4E8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0040D4E8",
+    "size": 60,
+    "flags_from": "func_003898C0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0040D530",
+    "source": "src/levels/common/func_0040D530.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0040D530",
+    "size": 20,
+    "flags_from": "func_00389908",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0040D5C0",
+    "source": "src/levels/common/func_0040D5C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0040D5C0",
+    "size": 28,
+    "flags_from": "func_00389998",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0040D5E0",
+    "source": "src/levels/common/func_0040D5E0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0040D5E0",
+    "size": 468,
+    "flags_from": "func_003899B8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0040D7C0",
+    "source": "src/levels/common/func_0040D7C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0040D7C0",
+    "size": 380,
+    "flags_from": "func_00389B98",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0040D940",
+    "source": "src/levels/common/func_0040D940.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0040D940",
+    "size": 672,
+    "flags_from": "func_00389D18",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0040EDD8",
+    "source": "src/levels/common/func_0040EDD8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0040EDD8",
+    "size": 56,
+    "flags_from": "func_0038B1B0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0040FFE8",
+    "source": "src/levels/common/func_0040FFE8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0040FFE8",
+    "size": 144,
+    "flags_from": "func_0038C3C0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004102D0",
+    "source": "src/levels/common/func_004102D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004102D0",
+    "size": 224,
+    "flags_from": "func_0038C628",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004103B0",
+    "source": "src/levels/common/func_004103B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004103B0",
+    "size": 168,
+    "flags_from": "func_0038C580",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00410468",
+    "source": "src/levels/common/func_00410468.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00410468",
+    "size": 92,
+    "flags_from": "func_0038C718",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00410590",
+    "source": "src/levels/common/func_00410590.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00410590",
+    "size": 52,
+    "flags_from": "func_0038C840",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004105F8",
+    "source": "src/levels/common/func_004105F8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004105F8",
+    "size": 44,
+    "flags_from": "func_0038C980",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00410648",
+    "source": "src/levels/common/func_00410648.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00410648",
+    "size": 136,
+    "flags_from": "func_0038C8F8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00410708",
+    "source": "src/levels/common/func_00410708.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00410708",
+    "size": 32,
+    "flags_from": "func_0038C9B8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00410758",
+    "source": "src/levels/common/func_00410758.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00410758",
+    "size": 168,
+    "flags_from": "func_0038CA08",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00411D38",
+    "source": "src/levels/common/func_00411D38.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00411D38",
+    "size": 108,
+    "flags_from": "func_0038CAF0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00411DA8",
+    "source": "src/levels/common/func_00411DA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00411DA8",
+    "size": 104,
+    "flags_from": "func_0038CB60",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00411E18",
+    "source": "src/levels/common/func_00411E18.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00411E18",
+    "size": 136,
+    "flags_from": "func_0038CBD0",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00411EB0",
+    "source": "src/levels/common/func_00411EB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00411EB0",
+    "size": 468,
+    "flags_from": "func_0038CC68",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00412C70",
+    "source": "src/levels/common/func_00412C70.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00412C70",
+    "size": 40,
+    "flags_from": "func_0038DA28",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00412CA8",
+    "source": "src/levels/common/func_00412CA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00412CA8",
+    "size": 148,
+    "flags_from": "func_0038DA80",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00412D40",
+    "source": "src/levels/common/func_00412D40.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00412D40",
+    "size": 128,
+    "flags_from": "func_0038DB18",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00412DC0",
+    "source": "src/levels/common/func_00412DC0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00412DC0",
+    "size": 108,
+    "flags_from": "func_0038DB98",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00413138",
+    "source": "src/levels/common/func_00413138.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00413138",
+    "size": 284,
+    "flags_from": "func_0038DF10",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00413258",
+    "source": "src/levels/common/func_00413258.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00413258",
+    "size": 432,
+    "flags_from": "func_0038E030",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00413678",
+    "source": "src/levels/common/func_00413678.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00413678",
+    "size": 116,
+    "flags_from": "func_003DBE20",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004165D0",
+    "source": "src/levels/common/func_004165D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004165D0",
+    "size": 48,
+    "flags_from": "func_003DE870",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00416600",
+    "source": "src/levels/common/func_00416600.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00416600",
+    "size": 20,
+    "flags_from": "func_003DE8A0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00416618",
+    "source": "src/levels/common/func_00416618.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00416618",
+    "size": 12,
+    "flags_from": "func_003DE8B8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004179C8",
+    "source": "src/levels/common/func_004179C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004179C8",
+    "size": 28,
+    "flags_from": "func_0038E1E0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00417B68",
+    "source": "src/levels/common/func_00417B68.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00417B68",
+    "size": 140,
+    "flags_from": "func_0038E380",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00417BF8",
+    "source": "src/levels/common/func_00417BF8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00417BF8",
+    "size": 48,
+    "flags_from": "func_0038E410",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00419888",
+    "source": "src/levels/common/func_00419888.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00419888",
+    "size": 84,
+    "flags_from": "func_0038E730",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00419C38",
+    "source": "src/levels/common/func_00419C38.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00419C38",
+    "size": 352,
+    "flags_from": "func_0038E798",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00419F10",
+    "source": "src/levels/common/func_00419F10.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00419F10",
+    "size": 44,
+    "flags_from": "func_0038E900",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041A068",
+    "source": "src/levels/common/func_0041A068.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041A068",
+    "size": 44,
+    "flags_from": "func_0038EA58",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0041A170",
+    "source": "src/levels/common/func_0041A170.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041A170",
+    "size": 264,
+    "flags_from": "func_0038EB10",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0041A278",
+    "source": "src/levels/common/func_0041A278.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041A278",
+    "size": 104,
+    "flags_from": "func_0038EC18",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041A370",
+    "source": "src/levels/common/func_0041A370.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041A370",
+    "size": 124,
+    "flags_from": "func_0038EC80",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041A3F0",
+    "source": "src/levels/common/func_0041A3F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041A3F0",
+    "size": 120,
+    "flags_from": "func_0038ED00",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041A4D8",
+    "source": "src/levels/common/func_0041A4D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041A4D8",
+    "size": 108,
+    "flags_from": "func_0038EDE8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041A548",
+    "source": "src/levels/common/func_0041A548.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041A548",
+    "size": 372,
+    "flags_from": "func_0038EE58",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0041A6C0",
+    "source": "src/levels/common/func_0041A6C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041A6C0",
+    "size": 240,
+    "flags_from": "func_0038EFD0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041A7B0",
+    "source": "src/levels/common/func_0041A7B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041A7B0",
+    "size": 44,
+    "flags_from": "func_0038F0C0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041AAC8",
+    "source": "src/levels/common/func_0041AAC8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041AAC8",
+    "size": 84,
+    "flags_from": "func_0038F3A0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041BE10",
+    "source": "src/levels/common/func_0041BE10.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041BE10",
+    "size": 72,
+    "flags_from": "func_003906E8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041D258",
+    "source": "src/levels/common/func_0041D258.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041D258",
+    "size": 48,
+    "flags_from": "func_00391B30",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041D298",
+    "source": "src/levels/common/func_0041D298.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041D298",
+    "size": 404,
+    "flags_from": "func_00391B70",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0041D430",
+    "source": "src/levels/common/func_0041D430.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041D430",
+    "size": 296,
+    "flags_from": "func_00391D08",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0041D558",
+    "source": "src/levels/common/func_0041D558.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041D558",
+    "size": 68,
+    "flags_from": "func_00391E30",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041D880",
+    "source": "src/levels/common/func_0041D880.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041D880",
+    "size": 208,
+    "flags_from": "func_00392108",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041DB78",
+    "source": "src/levels/common/func_0041DB78.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041DB78",
+    "size": 496,
+    "flags_from": "func_00392400",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0041DD68",
+    "source": "src/levels/common/func_0041DD68.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041DD68",
+    "size": 644,
+    "flags_from": "func_003925F0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0041DFF0",
+    "source": "src/levels/common/func_0041DFF0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041DFF0",
+    "size": 424,
+    "flags_from": "func_00392878",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0041EE90",
+    "source": "src/levels/common/func_0041EE90.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041EE90",
+    "size": 368,
+    "flags_from": "func_00393120",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0041FD28",
+    "source": "src/levels/common/func_0041FD28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041FD28",
+    "size": 24,
+    "flags_from": "func_00393430",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0041FD40",
+    "source": "src/levels/common/func_0041FD40.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0041FD40",
+    "size": 16,
+    "flags_from": "func_00393448",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00422328",
+    "source": "src/levels/common/func_00422328.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00422328",
+    "size": 196,
+    "flags_from": "func_003CB890",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004233F8",
+    "source": "src/levels/common/func_004233F8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004233F8",
+    "size": 672,
+    "flags_from": "func_00394060",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00423698",
+    "source": "src/levels/common/func_00423698.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00423698",
+    "size": 104,
+    "flags_from": "func_00394300",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004239F8",
+    "source": "src/levels/common/func_004239F8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004239F8",
+    "size": 332,
+    "flags_from": "func_00394660",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00423B48",
+    "source": "src/levels/common/func_00423B48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00423B48",
+    "size": 620,
+    "flags_from": "func_003947B0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00423E10",
+    "source": "src/levels/common/func_00423E10.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00423E10",
+    "size": 276,
+    "flags_from": "func_00394A20",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00423F28",
+    "source": "src/levels/common/func_00423F28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00423F28",
+    "size": 224,
+    "flags_from": "func_00394B38",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00424008",
+    "source": "src/levels/common/func_00424008.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00424008",
+    "size": 60,
+    "flags_from": "func_00394C18",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00424048",
+    "source": "src/levels/common/func_00424048.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00424048",
+    "size": 796,
+    "flags_from": "func_00394C58",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00424368",
+    "source": "src/levels/common/func_00424368.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00424368",
+    "size": 272,
+    "flags_from": "func_00394F78",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00428008",
+    "source": "src/levels/common/func_00428008.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00428008",
+    "size": 128,
+    "flags_from": "func_00395360",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00429740",
+    "source": "src/levels/common/func_00429740.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00429740",
+    "size": 596,
+    "flags_from": "func_00395648",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00429A70",
+    "source": "src/levels/common/func_00429A70.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00429A70",
+    "size": 80,
+    "flags_from": "func_003958A0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00429AC0",
+    "source": "src/levels/common/func_00429AC0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00429AC0",
+    "size": 76,
+    "flags_from": "func_00395958",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00429D28",
+    "source": "src/levels/common/func_00429D28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00429D28",
+    "size": 132,
+    "flags_from": "func_00395BC0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00429FC8",
+    "source": "src/levels/common/func_00429FC8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00429FC8",
+    "size": 140,
+    "flags_from": "func_00395E18",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0042AC78",
+    "source": "src/levels/common/func_0042AC78.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042AC78",
+    "size": 156,
+    "flags_from": "func_0039A9E0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0042DB40",
+    "source": "src/levels/common/func_0042DB40.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042DB40",
+    "size": 176,
+    "flags_from": "func_0039AAF0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042E070",
+    "source": "src/levels/common/func_0042E070.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042E070",
+    "size": 588,
+    "flags_from": "func_0039ABB0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0042E8D8",
+    "source": "src/levels/common/func_0042E8D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042E8D8",
+    "size": 156,
+    "flags_from": "func_0039B0F8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F108",
+    "source": "src/levels/common/func_0042F108.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F108",
+    "size": 32,
+    "flags_from": "func_00396100",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F2A0",
+    "source": "src/levels/common/func_0042F2A0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F2A0",
+    "size": 40,
+    "flags_from": "func_00396298",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F2C8",
+    "source": "src/levels/common/func_0042F2C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F2C8",
+    "size": 36,
+    "flags_from": "func_003962E8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F318",
+    "source": "src/levels/common/func_0042F318.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F318",
+    "size": 100,
+    "flags_from": "func_00396310",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F380",
+    "source": "src/levels/common/func_0042F380.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F380",
+    "size": 76,
+    "flags_from": "func_00396378",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F460",
+    "source": "src/levels/common/func_0042F460.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F460",
+    "size": 44,
+    "flags_from": "func_00396458",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0042F490",
+    "source": "src/levels/common/func_0042F490.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F490",
+    "size": 96,
+    "flags_from": "func_00396488",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F4F0",
+    "source": "src/levels/common/func_0042F4F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F4F0",
+    "size": 80,
+    "flags_from": "func_003964E8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F540",
+    "source": "src/levels/common/func_0042F540.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F540",
+    "size": 88,
+    "flags_from": "func_00396538",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F598",
+    "source": "src/levels/common/func_0042F598.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F598",
+    "size": 152,
+    "flags_from": "func_00396590",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F630",
+    "source": "src/levels/common/func_0042F630.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F630",
+    "size": 88,
+    "flags_from": "func_00396628",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F788",
+    "source": "src/levels/common/func_0042F788.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F788",
+    "size": 60,
+    "flags_from": "func_00396780",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F7C8",
+    "source": "src/levels/common/func_0042F7C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F7C8",
+    "size": 112,
+    "flags_from": "func_003967C0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F838",
+    "source": "src/levels/common/func_0042F838.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F838",
+    "size": 92,
+    "flags_from": "func_00396830",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042F898",
+    "source": "src/levels/common/func_0042F898.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042F898",
+    "size": 104,
+    "flags_from": "func_00396890",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042FA30",
+    "source": "src/levels/common/func_0042FA30.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042FA30",
+    "size": 184,
+    "flags_from": "func_00396A28",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042FB58",
+    "source": "src/levels/common/func_0042FB58.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042FB58",
+    "size": 36,
+    "flags_from": "func_00396B50",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0042FBC8",
+    "source": "src/levels/common/func_0042FBC8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042FBC8",
+    "size": 96,
+    "flags_from": "func_00396BC0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042FC28",
+    "source": "src/levels/common/func_0042FC28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042FC28",
+    "size": 36,
+    "flags_from": "func_00396AE0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0042FCF0",
+    "source": "src/levels/common/func_0042FCF0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042FCF0",
+    "size": 132,
+    "flags_from": "func_00396CE8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042FD78",
+    "source": "src/levels/common/func_0042FD78.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042FD78",
+    "size": 84,
+    "flags_from": "func_00396D70",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042FE28",
+    "source": "src/levels/common/func_0042FE28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042FE28",
+    "size": 96,
+    "flags_from": "func_00396E20",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0042FFA8",
+    "source": "src/levels/common/func_0042FFA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0042FFA8",
+    "size": 48,
+    "flags_from": "func_00396FA0",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00430060",
+    "source": "src/levels/common/func_00430060.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00430060",
+    "size": 40,
+    "flags_from": "func_00397058",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00430088",
+    "source": "src/levels/common/func_00430088.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00430088",
+    "size": 28,
+    "flags_from": "func_00397080",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004300A8",
+    "source": "src/levels/common/func_004300A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004300A8",
+    "size": 20,
+    "flags_from": "func_003970A0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004300C8",
+    "source": "src/levels/common/func_004300C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004300C8",
+    "size": 16,
+    "flags_from": "func_003970B8",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004300F0",
+    "source": "src/levels/common/func_004300F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004300F0",
+    "size": 44,
+    "flags_from": "func_003970D0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00430220",
+    "source": "src/levels/common/func_00430220.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00430220",
+    "size": 56,
+    "flags_from": "func_00397200",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00430258",
+    "source": "src/levels/common/func_00430258.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00430258",
+    "size": 32,
+    "flags_from": "func_00397238",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00430278",
+    "source": "src/levels/common/func_00430278.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00430278",
+    "size": 20,
+    "flags_from": "func_00397258",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00430290",
+    "source": "src/levels/common/func_00430290.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00430290",
+    "size": 24,
+    "flags_from": "func_00397270",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004303A0",
+    "source": "src/levels/common/func_004303A0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004303A0",
+    "size": 268,
+    "flags_from": "func_00397380",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00432730",
+    "source": "src/levels/common/func_00432730.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00432730",
+    "size": 56,
+    "flags_from": "func_00399710",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00432768",
+    "source": "src/levels/common/func_00432768.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00432768",
+    "size": 168,
+    "flags_from": "func_00399748",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00432810",
+    "source": "src/levels/common/func_00432810.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00432810",
+    "size": 60,
+    "flags_from": "func_003997F0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00432850",
+    "source": "src/levels/common/func_00432850.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00432850",
+    "size": 276,
+    "flags_from": "func_00399830",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00432968",
+    "source": "src/levels/common/func_00432968.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00432968",
+    "size": 184,
+    "flags_from": "func_00399948",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00432A20",
+    "source": "src/levels/common/func_00432A20.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00432A20",
+    "size": 656,
+    "flags_from": "func_00399A00",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00432CB0",
+    "source": "src/levels/common/func_00432CB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00432CB0",
+    "size": 684,
+    "flags_from": "func_00399C90",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00432F60",
+    "source": "src/levels/common/func_00432F60.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00432F60",
+    "size": 48,
+    "flags_from": "func_00399F40",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004330B8",
+    "source": "src/levels/common/func_004330B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004330B8",
+    "size": 92,
+    "flags_from": "func_003A9E00",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00433338",
+    "source": "src/levels/common/func_00433338.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00433338",
+    "size": 56,
+    "flags_from": "func_003AA080",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004337F0",
+    "source": "src/levels/common/func_004337F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004337F0",
+    "size": 64,
+    "flags_from": "func_003AA290",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004344A0",
+    "source": "src/levels/common/func_004344A0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004344A0",
+    "size": 176,
+    "flags_from": "func_00399F90",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434550",
+    "source": "src/levels/common/func_00434550.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434550",
+    "size": 240,
+    "flags_from": "func_0039A040",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434640",
+    "source": "src/levels/common/func_00434640.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434640",
+    "size": 60,
+    "flags_from": "func_0039A130",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00434A28",
+    "source": "src/levels/common/func_00434A28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434A28",
+    "size": 12,
+    "flags_from": "func_0039A518",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434D10",
+    "source": "src/levels/common/func_00434D10.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434D10",
+    "size": 60,
+    "flags_from": "func_0039A550",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434D50",
+    "source": "src/levels/common/func_00434D50.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434D50",
+    "size": 24,
+    "flags_from": "func_0039A590",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434D68",
+    "source": "src/levels/common/func_00434D68.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434D68",
+    "size": 28,
+    "flags_from": "func_0039A5A8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434D88",
+    "source": "src/levels/common/func_00434D88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434D88",
+    "size": 28,
+    "flags_from": "func_0039A5C8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434DA8",
+    "source": "src/levels/common/func_00434DA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434DA8",
+    "size": 52,
+    "flags_from": "func_0039A5E8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434DE0",
+    "source": "src/levels/common/func_00434DE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434DE0",
+    "size": 28,
+    "flags_from": "func_0039A620",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434E00",
+    "source": "src/levels/common/func_00434E00.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434E00",
+    "size": 160,
+    "flags_from": "func_0039A640",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434EA0",
+    "source": "src/levels/common/func_00434EA0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434EA0",
+    "size": 64,
+    "flags_from": "func_0039A6E0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434EE0",
+    "source": "src/levels/common/func_00434EE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434EE0",
+    "size": 16,
+    "flags_from": "func_0039A720",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434EF0",
+    "source": "src/levels/common/func_00434EF0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434EF0",
+    "size": 16,
+    "flags_from": "func_0039A730",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434F00",
+    "source": "src/levels/common/func_00434F00.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434F00",
+    "size": 36,
+    "flags_from": "func_0039A740",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434F28",
+    "source": "src/levels/common/func_00434F28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434F28",
+    "size": 20,
+    "flags_from": "func_0039A768",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00434F40",
+    "source": "src/levels/common/func_00434F40.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00434F40",
+    "size": 36,
+    "flags_from": "func_0039A780",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00435A50",
+    "source": "src/levels/common/func_00435A50.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00435A50",
+    "size": 72,
+    "flags_from": "func_0039A7B0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00435A98",
+    "source": "src/levels/common/func_00435A98.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00435A98",
+    "size": 392,
+    "flags_from": "func_0039A7F8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00435C20",
+    "source": "src/levels/common/func_00435C20.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00435C20",
+    "size": 92,
+    "flags_from": "func_0039A980",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00436350",
+    "source": "src/levels/common/func_00436350.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00436350",
+    "size": 188,
+    "flags_from": "func_003BD490",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00436410",
+    "source": "src/levels/common/func_00436410.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00436410",
+    "size": 220,
+    "flags_from": "func_003BD550",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004373D8",
+    "source": "src/levels/common/func_004373D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004373D8",
+    "size": 148,
+    "flags_from": "func_003BD778",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00437470",
+    "source": "src/levels/common/func_00437470.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00437470",
+    "size": 84,
+    "flags_from": "func_003BD810",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004374C8",
+    "source": "src/levels/common/func_004374C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004374C8",
+    "size": 56,
+    "flags_from": "func_003BD868",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00437500",
+    "source": "src/levels/common/func_00437500.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00437500",
+    "size": 256,
+    "flags_from": "func_003BD8A0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004379E0",
+    "source": "src/levels/common/func_004379E0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004379E0",
+    "size": 216,
+    "flags_from": "func_003BDC90",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00437C88",
+    "source": "src/levels/common/func_00437C88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00437C88",
+    "size": 552,
+    "flags_from": "func_003BDEA8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00437EB0",
+    "source": "src/levels/common/func_00437EB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00437EB0",
+    "size": 68,
+    "flags_from": "func_003BE0D0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00437EF8",
+    "source": "src/levels/common/func_00437EF8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00437EF8",
+    "size": 40,
+    "flags_from": "func_003BE118",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00437F20",
+    "source": "src/levels/common/func_00437F20.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00437F20",
+    "size": 44,
+    "flags_from": "func_003BE140",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00437F50",
+    "source": "src/levels/common/func_00437F50.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00437F50",
+    "size": 44,
+    "flags_from": "func_003BE170",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00438040",
+    "source": "src/levels/common/func_00438040.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00438040",
+    "size": 128,
+    "flags_from": "func_003BE260",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004380C0",
+    "source": "src/levels/common/func_004380C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004380C0",
+    "size": 96,
+    "flags_from": "func_003BE2E0",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00438120",
+    "source": "src/levels/common/func_00438120.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00438120",
+    "size": 92,
+    "flags_from": "func_003BE340",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004388A8",
+    "source": "src/levels/common/func_004388A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004388A8",
+    "size": 64,
+    "flags_from": "func_003BE3C0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00440728",
+    "source": "src/levels/common/func_00440728.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00440728",
+    "size": 52,
+    "flags_from": "func_0037E0B8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00440848",
+    "source": "src/levels/common/func_00440848.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00440848",
+    "size": 44,
+    "flags_from": "func_0037E1D8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00440878",
+    "source": "src/levels/common/func_00440878.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00440878",
+    "size": 68,
+    "flags_from": "func_0037E208",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004408C0",
+    "source": "src/levels/common/func_004408C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004408C0",
+    "size": 84,
+    "flags_from": "func_0037E250",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00440978",
+    "source": "src/levels/common/func_00440978.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00440978",
+    "size": 72,
+    "flags_from": "func_0037E2A8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00440B30",
+    "source": "src/levels/common/func_00440B30.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00440B30",
+    "size": 120,
+    "flags_from": "func_0037E2F0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00440BA8",
+    "source": "src/levels/common/func_00440BA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00440BA8",
+    "size": 336,
+    "flags_from": "func_0037E368",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00441BA0",
+    "source": "src/levels/common/func_00441BA0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00441BA0",
+    "size": 216,
+    "flags_from": "func_003BE418",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00443140",
+    "source": "src/levels/common/func_00443140.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00443140",
+    "size": 108,
+    "flags_from": "func_003BE7F0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00444F60",
+    "source": "src/levels/common/func_00444F60.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00444F60",
+    "size": 16,
+    "flags_from": "func_003BEB48",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00447580",
+    "source": "src/levels/common/func_00447580.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00447580",
+    "size": 76,
+    "flags_from": "func_003BF2A0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004475E8",
+    "source": "src/levels/common/func_004475E8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004475E8",
+    "size": 100,
+    "flags_from": "func_003BF2F8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00447C90",
+    "source": "src/levels/common/func_00447C90.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00447C90",
+    "size": 12,
+    "flags_from": "func_003BF5D0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00447CA0",
+    "source": "src/levels/common/func_00447CA0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00447CA0",
+    "size": 80,
+    "flags_from": "func_003BF5E0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00448B80",
+    "source": "src/levels/common/func_00448B80.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00448B80",
+    "size": 76,
+    "flags_from": "func_003BF640",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00448CD0",
+    "source": "src/levels/common/func_00448CD0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00448CD0",
+    "size": 128,
+    "flags_from": "func_003BF6A8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00449988",
+    "source": "src/levels/common/func_00449988.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00449988",
+    "size": 192,
+    "flags_from": "func_003BF838",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0044DC18",
+    "source": "src/levels/common/func_0044DC18.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0044DC18",
+    "size": 100,
+    "flags_from": "func_003BFAF8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0044DEA8",
+    "source": "src/levels/common/func_0044DEA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0044DEA8",
+    "size": 40,
+    "flags_from": "func_003BFB80",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00456320",
+    "source": "src/levels/common/func_00456320.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00456320",
+    "size": 216,
+    "flags_from": "func_003C1950",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00457270",
+    "source": "src/levels/common/func_00457270.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00457270",
+    "size": 20,
+    "flags_from": "func_0039BEA8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045B2B8",
+    "source": "src/levels/common/func_0045B2B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045B2B8",
+    "size": 164,
+    "flags_from": "func_003C7AE8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045B378",
+    "source": "src/levels/common/func_0045B378.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045B378",
+    "size": 88,
+    "flags_from": "func_0039C170",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045B3D0",
+    "source": "src/levels/common/func_0045B3D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045B3D0",
+    "size": 152,
+    "flags_from": "func_0039C210",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045B580",
+    "source": "src/levels/common/func_0045B580.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045B580",
+    "size": 32,
+    "flags_from": "func_0039C2C8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045B9C8",
+    "source": "src/levels/common/func_0045B9C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045B9C8",
+    "size": 160,
+    "flags_from": "func_0039C710",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045BA68",
+    "source": "src/levels/common/func_0045BA68.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045BA68",
+    "size": 244,
+    "flags_from": "func_0039C7B0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045BB60",
+    "source": "src/levels/common/func_0045BB60.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045BB60",
+    "size": 248,
+    "flags_from": "func_0039C8A8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045BC58",
+    "source": "src/levels/common/func_0045BC58.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045BC58",
+    "size": 276,
+    "flags_from": "func_0039C9A0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045BFD0",
+    "source": "src/levels/common/func_0045BFD0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045BFD0",
+    "size": 28,
+    "flags_from": "func_0039CC78",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045C030",
+    "source": "src/levels/common/func_0045C030.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045C030",
+    "size": 524,
+    "flags_from": "func_0039CC98",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045C868",
+    "source": "src/levels/common/func_0045C868.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045C868",
+    "size": 64,
+    "flags_from": "func_0039D4D0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045C8A8",
+    "source": "src/levels/common/func_0045C8A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045C8A8",
+    "size": 148,
+    "flags_from": "func_0039D510",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045C940",
+    "source": "src/levels/common/func_0045C940.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045C940",
+    "size": 76,
+    "flags_from": "func_0039D5A8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CA00",
+    "source": "src/levels/common/func_0045CA00.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CA00",
+    "size": 96,
+    "flags_from": "func_0039D668",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CA60",
+    "source": "src/levels/common/func_0045CA60.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CA60",
+    "size": 164,
+    "flags_from": "func_0039D6C8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CB08",
+    "source": "src/levels/common/func_0045CB08.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CB08",
+    "size": 140,
+    "flags_from": "func_0039D770",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CB98",
+    "source": "src/levels/common/func_0045CB98.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CB98",
+    "size": 48,
+    "flags_from": "func_0039D800",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CBC8",
+    "source": "src/levels/common/func_0045CBC8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CBC8",
+    "size": 128,
+    "flags_from": "func_0039D830",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CC48",
+    "source": "src/levels/common/func_0045CC48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CC48",
+    "size": 112,
+    "flags_from": "func_0039D8B0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CCB8",
+    "source": "src/levels/common/func_0045CCB8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CCB8",
+    "size": 76,
+    "flags_from": "func_0039D920",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CD08",
+    "source": "src/levels/common/func_0045CD08.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CD08",
+    "size": 84,
+    "flags_from": "func_0039D970",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CD60",
+    "source": "src/levels/common/func_0045CD60.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CD60",
+    "size": 60,
+    "flags_from": "func_0039D9C8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CDA0",
+    "source": "src/levels/common/func_0045CDA0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CDA0",
+    "size": 60,
+    "flags_from": "func_0039DA08",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CDE0",
+    "source": "src/levels/common/func_0045CDE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CDE0",
+    "size": 24,
+    "flags_from": "func_0039DA48",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CDF8",
+    "source": "src/levels/common/func_0045CDF8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CDF8",
+    "size": 108,
+    "flags_from": "func_0039DA60",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045CEC0",
+    "source": "src/levels/common/func_0045CEC0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045CEC0",
+    "size": 32,
+    "flags_from": "func_0039DAE0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045E370",
+    "source": "src/levels/common/func_0045E370.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045E370",
+    "size": 72,
+    "flags_from": "func_0039E8E0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0045E3B8",
+    "source": "src/levels/common/func_0045E3B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0045E3B8",
+    "size": 120,
+    "flags_from": "func_0039E928",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004749C8",
+    "source": "src/levels/common/func_004749C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004749C8",
+    "size": 8,
+    "flags_from": "func_003AF150",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00475A50",
+    "source": "src/levels/common/func_00475A50.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00475A50",
+    "size": 48,
+    "flags_from": "func_003DFF90",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00476C58",
+    "source": "src/levels/common/func_00476C58.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00476C58",
+    "size": 12,
+    "flags_from": "func_003DE8E0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00477268",
+    "source": "src/levels/common/func_00477268.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00477268",
+    "size": 200,
+    "flags_from": "func_003DEEF0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00477330",
+    "source": "src/levels/common/func_00477330.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00477330",
+    "size": 128,
+    "flags_from": "func_003DEFB8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00477D60",
+    "source": "src/levels/common/func_00477D60.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00477D60",
+    "size": 100,
+    "flags_from": "func_003DF958",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00477DC8",
+    "source": "src/levels/common/func_00477DC8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00477DC8",
+    "size": 32,
+    "flags_from": "func_003DF9C0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00477F28",
+    "source": "src/levels/common/func_00477F28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00477F28",
+    "size": 32,
+    "flags_from": "func_003DFB20",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00479200",
+    "source": "src/levels/common/func_00479200.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00479200",
+    "size": 12,
+    "flags_from": "func_003ADC70",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00479218",
+    "source": "src/levels/common/func_00479218.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00479218",
+    "size": 36,
+    "flags_from": "func_003ADC88",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00479240",
+    "source": "src/levels/common/func_00479240.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00479240",
+    "size": 128,
+    "flags_from": "func_003ADCB0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00479360",
+    "source": "src/levels/common/func_00479360.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00479360",
+    "size": 148,
+    "flags_from": "func_003ADDD0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004795F8",
+    "source": "src/levels/common/func_004795F8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004795F8",
+    "size": 44,
+    "flags_from": "func_003AE068",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00479628",
+    "source": "src/levels/common/func_00479628.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00479628",
+    "size": 132,
+    "flags_from": "func_003AE098",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00479738",
+    "source": "src/levels/common/func_00479738.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00479738",
+    "size": 148,
+    "flags_from": "func_003AE1A8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004797D0",
+    "source": "src/levels/common/func_004797D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004797D0",
+    "size": 192,
+    "flags_from": "func_003AE240",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00479890",
+    "source": "src/levels/common/func_00479890.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00479890",
+    "size": 104,
+    "flags_from": "func_003AE300",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047A288",
+    "source": "src/levels/common/func_0047A288.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047A288",
+    "size": 16,
+    "flags_from": "func_003B5BF8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047A2A8",
+    "source": "src/levels/common/func_0047A2A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047A2A8",
+    "size": 24,
+    "flags_from": "func_003B5C08",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047A2C0",
+    "source": "src/levels/common/func_0047A2C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047A2C0",
+    "size": 20,
+    "flags_from": "func_003B5C20",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047A2D8",
+    "source": "src/levels/common/func_0047A2D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047A2D8",
+    "size": 40,
+    "flags_from": "func_003B5C38",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047A328",
+    "source": "src/levels/common/func_0047A328.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047A328",
+    "size": 36,
+    "flags_from": "func_003B5C68",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047B880",
+    "source": "src/levels/common/func_0047B880.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047B880",
+    "size": 92,
+    "flags_from": "func_003B6050",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047B8E0",
+    "source": "src/levels/common/func_0047B8E0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047B8E0",
+    "size": 64,
+    "flags_from": "func_003B60B0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047C560",
+    "source": "src/levels/common/func_0047C560.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047C560",
+    "size": 36,
+    "flags_from": "func_003AF9E0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D2B8",
+    "source": "src/levels/common/func_0047D2B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D2B8",
+    "size": 52,
+    "flags_from": "func_003B1030",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D2F0",
+    "source": "src/levels/common/func_0047D2F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D2F0",
+    "size": 44,
+    "flags_from": "func_003B1068",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D320",
+    "source": "src/levels/common/func_0047D320.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D320",
+    "size": 12,
+    "flags_from": "func_003B1098",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D3E0",
+    "source": "src/levels/common/func_0047D3E0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D3E0",
+    "size": 56,
+    "flags_from": "func_003B1158",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D418",
+    "source": "src/levels/common/func_0047D418.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D418",
+    "size": 44,
+    "flags_from": "func_003B1190",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D448",
+    "source": "src/levels/common/func_0047D448.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D448",
+    "size": 80,
+    "flags_from": "func_003B11C0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D5F0",
+    "source": "src/levels/common/func_0047D5F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D5F0",
+    "size": 64,
+    "flags_from": "func_003B1368",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D630",
+    "source": "src/levels/common/func_0047D630.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D630",
+    "size": 36,
+    "flags_from": "func_003B13A8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D658",
+    "source": "src/levels/common/func_0047D658.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D658",
+    "size": 44,
+    "flags_from": "func_003B13D0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D718",
+    "source": "src/levels/common/func_0047D718.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D718",
+    "size": 60,
+    "flags_from": "func_003B1490",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D758",
+    "source": "src/levels/common/func_0047D758.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D758",
+    "size": 72,
+    "flags_from": "func_003B14D0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D7A0",
+    "source": "src/levels/common/func_0047D7A0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D7A0",
+    "size": 156,
+    "flags_from": "func_003B1518",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047D840",
+    "source": "src/levels/common/func_0047D840.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047D840",
+    "size": 36,
+    "flags_from": "func_003B15B8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047E8C8",
+    "source": "src/levels/common/func_0047E8C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047E8C8",
+    "size": 164,
+    "flags_from": "func_003B2640",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047E970",
+    "source": "src/levels/common/func_0047E970.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047E970",
+    "size": 52,
+    "flags_from": "func_003B26E8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047E9A8",
+    "source": "src/levels/common/func_0047E9A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047E9A8",
+    "size": 136,
+    "flags_from": "func_003B2720",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047EBE0",
+    "source": "src/levels/common/func_0047EBE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047EBE0",
+    "size": 204,
+    "flags_from": "func_003B2958",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047ECB0",
+    "source": "src/levels/common/func_0047ECB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047ECB0",
+    "size": 40,
+    "flags_from": "func_003B2A28",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0047ECD8",
+    "source": "src/levels/common/func_0047ECD8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0047ECD8",
+    "size": 76,
+    "flags_from": "func_003B2A50",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0048D978",
+    "source": "src/levels/common/func_0048D978.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0048D978",
+    "size": 108,
+    "flags_from": "func_003B0F58",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004908C8",
+    "source": "src/levels/common/func_004908C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004908C8",
+    "size": 36,
+    "flags_from": "func_003AECA0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004908F0",
+    "source": "src/levels/common/func_004908F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004908F0",
+    "size": 52,
+    "flags_from": "func_003AECC8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490928",
+    "source": "src/levels/common/func_00490928.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490928",
+    "size": 8,
+    "flags_from": "func_003AED00",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490930",
+    "source": "src/levels/common/func_00490930.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490930",
+    "size": 56,
+    "flags_from": "func_003AED08",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004909F0",
+    "source": "src/levels/common/func_004909F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004909F0",
+    "size": 48,
+    "flags_from": "func_003AEDC8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490AA8",
+    "source": "src/levels/common/func_00490AA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490AA8",
+    "size": 52,
+    "flags_from": "func_003AEE80",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490AE0",
+    "source": "src/levels/common/func_00490AE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490AE0",
+    "size": 16,
+    "flags_from": "func_003AEEB8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490AF0",
+    "source": "src/levels/common/func_00490AF0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490AF0",
+    "size": 168,
+    "flags_from": "func_003AEEC8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490BF8",
+    "source": "src/levels/common/func_00490BF8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490BF8",
+    "size": 204,
+    "flags_from": "func_003AEFD0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490CC8",
+    "source": "src/levels/common/func_00490CC8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490CC8",
+    "size": 40,
+    "flags_from": "func_003AF0A0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490CF8",
+    "source": "src/levels/common/func_00490CF8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490CF8",
+    "size": 76,
+    "flags_from": "func_003AF0D0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490D48",
+    "source": "src/levels/common/func_00490D48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490D48",
+    "size": 28,
+    "flags_from": "func_003AF120",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490D70",
+    "source": "src/levels/common/func_00490D70.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490D70",
+    "size": 8,
+    "flags_from": "func_003AF148",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00490D98",
+    "source": "src/levels/common/func_00490D98.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00490D98",
+    "size": 8,
+    "flags_from": "func_003AF158",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004948D8",
+    "source": "src/levels/common/func_004948D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004948D8",
+    "size": 36,
+    "flags_from": "func_003B41F8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00494900",
+    "source": "src/levels/common/func_00494900.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00494900",
+    "size": 156,
+    "flags_from": "func_003B4220",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004949B0",
+    "source": "src/levels/common/func_004949B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004949B0",
+    "size": 224,
+    "flags_from": "func_003B42D0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00494A90",
+    "source": "src/levels/common/func_00494A90.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00494A90",
+    "size": 16,
+    "flags_from": "func_003B43B0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00494C90",
+    "source": "src/levels/common/func_00494C90.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00494C90",
+    "size": 320,
+    "flags_from": "func_003B45B0",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00494E58",
+    "source": "src/levels/common/func_00494E58.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00494E58",
+    "size": 16,
+    "flags_from": "func_003B4778",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00494EE0",
+    "source": "src/levels/common/func_00494EE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00494EE0",
+    "size": 456,
+    "flags_from": "func_003B4788",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004950A8",
+    "source": "src/levels/common/func_004950A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004950A8",
+    "size": 32,
+    "flags_from": "func_003B4950",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004950C8",
+    "source": "src/levels/common/func_004950C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004950C8",
+    "size": 32,
+    "flags_from": "func_003B4970",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004950F8",
+    "source": "src/levels/common/func_004950F8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004950F8",
+    "size": 16,
+    "flags_from": "func_003B49A0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00495180",
+    "source": "src/levels/common/func_00495180.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00495180",
+    "size": 56,
+    "flags_from": "func_003B49B0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004951B8",
+    "source": "src/levels/common/func_004951B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004951B8",
+    "size": 1144,
+    "flags_from": "func_003B49E8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00495630",
+    "source": "src/levels/common/func_00495630.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00495630",
+    "size": 20,
+    "flags_from": "func_003B4E60",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00495648",
+    "source": "src/levels/common/func_00495648.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00495648",
+    "size": 144,
+    "flags_from": "func_003B4E78",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00495760",
+    "source": "src/levels/common/func_00495760.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00495760",
+    "size": 64,
+    "flags_from": "func_003B4F10",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00495AE8",
+    "source": "src/levels/common/func_00495AE8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00495AE8",
+    "size": 32,
+    "flags_from": "func_003B5290",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00495B08",
+    "source": "src/levels/common/func_00495B08.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00495B08",
+    "size": 396,
+    "flags_from": "func_003B52B0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00495C98",
+    "source": "src/levels/common/func_00495C98.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00495C98",
+    "size": 644,
+    "flags_from": "func_003B5440",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00495F40",
+    "source": "src/levels/common/func_00495F40.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00495F40",
+    "size": 28,
+    "flags_from": "func_003B56D0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00496068",
+    "source": "src/levels/common/func_00496068.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00496068",
+    "size": 632,
+    "flags_from": "func_003B57F8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A0348",
+    "source": "src/levels/common/func_004A0348.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A0348",
+    "size": 272,
+    "flags_from": "func_003CB958",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004A0458",
+    "source": "src/levels/common/func_004A0458.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A0458",
+    "size": 84,
+    "flags_from": "func_003CBA68",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A04B0",
+    "source": "src/levels/common/func_004A04B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A04B0",
+    "size": 432,
+    "flags_from": "func_003CBAC0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004A0660",
+    "source": "src/levels/common/func_004A0660.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A0660",
+    "size": 460,
+    "flags_from": "func_003CBC70",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004A1F88",
+    "source": "src/levels/common/func_004A1F88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A1F88",
+    "size": 264,
+    "flags_from": "func_003D97C8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004A2090",
+    "source": "src/levels/common/func_004A2090.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A2090",
+    "size": 260,
+    "flags_from": "func_003D98D0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A2198",
+    "source": "src/levels/common/func_004A2198.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A2198",
+    "size": 104,
+    "flags_from": "func_003D99D8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004A46C8",
+    "source": "src/levels/common/func_004A46C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A46C8",
+    "size": 152,
+    "flags_from": "func_003C8C40",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004A48F8",
+    "source": "src/levels/common/func_004A48F8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A48F8",
+    "size": 92,
+    "flags_from": "func_003C8E70",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A4958",
+    "source": "src/levels/common/func_004A4958.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A4958",
+    "size": 424,
+    "flags_from": "func_003C8ED0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004A4B00",
+    "source": "src/levels/common/func_004A4B00.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A4B00",
+    "size": 400,
+    "flags_from": "func_003C9078",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004A53D0",
+    "source": "src/levels/common/func_004A53D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A53D0",
+    "size": 212,
+    "flags_from": "func_0039EA60",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A54A8",
+    "source": "src/levels/common/func_004A54A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A54A8",
+    "size": 96,
+    "flags_from": "func_0039EB38",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A56C0",
+    "source": "src/levels/common/func_004A56C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A56C0",
+    "size": 240,
+    "flags_from": "func_0039ED50",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A57B0",
+    "source": "src/levels/common/func_004A57B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A57B0",
+    "size": 36,
+    "flags_from": "func_0039EE40",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A6E88",
+    "source": "src/levels/common/func_004A6E88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A6E88",
+    "size": 84,
+    "flags_from": "func_0039FB08",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A6EE0",
+    "source": "src/levels/common/func_004A6EE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A6EE0",
+    "size": 120,
+    "flags_from": "func_0039FB60",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A7200",
+    "source": "src/levels/common/func_004A7200.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A7200",
+    "size": 164,
+    "flags_from": "func_0039FE80",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A7368",
+    "source": "src/levels/common/func_004A7368.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A7368",
+    "size": 144,
+    "flags_from": "func_0039FF28",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004A7628",
+    "source": "src/levels/common/func_004A7628.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A7628",
+    "size": 36,
+    "flags_from": "func_0039FFC8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A78D0",
+    "source": "src/levels/common/func_004A78D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A78D0",
+    "size": 24,
+    "flags_from": "func_003A00D0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A78E8",
+    "source": "src/levels/common/func_004A78E8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A78E8",
+    "size": 68,
+    "flags_from": "func_003A00E8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A7930",
+    "source": "src/levels/common/func_004A7930.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A7930",
+    "size": 64,
+    "flags_from": "func_003A0130",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A7CB0",
+    "source": "src/levels/common/func_004A7CB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A7CB0",
+    "size": 100,
+    "flags_from": "func_003A0200",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A7D30",
+    "source": "src/levels/common/func_004A7D30.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A7D30",
+    "size": 88,
+    "flags_from": "func_003A0280",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004A7D88",
+    "source": "src/levels/common/func_004A7D88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A7D88",
+    "size": 452,
+    "flags_from": "func_003A02D8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004A9D48",
+    "source": "src/levels/common/func_004A9D48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004A9D48",
+    "size": 60,
+    "flags_from": "func_003A1340",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004AB778",
+    "source": "src/levels/common/func_004AB778.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004AB778",
+    "size": 132,
+    "flags_from": "func_003A13B0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004ABC38",
+    "source": "src/levels/common/func_004ABC38.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004ABC38",
+    "size": 556,
+    "flags_from": "func_003A1870",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004ABE68",
+    "source": "src/levels/common/func_004ABE68.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004ABE68",
+    "size": 48,
+    "flags_from": "func_003A1AA0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004AC210",
+    "source": "src/levels/common/func_004AC210.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004AC210",
+    "size": 480,
+    "flags_from": "func_003A1E48",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004AC828",
+    "source": "src/levels/common/func_004AC828.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004AC828",
+    "size": 624,
+    "flags_from": "func_003A2460",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004ACF88",
+    "source": "src/levels/common/func_004ACF88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004ACF88",
+    "size": 84,
+    "flags_from": "func_003A2BC0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004AD4B8",
+    "source": "src/levels/common/func_004AD4B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004AD4B8",
+    "size": 72,
+    "flags_from": "func_003A30E0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004AD500",
+    "source": "src/levels/common/func_004AD500.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004AD500",
+    "size": 244,
+    "flags_from": "func_003A3128",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004ADA10",
+    "source": "src/levels/common/func_004ADA10.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004ADA10",
+    "size": 268,
+    "flags_from": "func_003C99D0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004ADBC0",
+    "source": "src/levels/common/func_004ADBC0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004ADBC0",
+    "size": 208,
+    "flags_from": "func_003C9B80",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004AF5E0",
+    "source": "src/levels/common/func_004AF5E0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004AF5E0",
+    "size": 44,
+    "flags_from": "func_003D46B0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004AF610",
+    "source": "src/levels/common/func_004AF610.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004AF610",
+    "size": 192,
+    "flags_from": "func_003D46E0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004AF6D0",
+    "source": "src/levels/common/func_004AF6D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004AF6D0",
+    "size": 172,
+    "flags_from": "func_003D47A0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004B4A10",
+    "source": "src/levels/common/func_004B4A10.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004B4A10",
+    "size": 84,
+    "flags_from": "func_003A3288",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004B4A68",
+    "source": "src/levels/common/func_004B4A68.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004B4A68",
+    "size": 136,
+    "flags_from": "func_003A32E0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004B4AF0",
+    "source": "src/levels/common/func_004B4AF0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004B4AF0",
+    "size": 200,
+    "flags_from": "func_003A3368",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004B4BB8",
+    "source": "src/levels/common/func_004B4BB8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004B4BB8",
+    "size": 216,
+    "flags_from": "func_003A3430",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004B4C90",
+    "source": "src/levels/common/func_004B4C90.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004B4C90",
+    "size": 184,
+    "flags_from": "func_003A3508",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004B5188",
+    "source": "src/levels/common/func_004B5188.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004B5188",
+    "size": 56,
+    "flags_from": "func_003A3A00",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004B7538",
+    "source": "src/levels/common/func_004B7538.c",
+    "overlay": "singleplayer/4_marcadia",
+    "address": "0x004B7538",
+    "size": 32,
+    "flags_from": "func_0037D100",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C1BB0",
+    "source": "src/levels/common/func_004C1BB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C1BB0",
+    "size": 80,
+    "flags_from": "func_003A3B00",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C1C00",
+    "source": "src/levels/common/func_004C1C00.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C1C00",
+    "size": 104,
+    "flags_from": "func_003A3B50",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C1C68",
+    "source": "src/levels/common/func_004C1C68.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C1C68",
+    "size": 68,
+    "flags_from": "func_003A3BB8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C1CB0",
+    "source": "src/levels/common/func_004C1CB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C1CB0",
+    "size": 128,
+    "flags_from": "func_003A3C00",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C1E50",
+    "source": "src/levels/common/func_004C1E50.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C1E50",
+    "size": 72,
+    "flags_from": "func_003A3DA0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C1E98",
+    "source": "src/levels/common/func_004C1E98.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C1E98",
+    "size": 76,
+    "flags_from": "func_003A3DE8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C1EF0",
+    "source": "src/levels/common/func_004C1EF0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C1EF0",
+    "size": 164,
+    "flags_from": "func_003A3E40",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C1FE8",
+    "source": "src/levels/common/func_004C1FE8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C1FE8",
+    "size": 180,
+    "flags_from": "func_003A3EF0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C20A8",
+    "source": "src/levels/common/func_004C20A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C20A8",
+    "size": 276,
+    "flags_from": "func_003A3FB0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C22E8",
+    "source": "src/levels/common/func_004C22E8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C22E8",
+    "size": 224,
+    "flags_from": "func_003A41F0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C2808",
+    "source": "src/levels/common/func_004C2808.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C2808",
+    "size": 144,
+    "flags_from": "func_003A44F0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C2898",
+    "source": "src/levels/common/func_004C2898.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C2898",
+    "size": 112,
+    "flags_from": "func_003A4580",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C2A38",
+    "source": "src/levels/common/func_004C2A38.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C2A38",
+    "size": 52,
+    "flags_from": "func_003A4720",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C7BA0",
+    "source": "src/levels/common/func_004C7BA0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C7BA0",
+    "size": 88,
+    "flags_from": "func_003A4A20",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C7F48",
+    "source": "src/levels/common/func_004C7F48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C7F48",
+    "size": 168,
+    "flags_from": "func_003A4DC8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8530",
+    "source": "src/levels/common/func_004C8530.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8530",
+    "size": 48,
+    "flags_from": "func_003A53B0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8560",
+    "source": "src/levels/common/func_004C8560.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8560",
+    "size": 116,
+    "flags_from": "func_003A53E0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C87D0",
+    "source": "src/levels/common/func_004C87D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C87D0",
+    "size": 112,
+    "flags_from": "func_003A5650",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8840",
+    "source": "src/levels/common/func_004C8840.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8840",
+    "size": 144,
+    "flags_from": "func_003A56C0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8980",
+    "source": "src/levels/common/func_004C8980.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8980",
+    "size": 112,
+    "flags_from": "func_003A5800",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8AD8",
+    "source": "src/levels/common/func_004C8AD8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8AD8",
+    "size": 8,
+    "flags_from": "func_003A5908",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8AE0",
+    "source": "src/levels/common/func_004C8AE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8AE0",
+    "size": 8,
+    "flags_from": "func_003A5910",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8AF8",
+    "source": "src/levels/common/func_004C8AF8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8AF8",
+    "size": 36,
+    "flags_from": "func_003A5928",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8B28",
+    "source": "src/levels/common/func_004C8B28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8B28",
+    "size": 32,
+    "flags_from": "func_003A5958",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8B48",
+    "source": "src/levels/common/func_004C8B48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8B48",
+    "size": 100,
+    "flags_from": "func_003A5978",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8BB8",
+    "source": "src/levels/common/func_004C8BB8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8BB8",
+    "size": 100,
+    "flags_from": "func_003A59E8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8C20",
+    "source": "src/levels/common/func_004C8C20.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8C20",
+    "size": 36,
+    "flags_from": "func_003A5A50",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8C48",
+    "source": "src/levels/common/func_004C8C48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8C48",
+    "size": 20,
+    "flags_from": "func_003A5A78",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8D90",
+    "source": "src/levels/common/func_004C8D90.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8D90",
+    "size": 176,
+    "flags_from": "func_003A5BC0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C8FB8",
+    "source": "src/levels/common/func_004C8FB8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8FB8",
+    "size": 8,
+    "flags_from": "func_003A5DE8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9050",
+    "source": "src/levels/common/func_004C9050.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9050",
+    "size": 48,
+    "flags_from": "func_003A5E80",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9080",
+    "source": "src/levels/common/func_004C9080.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9080",
+    "size": 12,
+    "flags_from": "func_003A5EB0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9158",
+    "source": "src/levels/common/func_004C9158.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9158",
+    "size": 20,
+    "flags_from": "func_003A5F88",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9170",
+    "source": "src/levels/common/func_004C9170.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9170",
+    "size": 20,
+    "flags_from": "func_003A5FA0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9208",
+    "source": "src/levels/common/func_004C9208.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9208",
+    "size": 456,
+    "flags_from": "func_003A5FC8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C94B8",
+    "source": "src/levels/common/func_004C94B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C94B8",
+    "size": 8,
+    "flags_from": "func_003A6278",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9620",
+    "source": "src/levels/common/func_004C9620.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9620",
+    "size": 44,
+    "flags_from": "func_003A63E0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C96F0",
+    "source": "src/levels/common/func_004C96F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C96F0",
+    "size": 36,
+    "flags_from": "func_003A5F60",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9718",
+    "source": "src/levels/common/func_004C9718.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9718",
+    "size": 8,
+    "flags_from": "func_003A64D8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9728",
+    "source": "src/levels/common/func_004C9728.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9728",
+    "size": 44,
+    "flags_from": "func_003A64E8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9760",
+    "source": "src/levels/common/func_004C9760.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9760",
+    "size": 276,
+    "flags_from": "func_003A6520",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9878",
+    "source": "src/levels/common/func_004C9878.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9878",
+    "size": 8,
+    "flags_from": "func_003A6638",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C99C8",
+    "source": "src/levels/common/func_004C99C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C99C8",
+    "size": 8,
+    "flags_from": "func_003A64E0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C99D0",
+    "source": "src/levels/common/func_004C99D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C99D0",
+    "size": 156,
+    "flags_from": "func_003A6790",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C9A70",
+    "source": "src/levels/common/func_004C9A70.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9A70",
+    "size": 80,
+    "flags_from": "func_003A6830",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9AC8",
+    "source": "src/levels/common/func_004C9AC8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9AC8",
+    "size": 124,
+    "flags_from": "func_003A6888",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9B50",
+    "source": "src/levels/common/func_004C9B50.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9B50",
+    "size": 140,
+    "flags_from": "func_003A6910",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9BE0",
+    "source": "src/levels/common/func_004C9BE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9BE0",
+    "size": 28,
+    "flags_from": "func_003A69A0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9CB0",
+    "source": "src/levels/common/func_004C9CB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9CB0",
+    "size": 52,
+    "flags_from": "func_003A69C8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9CE8",
+    "source": "src/levels/common/func_004C9CE8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9CE8",
+    "size": 520,
+    "flags_from": "func_003A6A00",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004CADA8",
+    "source": "src/levels/common/func_004CADA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CADA8",
+    "size": 120,
+    "flags_from": "func_003A7618",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CAE20",
+    "source": "src/levels/common/func_004CAE20.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CAE20",
+    "size": 1588,
+    "flags_from": "func_003A7690",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004CB5D8",
+    "source": "src/levels/common/func_004CB5D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CB5D8",
+    "size": 52,
+    "flags_from": "func_003A7E48",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CB6D0",
+    "source": "src/levels/common/func_004CB6D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CB6D0",
+    "size": 8,
+    "flags_from": "func_003A7F40",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CB718",
+    "source": "src/levels/common/func_004CB718.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CB718",
+    "size": 8,
+    "flags_from": "func_003A7F78",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CB720",
+    "source": "src/levels/common/func_004CB720.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CB720",
+    "size": 12,
+    "flags_from": "func_003A7F80",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CB730",
+    "source": "src/levels/common/func_004CB730.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CB730",
+    "size": 52,
+    "flags_from": "func_003A7F90",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CB768",
+    "source": "src/levels/common/func_004CB768.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CB768",
+    "size": 24,
+    "flags_from": "func_003A7FC8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CB780",
+    "source": "src/levels/common/func_004CB780.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CB780",
+    "size": 8,
+    "flags_from": "func_003A7FE0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CB7C8",
+    "source": "src/levels/common/func_004CB7C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CB7C8",
+    "size": 8,
+    "flags_from": "func_003A8028",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CB7D0",
+    "source": "src/levels/common/func_004CB7D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CB7D0",
+    "size": 8,
+    "flags_from": "func_003A8030",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CD110",
+    "source": "src/levels/common/func_004CD110.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CD110",
+    "size": 192,
+    "flags_from": "func_003A9698",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CE108",
+    "source": "src/levels/common/func_004CE108.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CE108",
+    "size": 292,
+    "flags_from": "func_003A9768",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CEB08",
+    "source": "src/levels/common/func_004CEB08.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CEB08",
+    "size": 228,
+    "flags_from": "func_003A9CF8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CEBF0",
+    "source": "src/levels/common/func_004CEBF0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CEBF0",
+    "size": 452,
+    "flags_from": "func_003AA2E8",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004CEDB8",
+    "source": "src/levels/common/func_004CEDB8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CEDB8",
+    "size": 812,
+    "flags_from": "func_003AA4B0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004CF130",
+    "source": "src/levels/common/func_004CF130.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CF130",
+    "size": 472,
+    "flags_from": "func_003AA828",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004CF308",
+    "source": "src/levels/common/func_004CF308.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CF308",
+    "size": 152,
+    "flags_from": "func_003AAA00",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004CF3D0",
+    "source": "src/levels/common/func_004CF3D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CF3D0",
+    "size": 152,
+    "flags_from": "func_003AAAC8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CF490",
+    "source": "src/levels/common/func_004CF490.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CF490",
+    "size": 160,
+    "flags_from": "func_003AAB88",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CF530",
+    "source": "src/levels/common/func_004CF530.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CF530",
+    "size": 68,
+    "flags_from": "func_003AAC28",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CF708",
+    "source": "src/levels/common/func_004CF708.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CF708",
+    "size": 96,
+    "flags_from": "func_003AAE00",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CF768",
+    "source": "src/levels/common/func_004CF768.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CF768",
+    "size": 100,
+    "flags_from": "func_003AAE60",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CFA88",
+    "source": "src/levels/common/func_004CFA88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CFA88",
+    "size": 156,
+    "flags_from": "func_003AB180",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CFB28",
+    "source": "src/levels/common/func_004CFB28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CFB28",
+    "size": 388,
+    "flags_from": "func_003AB220",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CFF18",
+    "source": "src/levels/common/func_004CFF18.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CFF18",
+    "size": 424,
+    "flags_from": "func_003AB610",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D02F0",
+    "source": "src/levels/common/func_004D02F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D02F0",
+    "size": 76,
+    "flags_from": "func_003AB9E8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D0340",
+    "source": "src/levels/common/func_004D0340.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D0340",
+    "size": 16,
+    "flags_from": "func_003ABA38",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D0680",
+    "source": "src/levels/common/func_004D0680.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D0680",
+    "size": 8,
+    "flags_from": "func_0037D198",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D0760",
+    "source": "src/levels/common/func_004D0760.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D0760",
+    "size": 20,
+    "flags_from": "func_003ABE58",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D0778",
+    "source": "src/levels/common/func_004D0778.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D0778",
+    "size": 40,
+    "flags_from": "func_003ABE70",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D0890",
+    "source": "src/levels/common/func_004D0890.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D0890",
+    "size": 68,
+    "flags_from": "func_003ABF88",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D0948",
+    "source": "src/levels/common/func_004D0948.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D0948",
+    "size": 108,
+    "flags_from": "func_003AC040",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D09B8",
+    "source": "src/levels/common/func_004D09B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D09B8",
+    "size": 36,
+    "flags_from": "func_003AC0B0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D09E0",
+    "source": "src/levels/common/func_004D09E0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D09E0",
+    "size": 120,
+    "flags_from": "func_003AC0D8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D0A58",
+    "source": "src/levels/common/func_004D0A58.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D0A58",
+    "size": 352,
+    "flags_from": "func_003AC150",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D0EE8",
+    "source": "src/levels/common/func_004D0EE8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D0EE8",
+    "size": 268,
+    "flags_from": "func_003AC5E0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D0FF8",
+    "source": "src/levels/common/func_004D0FF8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D0FF8",
+    "size": 780,
+    "flags_from": "func_003AC6F0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1308",
+    "source": "src/levels/common/func_004D1308.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1308",
+    "size": 88,
+    "flags_from": "func_003ACA00",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1360",
+    "source": "src/levels/common/func_004D1360.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1360",
+    "size": 76,
+    "flags_from": "func_003ACA58",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D13B0",
+    "source": "src/levels/common/func_004D13B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D13B0",
+    "size": 84,
+    "flags_from": "func_003ACAA8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1538",
+    "source": "src/levels/common/func_004D1538.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1538",
+    "size": 264,
+    "flags_from": "func_003ACC30",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1640",
+    "source": "src/levels/common/func_004D1640.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1640",
+    "size": 404,
+    "flags_from": "func_003ACD38",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D17D8",
+    "source": "src/levels/common/func_004D17D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D17D8",
+    "size": 256,
+    "flags_from": "func_003ACED0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D18E0",
+    "source": "src/levels/common/func_004D18E0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D18E0",
+    "size": 32,
+    "flags_from": "func_003ACFD8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1940",
+    "source": "src/levels/common/func_004D1940.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1940",
+    "size": 8,
+    "flags_from": "func_003AD038",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1948",
+    "source": "src/levels/common/func_004D1948.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1948",
+    "size": 52,
+    "flags_from": "func_003AD040",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1980",
+    "source": "src/levels/common/func_004D1980.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1980",
+    "size": 12,
+    "flags_from": "func_003AD078",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1990",
+    "source": "src/levels/common/func_004D1990.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1990",
+    "size": 8,
+    "flags_from": "func_003AD088",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1998",
+    "source": "src/levels/common/func_004D1998.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1998",
+    "size": 12,
+    "flags_from": "func_003AD090",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D19A8",
+    "source": "src/levels/common/func_004D19A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D19A8",
+    "size": 64,
+    "flags_from": "func_003AD0A0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1A10",
+    "source": "src/levels/common/func_004D1A10.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1A10",
+    "size": 204,
+    "flags_from": "func_003AD108",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D1AE0",
+    "source": "src/levels/common/func_004D1AE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1AE0",
+    "size": 72,
+    "flags_from": "func_003AD1D8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1D38",
+    "source": "src/levels/common/func_004D1D38.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1D38",
+    "size": 40,
+    "flags_from": "func_003AD430",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1D60",
+    "source": "src/levels/common/func_004D1D60.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1D60",
+    "size": 48,
+    "flags_from": "func_003AD458",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1DE0",
+    "source": "src/levels/common/func_004D1DE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1DE0",
+    "size": 72,
+    "flags_from": "func_003AD4D8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1F58",
+    "source": "src/levels/common/func_004D1F58.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1F58",
+    "size": 88,
+    "flags_from": "func_003AD650",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1FB8",
+    "source": "src/levels/common/func_004D1FB8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1FB8",
+    "size": 16,
+    "flags_from": "func_003AD6B0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1FC8",
+    "source": "src/levels/common/func_004D1FC8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1FC8",
+    "size": 20,
+    "flags_from": "func_003AD6C0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D1FE0",
+    "source": "src/levels/common/func_004D1FE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D1FE0",
+    "size": 112,
+    "flags_from": "func_003AD6D8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D2050",
+    "source": "src/levels/common/func_004D2050.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D2050",
+    "size": 64,
+    "flags_from": "func_003AD748",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D2090",
+    "source": "src/levels/common/func_004D2090.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D2090",
+    "size": 12,
+    "flags_from": "func_003AD788",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D20A0",
+    "source": "src/levels/common/func_004D20A0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D20A0",
+    "size": 92,
+    "flags_from": "func_003AD798",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D2100",
+    "source": "src/levels/common/func_004D2100.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D2100",
+    "size": 32,
+    "flags_from": "func_003AD7F8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D2130",
+    "source": "src/levels/common/func_004D2130.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D2130",
+    "size": 108,
+    "flags_from": "func_003B62E8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D21A0",
+    "source": "src/levels/common/func_004D21A0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D21A0",
+    "size": 16,
+    "flags_from": "func_003B6358",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D2D70",
+    "source": "src/levels/common/func_004D2D70.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D2D70",
+    "size": 384,
+    "flags_from": "func_003B6F28",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D2EF0",
+    "source": "src/levels/common/func_004D2EF0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D2EF0",
+    "size": 232,
+    "flags_from": "func_003B70A8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D2FD8",
+    "source": "src/levels/common/func_004D2FD8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D2FD8",
+    "size": 40,
+    "flags_from": "func_003B7190",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D3000",
+    "source": "src/levels/common/func_004D3000.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D3000",
+    "size": 204,
+    "flags_from": "func_003B71B8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D30D0",
+    "source": "src/levels/common/func_004D30D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D30D0",
+    "size": 148,
+    "flags_from": "func_003B7288",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D3168",
+    "source": "src/levels/common/func_004D3168.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D3168",
+    "size": 84,
+    "flags_from": "func_003B7320",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D3710",
+    "source": "src/levels/common/func_004D3710.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D3710",
+    "size": 468,
+    "flags_from": "func_003B78C8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D38E8",
+    "source": "src/levels/common/func_004D38E8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D38E8",
+    "size": 176,
+    "flags_from": "func_003B7AA0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D40C8",
+    "source": "src/levels/common/func_004D40C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D40C8",
+    "size": 60,
+    "flags_from": "func_003B8280",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4548",
+    "source": "src/levels/common/func_004D4548.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4548",
+    "size": 184,
+    "flags_from": "func_003B8700",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4600",
+    "source": "src/levels/common/func_004D4600.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4600",
+    "size": 84,
+    "flags_from": "func_003B87B8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4658",
+    "source": "src/levels/common/func_004D4658.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4658",
+    "size": 48,
+    "flags_from": "func_003B8810",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4770",
+    "source": "src/levels/common/func_004D4770.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4770",
+    "size": 60,
+    "flags_from": "func_003B8928",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4868",
+    "source": "src/levels/common/func_004D4868.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4868",
+    "size": 40,
+    "flags_from": "func_003B8A20",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4890",
+    "source": "src/levels/common/func_004D4890.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4890",
+    "size": 28,
+    "flags_from": "func_003B8A48",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D48B0",
+    "source": "src/levels/common/func_004D48B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D48B0",
+    "size": 164,
+    "flags_from": "func_003B8A68",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4958",
+    "source": "src/levels/common/func_004D4958.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4958",
+    "size": 8,
+    "flags_from": "func_003B8B10",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4960",
+    "source": "src/levels/common/func_004D4960.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4960",
+    "size": 172,
+    "flags_from": "func_003B8B18",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D4A10",
+    "source": "src/levels/common/func_004D4A10.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4A10",
+    "size": 168,
+    "flags_from": "func_003B8BC8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4AB8",
+    "source": "src/levels/common/func_004D4AB8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4AB8",
+    "size": 140,
+    "flags_from": "func_003B8C70",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D4C58",
+    "source": "src/levels/common/func_004D4C58.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4C58",
+    "size": 172,
+    "flags_from": "func_003B8E10",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D4D08",
+    "source": "src/levels/common/func_004D4D08.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4D08",
+    "size": 56,
+    "flags_from": "func_003B8EC0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4D40",
+    "source": "src/levels/common/func_004D4D40.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4D40",
+    "size": 76,
+    "flags_from": "func_003B8EF8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D56C8",
+    "source": "src/levels/common/func_004D56C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D56C8",
+    "size": 56,
+    "flags_from": "func_003B9880",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D57E8",
+    "source": "src/levels/common/func_004D57E8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D57E8",
+    "size": 104,
+    "flags_from": "func_003B99A0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D5A30",
+    "source": "src/levels/common/func_004D5A30.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D5A30",
+    "size": 104,
+    "flags_from": "func_003B9BE8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D5F00",
+    "source": "src/levels/common/func_004D5F00.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D5F00",
+    "size": 76,
+    "flags_from": "func_003BA0B8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D6198",
+    "source": "src/levels/common/func_004D6198.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D6198",
+    "size": 20,
+    "flags_from": "func_003BA350",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D61B0",
+    "source": "src/levels/common/func_004D61B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D61B0",
+    "size": 96,
+    "flags_from": "func_003BA368",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D62D8",
+    "source": "src/levels/common/func_004D62D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D62D8",
+    "size": 296,
+    "flags_from": "func_003BA490",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D6790",
+    "source": "src/levels/common/func_004D6790.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D6790",
+    "size": 88,
+    "flags_from": "func_003BA948",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D7320",
+    "source": "src/levels/common/func_004D7320.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D7320",
+    "size": 68,
+    "flags_from": "func_003BB4D8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D7600",
+    "source": "src/levels/common/func_004D7600.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D7600",
+    "size": 48,
+    "flags_from": "func_003BB7B8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D7838",
+    "source": "src/levels/common/func_004D7838.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D7838",
+    "size": 96,
+    "flags_from": "func_003BB9F0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D7BB8",
+    "source": "src/levels/common/func_004D7BB8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D7BB8",
+    "size": 36,
+    "flags_from": "func_003BBD70",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D7DC8",
+    "source": "src/levels/common/func_004D7DC8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D7DC8",
+    "size": 72,
+    "flags_from": "func_003BBF80",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D8DF0",
+    "source": "src/levels/common/func_004D8DF0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D8DF0",
+    "size": 28,
+    "flags_from": "func_003D14B0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D8E10",
+    "source": "src/levels/common/func_004D8E10.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D8E10",
+    "size": 160,
+    "flags_from": "func_003D14D0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D8EB0",
+    "source": "src/levels/common/func_004D8EB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D8EB0",
+    "size": 224,
+    "flags_from": "func_003D1570",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D9C20",
+    "source": "src/levels/common/func_004D9C20.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D9C20",
+    "size": 36,
+    "flags_from": "func_003D22E0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D9C48",
+    "source": "src/levels/common/func_004D9C48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D9C48",
+    "size": 36,
+    "flags_from": "func_003D2308",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D9C70",
+    "source": "src/levels/common/func_004D9C70.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D9C70",
+    "size": 36,
+    "flags_from": "func_003D2330",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004DAA88",
+    "source": "src/levels/common/func_004DAA88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004DAA88",
+    "size": 732,
+    "flags_from": "func_003D3148",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004DAD68",
+    "source": "src/levels/common/func_004DAD68.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004DAD68",
+    "size": 856,
+    "flags_from": "func_003D3428",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004DB630",
+    "source": "src/levels/common/func_004DB630.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004DB630",
+    "size": 216,
+    "flags_from": "func_003D3CF0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004DB708",
+    "source": "src/levels/common/func_004DB708.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004DB708",
+    "size": 60,
+    "flags_from": "func_003D3DC8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0050D978",
+    "source": "src/levels/common/func_0050D978.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0050D978",
+    "size": 8,
+    "flags_from": "func_003A6880",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510820",
+    "source": "src/levels/common/func_00510820.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510820",
+    "size": 52,
+    "flags_from": "func_003E0370",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510858",
+    "source": "src/levels/common/func_00510858.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510858",
+    "size": 32,
+    "flags_from": "func_003E03A8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510888",
+    "source": "src/levels/common/func_00510888.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510888",
+    "size": 160,
+    "flags_from": "func_003E03D8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510928",
+    "source": "src/levels/common/func_00510928.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510928",
+    "size": 212,
+    "flags_from": "func_003E0478",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510A00",
+    "source": "src/levels/common/func_00510A00.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510A00",
+    "size": 300,
+    "flags_from": "func_003E0550",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510B30",
+    "source": "src/levels/common/func_00510B30.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510B30",
+    "size": 12,
+    "flags_from": "func_003E0680",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510B50",
+    "source": "src/levels/common/func_00510B50.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510B50",
+    "size": 44,
+    "flags_from": "func_003E06A0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510C20",
+    "source": "src/levels/common/func_00510C20.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510C20",
+    "size": 12,
+    "flags_from": "func_003E0770",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510D10",
+    "source": "src/levels/common/func_00510D10.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510D10",
+    "size": 144,
+    "flags_from": "func_003E0870",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510E40",
+    "source": "src/levels/common/func_00510E40.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510E40",
+    "size": 44,
+    "flags_from": "func_003E0900",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00510E70",
+    "source": "src/levels/common/func_00510E70.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00510E70",
+    "size": 168,
+    "flags_from": "func_003E0930",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005112B8",
+    "source": "src/levels/common/func_005112B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005112B8",
+    "size": 116,
+    "flags_from": "func_003E0D78",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511338",
+    "source": "src/levels/common/func_00511338.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511338",
+    "size": 44,
+    "flags_from": "func_003E0DF8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511368",
+    "source": "src/levels/common/func_00511368.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511368",
+    "size": 32,
+    "flags_from": "func_003E0E28",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511388",
+    "source": "src/levels/common/func_00511388.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511388",
+    "size": 72,
+    "flags_from": "func_003E0E48",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511508",
+    "source": "src/levels/common/func_00511508.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511508",
+    "size": 284,
+    "flags_from": "func_003E0FC8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511628",
+    "source": "src/levels/common/func_00511628.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511628",
+    "size": 52,
+    "flags_from": "func_003E10E8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511660",
+    "source": "src/levels/common/func_00511660.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511660",
+    "size": 48,
+    "flags_from": "func_003E1120",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511690",
+    "source": "src/levels/common/func_00511690.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511690",
+    "size": 128,
+    "flags_from": "func_003E1150",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511710",
+    "source": "src/levels/common/func_00511710.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511710",
+    "size": 216,
+    "flags_from": "func_003E11D0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005117E8",
+    "source": "src/levels/common/func_005117E8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005117E8",
+    "size": 144,
+    "flags_from": "func_003E12A8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005119A0",
+    "source": "src/levels/common/func_005119A0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005119A0",
+    "size": 72,
+    "flags_from": "func_003E1460",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511A50",
+    "source": "src/levels/common/func_00511A50.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511A50",
+    "size": 56,
+    "flags_from": "func_003E1510",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511A88",
+    "source": "src/levels/common/func_00511A88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511A88",
+    "size": 140,
+    "flags_from": "func_003E1548",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511B18",
+    "source": "src/levels/common/func_00511B18.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511B18",
+    "size": 140,
+    "flags_from": "func_003E15D8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511BA8",
+    "source": "src/levels/common/func_00511BA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511BA8",
+    "size": 80,
+    "flags_from": "func_003E1668",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511BF8",
+    "source": "src/levels/common/func_00511BF8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511BF8",
+    "size": 168,
+    "flags_from": "func_003E16B8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511CE8",
+    "source": "src/levels/common/func_00511CE8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511CE8",
+    "size": 20,
+    "flags_from": "func_003E1770",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511D00",
+    "source": "src/levels/common/func_00511D00.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511D00",
+    "size": 52,
+    "flags_from": "func_003E1788",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511E28",
+    "source": "src/levels/common/func_00511E28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511E28",
+    "size": 36,
+    "flags_from": "func_003E1898",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511E50",
+    "source": "src/levels/common/func_00511E50.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511E50",
+    "size": 104,
+    "flags_from": "func_003E18C0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511EC0",
+    "source": "src/levels/common/func_00511EC0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511EC0",
+    "size": 28,
+    "flags_from": "func_003E1930",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511EE0",
+    "source": "src/levels/common/func_00511EE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511EE0",
+    "size": 116,
+    "flags_from": "func_003E1950",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511F58",
+    "source": "src/levels/common/func_00511F58.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511F58",
+    "size": 136,
+    "flags_from": "func_003E19C8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00511FE0",
+    "source": "src/levels/common/func_00511FE0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00511FE0",
+    "size": 60,
+    "flags_from": "func_003E1A50",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00512020",
+    "source": "src/levels/common/func_00512020.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512020",
+    "size": 8,
+    "flags_from": "func_003E1A90",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00512028",
+    "source": "src/levels/common/func_00512028.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512028",
+    "size": 8,
+    "flags_from": "func_003E1A98",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00512030",
+    "source": "src/levels/common/func_00512030.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512030",
+    "size": 8,
+    "flags_from": "func_003E1AA0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005120D8",
+    "source": "src/levels/common/func_005120D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005120D8",
+    "size": 40,
+    "flags_from": "func_003E1AC8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00512100",
+    "source": "src/levels/common/func_00512100.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512100",
+    "size": 40,
+    "flags_from": "func_003E1AF0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00512128",
+    "source": "src/levels/common/func_00512128.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512128",
+    "size": 40,
+    "flags_from": "func_003E1B18",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00512150",
+    "source": "src/levels/common/func_00512150.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512150",
+    "size": 40,
+    "flags_from": "func_003E1B40",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00512178",
+    "source": "src/levels/common/func_00512178.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512178",
+    "size": 40,
+    "flags_from": "func_003E1B68",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005121A8",
+    "source": "src/levels/common/func_005121A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005121A8",
+    "size": 24,
+    "flags_from": "func_003E1B98",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005121C0",
+    "source": "src/levels/common/func_005121C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005121C0",
+    "size": 8,
+    "flags_from": "func_003E1BB0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005121C8",
+    "source": "src/levels/common/func_005121C8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005121C8",
+    "size": 16,
+    "flags_from": "func_003E1BB8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005121D8",
+    "source": "src/levels/common/func_005121D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005121D8",
+    "size": 24,
+    "flags_from": "func_003E1BC8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005121F0",
+    "source": "src/levels/common/func_005121F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005121F0",
+    "size": 44,
+    "flags_from": "func_003E1BE0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00512220",
+    "source": "src/levels/common/func_00512220.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512220",
+    "size": 36,
+    "flags_from": "func_003E1C10",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00512248",
+    "source": "src/levels/common/func_00512248.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512248",
+    "size": 88,
+    "flags_from": "func_003E1C38",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_005122A0",
+    "source": "src/levels/common/func_005122A0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005122A0",
+    "size": 56,
+    "flags_from": "func_003E1C90",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00512360",
+    "source": "src/levels/common/func_00512360.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512360",
+    "size": 20,
+    "flags_from": "func_003E1D50",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00512650",
+    "source": "src/levels/common/func_00512650.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512650",
+    "size": 228,
+    "flags_from": "func_003E1F40",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00513278",
+    "source": "src/levels/common/func_00513278.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00513278",
+    "size": 212,
+    "flags_from": "func_003E29B8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00513650",
+    "source": "src/levels/common/func_00513650.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00513650",
+    "size": 72,
+    "flags_from": "func_003E2D90",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005136D8",
+    "source": "src/levels/common/func_005136D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005136D8",
+    "size": 124,
+    "flags_from": "func_003E2DE0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005137D0",
+    "source": "src/levels/common/func_005137D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005137D0",
+    "size": 108,
+    "flags_from": "func_003E2ED8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00513928",
+    "source": "src/levels/common/func_00513928.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00513928",
+    "size": 108,
+    "flags_from": "func_003E3040",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005140D0",
+    "source": "src/levels/common/func_005140D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005140D0",
+    "size": 80,
+    "flags_from": "func_003E34A0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00514190",
+    "source": "src/levels/common/func_00514190.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00514190",
+    "size": 144,
+    "flags_from": "func_003E34F0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00514660",
+    "source": "src/levels/common/func_00514660.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00514660",
+    "size": 32,
+    "flags_from": "func_003E38B0",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005149B8",
+    "source": "src/levels/common/func_005149B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005149B8",
+    "size": 128,
+    "flags_from": "func_003E3B50",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00518730",
+    "source": "src/levels/common/func_00518730.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00518730",
+    "size": 80,
+    "flags_from": "func_003E78B0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00518780",
+    "source": "src/levels/common/func_00518780.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00518780",
+    "size": 96,
+    "flags_from": "func_003E7900",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00518AB8",
+    "source": "src/levels/common/func_00518AB8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00518AB8",
+    "size": 84,
+    "flags_from": "func_003E7C38",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005193E8",
+    "source": "src/levels/common/func_005193E8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005193E8",
+    "size": 36,
+    "flags_from": "func_003E8568",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519410",
+    "source": "src/levels/common/func_00519410.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519410",
+    "size": 16,
+    "flags_from": "func_003E8590",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519420",
+    "source": "src/levels/common/func_00519420.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519420",
+    "size": 52,
+    "flags_from": "func_003E85A0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519458",
+    "source": "src/levels/common/func_00519458.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519458",
+    "size": 36,
+    "flags_from": "func_003E85D8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519480",
+    "source": "src/levels/common/func_00519480.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519480",
+    "size": 12,
+    "flags_from": "func_003E8600",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519490",
+    "source": "src/levels/common/func_00519490.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519490",
+    "size": 20,
+    "flags_from": "func_003E8610",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005194A8",
+    "source": "src/levels/common/func_005194A8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005194A8",
+    "size": 12,
+    "flags_from": "func_003E8628",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005194C0",
+    "source": "src/levels/common/func_005194C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005194C0",
+    "size": 44,
+    "flags_from": "func_003E8640",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005194F0",
+    "source": "src/levels/common/func_005194F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005194F0",
+    "size": 84,
+    "flags_from": "func_003E8670",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519548",
+    "source": "src/levels/common/func_00519548.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519548",
+    "size": 76,
+    "flags_from": "func_003E86C8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519598",
+    "source": "src/levels/common/func_00519598.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519598",
+    "size": 112,
+    "flags_from": "func_003E8718",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519658",
+    "source": "src/levels/common/func_00519658.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519658",
+    "size": 92,
+    "flags_from": "func_003E87D8",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_005197F0",
+    "source": "src/levels/common/func_005197F0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x005197F0",
+    "size": 124,
+    "flags_from": "func_003E8970",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519950",
+    "source": "src/levels/common/func_00519950.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519950",
+    "size": 292,
+    "flags_from": "func_003E8AD0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00519A78",
+    "source": "src/levels/common/func_00519A78.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519A78",
+    "size": 48,
+    "flags_from": "func_003E8BF8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519AA8",
+    "source": "src/levels/common/func_00519AA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519AA8",
+    "size": 20,
+    "flags_from": "func_003E8C28",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519D20",
+    "source": "src/levels/common/func_00519D20.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519D20",
+    "size": 36,
+    "flags_from": "func_003E8EA0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519E30",
+    "source": "src/levels/common/func_00519E30.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519E30",
+    "size": 276,
+    "flags_from": "func_003E8FB0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519F48",
+    "source": "src/levels/common/func_00519F48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519F48",
+    "size": 240,
+    "flags_from": "func_003E90C8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051A038",
+    "source": "src/levels/common/func_0051A038.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051A038",
+    "size": 8,
+    "flags_from": "func_003E91B8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051A040",
+    "source": "src/levels/common/func_0051A040.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051A040",
+    "size": 48,
+    "flags_from": "func_003E91C0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051A998",
+    "source": "src/levels/common/func_0051A998.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051A998",
+    "size": 44,
+    "flags_from": "func_003E9B18",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051AA28",
+    "source": "src/levels/common/func_0051AA28.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051AA28",
+    "size": 164,
+    "flags_from": "func_003E9BA8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051ABA0",
+    "source": "src/levels/common/func_0051ABA0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051ABA0",
+    "size": 20,
+    "flags_from": "func_003E9D20",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051ABB8",
+    "source": "src/levels/common/func_0051ABB8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051ABB8",
+    "size": 60,
+    "flags_from": "func_003E9298",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0051AEF8",
+    "source": "src/levels/common/func_0051AEF8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051AEF8",
+    "size": 532,
+    "flags_from": "func_003EA078",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0051B728",
+    "source": "src/levels/common/func_0051B728.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051B728",
+    "size": 132,
+    "flags_from": "func_003EA8A8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051B7B0",
+    "source": "src/levels/common/func_0051B7B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051B7B0",
+    "size": 28,
+    "flags_from": "func_003EA930",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051B7D0",
+    "source": "src/levels/common/func_0051B7D0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051B7D0",
+    "size": 48,
+    "flags_from": "func_003EB130",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051B830",
+    "source": "src/levels/common/func_0051B830.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051B830",
+    "size": 132,
+    "flags_from": "func_003EA9B0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051B8B8",
+    "source": "src/levels/common/func_0051B8B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051B8B8",
+    "size": 44,
+    "flags_from": "func_003EAA38",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051B8E8",
+    "source": "src/levels/common/func_0051B8E8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051B8E8",
+    "size": 20,
+    "flags_from": "func_003EAA68",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051B900",
+    "source": "src/levels/common/func_0051B900.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051B900",
+    "size": 12,
+    "flags_from": "func_003EAA80",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051B950",
+    "source": "src/levels/common/func_0051B950.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051B950",
+    "size": 440,
+    "flags_from": "func_003EAAD0",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0051BF80",
+    "source": "src/levels/common/func_0051BF80.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051BF80",
+    "size": 44,
+    "flags_from": "func_003EB100",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C1D8",
+    "source": "src/levels/common/func_0051C1D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C1D8",
+    "size": 156,
+    "flags_from": "func_003EB358",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0051C278",
+    "source": "src/levels/common/func_0051C278.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C278",
+    "size": 12,
+    "flags_from": "func_003EB3F8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C288",
+    "source": "src/levels/common/func_0051C288.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C288",
+    "size": 56,
+    "flags_from": "func_003EB408",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C2C0",
+    "source": "src/levels/common/func_0051C2C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C2C0",
+    "size": 100,
+    "flags_from": "func_003EB440",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C328",
+    "source": "src/levels/common/func_0051C328.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C328",
+    "size": 20,
+    "flags_from": "func_003EB4A8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C340",
+    "source": "src/levels/common/func_0051C340.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C340",
+    "size": 36,
+    "flags_from": "func_003EB4C0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C368",
+    "source": "src/levels/common/func_0051C368.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C368",
+    "size": 20,
+    "flags_from": "func_003EB4E8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C380",
+    "source": "src/levels/common/func_0051C380.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C380",
+    "size": 20,
+    "flags_from": "func_003EB500",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C398",
+    "source": "src/levels/common/func_0051C398.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C398",
+    "size": 32,
+    "flags_from": "func_003EB518",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C3B8",
+    "source": "src/levels/common/func_0051C3B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C3B8",
+    "size": 60,
+    "flags_from": "func_003EB538",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C3F8",
+    "source": "src/levels/common/func_0051C3F8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C3F8",
+    "size": 12,
+    "flags_from": "func_003EB578",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C408",
+    "source": "src/levels/common/func_0051C408.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C408",
+    "size": 12,
+    "flags_from": "func_003EB588",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C418",
+    "source": "src/levels/common/func_0051C418.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C418",
+    "size": 12,
+    "flags_from": "func_003EB598",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C428",
+    "source": "src/levels/common/func_0051C428.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C428",
+    "size": 60,
+    "flags_from": "func_003EB5A8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C470",
+    "source": "src/levels/common/func_0051C470.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C470",
+    "size": 44,
+    "flags_from": "func_003EB5F0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C4A0",
+    "source": "src/levels/common/func_0051C4A0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C4A0",
+    "size": 140,
+    "flags_from": "func_003EB620",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051C590",
+    "source": "src/levels/common/func_0051C590.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051C590",
+    "size": 20,
+    "flags_from": "func_003EB710",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051D4B0",
+    "source": "src/levels/common/func_0051D4B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051D4B0",
+    "size": 48,
+    "flags_from": "func_003EC630",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051D4E0",
+    "source": "src/levels/common/func_0051D4E0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051D4E0",
+    "size": 44,
+    "flags_from": "func_003EC660",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051D658",
+    "source": "src/levels/common/func_0051D658.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051D658",
+    "size": 392,
+    "flags_from": "func_003EC7D8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051DA00",
+    "source": "src/levels/common/func_0051DA00.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051DA00",
+    "size": 44,
+    "flags_from": "func_003EB0D0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051DAA0",
+    "source": "src/levels/common/func_0051DAA0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051DAA0",
+    "size": 28,
+    "flags_from": "func_003ECC20",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051DAC0",
+    "source": "src/levels/common/func_0051DAC0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051DAC0",
+    "size": 44,
+    "flags_from": "func_003ECC40",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051DB20",
+    "source": "src/levels/common/func_0051DB20.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051DB20",
+    "size": 104,
+    "flags_from": "func_003ECCA0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051DB88",
+    "source": "src/levels/common/func_0051DB88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051DB88",
+    "size": 52,
+    "flags_from": "func_003ECD08",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051DBC0",
+    "source": "src/levels/common/func_0051DBC0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051DBC0",
+    "size": 28,
+    "flags_from": "func_003ECD40",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051DC40",
+    "source": "src/levels/common/func_0051DC40.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051DC40",
+    "size": 8,
+    "flags_from": "func_003ECDC0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051DC48",
+    "source": "src/levels/common/func_0051DC48.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051DC48",
+    "size": 12,
+    "flags_from": "func_003E03C8",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_0051DC60",
+    "source": "src/levels/common/func_0051DC60.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051DC60",
+    "size": 12,
+    "flags_from": "func_003ECDE0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_005E6F40",
+    "source": "src/levels/common/func_005E6F40.c",
+    "overlay": "multiplayer/39_multiplayer_menu",
+    "address": "0x005E6F40",
+    "size": 68,
+    "flags_from": "func_0037DC68",
+    "mode": "S",
+    "assembler": "default"
   }
 ]

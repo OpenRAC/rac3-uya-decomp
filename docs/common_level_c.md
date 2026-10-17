@@ -139,6 +139,27 @@ donor accesses globals as `D_X` plus a field offset, which the raw-encoding
 gate rejects because the target names each address; the donor needs Ps2EeAs's
 `.extern` hints; or a jump table or float constant needs a data section.
 
+## Which levels a function is in
+
+A source is named after its canonical owner (the first level, in level
+order, with that code), so its name says nothing about the other overlays.
+`targets/levels/common_occurrences.tsv` lists every shared function: canonical
+name, owner level, size, how many levels have it, C or asm, and the level
+numbers. `tools/level_occurrences.py` regenerates it and prints the addresses:
+
+    python tools/level_occurrences.py                       (rewrite the TSV after new matches)
+    python tools/level_occurrences.py --function func_004D0538   (every level and address)
+    python tools/level_occurrences.py --level 5_daxx        (one level's shared functions)
+    python tools/level_occurrences.py --summary             (per-level progress)
+
+1671 functions are in all 51 levels. Story levels are 94% to 99% shared code
+(25 to 270 functions of their own; 571 in Annihilation Nation), the
+multiplayer maps 5 to 13, and the multiplayer menu 2338.
+
+About 20 canonical names belong to two different functions owned by
+different levels: the address is the same, the code isn't. The catalogue
+tells them apart by its `overlay` field.
+
 ## Trying one function
 
 `tools/try_level.py` is the level counterpart of `try_func.py`. It runs the

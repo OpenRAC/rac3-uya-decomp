@@ -1292,7 +1292,16 @@ SECTIONS
     raw = project.target_elf.read_bytes()
     target_bin.write_bytes(raw[file_off : file_off + size])
 
-    # --- diff ---
+    diff_json = run_asm_differ(work, target_bin, source_bin, project.toolbin)
+    project.save_status_entry(
+        func_name, diff_json.get("current_score"), diff_json.get("max_score")
+    )
+    return diff_json
+
+
+def run_asm_differ(work: Path, target_bin: Path, source_bin: Path, toolbin: Path):
+    """asm-differ's JSON diff of two raw code dumps (retail vs rebuilt). The
+    caller holds _build_lock: diff_settings.py is one shared file per folder."""
     diff_settings = work / "diff_settings.py"
     diff_settings.write_text(
         f'''def apply(config, args):
@@ -1301,7 +1310,7 @@ SECTIONS
     config["mapfile"] = None
     config["source_directories"] = ["."]
     config["arch"] = "mipsel"
-    config["objdump_executable"] = r"{project.toolbin / 'ee-objdump.exe'}"
+    config["objdump_executable"] = r"{toolbin / 'ee-objdump.exe'}"
 '''
     )
     # -B + removing __pycache__: diff_settings.py is rewritten every build, and a
@@ -1313,14 +1322,9 @@ SECTIONS
     if proc.returncode != 0:
         raise BuildError("diff", proc.stdout + proc.stderr)
     try:
-        diff_json = json.loads(proc.stdout)
+        return json.loads(proc.stdout)
     except json.JSONDecodeError:
         raise BuildError("diff-parse", proc.stdout + proc.stderr)
-
-    project.save_status_entry(
-        func_name, diff_json.get("current_score"), diff_json.get("max_score")
-    )
-    return diff_json
 
 
 _text_section_cache = {}
@@ -1437,13 +1441,19 @@ def _dirty_build_inputs(root):
 # objdiff unit name prefixes of each decompiled target ({target: [prefix]});
 # main() fills it from tools/targets.py (objdiff_units).
 _UNIT_PREFIXES = {"frontbin": ["frontbin/src/"]}
+# targets whose code is one unit with an exact name (main(): the shared level
+# code is "levels/common"; "levels/common data" is its data, not its code)
+_UNIT_EXACT = {}
 
 
 def _target_of_unit(name):
-    """The decompiled target an objdiff unit belongs to, or None (levels,
-    executables that are only reference objects)."""
+    """The decompiled target an objdiff unit belongs to, or None (per-level
+    code, executables that are only reference objects)."""
     if name == "frontbin/text":  # before frontbin was split into source files
         return "frontbin"
+    for t, names in _UNIT_EXACT.items():
+        if name in names:
+            return t
     for t, prefixes in _UNIT_PREFIXES.items():
         if any(name.startswith(p) for p in prefixes):
             return t
@@ -1547,13 +1557,31 @@ def run_full_check(project):
         step("copy reference objects", False, str(e)); return result
 
     # 2. full build + MATCH (make objdiff depends on the check target)
-    p = subprocess.run([str(make), "objdiff"], cwd=root, capture_output=True, text=True, timeout=900)
+    # an hour: with the shared level code, `make objdiff` also proves every
+    # catalogued level function (tools/build_common_c.py, one compile each)
+    try:
+        p = subprocess.run([str(make), "objdiff"], cwd=root, capture_output=True, text=True, timeout=3600)
+    except subprocess.TimeoutExpired as e:
+        out = e.stdout.decode(errors="replace") if isinstance(e.stdout, bytes) else (e.stdout or "")
+        result["build_log_tail"] = "\n".join(out.splitlines()[-25:])
+        step("full build + MATCH", False, "make objdiff took over an hour and was stopped")
+        return result
     log = (p.stdout + p.stderr).strip()
     match_line = next((l for l in log.splitlines() if l.startswith(("MATCH", "NO MATCH"))), "")
     result["build_log_tail"] = "\n".join(log.splitlines()[-25:])
     if not step("full build + MATCH", p.returncode == 0 and match_line.startswith("MATCH"),
                 match_line or f"make exited {p.returncode}"):
         return result
+    # make objdiff also rebuilt the shared level code's base (tools/common_c_base.py
+    # -> build_common_c.py), which fails the build if a catalogued function no
+    # longer passes its gates; say how many it verified
+    common_line = next((l for l in log.splitlines() if l.startswith(("MATCH common C", "common_c_base:"))), "")
+    if common_line:
+        step("shared level code (build_common_c gates)", common_line.startswith("MATCH common C"), common_line)
+    else:
+        # make only rebuilds the base when a level source or the catalogue changed
+        step("shared level code (build_common_c gates)", True,
+             "up to date: no level source or catalogue change since its last verified build")
 
     # 3. full objdiff report over every unit
     cur_path = work / "report_check.json"
@@ -1566,7 +1594,7 @@ def run_full_check(project):
     # the same numbers per target, for the target picked in the page
     by_target = result["by_target"] = {
         t: {"current": _summary(cur, t), "baseline": None, "newly_matched": []}
-        for t in _UNIT_PREFIXES}
+        for t in list(_UNIT_PREFIXES) + list(_UNIT_EXACT)}
 
     # 4. compare with the report saved at the last successful push
     base_path = work / "report_pushed.json"
@@ -1640,7 +1668,15 @@ def _perm_engine(project):
     return permuter_engine
 
 
+def _is_level(project):
+    """The shared level code (localdecomp/levels.py) rather than a splatted executable."""
+    return getattr(project, "name", None) == "levels_common"
+
+
 def permuter_info(project):
+    if _is_level(project):
+        return {"available": False, "asm_passes": False, "path": None, "cpus": os.cpu_count() or 1,
+                "message": "the permuter works on the executables' source files; shared level code isn't supported yet"}
     eng = _perm_engine(project)
     path = eng.find_permuter(PERMUTER_PATH)
     ok, msg, has_asm = eng.check_permuter(path)
@@ -1650,6 +1686,8 @@ def permuter_info(project):
 
 def permuter_start(project, name, c_source, jobs, seconds, asm_passes=True, mode=None, asm=None,
                    search="random"):
+    if _is_level(project):
+        raise BuildError("permuter", "the permuter doesn't support shared level code yet")
     eng = _perm_engine(project)
     path = eng.find_permuter(PERMUTER_PATH)
     if search != "exhaustive":
@@ -1833,8 +1871,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
             c_source = body.get("c", "")
             try:
                 with project.active():
-                    flags = body.get("flags") or project.flags_for(name)
-                    result = build_and_diff(project, name, c_source, flags)
+                    if _is_level(project):
+                        with _build_lock:
+                            result = project.build(name, c_source, body.get("profile"))
+                    else:
+                        flags = body.get("flags") or project.flags_for(name)
+                        result = build_and_diff(project, name, c_source, flags)
                 self._send_json({"ok": True, "diff": result})
             except BuildError as e:
                 self._send_json({"ok": False, "stage": e.stage, "message": e.message})
@@ -1900,6 +1942,18 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 return
             name = body.get("name")
             c_source = body.get("c", "")
+            if _is_level(project):
+                try:
+                    with project.active(), _build_lock:
+                        paths, _ = project.save(name, c_source, body.get("profile"), bool(body.get("force")))
+                        git_result = project.sync_to_git(name, paths)
+                    self._send_json({"ok": True, "git": git_result.to_json(),
+                                     "file": paths[0].relative_to(project.root).as_posix()})
+                except BuildError as e:
+                    self._send_json({"ok": False, "stage": e.stage, "message": e.message})
+                except Exception as e:
+                    self._send_json({"ok": False, "stage": "internal", "message": str(e)})
+                return
             try:
                 with project.active():
                     # Only perfect matches go into its source file: a non-matching body
@@ -1966,6 +2020,7 @@ def main():
 
     root = Path(args.project).resolve()
     toolbin = Path(args.toolbin)
+    sys.path.insert(0, str(Path(__file__).resolve().parent))  # localdecomp/levels.py
     gp_value = int(args.gp, 16) if args.gp else None
 
     # the executables this repo decompiles (tools/targets.py)
@@ -1982,6 +2037,18 @@ def main():
         except FileNotFoundError as e:
             Handler.unavailable[name] = (f"not set up ({e}); put {t.elf} in the repo root and run "
                                          f"python tools/setup_asm.py --target {name}")
+    # the code the level overlays share (localdecomp/levels.py): one source per
+    # function in src/levels/common/, verified by tools/build_common_c.py
+    import levels as level_target
+    Handler.labels[level_target.NAME] = level_target.LABEL
+    _UNIT_EXACT[level_target.NAME] = ["levels/common"]
+    try:
+        Handler.projects[level_target.NAME] = level_target.LevelProject(
+            root, toolbin, args.refs, args.git_sync and is_git_repo(root), BuildError,
+            run_asm_differ, git_commit_and_push, _run_git, _target_lock)
+    except FileNotFoundError as e:
+        Handler.unavailable[level_target.NAME] = (
+            f"not set up ({e}); it needs the private level inputs in --refs (docs/common_level_c.md)")
     if not Handler.projects:
         raise SystemExit("no target is set up: " + "; ".join(Handler.unavailable.values()))
     Handler.repo = Handler.projects.get("frontbin") or next(iter(Handler.projects.values()))

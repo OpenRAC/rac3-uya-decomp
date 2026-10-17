@@ -1,0 +1,11 @@
+# Common-level functions whose retail prologue saves $ra with sq/lq, like their
+# frontbin donor in tools/sq_ra_funcs.txt (tools/seed_levels.py).
+func_004105D8
+func_00410728
+func_00450D80
+func_004CF890
+func_004D4108
+func_004D92B8
+func_004D9450
+func_004D9CB0
+func_004DB0C0

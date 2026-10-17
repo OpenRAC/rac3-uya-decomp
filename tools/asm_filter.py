@@ -162,12 +162,22 @@ SAVE_RE = re.compile(r"^(\s*)(sd|sq|ld|lq)\s+\$(1[6-9]|2[0-3]|30|31|fp),\s*(\d+)
 SAVE_ORDER = [16, 17, 18, 19, 20, 21, 22, 23, 30, 31]
 
 
+# The common-level sources (src/levels/common/, tools/seed_levels.py) compile
+# with frontbin's tools; their own entries are in tools/common_c_*.txt. Level
+# names never collide with a target's, so the target's code is unaffected.
+COMMON_SQ_RA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "common_c_sq_ra_funcs.txt")
+COMMON_DIVS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "common_c_divs_nops.txt")
+
+
 def sq_ra_funcs():
-    try:
-        with open(_sq_ra_file()) as f:
-            return {l.split("#")[0].strip() for l in f if l.split("#")[0].strip()}
-    except OSError:
-        return set()
+    out = set()
+    for path in (_sq_ra_file(), COMMON_SQ_RA):
+        try:
+            with open(path) as f:
+                out |= {l.split("#")[0].strip() for l in f if l.split("#")[0].strip()}
+        except OSError:
+            pass
+    return out
 
 
 def sq_rewrite(lines):
@@ -233,11 +243,13 @@ DIVS_RE = re.compile(r"^\s*(div\.s|sqrt\.s)\s")
 
 
 def divs_table():
-    try:
-        with open(_divs_file()) as f:
-            rows = [l.split("#")[0].split() for l in f]
-    except OSError:
-        return {}
+    rows = []
+    for path in (_divs_file(), COMMON_DIVS):
+        try:
+            with open(path) as f:
+                rows += [l.split("#")[0].split() for l in f]
+        except OSError:
+            pass
     return {r[0]: [int(x) for x in r[1:]] for r in rows if len(r) > 1}
 
 

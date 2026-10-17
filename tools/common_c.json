@@ -8018,5 +8018,235 @@
     "flags_from": "func_003E67B8",
     "mode": "N",
     "assembler": "default"
+  },
+  {
+    "name": "func_003F0FA0",
+    "source": "src/levels/common/func_003F0FA0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003F0FA0",
+    "size": 196,
+    "flags_from": "func_0037E568",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_003FE7B0",
+    "source": "src/levels/common/func_003FE7B0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003FE7B0",
+    "size": 320,
+    "flags_from": "func_00381DD0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00404F68",
+    "source": "src/levels/common/func_00404F68.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00404F68",
+    "size": 580,
+    "flags_from": "func_00387DC8",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004105D8",
+    "source": "src/levels/common/func_004105D8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004105D8",
+    "size": 32,
+    "flags_from": "func_0038C888",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00410728",
+    "source": "src/levels/common/func_00410728.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00410728",
+    "size": 44,
+    "flags_from": "func_0038C9D8",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00450D80",
+    "source": "src/levels/common/func_00450D80.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00450D80",
+    "size": 604,
+    "flags_from": "func_003C0B10",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00496320",
+    "source": "src/levels/common/func_00496320.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00496320",
+    "size": 284,
+    "flags_from": "func_003B5AB0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004AD818",
+    "source": "src/levels/common/func_004AD818.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004AD818",
+    "size": 328,
+    "flags_from": "func_003C9888",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004C8620",
+    "source": "src/levels/common/func_004C8620.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C8620",
+    "size": 360,
+    "flags_from": "func_003A54A0",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004C9880",
+    "source": "src/levels/common/func_004C9880.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004C9880",
+    "size": 296,
+    "flags_from": "func_003A6640",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004CA6C0",
+    "source": "src/levels/common/func_004CA6C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CA6C0",
+    "size": 748,
+    "flags_from": "func_003A7090",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004CF890",
+    "source": "src/levels/common/func_004CF890.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004CF890",
+    "size": 372,
+    "flags_from": "func_003AAF88",
+    "mode": "N",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D4108",
+    "source": "src/levels/common/func_004D4108.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4108",
+    "size": 384,
+    "flags_from": "func_003B82C0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D4FA8",
+    "source": "src/levels/common/func_004D4FA8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D4FA8",
+    "size": 340,
+    "flags_from": "func_003B9160",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_004D7408",
+    "source": "src/levels/common/func_004D7408.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D7408",
+    "size": 368,
+    "flags_from": "func_003BB5C0",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D92B8",
+    "source": "src/levels/common/func_004D92B8.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D92B8",
+    "size": 400,
+    "flags_from": "func_003D1978",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D9450",
+    "source": "src/levels/common/func_004D9450.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D9450",
+    "size": 556,
+    "flags_from": "func_003D1B10",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004D9CB0",
+    "source": "src/levels/common/func_004D9CB0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004D9CB0",
+    "size": 1104,
+    "flags_from": "func_003D2370",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_004DB0C0",
+    "source": "src/levels/common/func_004DB0C0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x004DB0C0",
+    "size": 720,
+    "flags_from": "func_003D3780",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00512328",
+    "source": "src/levels/common/func_00512328.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00512328",
+    "size": 52,
+    "flags_from": "func_003E1D18",
+    "mode": "S",
+    "assembler": "default"
+  },
+  {
+    "name": "func_00519AC0",
+    "source": "src/levels/common/func_00519AC0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00519AC0",
+    "size": 600,
+    "flags_from": "func_003E8C40",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0051A738",
+    "source": "src/levels/common/func_0051A738.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051A738",
+    "size": 608,
+    "flags_from": "func_003EA648",
+    "mode": "N",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_0051D7E0",
+    "source": "src/levels/common/func_0051D7E0.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x0051D7E0",
+    "size": 544,
+    "flags_from": "func_003EC960",
+    "mode": "N",
+    "assembler": "ps2as"
   }
 ]

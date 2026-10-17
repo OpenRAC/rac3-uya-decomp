@@ -13,7 +13,7 @@ frontbin function whose text_parts.txt flags to compile with (--mode N|S and
 --assembler default|ps2as override them, as in the catalogue). Exit status 0
 only on a full match.
 """
-import argparse, io, json, os, struct, subprocess, sys, tempfile
+import argparse, io, json, os, pickle, struct, subprocess, sys, tempfile
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -40,6 +40,39 @@ def disasm(code, addr, toolchain):
     return out
 
 
+CACHE = ROOT / "build" / "try_level_refs.pickle"
+
+
+def load_refs(refs):
+    """The canonical owners and the split common target's function bodies.
+
+    Reading all 51 level objects takes about a minute, so the result is kept
+    in build/ and rebuilt only when one of the input files changes."""
+    inputs = sorted((refs / "level-targets").glob("*.o")) + [refs / "level-targets-split" / "common.o"]
+    key = [(p.name, p.stat().st_size, p.stat().st_mtime_ns) for p in inputs]
+    try:
+        with open(CACHE, "rb") as f:
+            cached = pickle.load(f)
+        if cached["key"] == key:
+            return cached["owners"], cached["common"]
+    except (OSError, EOFError, KeyError, pickle.UnpicklingError):
+        pass
+    # compile_entry only reads each owner level's .path
+    owners = {ident: (SimpleNamespace(path=lv.path), n, off, sz)
+              for ident, (lv, n, off, sz) in bcc.inventory(refs / "level-targets").items()}
+    with open(refs / "level-targets-split" / "common.o", "rb") as f:
+        ct = ELFFile(io.BytesIO(f.read()))
+        text = ct.get_section_by_name(".text").data()
+        common = {s.name: text[s["st_value"]:s["st_value"] + s["st_size"]] for s in ct.get_section_by_name(".symtab").iter_symbols()
+                  if s["st_info"]["type"] == "STT_FUNC" and s["st_size"]}
+    CACHE.parent.mkdir(parents=True, exist_ok=True)
+    tmp = CACHE.with_suffix(".%d.tmp" % os.getpid())
+    with open(tmp, "wb") as f:
+        pickle.dump({"key": key, "owners": owners, "common": common}, f, pickle.HIGHEST_PROTOCOL)
+    os.replace(tmp, CACHE)  # several runs may build it at once; each swap is whole
+    return owners, common
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("source", type=Path)
@@ -53,7 +86,7 @@ def main():
     src = a.source.resolve()
     name = src.stem
     entry = next((e for e in json.loads((ROOT / "tools" / "common_c.json").read_text()) if e["name"] == name), {})
-    owners = bcc.inventory(a.refs / "level-targets")
+    owners, common = load_refs(a.refs)
     owner = next(((lv, off, sz) for lv, n, off, sz in owners.values() if n == name), None)
     if owner is None:
         sys.exit("%s is not a canonical common-level owner" % name)
@@ -68,11 +101,6 @@ def main():
     asm = a.assembler or entry.get("assembler") or ("ps2as" if "@ps2as" in fl else "default")
     e = {"name": name, "source": src.relative_to(ROOT).as_posix(), "overlay": overlay, "address": name[5:] and "0x" + name[5:],
          "size": size, "flags_from": flags_from, "mode": mode, "assembler": asm}
-    with open(a.refs / "level-targets-split" / "common.o", "rb") as f:
-        ct = ELFFile(io.BytesIO(f.read()))
-        text = ct.get_section_by_name(".text").data()
-        common = {s.name: text[s["st_value"]:s["st_value"] + s["st_size"]] for s in ct.get_section_by_name(".symtab").iter_symbols()
-                  if s["st_info"]["type"] == "STT_FUNC" and s["st_size"]}
     opts = SimpleNamespace(no_context=True, toolchain=a.toolchain, runner=None)
     try:
         bcc.compile_entry(e, a.refs / "levels", a.refs / "level-targets", owners, common, opts)

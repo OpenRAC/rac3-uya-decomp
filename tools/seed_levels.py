@@ -35,6 +35,7 @@ from elftools.elf.elffile import ELFFile
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
+import asm_filter  # noqa: E402
 import build_common_c as bcc  # noqa: E402
 import pr_check  # noqa: E402
 import try_func as matching  # noqa: E402
@@ -239,6 +240,37 @@ def make_source(prelude, block, table, local=()):
     return NAME_RE.sub(rename, src)
 
 
+def target_function_names():
+    """Function names in the executables' builds: a common-level table entry
+    must not name one of them (asm_filter reads both tables for every target)."""
+    out = set()
+    for path in (ROOT / "build" / "frontbin.elf", ROOT / "build" / "boot_elf" / "boot_elf.elf", ROOT / "build" / "i5bootn" / "i5bootn.elf"):
+        if path.exists():
+            with open(path, "rb") as f:
+                out |= {s.name for s in ELFFile(f).get_section_by_name(".symtab").iter_symbols() if s["st_info"]["type"] == "STT_FUNC"}
+    return out
+
+
+def read_lines(path):
+    return [l.rstrip("\n") for l in open(path, encoding="utf-8")] if path.exists() else []
+
+
+def write_tables(sq, divs):
+    """tools/common_c_sq_ra_funcs.txt and tools/common_c_divs_nops.txt."""
+    Path(asm_filter.COMMON_SQ_RA).write_text(
+        "# Common-level functions whose retail prologue saves $ra with sq/lq, like their\n"
+        "# frontbin donor in tools/sq_ra_funcs.txt (tools/seed_levels.py).\n"
+        + "".join(n + "\n" for n in sorted(sq)), encoding="utf-8", newline="\n")
+    Path(asm_filter.COMMON_DIVS).write_text(
+        "# Common-level div.s/sqrt.s nop counts, copied from the frontbin donor's line in\n"
+        "# tools/divs_nops.txt (tools/seed_levels.py).\n"
+        + "".join("%s %s\n" % (n, " ".join(map(str, divs[n]))) for n in sorted(divs)), encoding="utf-8", newline="\n")
+
+
+def read_table_names(path):
+    return [l.split("#")[0].split()[0] for l in read_lines(path) if l.split("#")[0].strip()]
+
+
 def level_dirs(levels_dir):
     return {p.parent.name: p.parent.relative_to(levels_dir).as_posix() for p in levels_dir.glob("*/*/overlay.elf")}
 
@@ -353,6 +385,16 @@ def main():
         jobs = jobs[:a.limit]
     print("candidates: %d" % len(jobs), flush=True)
 
+    # names whose donor needs sq_ra / div.s nops get the same entry
+    fsq = set(read_table_names(ROOT / "tools" / "sq_ra_funcs.txt"))
+    fdv = asm_filter.divs_table()
+    old_sq = set(n for n in read_table_names(Path(asm_filter.COMMON_SQ_RA)))
+    old_dv = {n: v for n, v in fdv.items() if n in set(read_table_names(Path(asm_filter.COMMON_DIVS)))}
+    taken = target_function_names()
+    new_sq = {e["name"] for e, _ in jobs if e["flags_from"] in fsq and e["name"] not in taken}
+    new_dv = {e["name"]: fdv[e["flags_from"]] for e, _ in jobs if e["flags_from"] in fdv and e["name"] not in taken}
+    write_tables(old_sq | new_sq, {**old_dv, **new_dv})
+
     refs = (levels_dir, targets_dir, owners, common)
     passed, reasons, failed = [], collections.Counter(), []
     sources = {e["name"]: src for e, src in jobs}
@@ -375,6 +417,8 @@ def main():
             else:
                 reasons.update([err.split(":")[0][:60]])
                 failed.append(dict(entry, reason=err, text=sources[entry["name"]]))
+    ok = {e["name"] for e in passed}
+    write_tables(old_sq | (new_sq & ok), {**old_dv, **{n: v for n, v in new_dv.items() if n in ok}})
     catalogue += sorted(passed, key=lambda e: int(e["address"], 16))
     catalogue_path.write_text(json.dumps(catalogue, indent=2) + "\n", encoding="utf-8")
     print("seeded: %d new common-level functions (%d bytes)" % (len(passed), sum(e["size"] for e in passed)))

@@ -11,6 +11,19 @@ extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
 extern s32 func_13B620(void);
 void func_0039B760(u8 *, u32);
+typedef struct { u8 pad0[0x44]; u32 f44; s16 f48; s16 f4A; s16 f4C; s16 f4E; u8 pad50[4]; s16 f54; u8 pad56[2]; s32 f58; s32 f5C; } S_1CCFD0_0039C7B0;
+extern S_1CCFD0_0039C7B0 D_1CCFD0_0039C7B0;
+typedef struct {
+    u32 h; s16 a; s16 b; s16 c; s16 st; s16 fl; u8 pE[2]; s16 f10; u8 p12[2]; s32 f14; s32 f18; u8 p1C[4]; s32 f20; s32 f24;
+} E_39CEA8;
+typedef struct {
+    u8 p0[4]; s16 h4; u8 b6; u8 b7; s32 f8; u8 pC[4]; s32 f10; s32 f14;
+    void (*f18)(s32, s32); s32 f1C; u8 p20[4]; s32 f24; s32 f28; s16 f2C; u8 p2E[2];
+    s32 f30; s32 f34; s32 f38; s16 f3C; s16 f3E; u8 p40[4];
+    E_39CEA8 e[4];
+} S_39CEA8;
+#define D (*(S_39CEA8 *)&D_1CCFD0_0039C7B0)
+#undef D
 extern s32 func_003B7FD8();
 extern void func_003B60F0();
 extern void func_003B60B0(s32);

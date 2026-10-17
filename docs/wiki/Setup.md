@@ -118,7 +118,7 @@ localdecomp is the project's local, decomp.me-style web editor. It builds one fu
 python localdecomp/server.py --project . --no-git-sync
 ```
 
-Then open http://127.0.0.1:8477. See [Workflow](Workflow) for how to use it. The dropdown at the top of the function list picks the executable (frontbin, boot_elf or i5bootn); an executable whose ELF or `asm/` folder is missing is listed as "not set up".
+Then open http://127.0.0.1:8477. See [Workflow](Workflow) for how to use it. The dropdown at the top of the function list picks the executable (frontbin, boot_elf or i5bootn) or the shared level code (levels/common); an executable whose ELF or `asm/` folder is missing is listed as "not set up", and so is levels/common without the private level inputs in `--refs`.
 
 Options you might need:
 

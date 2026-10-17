@@ -63,7 +63,16 @@ def main():
     ap.add_argument("--refs", default=os.environ.get("UYA_REFS", r"C:\decomp-refs"),
                     help="folder with levels/, level-targets/ and level-targets-split/common.o")
     ap.add_argument("-o", "--output", default=os.path.join(ROOT, "build", "objdiff", "base", "common.o"))
+    ap.add_argument("--list-sources", action="store_true",
+                    help="print the catalogued sources (the Makefile's dependencies) and exit")
     a = ap.parse_args()
+    if a.list_sources:
+        # only catalogued sources go into the base; an uncatalogued file in
+        # src/levels/common/ (work in progress) must not be a dependency
+        import json
+        with open(os.path.join(ROOT, "tools", "common_c.json"), encoding="utf-8") as f:
+            print(" ".join(e["source"] for e in json.load(f)))
+        return
 
     levels = os.path.join(a.refs, "levels")
     targets = os.path.join(a.refs, "level-targets")

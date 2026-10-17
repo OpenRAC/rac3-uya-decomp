@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import io
 import json
+import os
 import re
 from pathlib import Path
 from types import SimpleNamespace
@@ -137,6 +138,42 @@ def compile_entry(entry, levels_dir, targets_dir, owners, common, options):
     return raw, proof
 
 
+_WORKER = None
+
+
+def _init_worker(state):
+    global _WORKER
+    _WORKER = state
+
+
+def _prove(entry):
+    levels_dir, targets_dir, owners, common, options = _WORKER
+    try:
+        return compile_entry(entry, levels_dir, targets_dir, owners, common, options), None
+    except (ValueError, OSError, KeyError) as error:
+        return None, str(error)
+
+
+def prove_all(catalogue, args, owners, common, options):
+    """(entry, raw, proof) for every catalogue entry, in catalogue order. The
+    gates are compile_entry's either way; with --jobs > 1 the entries are
+    proven in parallel processes, and the first failure still fails the build."""
+    if args.jobs <= 1:
+        for entry in catalogue:
+            yield (entry,) + compile_entry(entry, args.levels_dir, args.targets_dir, owners, common, options)
+        return
+    import concurrent.futures
+    # compile_entry reads only each owner level's .path, so the workers get
+    # that instead of the 51 parsed level objects
+    light = {identity: (SimpleNamespace(path=level.path), name, offset, size)
+             for identity, (level, name, offset, size) in owners.items()}
+    state = (args.levels_dir, args.targets_dir, light, common, options)
+    with concurrent.futures.ProcessPoolExecutor(args.jobs, initializer=_init_worker, initargs=(state,)) as pool:
+        for entry, (result, error) in zip(catalogue, pool.map(_prove, catalogue, chunksize=8)):
+            require(error is None, f"{entry['name']}: {error}")
+            yield (entry,) + result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--levels-dir", required=True, type=Path)
@@ -146,6 +183,8 @@ def main():
     parser.add_argument("--output", type=Path, default=ROOT / "build/objdiff/base/common.o")
     parser.add_argument("--toolchain", default=matching.DEFAULT_TOOLCHAIN)
     parser.add_argument("--runner")
+    parser.add_argument("--jobs", type=int, default=os.cpu_count() or 1,
+                        help="prove functions in this many processes (default: one per CPU; 1 = in this process)")
     args = parser.parse_args()
     output = args.output.resolve()
     require(not output.is_relative_to(ROOT) or output.is_relative_to(ROOT / "build"), "write generated outputs in build/ or outside the repository")
@@ -162,8 +201,7 @@ def main():
     header = common_bytes_full[:shared.EHDR.size]
     options = SimpleNamespace(no_context=True, toolchain=args.toolchain, runner=args.runner)
     code, symbols, proofs = bytearray(), [], []
-    for entry in catalogue:
-        raw, proof = compile_entry(entry, args.levels_dir, args.targets_dir, owners, common, options)
+    for entry, raw, proof in prove_all(catalogue, args, owners, common, options):
         while len(code) % 8:
             code.append(0)
         symbols.append((entry["name"], len(code), len(raw), 0x12, 1))

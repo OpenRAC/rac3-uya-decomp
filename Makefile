@@ -144,7 +144,9 @@ OBJDIFF_BASE   := $(BUILD_DIR)/objdiff/base/text.o
 # reference files in C:\decomp-refs (or UYA_REFS) and fails if one stops
 # matching; without those files it writes an empty base, so the report still runs.
 OBJDIFF_COMMON := $(BUILD_DIR)/objdiff/base/common.o
-COMMON_DEPS    := $(wildcard src/levels/common/*.c) tools/common_c.json tools/build_common_c.py tools/common_c_base.py
+# only the catalogued sources: an uncatalogued file in src/levels/common/ (work
+# in progress, which may be deleted mid-build) isn't part of the base
+COMMON_DEPS    := $(shell $(PYTHON) tools/common_c_base.py --list-sources) tools/common_c.json tools/build_common_c.py tools/common_c_base.py
 
 objdiff: objdiff-frontbin objdiff-boot_elf objdiff-i5bootn
 

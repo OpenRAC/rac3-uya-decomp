@@ -9,6 +9,12 @@ const cHighlightCode = document.getElementById("c-highlight-code");
 const diffView = document.getElementById("diff-view");
 const sidebarToggleBtn = document.getElementById("sidebar-toggle-btn");
 const funcSidebar = document.getElementById("func-sidebar");
+const profileSelect = document.getElementById("profile-select");
+// the shared level code (localdecomp/levels.py) builds one standalone source per
+// function with a compiler profile instead of its range's flags
+const LEVELS_TARGET = "levels_common";
+function isLevels() { return currentTarget === LEVELS_TARGET; }
+function syncTargetControls() { profileSelect.hidden = !isLevels(); }
 
 let currentFunc = null;
 let allFunctions = [];
@@ -42,12 +48,14 @@ async function loadTargets() {
     currentTarget = "frontbin";
   }
   targetSelect.value = currentTarget;
+  syncTargetControls();
 }
 
 targetSelect.addEventListener("change", async () => {
   if (currentFunc) lastFuncByTarget[currentTarget] = currentFunc;
   currentTarget = targetSelect.value;
   try { localStorage.setItem("localdecomp.target", currentTarget); } catch (e) {}
+  syncTargetControls();
   currentFunc = null;
   allFunctions = [];
   sidebarList.innerHTML = "";
@@ -91,8 +99,9 @@ function renderSidebar() {
     .map((fn) => {
       const selectedCls = fn.name === currentFunc ? "selected" : "";
       const dotCls = fn.match_status; // "perfect" | "partial" | "none"
-      const scoreStr =
-        fn.match_status === "partial"
+      const scoreStr = fn.unsaved
+        ? "100%, not saved"   // shared level code: verified, Save adds it to the catalogue
+        : fn.match_status === "partial"
           ? `${matchPercent(fn.current_score, fn.max_score).toFixed(0)}%`
           : "";
       return `<div class="sidebar-item ${selectedCls}" data-name="${fn.name}">
@@ -233,7 +242,8 @@ async function doBuild() {
     const res = await fetch("/api/build", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ target: currentTarget, name: currentFunc, c: cEditor.value }),
+      body: JSON.stringify({ target: currentTarget, name: currentFunc, c: cEditor.value,
+                             profile: isLevels() ? profileSelect.value : undefined }),
     });
     const data = await res.json();
     if (!data.ok) {
@@ -251,6 +261,17 @@ async function doBuild() {
     scoreBadge.textContent = `${pct}% match (${current_score} / ${max_score})`;
     scoreBadge.className = "score-badge " + (current_score === 0 ? "good" : "");
     statusEl.textContent = "Build OK";
+    if (data.diff.gates) {
+      // shared level code: 0 instruction diffs only counts once the gates pass
+      // (exact size, raw object body equal to the split common target, no data)
+      const p = data.diff.profile || {};
+      const sz = data.diff.size ? ` ${data.diff.size.compiled}/${data.diff.size.retail} bytes,` : "";
+      if (current_score === 0 && !data.diff.verified) {
+        scoreBadge.textContent += " but not verified";
+        scoreBadge.className = "score-badge bad";
+      }
+      statusEl.textContent = `Build OK (profile ${p.mode}/${p.assembler},${sz} ${data.diff.gates.message})`;
+    }
     lastBuildDiff = data.diff;
     exportDiffBtn.disabled = false;
     await loadFunctions(); // refresh match_status/progress bar with the new score
@@ -323,7 +344,8 @@ async function doSave() {
     const res = await fetch("/api/save", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ target: currentTarget, name: currentFunc, c: cEditor.value }),
+      body: JSON.stringify({ target: currentTarget, name: currentFunc, c: cEditor.value,
+                             profile: isLevels() ? profileSelect.value : undefined }),
     });
     const data = await res.json();
     if (!data.ok) {

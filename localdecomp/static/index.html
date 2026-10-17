@@ -11,6 +11,13 @@
     <h1>localdecomp</h1>
     <button id="build-btn">Build &amp; Diff (Ctrl+Enter)</button>
     <button id="save-btn">Save to project</button>
+    <select id="profile-select" hidden title="Shared level code: the compiler profile to build with (mode N = -mno-split-addresses, S = split; assembler default or Ps2EeAs). Auto tries the catalogue's entry, then all four, and keeps the best.">
+      <option value="auto">Profile: auto</option>
+      <option value="N/default">N / default as</option>
+      <option value="S/default">S / default as</option>
+      <option value="S/ps2as">S / ps2as</option>
+      <option value="N/ps2as">N / ps2as</option>
+    </select>
     <button id="export-diff-btn" disabled>Export diff</button>
     <button id="permuter-btn" title="Random search for a closer variant of the editor's code (decomp-permuter), with live progress">Permuter</button>
     <button id="check-btn" title="Full build + MATCH + full objdiff report, compared with your last push">Full check</button>

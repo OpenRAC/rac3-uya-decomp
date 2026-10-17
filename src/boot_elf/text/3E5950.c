@@ -333,9 +333,122 @@ void func_003E60F0(u8 **o) {
 }
 /* localdecomp:end func_003E60F0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E6198);
+/* localdecomp:start func_003E6198 */
+/* func_003E6198: MATCH (agent, 2026-10-17). Flags: the file's own (no override).
+ * Second loop: the entry is read twice through two differently built addresses, the test through
+ * y = x + 0x50; *(y + o) and the argument through *(x + o + 0x50). cse1 keeps them apart; combine turns both into
+ * (plus sll o), and the post-reload cse makes the later one retail's `move $v1, $a2` copy (the argument's add was
+ * hoisted above the test by sched1). Same mechanism as func_003E6338's match.
+ * USES INLINE ASM: a register fence `__asm__("" : "+r"(x));` on x = j << 2 (the empty-asm barrier form listed under
+ * "Forms still under review" in Matching-Patterns). Without it loop.c strength-reduces y (20-23 diffs); every
+ * fence-free form tried (barrier/do-while tails, j * 4, 0x50 + x) stays at 20+ or gives func_003E6338's
+ * single-add shape instead. Flag it for review when inserting. */
+typedef struct { u8 pad0[0x50]; s32 *E[35]; s32 A[16]; s32 B[16]; u8 pad1[0x50]; u8 C[16]; s32 x1BC; } O_003E09D8;
+extern s32 func_003E7258();
+extern void func_003E72B0();
+extern void func_003E7288();
+extern void func_003E7260();
+extern void func_003E72D8();
+extern s32 func_003EDE30();
+void func_003E6198(O_003E09D8 **pp) {
+    s32 i;
+    s32 j;
+    for (i = 0; i < 16; i++) {
+        (*pp)->x1BC = i;
+        if ((*pp)->A[i] != 0 && func_003E7258((*pp)->A[i]) == 0) {
+            func_003E72B0((*pp)->A[i]);
+            (*pp)->A[i] = 0;
+        }
+        if ((*pp)->B[i] != 0 || (*pp)->C[i] != 0) {
+            if ((*pp)->A[i] == 0) {
+                if ((*pp)->C[i] != 0) {
+                    (*pp)->B[i] = 0;
+                    (*pp)->C[i] = 0;
+                    goto L;
+                }
+                (*pp)->A[i] = (*pp)->B[i];
+                func_003E7288((*pp)->A[i]);
+                func_003E7260((*pp)->A[i], 1);
+                (*pp)->B[i] = 0;
+            } else {
+                goto M;
+            }
+        }
+L:
+        if ((*pp)->A[i] != 0) {
+M:
+            if (func_003E7258((*pp)->A[i]) == 1) {
+                func_003E72D8((*pp)->A[i]);
+            }
+        }
+    }
+    (*pp)->x1BC = -1;
+    for (j = 0; j < 35; j++) {
+        O_003E09D8 *o = *pp;
+        s32 x, y;
+        x = j << 2;
+        __asm__("" : "+r"(x));
+        y = x + 0x50;
+        if (*(s32 **)(y + (s32)o) != 0) {
+            func_003EDE30(*(s32 **)(x + (s32)o + 0x50), o);
+        }
+    }
+}
+/* localdecomp:end func_003E6198 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003E6338);
+/* localdecomp:start func_003E6338 */
+/* func_003E6338: MATCH (agent, 2026-10-17). Flags: the file's own (no override).
+ * Loop 2: the entry is loaded twice in the source (test through x + bb + 0x50, call argument through a separate
+ * y = x + 0x50; *(y + bb)), so cse1 keeps two loads; combine then makes both addresses (plus sll bb) and the
+ * post-reload cse deletes the second add and turns the second load into retail's `move $a0, $v1` in the jal slot.
+ * x = j << 2 as its own statement gives the sll retail's $a0. The empty volatile asm (already in the earlier draft)
+ * is still needed: without it loop.c strength-reduces y (20 diffs). It is the documented empty-asm barrier form
+ * ("Forms still under review" in Matching-Patterns), so flag it for review when inserting. */
+typedef struct { u8 p0[0x50]; s32 a[0x23]; s32 b[16]; u8 p1[0x1BC - 0xDC - 0x40]; s32 f1BC; u8 p2[0x41D8 - 0x1C0]; s32 f41D8; } O_3E0B78;
+extern s32 func_003E7258();
+extern void func_003E7300();
+extern void func_003E7328();
+extern void func_003EDED8();
+void func_003E6338(O_3E0B78 **self) {
+    s32 i, j, k;
+    s32 n, x, off, bb;
+    for (i = 0; i < 16; i++) {
+        off = i << 2;
+        (*self)->f1BC = i;
+        if (*(s32 *)((u8 *)*self + off + 0xDC) != 0) {
+            if (func_003E7258(*(s32 *)((u8 *)*self + off + 0xDC)) == 1) {
+                func_003E7300(*(s32 *)((u8 *)*self + off + 0xDC));
+            }
+        }
+    }
+    n = (*self)->f41D8;
+    if (n <= 0) {
+        (*self)->f1BC = -1;
+        for (j = 0; j < 0x23; j++) {
+            bb = (s32)*self;
+            x = j << 2;
+            if (*(s32 *)(x + bb + 0x50) != 0) {
+                s32 y = x + 0x50;
+                func_003EDED8(*(s32 *)(y + bb), bb);
+                __asm__ __volatile__("");
+                do { } while (0);
+            }
+        }
+    } else {
+        (*self)->f41D8 = n - 1;
+    }
+    for (k = 0; k < 16; k++) {
+        off = k << 2;
+        (*self)->f1BC = k;
+        if (*(s32 *)((u8 *)*self + off + 0xDC) != 0) {
+            if (func_003E7258(*(s32 *)((u8 *)*self + off + 0xDC)) == 1) {
+                func_003E7328(*(s32 *)((u8 *)*self + off + 0xDC));
+            }
+        }
+    }
+    (*self)->f1BC = -1;
+}
+/* localdecomp:end func_003E6338 */
 
 /* localdecomp:start func_003E6480 */
 typedef struct { u8 pad[0xDC]; s32 A[16]; s32 B[16]; } O_003E0CC0;

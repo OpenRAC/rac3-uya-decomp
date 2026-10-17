@@ -17948,5 +17948,25 @@
     "flags_from": "func_003ABC30",
     "mode": "S",
     "assembler": "ps2as"
+  },
+  {
+    "name": "func_003F5678",
+    "source": "src/levels/common/func_003F5678.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x003F5678",
+    "size": 376,
+    "flags_from": "func_00381C18",
+    "mode": "S",
+    "assembler": "ps2as"
+  },
+  {
+    "name": "func_00301E88",
+    "source": "src/levels/common/func_00301E88.c",
+    "overlay": "singleplayer/1_veldin",
+    "address": "0x00301E88",
+    "size": 116,
+    "flags_from": "func_003ABC30",
+    "mode": "S",
+    "assembler": "default"
   }
 ]

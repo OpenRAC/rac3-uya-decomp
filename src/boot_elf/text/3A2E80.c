@@ -14,6 +14,7 @@ extern s32 func_003A5608(s32, s32, s32);
 extern void func_003A2E80(void);
 extern void func_003A4390(void);
 extern void func_003A4520(void);
+extern s32 func_003A5240(s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003A2E80 */

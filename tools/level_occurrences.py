@@ -29,6 +29,7 @@ from elftools.elf.elffile import ELFFile
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT / "tools" / "objdiff"))  # split_shared_levels.py
 import split_shared_levels as shared  # noqa: E402
 
 OUT = ROOT / "config" / "levels" / "common_occurrences.tsv"

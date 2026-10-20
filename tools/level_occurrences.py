@@ -6,7 +6,7 @@ common-level sources (src/levels/common/, docs/common_level_c.md) are named
 after one canonical owner, so a source's name says nothing about the other
 levels. This maps every shared function to all of its copies.
 
-    python tools/level_occurrences.py                      write targets/levels/common_occurrences.tsv
+    python tools/level_occurrences.py                      write config/levels/common_occurrences.tsv
     python tools/level_occurrences.py --summary            per-level progress table
     python tools/level_occurrences.py --level 5_daxx       one level: address, canonical name, size, C or asm
     python tools/level_occurrences.py --function func_004D0538   every level and address of one function
@@ -17,7 +17,7 @@ level, in level order, that has it. build_common_c.py uses the same rule, so
 the canonical names here are the catalogue's.
 
 The committed TSV has one row per shared function: canonical name, owner
-level, size, how many levels have it, whether it is C (tools/common_c.json),
+level, size, how many levels have it, whether it is C (config/levels/common_c.json),
 and the level numbers as ranges. Addresses are left out (about 250k of them);
 --level and --function print them. Needs the level target objects
 (C:\\decomp-refs\\level-targets, or --refs / UYA_REFS).
@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import split_shared_levels as shared  # noqa: E402
 
-OUT = ROOT / "targets" / "levels" / "common_occurrences.tsv"
+OUT = ROOT / "config" / "levels" / "common_occurrences.tsv"
 
 
 def load(refs):
@@ -73,7 +73,7 @@ def ranges(nums):
 def catalogued():
     """(name, owner level) of every C function: about 20 canonical names
     belong to two different functions owned by different levels."""
-    return {(e["name"], Path(e["overlay"]).name) for e in json.loads((ROOT / "tools" / "common_c.json").read_text(encoding="utf-8"))}
+    return {(e["name"], Path(e["overlay"]).name) for e in json.loads((ROOT / "config" / "levels" / "common_c.json").read_text(encoding="utf-8"))}
 
 
 def main():

@@ -39,9 +39,10 @@ Per target:
 
 | | frontbin | boot_elf, i5bootn |
 |---|---|---|
-| source file list, flags | `tools/src_files.txt`, `tools/text_parts.txt` | `targets/<t>/src_files.txt`, `targets/<t>/text_parts.txt` |
-| `divs_nops`, `sq_ra_funcs`, `localdecomp_flags` | `tools/*.txt` | `targets/<t>/*.txt` |
-| symbols | `symbol_addrs.txt`, `symbol_addrs_resolved.txt` | `targets/<t>/symbol_addrs*.txt` |
+| source file list, flags | `config/frontbin/src_files.txt`, `config/frontbin/text_parts.txt` | `config/<t>/src_files.txt`, `config/<t>/text_parts.txt` |
+| `divs_nops`, `sq_ra_funcs`, `localdecomp_flags` | `config/frontbin/*.txt` | `config/<t>/*.txt` |
+| symbols | `config/frontbin/symbol_addrs*.txt` | `config/<t>/symbol_addrs*.txt` |
+| splat config | `config/splat/frontbin.yaml` | `config/splat/<t>.yaml` |
 | asm | `asm/` | `asm/<t>/` |
 | build | `build/` | `build/<t>/` |
 | localdecomp cache | `.localdecomp_work/` | `.localdecomp_work/<t>/` |

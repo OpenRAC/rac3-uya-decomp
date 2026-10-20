@@ -4,7 +4,7 @@ A matching C decompilation of `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf` f
 
 ## Where things stand
 
-- `src/frontbin/*.c` hold every function in the `.text` section, one file per original source file (`tools/src_files.txt`, see [docs/source_files.md](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/source_files.md)). Functions that are done are C. The rest are `INCLUDE_ASM(...)` stubs that pull in the retail assembly from `asm/nonmatchings/text/`.
+- `src/frontbin/*.c` hold every function in the `.text` section, one file per original source file (`config/frontbin/src_files.txt`, see [docs/source_files.md](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/source_files.md)). Functions that are done are C. The rest are `INCLUDE_ASM(...)` stubs that pull in the retail assembly from `asm/nonmatchings/text/`.
 - As of 2026-10-07, all three targets build byte-identical:
 
   | Target | In C | `INCLUDE_ASM` left | % in C | Final source (C + `ASM_FUNC` + `LINKER_REMNANT`) |

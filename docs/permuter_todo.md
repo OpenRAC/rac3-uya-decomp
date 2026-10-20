@@ -9,7 +9,7 @@ The frontbin near misses. The status list below (2026-10-07) is the current one:
 - Diffs are aligned instruction diffs (the measure `tools/permuter_scorer.py` uses), from the latest report: g1 to g4 (second final pass), k2 for `func_003AA4B0` and `func_003953F0`, and m1's compiler-matrix re-measurement where it differs (marked m1).
 - Most were measured before `-mvu0-use-vf0-vf2` became a base flag on 2026-10-07. That flag changes loop code, so re-measure a draft before working on it. m1 measured three that get closer with it: `func_003B1EB0`, `func_003A8230`, `func_0038FDC0`.
 - "S" is split addresses, "N" `-mno-split-addresses`; "ps2as" the `@ps2as` assembler; "jform" the VU0 j-form (Matching-Patterns).
-- Check `tools/text_parts.txt` for the function's range before trusting a draft's header: some headers had the mode wrong.
+- Check `config/frontbin/text_parts.txt` for the function's range before trusting a draft's header: some headers had the mode wrong.
 - Three blockers from the final passes are gone since round k: the prototypes for `func_00399A00`, `func_003ACB00` and `func_003B9DA8` in other functions' blocks are fixed, and `func_003BC218`'s extra rodata words can be written as a `const` array after the function.
 
 | Function | Size | Bucket | Best | Flags | What is left |
@@ -106,7 +106,7 @@ Matched in this pass: `func_003AE1A8`, `003E9BA8`, `003B8A68`, `003E18C0`, `003A
 
 Matched: `func_003BF4F8` (declare the locals in `r, g, b` order and store in natural order; `@ps2as`).
 
-### The `sq`-saving functions (`tools/sq_ra_funcs.txt`)
+### The `sq`-saving functions (`config/frontbin/sq_ra_funcs.txt`)
 
 All of them are matched now except `func_003C1130` (8 diffs, see the status list).
 

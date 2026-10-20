@@ -3,9 +3,9 @@
    The bootstrap launcher. One PT_LOAD at 0x800000 from file offset 0x1000;
    every section sits at its retail file offset (AT(...)) and the gaps between
    them are zeros, which objcopy -O binary writes. Nothing uses $gp. Sections
-   are named after splat's segments (i5bootn.splat.yaml). */
+   are named after splat's segments (config/splat/i5bootn.yaml). */
 
-INPUT(targets/i5bootn/symbol_addrs_resolved.txt)
+INPUT(config/i5bootn/symbol_addrs_resolved.txt)
 
 SECTIONS
 {

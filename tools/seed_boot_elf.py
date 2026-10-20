@@ -18,7 +18,7 @@ address it names is translated:
   3. Each block's D_/func_ names, per-function aliases included, are renamed
      through the table, and the block replaces the twin's INCLUDE_ASM (and its
      INCLUDE_RODATA lines: gcc emits the jump tables itself). The function gets
-     its frontbin flags in targets/boot_elf/text_parts.txt.
+     its frontbin flags in config/boot_elf/text_parts.txt.
   4. The declarations from other files are refreshed and the symbol file is
      regenerated; then the full build is run and every seeded function is
      compared with retail. A function that doesn't match goes back to

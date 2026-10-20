@@ -48,8 +48,8 @@ you don't need to re-run splat just to fix them.
 Usage:
     python fix_reg_names.py [--gp-value 0x001DC8B0] [--symbols FILE] <file_or_dir> ...
 
-    --gp-value defaults to the gp_value in frontbin.splat.yaml (current dir)
-    --symbols  defaults to symbol_addrs.txt and symbol_addrs_resolved.txt
+    --gp-value defaults to the gp_value in config/splat/frontbin.yaml
+    --symbols  defaults to config/frontbin/symbol_addrs.txt and symbol_addrs_resolved.txt
                (current dir, if present); used only for symbols whose name
                doesn't encode their own address (D_/func_/jtbl_/L_ + hex).
 """
@@ -58,6 +58,9 @@ import argparse
 import re
 import sys
 from pathlib import Path
+
+# the repository root (the default gp and symbol files are in its config/)
+REPO = Path(__file__).resolve().parent.parent
 
 NATIVE = {"fp", "sp", "gp", "at", "kt0", "kt1", "pc"}
 REG_MAP = {
@@ -195,7 +198,7 @@ def process_file(path, gp, symtab, stats, errors):
 
 
 def default_gp():
-    y = Path("frontbin.splat.yaml")
+    y = REPO / "config/splat/frontbin.yaml"
     if y.exists():
         m = re.search(r"^\s*gp_value:\s*(0x[0-9A-Fa-f]+)", y.read_text(), re.M)
         if m:
@@ -212,9 +215,9 @@ def main():
 
     gp = int(a.gp_value, 0) if a.gp_value else default_gp()
     if gp is None:
-        print("error: no --gp-value given and none found in frontbin.splat.yaml", file=sys.stderr)
+        print("error: no --gp-value given and none found in config/splat/frontbin.yaml", file=sys.stderr)
         return 2
-    sym_paths = [Path(p) for p in a.symbols] if a.symbols else [Path("symbol_addrs.txt"), Path("symbol_addrs_resolved.txt")]
+    sym_paths = [Path(p) for p in a.symbols] if a.symbols else [REPO / "config/frontbin/symbol_addrs.txt", REPO / "config/frontbin/symbol_addrs_resolved.txt"]
     symtab = load_symbols(sym_paths)
 
     targets = []

@@ -9,7 +9,7 @@
 - [ ] `python tools/pr_check.py` prints `OK`
 - [ ] Full build (`make.exe` or `python3 tools/build.py`) prints `MATCH`
 - [ ] No retail or generated files (`frontbin.elf`, overlays, `build/`, `.localdecomp_work/`) in the diff
-- [ ] New aliases are in `symbol_addrs_resolved.txt`; flag overrides in `tools/text_parts.txt` are single-function
+- [ ] New aliases are in `symbol_addrs_resolved.txt`; flag overrides in `config/frontbin/text_parts.txt` are single-function
 - [ ] Based on current `main`; functions are in the `src/frontbin/` file whose range contains them (`pr_check.py` checks this)
 
 ## Notes

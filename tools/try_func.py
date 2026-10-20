@@ -3,7 +3,7 @@
 
 The fast command-line way to test a match, without localdecomp. It compiles
 FILE.c the way tools/build_text.py would compile that address range (flags
-from tools/localdecomp_flags.txt, then tools/text_parts.txt), then compares
+from config/frontbin/localdecomp_flags.txt, then config/frontbin/text_parts.txt), then compares
 each function word by word against the retail frontbin.elf in the repo root.
 Relocated fields (%hi/%lo halves, $gp offsets, jal targets) are filled in
 with the symbols' real addresses (symbol_addrs_resolved.txt, or the address in

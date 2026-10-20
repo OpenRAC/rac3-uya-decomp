@@ -70,7 +70,7 @@ def main():
         # only catalogued sources go into the base; an uncatalogued file in
         # src/levels/common/ (work in progress) must not be a dependency
         import json
-        with open(os.path.join(ROOT, "tools", "common_c.json"), encoding="utf-8") as f:
+        with open(os.path.join(ROOT, "config", "levels", "common_c.json"), encoding="utf-8") as f:
             print(" ".join(e["source"] for e in json.load(f)))
         return
 

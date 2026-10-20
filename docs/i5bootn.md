@@ -39,8 +39,8 @@ file offset and the gaps are zeros. Nothing uses `$gp` (its `gp` in
 | `.sbss`, `.bss` | 0x8C4A00, 0x8C4A80 | | not in the file |
 | `.reginfo`, `.shstrtab`, section headers | file 0xC59C4 | | `asm/i5bootn/trailer.s` |
 
-Tables are in `targets/i5bootn/`, the linker script is
-`linker_scripts/i5bootn.ld` and the splat config `i5bootn.splat.yaml`
+Tables are in `config/i5bootn/`, the linker script is
+`linker_scripts/i5bootn.ld` and the splat config `config/splat/i5bootn.yaml`
 (`global_vram_end` covers `.bss`, so splat names the `.bss` addresses the code
 uses as `D_` symbols instead of writing numbers).
 
@@ -67,7 +67,7 @@ and boot_elf, but those keep ee-objcopy.
   `INCLUDE_ASM`. Its C (byte-identical with 2.96-ee-001003-1 `-O2 -G0`) is
   kept as a near miss outside the build.
 
-The source-file split (5 files) and the flags in `targets/i5bootn/text_parts.txt`
+The source-file split (5 files) and the flags in `config/i5bootn/text_parts.txt`
 are estimates from `tools/bootstrap_target.py` (the target's base flags,
 `-mno-split-addresses` where the assembly looks like it). Unlike frontbin and
 boot_elf, its lines don't carry `-mvu0-use-vf0-vf2`; the 2026-10-07 global
@@ -87,12 +87,12 @@ compilers in this one file:
 - **newlib `exit()`**: 2.96-ee-001003-1.
 - **`main` and `func_008010F8`**: our SN 2.95.3. Both are matched in C (`main`
   at `-O0` without `-fopt-stack`, a single-function override in
-  `targets/i5bootn/text_parts.txt`).
+  `config/i5bootn/text_parts.txt`).
 
 The libgcc range (0x802640 to the end of `.text`) is in `src/i5bootn/libgcc/`,
 one source file per libgcc.a member, from GCC 2.95.2's own source, and is
 compiled with Sony's Windows 2.9-ee-991111 through the `@ee29` pseudo-flag in
-`targets/i5bootn/text_parts.txt` (`tools/ee29.py`; the compiler's folder is
+`config/i5bootn/text_parts.txt` (`tools/ee29.py`; the compiler's folder is
 `C:/tools/testfolder/ee-gcc2.9-991111` unless `EE29` / `UYA_EE29` says
 otherwise). See `src/libgcc/README.md`. The Windows build matches 23 of
 the 26 libgcc functions directly. `__moddi3`, `__udivdi3` and `__umoddi3`

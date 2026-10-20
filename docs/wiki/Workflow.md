@@ -4,7 +4,7 @@ The loop for one function: pick it, read its assembly, write C until it matches,
 
 ## 1. Pick a function
 
-Every not-yet-decompiled function is an `INCLUDE_ASM("asm/nonmatchings/text", func_XXXXXXXX);` line in one of the source files in `src/frontbin/` (the one whose address range in `tools/src_files.txt` contains it), and its retail assembly is `asm/nonmatchings/text/func_XXXXXXXX.s`. The header line gives the size: `nonmatching func_0037D100, 0x20`.
+Every not-yet-decompiled function is an `INCLUDE_ASM("asm/nonmatchings/text", func_XXXXXXXX);` line in one of the source files in `src/frontbin/` (the one whose address range in `config/frontbin/src_files.txt` contains it), and its retail assembly is `asm/nonmatchings/text/func_XXXXXXXX.s`. The header line gives the size: `nonmatching func_0037D100, 0x20`.
 
 `python tools/triage.py --tsv remaining.tsv` sorts every remaining function into a bucket (plain, switch, vu0, mmi, handwritten, remnant, ...) with its size. Pick from **plain**, smallest first, or from **switch** and **vu0** once you know those patterns.
 
@@ -21,9 +21,9 @@ Not for C:
 
 Tell others what you're working on (open a draft PR early) so two people don't match the same function.
 
-**boot_elf** works the same way: its functions are `INCLUDE_ASM("asm/boot_elf/nonmatchings/core", ...)` (the engine core, `src/boot_elf/core/`) and `INCLUDE_ASM("asm/boot_elf/nonmatchings/text", ...)` (the front end, `src/boot_elf/text/`), its file list and flags are in `targets/boot_elf/`, and every tool takes `--target boot_elf`. In localdecomp, pick it in the dropdown above the function list. Its front end is frontbin's code at other addresses: when you match a frontbin function, `tools/seed_boot_elf.py` carries it over (see [Tools](Tools#seed_boot_elfpy)). Core functions with a `switch` can't be C yet (`core.rdata` isn't split; see `docs/boot_elf.md`). Most of the core is Sony library code built with other compilers (newlib likely 2.96, libkernl/libc, libgcc and the Sony libraries 2.9-ee-991111), which stays assembly until the toolchain can compile a file with those; [Matching patterns](Matching-Patterns#boot_elfs-engine-core) lists the signs. The part that is SN code and matches now is 989snd's EE side, 0x13B330 to 0x13D420.
+**boot_elf** works the same way: its functions are `INCLUDE_ASM("asm/boot_elf/nonmatchings/core", ...)` (the engine core, `src/boot_elf/core/`) and `INCLUDE_ASM("asm/boot_elf/nonmatchings/text", ...)` (the front end, `src/boot_elf/text/`), its file list and flags are in `config/boot_elf/`, and every tool takes `--target boot_elf`. In localdecomp, pick it in the dropdown above the function list. Its front end is frontbin's code at other addresses: when you match a frontbin function, `tools/seed_boot_elf.py` carries it over (see [Tools](Tools#seed_boot_elfpy)). Core functions with a `switch` can't be C yet (`core.rdata` isn't split; see `docs/boot_elf.md`). Most of the core is Sony library code built with other compilers (newlib likely 2.96, libkernl/libc, libgcc and the Sony libraries 2.9-ee-991111), which stays assembly until the toolchain can compile a file with those; [Matching patterns](Matching-Patterns#boot_elfs-engine-core) lists the signs. The part that is SN code and matches now is 989snd's EE side, 0x13B330 to 0x13D420.
 
-**levels/common** (the code the 51 level overlays share) is the last entry in the dropdown. It isn't a splatted executable: each function is its own file in `src/levels/common/`, listed in `tools/common_c.json` and checked by `tools/build_common_c.py`'s gates against its canonical owner overlay ([docs/common_level_c.md](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/common_level_c.md)); it needs the private level inputs in `--refs`. The list holds every canonical owner. Pick a compiler profile next to Save (mode N or S, default assembler or Ps2EeAs; *auto* tries the catalogue's entry and then all four). A build at 0 also runs the gates (exact size, raw object body, no data sections, no assembly), and only a build that passes them can be saved: Save writes the file and its catalogue entry. A source in `src/levels/common/` that isn't catalogued yet shows as unverified. Full check reports the gates' result (`make objdiff` rebuilds the shared code's base) and the levels/common numbers. The permuter doesn't support it yet.
+**levels/common** (the code the 51 level overlays share) is the last entry in the dropdown. It isn't a splatted executable: each function is its own file in `src/levels/common/`, listed in `config/levels/common_c.json` and checked by `tools/build_common_c.py`'s gates against its canonical owner overlay ([docs/common_level_c.md](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/common_level_c.md)); it needs the private level inputs in `--refs`. The list holds every canonical owner. Pick a compiler profile next to Save (mode N or S, default assembler or Ps2EeAs; *auto* tries the catalogue's entry and then all four). A build at 0 also runs the gates (exact size, raw object body, no data sections, no assembly), and only a build that passes them can be saved: Save writes the file and its catalogue entry. A source in `src/levels/common/` that isn't catalogued yet shows as unverified. Full check reports the gates' result (`make objdiff` rebuilds the shared code's base) and the levels/common numbers. The permuter doesn't support it yet.
 
 **i5bootn** (the bootstrap launcher, `src/i5bootn/`, `--target i5bootn`) is set up the same way, but most of its compiled code is Sony library code built with Sony's ee-gcc 2.9-ee-991111 (libgcc, libc helpers), so expect near misses there until that compiler is in the toolchain. Its own code (`main`, `func_008010F8`) matches with ours. `triage.py` puts the clearest library cases in its `sibcall` bucket. See `docs/i5bootn.md` and `docs/compiler_matrix_i5bootn.md`.
 
@@ -39,10 +39,10 @@ Tell others what you're working on (open a draft PR early) so two people don't m
 Start the server (`python localdecomp/server.py --project . --no-git-sync`) and open http://127.0.0.1:8477.
 
 - The left pane is your C. It should hold the externs and typedefs the function needs, then the function. Types like `s32`, `u8` and `f32` come from `common.h` automatically.
-- **Build** compiles with the flags of that function's address range (from `tools/text_parts.txt`, or `tools/localdecomp_flags.txt` if the function has an entry there) and shows the diff. A score of 0 is a match.
+- **Build** compiles with the flags of that function's address range (from `config/frontbin/text_parts.txt`, or `config/frontbin/localdecomp_flags.txt` if the function has an entry there) and shows the diff. A score of 0 is a match.
 - **Save** stores your draft and **also writes it into its source file**, replacing the `INCLUDE_ASM` line. Only save at score 0, or you will break the full build. If you saved a partial by mistake, put the `INCLUDE_ASM` line back before committing.
 - Functions that are already C show "unverified" until you Build them once.
-- If a function needs a different assembler or address mode than its range while you're still working on it, add a line to `tools/localdecomp_flags.txt`:
+- If a function needs a different assembler or address mode than its range while you're still working on it, add a line to `config/frontbin/localdecomp_flags.txt`:
 
   ```
   func_0039BEC0 -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -67,7 +67,7 @@ It prints `func_X: MATCH` or `func_X: N diff` with a side-by-side listing (left 
 Two more checks before you spend time on a near miss:
 
 - `--flags=-Werror-implicit-function-declaration` lists every callee your snippet calls without a prototype. Each one silently becomes `int f()`, which passes floats as doubles and keeps `$v0` busy; several old drafts were measured that way. `--flags` adds to the range's flags, it never replaces them.
-- Check the function's range in `tools/text_parts.txt` before trusting a draft's header: some headers had the address mode wrong (S vs N), and drafts measured before 2026-10-07 were measured without `-mvu0-use-vf0-vf2`, which changes loop code (re-measure them).
+- Check the function's range in `config/frontbin/text_parts.txt` before trusting a draft's header: some headers had the address mode wrong (S vs N), and drafts measured before 2026-10-07 were measured without `-mvu0-use-vf0-vf2`, which changes loop code (re-measure them).
 
 ## 4. Put it into its source file
 
@@ -85,7 +85,7 @@ If you used localdecomp's Save at score 0, this is done. By hand:
    /* localdecomp:end func_003E4790 */
    ```
 
-2. If the function needs flags other than its range's, add a single-function override to `tools/text_parts.txt` (see [Toolchain and build](Toolchain-and-Build#text_partstxt)) and delete its line from `localdecomp_flags.txt`. Start from the neighbouring line's flags exactly as written (every frontbin and boot_elf line has `-mvu0-use-vf0-vf2`): lines with equal flag lists are built as one slice.
+2. If the function needs flags other than its range's, add a single-function override to `config/frontbin/text_parts.txt` (see [Toolchain and build](Toolchain-and-Build#text_partstxt)) and delete its line from `localdecomp_flags.txt`. Start from the neighbouring line's flags exactly as written (every frontbin and boot_elf line has `-mvu0-use-vf0-vf2`): lines with equal flag lists are built as one slice.
 3. Use plain names (`D_00142430`). Only if another block in the same file declares that name with a different type, declare a per-function alias such as `D_00142430_00396628` and add it to `symbol_addrs_resolved.txt` with the real address (`D_00142430_00396628 = 0x142430;`). A plain `D_` name that's new to the build also needs its line there.
 4. If the block uses a prototype, typedef or extern that only another file declares, run `python tools/split_text.py --refresh`. It adds what the file needs to its "declarations from other files" section (localdecomp's Save does this for you). `pr_check.py` reports a file whose section is out of date.
 
@@ -113,7 +113,7 @@ python tools/pr_check.py
 | `multiple definition of D_...` | A variable was defined in a source file (no `extern`) | Make it `extern`. Never define. |
 | `relocation truncated to fit: R_MIPS_GPREL16 D_...` | Declared sized, so it went through `$gp`, but the address isn't in `$gp` range | Retail uses `lui`: declare it `extern T D_X[];` |
 | `relocation truncated to fit: R_MIPS_LITERAL lit4` | A float constant went to the `.lit4` pool | Retail builds it inline: needs `@ps2as` |
-| `undefined reference to D_..._suffix` | Alias missing from `symbol_addrs_resolved.txt` | Add it with the base address |
+| `undefined reference to D_..._suffix` | Alias missing from `config/<program>/symbol_addrs_resolved.txt` | Add it with the base address |
 | `conflicting types for 'S_...'` | Two blocks define the same typedef name differently | Give one a unique name (e.g. suffix the function address) |
 | Ps2EeAs errors about `macro.inc` or unknown options | An `@ps2as` range contains an `INCLUDE_ASM` stub | Narrow the override to end after the C function |
 | `implicit declaration of function` or `'X' undeclared` in a file that used to build | The block uses something only another file declares | `python tools/split_text.py --refresh` |

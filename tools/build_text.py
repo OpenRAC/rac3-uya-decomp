@@ -2,8 +2,8 @@
 """Build frontbin's .text from the per-file sources in src/frontbin/.
 
 The sources are one C file per original source file, listed in link order in
-tools/src_files.txt (see tools/srcfiles.py). Compiler and assembler flags come
-from tools/text_parts.txt, by function address.
+config/frontbin/src_files.txt (see tools/srcfiles.py). Compiler and assembler flags come
+from config/frontbin/text_parts.txt, by function address.
 
   * A file whose functions all use the same flags is compiled as it is, once.
   * A file that mixes flags (some functions only match with a different

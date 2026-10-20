@@ -387,7 +387,7 @@ class Project:
         addr = int(m.group(1), 16)
         # Work-in-progress overrides for functions still INCLUDE_ASM in the source files
         # (text_parts.txt can't carry @ps2as for them: the asm needs macro.inc).
-        # tools/localdecomp_flags.txt lines: `func_XXXXXXXX <flags...>`
+        # config/frontbin/localdecomp_flags.txt lines: `func_XXXXXXXX <flags...>`
         ov = self.ldflags_path
         if ov.exists():
             for line in ov.read_text().splitlines():
@@ -1421,9 +1421,7 @@ DEFAULT_OBJDIFF_CLI = "objdiff-cli.exe"
 # Tracked paths whose uncommitted edits would make "what was checked" differ
 # from "what gets pushed".
 BUILD_INPUTS = ["src", "include", "asm", "linker_scripts", "Makefile",
-                "objdiff.json", "symbol_addrs.txt", "undefined_syms_auto.txt",
-                "undefined_funcs_auto.txt", "symbol_addrs_resolved.txt",
-                "reloc_addrs.txt", "tools", "targets"]
+                "objdiff.json", "config", "tools"]
 
 _check_lock = threading.Lock()
 

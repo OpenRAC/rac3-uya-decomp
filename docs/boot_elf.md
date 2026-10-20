@@ -17,7 +17,7 @@ Status on 2026-10-07 (`pr_check.py --target boot_elf`): 1479 functions in C,
 engine core 103 in C and 496 left, most of it library code built with other
 compilers (see "The engine core" below). `triage.py --target boot_elf` buckets
 the 650 as 434 plain, 43 sibcall, 21 switch, 41 vu0, 29 mmi, 2 sys and 80 odd.
-Every line in `targets/boot_elf/text_parts.txt` (core and front end) carries
+Every line in `config/boot_elf/text_parts.txt` (core and front end) carries
 `-mvu0-use-vf0-vf2`, as frontbin's do (see Toolchain-and-Build).
 
 ## Setup
@@ -54,11 +54,11 @@ offset, and the gaps (both `.bss` regions included) are zeros. $gp is
 | `patch.data`, `legal.data`, `mc1.data` (2) | 0x3F2600, 0x1800000, .. | | `asm/boot_elf/data/*.data.s` |
 | `.shstrtab`, section headers | file 0x35EA98 | | `asm/boot_elf/trailer.s` |
 
-The tables that frontbin keeps in `tools/` are in `targets/boot_elf/`:
+The tables that frontbin keeps in `config/frontbin/` are in `config/boot_elf/`:
 `src_files.txt`, `text_parts.txt`, `divs_nops.txt`, `sq_ra_funcs.txt`,
 `localdecomp_flags.txt`, `symbol_addrs.txt` and `symbol_addrs_resolved.txt`.
 The linker script is `linker_scripts/boot_elf.ld`, the splat config
-`boot_elf.splat.yaml`.
+`config/splat/boot_elf.yaml`.
 
 Function names are `func_<address>` in both executables, so the same name can
 mean two unrelated functions (`func_00381180` exists in both). Anything keyed

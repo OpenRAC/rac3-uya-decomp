@@ -41,7 +41,7 @@ TARGET    := $(BUILD_DIR)/frontbin.elf
 # Flat file image built from TARGET's load addresses. The linker script places
 # every section at its retail file offset (AT(...)), and asm/header.s supplies
 # the retail ELF header bytes, so this file is what should equal the retail
-# frontbin.elf byte for byte. Checked against the sha1 in frontbin.splat.yaml.
+# frontbin.elf byte for byte. Checked against the sha1 in config/splat/frontbin.yaml.
 TARGET_BIN := $(BUILD_DIR)/frontbin.bin
 
 # -G0: never let GCC guess small-data placement on its own -- only symbols
@@ -58,18 +58,18 @@ TARGET_BIN := $(BUILD_DIR)/frontbin.bin
 # doesn't accept -Wa the same way modern GCC does, this needs adjusting
 # once we see the real error.
 # Optimisation/-G/-mno-split-addresses are NOT set here: they come per
-# address range from tools/text_parts.txt (see tools/build_text.py and
+# address range from config/frontbin/text_parts.txt (see tools/build_text.py and
 # compiler_matrix_findings.md). Retail frontbin was built from many source
 # files, some with -mno-split-addresses; all use -O2 -G8.
 # -B$(TOOLBIN)/ee- makes gcc use bin/ee-as.exe (the Aug 2000 assembler) instead
 # of ee/bin/as.exe; retail needs the older one (mtc1 hazard nops).
 CFLAGS := -I include -I . -Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi -DINCLUDE_ASM_USE_MACRO_INC=1 -B$(TOOLBIN)/ee-
 PYTHON ?= python
-TEXT_PARTS := tools/text_parts.txt
+TEXT_PARTS := config/frontbin/text_parts.txt
 # .text sources: one C file per original source file, in link order in
-# tools/src_files.txt (see tools/srcfiles.py and tools/build_text.py).
-SRC_FILES := $(wildcard src/frontbin/*.c) tools/src_files.txt
-TEXT_DEPS := $(SRC_FILES) $(TEXT_PARTS) tools/build_text.py tools/ee29.py tools/srcfiles.py tools/asm_filter.py tools/targets.py tools/divs_nops.txt tools/sq_ra_funcs.txt
+# config/frontbin/src_files.txt (see tools/srcfiles.py and tools/build_text.py).
+SRC_FILES := $(wildcard src/frontbin/*.c) config/frontbin/src_files.txt
+TEXT_DEPS := $(SRC_FILES) $(TEXT_PARTS) tools/build_text.py tools/ee29.py tools/srcfiles.py tools/asm_filter.py tools/targets.py config/frontbin/divs_nops.txt config/frontbin/sq_ra_funcs.txt
 
 # --- data segments: splat's whole-segment disassembly, one .o each -------
 # data is split around the jump-table block (tools/migrate_jtbls.py); text.c.o(.rodata) goes between.
@@ -123,7 +123,7 @@ $(TARGET_BIN): $(TARGET)
 check: check-frontbin check-boot_elf check-i5bootn
 
 check-frontbin: $(TARGET_BIN)
-	python tools/check_match.py "$(TARGET_BIN)" frontbin.elf frontbin.splat.yaml
+	python tools/check_match.py "$(TARGET_BIN)" frontbin.elf config/splat/frontbin.yaml
 
 clean:
 	@if exist "$(subst /,\,$(BUILD_DIR))" rmdir /s /q "$(subst /,\,$(BUILD_DIR))"
@@ -146,7 +146,7 @@ OBJDIFF_BASE   := $(BUILD_DIR)/objdiff/base/text.o
 OBJDIFF_COMMON := $(BUILD_DIR)/objdiff/base/common.o
 # only the catalogued sources: an uncatalogued file in src/levels/common/ (work
 # in progress, which may be deleted mid-build) isn't part of the base
-COMMON_DEPS    := $(shell $(PYTHON) tools/common_c_base.py --list-sources) tools/common_c.json tools/build_common_c.py tools/common_c_base.py
+COMMON_DEPS    := $(shell $(PYTHON) tools/common_c_base.py --list-sources) config/levels/common_c.json tools/build_common_c.py tools/common_c_base.py
 
 objdiff: objdiff-frontbin objdiff-boot_elf objdiff-i5bootn
 
@@ -175,14 +175,14 @@ $(OBJDIFF_COMMON): $(COMMON_DEPS)
 # section headers) is assembled from asm/boot_elf/, which
 # `python tools/setup_asm.py --target boot_elf` writes from boot_elf.elf.
 # Its tables (file list, flags, divs_nops, sq_ra_funcs, symbols) are in
-# targets/boot_elf/. All tools take `--target boot_elf`.
+# config/boot_elf/. All tools take `--target boot_elf`.
 # ===========================================================================
 
 BOOT_BUILD   := $(BUILD_DIR)/boot_elf
 BOOT_LD      := linker_scripts/boot_elf.ld
 BOOT_TARGET  := $(BOOT_BUILD)/boot_elf.elf
 BOOT_BIN     := $(BOOT_BUILD)/boot_elf.bin
-BOOT_TABLES  := targets/boot_elf/src_files.txt targets/boot_elf/text_parts.txt targets/boot_elf/divs_nops.txt targets/boot_elf/sq_ra_funcs.txt
+BOOT_TABLES  := config/boot_elf/src_files.txt config/boot_elf/text_parts.txt config/boot_elf/divs_nops.txt config/boot_elf/sq_ra_funcs.txt
 BOOT_TOOLS   := tools/build_text.py tools/ee29.py tools/srcfiles.py tools/asm_filter.py tools/targets.py
 BOOT_CORE_DEPS := $(wildcard src/boot_elf/core/*.c) $(BOOT_TABLES) $(BOOT_TOOLS)
 BOOT_TEXT_DEPS := $(wildcard src/boot_elf/text/*.c) $(BOOT_TABLES) $(BOOT_TOOLS)
@@ -212,7 +212,7 @@ $(BOOT_BIN): $(BOOT_TARGET)
 	"$(OBJCOPY)" -O binary "$<" "$@"
 
 check-boot_elf: $(BOOT_BIN)
-	python tools/check_match.py --target boot_elf "$(BOOT_BIN)" boot_elf.elf boot_elf.splat.yaml
+	python tools/check_match.py --target boot_elf "$(BOOT_BIN)" boot_elf.elf config/splat/boot_elf.yaml
 
 # objdiff: build/objdiff/{target,base}/boot_elf/{core,text}/<file>.o, one unit
 # per source file (tools/gen_objdiff_units.py), the same way as frontbin.
@@ -248,7 +248,7 @@ $(BOOT_OBJDIFF_TEXT_B): $(BOOT_TEXT_DEPS) include/include_asm.h
 # The bootstrap launcher: one code section (.text, src/i5bootn/), its .data and
 # .rodata (mostly the payload it loads), assembled from asm/i5bootn/, which
 # `python tools/setup_asm.py --target i5bootn` writes from i5bootn.elf. Tables
-# in targets/i5bootn/.
+# in config/i5bootn/.
 #
 # The flat binary comes from tools/elf2bin.py, not ee-objcopy: SN's objcopy
 # corrupts 21 bytes of this file's section-name table (the ELF it is given is
@@ -259,7 +259,7 @@ I5_BUILD   := $(BUILD_DIR)/i5bootn
 I5_LD      := linker_scripts/i5bootn.ld
 I5_TARGET  := $(I5_BUILD)/i5bootn.elf
 I5_BIN     := $(I5_BUILD)/i5bootn.bin
-I5_TABLES  := targets/i5bootn/src_files.txt targets/i5bootn/text_parts.txt targets/i5bootn/divs_nops.txt targets/i5bootn/sq_ra_funcs.txt
+I5_TABLES  := config/i5bootn/src_files.txt config/i5bootn/text_parts.txt config/i5bootn/divs_nops.txt config/i5bootn/sq_ra_funcs.txt
 I5_DEPS    := $(wildcard src/i5bootn/*.c) $(wildcard src/i5bootn/libgcc/*.c) $(wildcard src/libgcc/*.h) $(I5_TABLES) tools/build_text.py tools/ee29.py tools/srcfiles.py tools/asm_filter.py tools/targets.py
 I5_TEXT_OBJ := $(I5_BUILD)/src/text.c.o
 I5_ASM_OBJS := $(I5_BUILD)/asm/i5bootn/header.s.o $(I5_BUILD)/asm/i5bootn/trailer.s.o \
@@ -280,7 +280,7 @@ $(I5_BIN): $(I5_TARGET) tools/elf2bin.py
 	$(PYTHON) tools/elf2bin.py "$<" "$@"
 
 check-i5bootn: $(I5_BIN)
-	python tools/check_match.py --target i5bootn "$(I5_BIN)" i5bootn.elf i5bootn.splat.yaml
+	python tools/check_match.py --target i5bootn "$(I5_BIN)" i5bootn.elf config/splat/i5bootn.yaml
 
 # objdiff: build/objdiff/{target,base}/i5bootn/<file>.o, one unit per source file
 I5_OBJDIFF_T := $(BUILD_DIR)/objdiff/target/i5bootn.o

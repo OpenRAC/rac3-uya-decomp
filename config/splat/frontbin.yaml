@@ -3,7 +3,7 @@ sha1: 3BC94EE895E4B4AF9B5602A229AF599C1103B542
 options:
   basename: frontbin
   target_path: frontbin.elf
-  base_path: .
+  base_path: ../..
   build_path: build
   asm_path: asm
   src_path: src
@@ -32,9 +32,11 @@ options:
   ld_gp_expression: lit_ROM_START + 0x7FF0
 
   symbol_addrs_path:
-    - symbol_addrs.txt
+    - config/frontbin/symbol_addrs.txt
   reloc_addrs_path:
-    - reloc_addrs.txt
+    - config/frontbin/reloc_addrs.txt
+  undefined_funcs_auto_path: config/frontbin/undefined_funcs_auto.txt
+  undefined_syms_auto_path: config/frontbin/undefined_syms_auto.txt
 
   asm_function_macro: glabel
   asm_data_macro: dlabel

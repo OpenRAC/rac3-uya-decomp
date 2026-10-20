@@ -31,7 +31,7 @@ reasons it fails, in terms of the line you need to fix:
              stale copy of its table
   ps2as      no text_parts.txt range assembled with @ps2as contains an
              INCLUDE_ASM stub (Ps2EeAs cannot read macro.inc)
-  overrides  tools/localdecomp_flags.txt entries for functions that are now
+  overrides  config/frontbin/localdecomp_flags.txt entries for functions that are now
              C (move them into text_parts.txt)
   retail     no retail binaries are tracked by git
   status     localdecomp's status.json agrees with the sources about what is C
@@ -347,7 +347,7 @@ def check_status(defined, asm):
 def check_sq_ra(defined):
     """A function that is C in the sources and whose retail body saves $ra with sq/lq
     (the 16-byte slot layout; docs/wiki/Matching-Patterns.md, "Functions that
-    save $ra with sq") must be listed in tools/sq_ra_funcs.txt: asm_filter
+    save $ra with sq") must be listed in config/frontbin/sq_ra_funcs.txt: asm_filter
     rewrites those saves, and without the line the function keeps a
     two-instruction diff that reads like a C mistake."""
     path = T.path("elf")
@@ -389,7 +389,7 @@ def check_sq_ra(defined):
                 break
     if missing:
         warn(f"{len(missing)} function(s) in C save $ra with sq/lq in retail but are not in "
-             f"tools/sq_ra_funcs.txt: {', '.join(missing[:5])}"
+             f"config/frontbin/sq_ra_funcs.txt: {', '.join(missing[:5])}"
              f"{' ...' if len(missing) > 5 else ''}. Add them there (Matching-Patterns.md, "
              "'Functions that save $ra with sq') or asm_filter leaves a 2-instruction diff")
 

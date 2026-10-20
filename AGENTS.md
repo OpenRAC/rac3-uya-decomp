@@ -23,9 +23,11 @@ programs from the disc, rebuilt from C and assembly until every byte equals reta
 | --- | --- | --- |
 | `src/<program>/` | one C file per original source file: C, or `INCLUDE_ASM` markers | you (C replacing markers) |
 | `src/levels/common/` | shared level code, opt-in and checked separately (docs/common_level_c.md) | you |
-| `tools/src_files.txt`, `targets/<program>/src_files.txt` | each program's source files and their start addresses | by hand, rarely |
-| `tools/text_parts.txt`, `targets/<program>/text_parts.txt` | compiler flags by address range (see "Compiler flags") | by hand |
-| `symbol_addrs*.txt`, `targets/<program>/symbol_addrs*.txt` | symbol names and addresses | by hand / `tools/reconcile.py` |
+| `config/<program>/src_files.txt` | each program's source files and their start addresses | by hand, rarely |
+| `config/<program>/text_parts.txt` | compiler flags by address range (see "Compiler flags") | by hand |
+| `config/<program>/symbol_addrs*.txt`, `divs_nops.txt`, `sq_ra_funcs.txt` | symbols, and the tables the build reads by function | by hand / their tools |
+| `config/splat/<program>.yaml` | splat's configuration (`tools/setup_asm.py` runs it) | by hand |
+| `config/levels/` | the shared level code's catalogue and tables | `tools/seed_levels.py` |
 | `include/`, `linker_scripts/` | headers, assembler macros, the hand-kept linker scripts | by hand |
 | `nonmatching/` | near misses, never linked (`nonmatching/README.md`) | you |
 | `progress_report.json`, `objdiff.json` | objdiff's progress report and its units | the CI and `tools/gen_objdiff_units.py` |
@@ -55,7 +57,7 @@ rac1-decomp and rac2-decomp allow one flag set per real source file: a function 
 with flags of its own is not matched there (rac1-decomp's `docs/BUILD_FIDELITY.md`). This
 repository does not meet that rule yet, and this is recorded here as it is:
 
-- Flags are set **by address range** in `text_parts.txt`. `tools/build_text.py` compiles each run
+- Flags are set **by address range** in `config/<program>/text_parts.txt`. `tools/build_text.py` compiles each run
   of equal flags inside a file as its own slice.
 - Many matched functions have a **single-function override** (a range of one function with its
   own flags), and about 500 ranges pick another assembler for one function (`@ps2as`).

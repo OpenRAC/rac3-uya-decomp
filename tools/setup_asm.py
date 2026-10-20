@@ -244,7 +244,8 @@ def main():
     # Hand splat those addresses as function symbols through a temporary extra symbol
     # file and a temporary yaml.
     extra = os.path.join(ROOT, "symbol_addrs_setup.txt" if t.name == "frontbin" else "symbol_addrs_setup_%s.txt" % t.name)
-    tmp_yaml = os.path.join(ROOT, "%s.setup.yaml" % t.name)
+    # next to the real yaml, so its base_path (the repo root, relative to the yaml) holds
+    tmp_yaml = os.path.join(os.path.dirname(t.path("yaml")), "%s.setup.yaml" % t.name)
     with open(extra, "w") as f:
         for a in sorted(names):
             if a not in taken:
@@ -260,7 +261,7 @@ def main():
         for p, body in temps:
             os.makedirs(os.path.dirname(p), exist_ok=True)
             wr(p, body)
-        run(sys.executable, "-m", "splat", "split", os.path.basename(tmp_yaml))
+        run(sys.executable, "-m", "splat", "split", os.path.relpath(tmp_yaml, ROOT))
     finally:
         for p, _ in temps:
             if os.path.exists(p):

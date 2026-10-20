@@ -326,7 +326,7 @@ def main():
             parts.append("0x%08X     %s%s" % (f, base, " -mno-split-addresses" if nmode else ""))
             files.append((f, u))
         print("%s: %d source files" % (u.name, len(fs)))
-    header = ["# Compiler flags for %s by address (see tools/text_parts.txt for the format)." % T.name,
+    header = ["# Compiler flags for %s by address (see config/frontbin/text_parts.txt for the format)." % T.name,
               "# Estimates from tools/bootstrap_target.py: the target's base flags, plus",
               "# -mno-split-addresses where the assembly looks like N mode."]
 

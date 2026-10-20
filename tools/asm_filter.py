@@ -146,7 +146,7 @@ def insn_count(lines, noreorder=True, small=frozenset(), ps2as=False, defined=fr
 # `sd`, and the ones that also save $s registers lay the slots out ascending
 # ($s0 lowest, $ra highest) where gcc puts $ra lowest. No compiler or flag we
 # have produces that. The slot set and the frame size are the same, so for the
-# functions listed in tools/sq_ra_funcs.txt (compiled without -fopt-stack, which
+# functions listed in config/frontbin/sq_ra_funcs.txt (compiled without -fopt-stack, which
 # already gives sq for the $s registers) every callee-saved save and restore is
 # rewritten to the slot retail uses. $ra is written as a raw word (sq =
 # 0x7FBF0000 | off, lq = 0x7BBF0000 | off, base $sp), like the retail .s files.
@@ -163,10 +163,10 @@ SAVE_ORDER = [16, 17, 18, 19, 20, 21, 22, 23, 30, 31]
 
 
 # The common-level sources (src/levels/common/, tools/seed_levels.py) compile
-# with frontbin's tools; their own entries are in tools/common_c_*.txt. Level
+# with frontbin's tools; their own entries are in config/levels/common_c_*.txt. Level
 # names never collide with a target's, so the target's code is unaffected.
-COMMON_SQ_RA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "common_c_sq_ra_funcs.txt")
-COMMON_DIVS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "common_c_divs_nops.txt")
+COMMON_SQ_RA = targets.levels_path("sq_ra_funcs")
+COMMON_DIVS = targets.levels_path("divs_nops")
 
 
 def sq_ra_funcs():
@@ -232,7 +232,7 @@ def sq_pass(text):
 
 
 # Retail pads most div.s / sqrt.s with 0-3 nops, which neither gcc nor an assembler
-# in reorder mode keeps. tools/divs_nops.txt (tools/gen_divs_nops.py) lists, per
+# in reorder mode keeps. config/frontbin/divs_nops.txt (tools/gen_divs_nops.py) lists, per
 # function, the count in front of each div.s/sqrt.s in order; they go back in as
 # raw .words. A function whose div.s/sqrt.s count differs from the table is left alone.
 def _divs_file():

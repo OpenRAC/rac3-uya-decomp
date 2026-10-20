@@ -19,7 +19,7 @@ the same C matches there once every address it names is translated:
   4. Every candidate goes through build_common_c.py's gates (complete size,
      resolved retail bytes, raw object body equal to the split common target,
      no data sections, no assembly). Only those that pass are kept and added to
-     tools/common_c.json; the rest are deleted again.
+     config/levels/common_c.json; the rest are deleted again.
 
 Needs a built frontbin (build/frontbin.elf, for function sizes) and the private
 level inputs (docs/common_level_c.md). Run it again whenever frontbin gains
@@ -256,14 +256,14 @@ def read_lines(path):
 
 
 def write_tables(sq, divs):
-    """tools/common_c_sq_ra_funcs.txt and tools/common_c_divs_nops.txt."""
+    """config/levels/common_c_sq_ra_funcs.txt and config/levels/common_c_divs_nops.txt."""
     Path(asm_filter.COMMON_SQ_RA).write_text(
         "# Common-level functions whose retail prologue saves $ra with sq/lq, like their\n"
-        "# frontbin donor in tools/sq_ra_funcs.txt (tools/seed_levels.py).\n"
+        "# frontbin donor in config/frontbin/sq_ra_funcs.txt (tools/seed_levels.py).\n"
         + "".join(n + "\n" for n in sorted(sq)), encoding="utf-8", newline="\n")
     Path(asm_filter.COMMON_DIVS).write_text(
         "# Common-level div.s/sqrt.s nop counts, copied from the frontbin donor's line in\n"
-        "# tools/divs_nops.txt (tools/seed_levels.py).\n"
+        "# config/frontbin/divs_nops.txt (tools/seed_levels.py).\n"
         + "".join("%s %s\n" % (n, " ".join(map(str, divs[n]))) for n in sorted(divs)), encoding="utf-8", newline="\n")
 
 
@@ -307,7 +307,7 @@ def main():
     ap.add_argument("--report", type=Path, help="write each skipped candidate's donor, source and reason here (JSON)")
     a = ap.parse_args()
     levels_dir, targets_dir = a.refs / "levels", a.refs / "level-targets"
-    catalogue_path = ROOT / "tools" / "common_c.json"
+    catalogue_path = ROOT / "config" / "levels" / "common_c.json"
     catalogue = json.loads(catalogue_path.read_text(encoding="utf-8"))
     have = {e["name"] for e in catalogue}
 
@@ -386,7 +386,7 @@ def main():
     print("candidates: %d" % len(jobs), flush=True)
 
     # names whose donor needs sq_ra / div.s nops get the same entry
-    fsq = set(read_table_names(ROOT / "tools" / "sq_ra_funcs.txt"))
+    fsq = set(read_table_names(ROOT / "config" / "frontbin" / "sq_ra_funcs.txt"))
     fdv = asm_filter.divs_table()
     old_sq = set(n for n in read_table_names(Path(asm_filter.COMMON_SQ_RA)))
     old_dv = {n: v for n, v in fdv.items() if n in set(read_table_names(Path(asm_filter.COMMON_DIVS)))}

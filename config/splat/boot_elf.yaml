@@ -3,7 +3,7 @@ sha1: 487975305f8a263c750dfede50391b575ed07835
 options:
   basename: boot_elf
   target_path: boot_elf.elf
-  base_path: .
+  base_path: ../..
   build_path: build
   # bin segments (zero gaps, .bss, raw bytes) are written here; never commit them
   asset_path: build/boot_elf/splat_assets
@@ -15,13 +15,13 @@ options:
   find_file_boundaries: True
   gp_value: 0x001DC8B0
   symbol_addrs_path:
-    - targets/boot_elf/symbol_addrs.txt
+    - config/boot_elf/symbol_addrs.txt
   asm_function_macro: glabel
   asm_data_macro: dlabel
   migrate_rodata_to_functions: True
   generate_asm_macros_files: False
-  undefined_funcs_auto_path: targets/boot_elf/undefined_funcs_auto.txt
-  undefined_syms_auto_path: targets/boot_elf/undefined_syms_auto.txt
+  undefined_funcs_auto_path: config/boot_elf/undefined_funcs_auto.txt
+  undefined_syms_auto_path: config/boot_elf/undefined_syms_auto.txt
 segments:
   - {name: header, type: bin, start: 0x0}
   - {name: vutext, type: data, start: 0x2000, vram: 0x100080}

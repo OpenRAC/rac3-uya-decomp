@@ -3,7 +3,7 @@
 `src/levels/common/func_004D0538.c` is a C implementation of the canonical
 Veldin function at `0x004D0538`, 304 bytes. Its source is adapted from this
 project's existing `func_003ABC30`, not from a retail instruction listing.
-The compiler settings come from that donor's range in `tools/text_parts.txt`.
+The compiler settings come from that donor's range in `config/frontbin/text_parts.txt`.
 
 The first catalogue entry uses the existing SN compiler, N/default settings,
 and no inline assembly. The eight calls refer to the singleplayer executable's
@@ -123,11 +123,11 @@ that is already C, apart from addresses. `tools/seed_levels.py` copies those:
    the gates allow no assembly; a function that needed them fails the byte
    gates.
 4. Every candidate goes through `build_common_c.py`'s gates. Only passing ones
-   are kept and added to `tools/common_c.json`; `--report FILE` lists the rest
+   are kept and added to `config/levels/common_c.json`; `--report FILE` lists the rest
    with the reason.
 
-A donor in `tools/sq_ra_funcs.txt` or `tools/divs_nops.txt` passes its entry on
-to `tools/common_c_sq_ra_funcs.txt` / `tools/common_c_divs_nops.txt`, which
+A donor in `config/frontbin/sq_ra_funcs.txt` or `config/frontbin/divs_nops.txt` passes its entry on
+to `config/levels/common_c_sq_ra_funcs.txt` / `config/levels/common_c_divs_nops.txt`, which
 `tools/asm_filter.py` reads alongside the target's own tables. The tool never
 adds a name that is also a function in a built target.
 
@@ -143,7 +143,7 @@ gate rejects because the target names each address; the donor needs Ps2EeAs's
 
 A source is named after its canonical owner (the first level, in level
 order, with that code), so its name says nothing about the other overlays.
-`targets/levels/common_occurrences.tsv` lists every shared function: canonical
+`config/levels/common_occurrences.tsv` lists every shared function: canonical
 name, owner level, size, how many levels have it, C or asm, and the level
 numbers. `tools/level_occurrences.py` regenerates it and prints the addresses:
 

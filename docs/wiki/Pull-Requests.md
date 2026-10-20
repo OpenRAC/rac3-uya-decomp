@@ -13,9 +13,9 @@
 
 Usually just:
 
-- `src/frontbin/*.c`: the new blocks, each replacing its `INCLUDE_ASM` line, inside `localdecomp:start/end` markers, in the file whose address range (`tools/src_files.txt`) contains the function. If a new block uses another file's prototype, run `python tools/split_text.py --refresh` (localdecomp does this when it saves); the changed "declarations from other files" section belongs in the PR too.
-- `tools/text_parts.txt`: single-function overrides, only if a function needs non-default flags.
-- `symbol_addrs_resolved.txt`: addresses for any new aliases.
+- `src/frontbin/*.c`: the new blocks, each replacing its `INCLUDE_ASM` line, inside `localdecomp:start/end` markers, in the file whose address range (`config/frontbin/src_files.txt`) contains the function. If a new block uses another file's prototype, run `python tools/split_text.py --refresh` (localdecomp does this when it saves); the changed "declarations from other files" section belongs in the PR too.
+- `config/frontbin/text_parts.txt`: single-function overrides, only if a function needs non-default flags.
+- `config/<program>/symbol_addrs_resolved.txt`: addresses for any new aliases.
 
 Sometimes: tool fixes, docs, or new symbol names. Keep those in separate PRs from matches when they're large.
 
@@ -46,7 +46,7 @@ Reviewers build every PR locally, since CI doesn't run on forks.
 - [ ] Every new block is inside `localdecomp:start/end` markers, in the right file for its address, and its `INCLUDE_ASM` line is gone.
 - [ ] The PR is based on the current `main` and doesn't touch `src/text.c`.
 - [ ] No variable definitions: every global is `extern`.
-- [ ] Typedefs and aliases have unique names; aliases are in `symbol_addrs_resolved.txt`.
+- [ ] Typedefs and aliases have unique names; aliases are in `config/<program>/symbol_addrs_resolved.txt`.
 - [ ] Flag overrides are single-function (two lines) and restore the range's flags after.
 - [ ] Inline asm or `$gp` hacks are called out and justified.
 - [ ] Code reads like source: sensible types, struct fields over raw offsets where the struct is known, no leftover debugging comments.

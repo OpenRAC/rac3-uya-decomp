@@ -38,7 +38,7 @@ DATA = os.path.join(ROOT, "asm", "data", "data.data.s")
 RODIR = os.path.join(ROOT, "asm", "nonmatchings", "text", "rodata")
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import srcfiles  # noqa: E402
-SYMS = os.path.join(ROOT, "symbol_addrs_resolved.txt")
+SYMS = os.path.join(ROOT, "config", "frontbin", "symbol_addrs_resolved.txt")
 
 
 def main():

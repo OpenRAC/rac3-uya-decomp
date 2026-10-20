@@ -3,9 +3,9 @@
    The file is a straight memory image: every section sits at its retail file
    offset (AT(...)), and everything between sections, both .bss regions included,
    is zeros, which objcopy -O binary writes for the gaps. Sections are named
-   after splat's segments (boot_elf.splat.yaml). */
+   after splat's segments (config/splat/boot_elf.yaml). */
 
-INPUT(targets/boot_elf/symbol_addrs_resolved.txt)
+INPUT(config/boot_elf/symbol_addrs_resolved.txt)
 
 SECTIONS
 {

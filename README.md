@@ -48,13 +48,13 @@ The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in 
 | `tools/permuter_engine.py` | The permuter search from the command line (Windows or Linux), with the fence and barrier passes |
 | `tools/fence_search.py` | Tries every empty register fence, volatile barrier, `do { } while (0)` wrap and statement swap (and pairs) on a near miss |
 | `tools/sched_explain.py` | Shows why gcc's scheduler ordered two instructions the way it did (priority, register weight, ...) |
-| `tools/flags_probe.py` | Finds the mode and assembler a near miss wants and records them in `tools/localdecomp_flags.txt` |
+| `tools/flags_probe.py` | Finds the mode and assembler a near miss wants and records them in `config/frontbin/localdecomp_flags.txt` |
 | `tools/try_func.py` | The same compile and diff from the command line (Windows, or Linux via wibo) |
 | `tools/build_common_c.py` | Opt-in common-level C build with canonical ownership and strict retail-byte gates; see [common-level C](docs/common_level_c.md) |
 | `tools/pr_check.py` | Catches the usual full-build failures before a PR |
 | `tools/build.py` | The Makefile's build for Linux and macOS |
 | `tools/triage.py` | Sorts the remaining functions into buckets (plain, switch, vu0, handwritten, remnant, ...) |
-| `tools/build_text.py` | Builds `src/frontbin/*.c`, one object per source file, with per-function flags (`tools/text_parts.txt`) |
+| `tools/build_text.py` | Builds `src/frontbin/*.c`, one object per source file, with per-function flags (`config/frontbin/text_parts.txt`) |
 | `tools/split_text.py` | Keeps each source file's declarations from other files up to date (`--refresh`) |
 | `tools/check_match.py` | Compares the built binary with retail |
 | `tools/targets.py` | The executables the repo builds (frontbin, boot_elf, i5bootn) and where each one's files live |

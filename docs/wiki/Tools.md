@@ -2,7 +2,7 @@
 
 Every script in `tools/`, plus localdecomp and the Makefile, and what each is for. Run the Python tools from anywhere: they find the repo root themselves. Install their dependencies once with `pip install -r tools/requirements.txt`.
 
-**Three executables.** The repo builds `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf`. Every tool works on frontbin unless you pass `--target boot_elf` / `--target i5bootn` (or set `UYA_TARGET`): `setup_asm.py`, `build.py`, `build_text.py`, `try_func.py`, `try_in_context.py`, `triage.py`, `pr_check.py`, `split_text.py`, `gen_divs_nops.py`, `migrate_asm_sources.py`, `split_remnant_prefix.py`, `trailing_padding.py`, `check_match.py`, `permuter_setup.py` and `gen_asm_func.py`. `setup_asm.py`, `build.py`, `pr_check.py`, `triage.py`, `split_text.py`, `gen_divs_nops.py` and `migrate_asm_sources.py` also take `--target all` (once per target that is set up; fails if any run fails). `tools/targets.py` lists each target's ELF, sections, source folders and tables (frontbin's are in `tools/`, the others' in `targets/<target>/`). See [`docs/targets.md`](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/targets.md), which also covers adding a target.
+**Three executables.** The repo builds `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf`. Every tool works on frontbin unless you pass `--target boot_elf` / `--target i5bootn` (or set `UYA_TARGET`): `setup_asm.py`, `build.py`, `build_text.py`, `try_func.py`, `try_in_context.py`, `triage.py`, `pr_check.py`, `split_text.py`, `gen_divs_nops.py`, `migrate_asm_sources.py`, `split_remnant_prefix.py`, `trailing_padding.py`, `check_match.py`, `permuter_setup.py` and `gen_asm_func.py`. `setup_asm.py`, `build.py`, `pr_check.py`, `triage.py`, `split_text.py`, `gen_divs_nops.py` and `migrate_asm_sources.py` also take `--target all` (once per target that is set up; fails if any run fails). `tools/targets.py` lists each target's ELF, sections, source folders and tables (in `config/<target>/`, with the splat configs in `config/splat/`). See [`docs/targets.md`](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/targets.md), which also covers adding a target.
 
 ## Which tool do I need?
 
@@ -76,7 +76,7 @@ Output is `func_X: MATCH` or `func_X: N diff` plus a side-by-side listing.
 
 Puts your snippet into a copy of the function's source file in place of the function, builds that file (or the slice holding the function) the way the real build does, and diffs it. Then it compiles the rest of the file and every later file that would receive the block's declarations through `split_text.py --refresh`, and reports any `conflicting types` error there. That is the usual reason a function that matches in `try_func.py` stops `make`: a later block or file declares the same name differently. Run it on every function before you insert it (`--no-file-check` skips the second part).
 
-It doesn't catch everything. Several times a callee prototype that `split_text.py --refresh` later copied into a file defining that callee differently (for example as `(void)`) passed it and failed `pr_check.py`; run `pr_check.py` after adding an `extern` for a function that isn't a per-function alias, or use a K&R declaration or an alias. It also ignores `tools/localdecomp_flags.txt`, so an `@ps2as` candidate can only be checked in place once its `text_parts.txt` override exists.
+It doesn't catch everything. Several times a callee prototype that `split_text.py --refresh` later copied into a file defining that callee differently (for example as `(void)`) passed it and failed `pr_check.py`; run `pr_check.py` after adding an `extern` for a function that isn't a per-function alias, or use a K&R declaration or an alias. It also ignores `config/frontbin/localdecomp_flags.txt`, so an `@ps2as` candidate can only be checked in place once its `text_parts.txt` override exists.
 
 ```
 python tools/try_in_context.py scratch/func_003AED08.c
@@ -178,7 +178,7 @@ Catches the mistakes that break the full build, and names the line to fix:
 - missing symbol aliases;
 - orphaned `INCLUDE_RODATA` lines;
 - stale localdecomp scores;
-- C functions whose retail code saves `$ra` with `sq`/`lq` but that are missing from `tools/sq_ra_funcs.txt` (a warning; see [Matching patterns](Matching-Patterns));
+- C functions whose retail code saves `$ra` with `sq`/`lq` but that are missing from `config/frontbin/sq_ra_funcs.txt` (a warning; see [Matching patterns](Matching-Patterns));
 - retail files staged in git;
 - every source file, and every slice of a file with mixed flags, compiles the way the build compiles it (under a minute; `--no-compile` skips it). This catches a declaration that clashes with a later block or a later file. On Linux it needs `UYA_TOOLCHAIN` and `UYA_RUNNER`, like `try_func.py`.
 
@@ -221,13 +221,13 @@ Both do the same four steps:
 
 ### build_text.py
 
-Called by the build; you don't run it yourself. It compiles each file in `tools/src_files.txt` with its flags from `tools/text_parts.txt`: as it is when all its functions share flags, otherwise in slices (each with the file's own declarations, nothing from other files). Every file becomes one object in `build/src/frontbin/` (slice objects are kept apart in `build/src/frontbin/slices/`, so that folder holds exactly one `.o` per source file); they are linked into one `text.c.o`.
+Called by the build; you don't run it yourself. It compiles each file in `config/frontbin/src_files.txt` with its flags from `config/frontbin/text_parts.txt`: as it is when all its functions share flags, otherwise in slices (each with the file's own declarations, nothing from other files). Every file becomes one object in `build/src/frontbin/` (slice objects are kept apart in `build/src/frontbin/slices/`, so that folder holds exactly one `.o` per source file); they are linked into one `text.c.o`.
 
 Its `function_context` function is what gives localdecomp, `try_func.py` and `permuter_setup.py` the same declarations as the real build.
 
 ### build_common_c.py
 
-The opt-in build for the level-code C in `src/levels/common/` (listed in `tools/common_c.json`). It compiles each function with its frontbin donor's flags, compares it byte for byte with the retail common-level object made from your own overlays, and writes `build/objdiff/base/common.o`, the base of the `levels/common` unit. `make objdiff` runs it through `tools/common_c_base.py`, which takes the inputs from `C:\decomp-refs` (or `UYA_REFS`) and writes an empty base when they aren't there. Usage and the checks it applies: `docs/common_level_c.md`.
+The opt-in build for the level-code C in `src/levels/common/` (listed in `config/levels/common_c.json`). It compiles each function with its frontbin donor's flags, compares it byte for byte with the retail common-level object made from your own overlays, and writes `build/objdiff/base/common.o`, the base of the `levels/common` unit. `make objdiff` runs it through `tools/common_c_base.py`, which takes the inputs from `C:\decomp-refs` (or `UYA_REFS`) and writes an empty base when they aren't there. Usage and the checks it applies: `docs/common_level_c.md`.
 
 ### split_text.py
 
@@ -239,7 +239,7 @@ Rewrites the code units in `objdiff.json` for every target (one unit per source 
 
 ### bootstrap_target.py
 
-Makes a new target's source tree from its ELF, once the target is in `tools/targets.py` with its splat config and linker script: finds the functions with splat, classifies them (crt0, hand-written, remnant, compiled), estimates the source files and flags, writes `src/<target>/` and `targets/<target>/`, and runs `setup_asm.py`. i5bootn was set up with it (`python tools/bootstrap_target.py --target i5bootn`). It refuses to run once the tree has C. Steps for a new target are in `docs/targets.md`.
+Makes a new target's source tree from its ELF, once the target is in `tools/targets.py` with its splat config and linker script: finds the functions with splat, classifies them (crt0, hand-written, remnant, compiled), estimates the source files and flags, writes `src/<target>/` and `config/<target>/`, and runs `setup_asm.py`. i5bootn was set up with it (`python tools/bootstrap_target.py --target i5bootn`). It refuses to run once the tree has C. Steps for a new target are in `docs/targets.md`.
 
 ### elf2bin.py
 
@@ -261,7 +261,7 @@ The filter also rewrites the callee-saved saves of the functions listed in `sq_r
 
 ### gen_divs_nops.py and divs_nops.txt
 
-`tools/divs_nops.txt` has one line per function with the number of `nop`s retail has before each `div.s` and `sqrt.s`, in order (`func_0037E568 2`); `asm_filter.py` emits them as raw words. `python tools/gen_divs_nops.py` (`--target all` for every target) adds lines for functions that are still `INCLUDE_ASM` and keeps existing lines. The disassembler prints the EE's `sqrt.s` as a raw `c1` word; the script has recognised those since 2026-10-07 (before that, `func_003A26D0` and others were missing counts). Under `@ps2as`, a `div.s` right after `mtc1` needs one `nop` less than retail shows, because Ps2EeAs adds its own hazard `nop` (`func_003B5AB0`: `2 1 2` became `2 0 2`). The line travels with the function when it becomes C.
+`config/frontbin/divs_nops.txt` has one line per function with the number of `nop`s retail has before each `div.s` and `sqrt.s`, in order (`func_0037E568 2`); `asm_filter.py` emits them as raw words. `python tools/gen_divs_nops.py` (`--target all` for every target) adds lines for functions that are still `INCLUDE_ASM` and keeps existing lines. The disassembler prints the EE's `sqrt.s` as a raw `c1` word; the script has recognised those since 2026-10-07 (before that, `func_003A26D0` and others were missing counts). Under `@ps2as`, a `div.s` right after `mtc1` needs one `nop` less than retail shows, because Ps2EeAs adds its own hazard `nop` (`func_003B5AB0`: `2 1 2` became `2 0 2`). The line travels with the function when it becomes C.
 
 ### check_match.py
 
@@ -271,13 +271,13 @@ The build's last step: compares the built binary with your `frontbin.elf` and pr
 
 Not scripts, but they decide how every function is compiled.
 
-**`tools/text_parts.txt`: the per-address-range flags for the real build.**
+**`config/frontbin/text_parts.txt`: the per-address-range flags for the real build.**
 - Each line is a start address and its flags.
 - `-mno-split-addresses` selects no-split mode; `@ps2as` selects the SN Ps2EeAs assembler.
 - A function that needs different flags from its range gets a single-function override line, followed by a line restoring the range's flags at the next function.
 - Every frontbin and boot_elf line has `-mvu0-use-vf0-vf2` (since 2026-10-07; it was put first on the lines that didn't have it, so slice boundaries stayed; the older j-form overrides have it just before `@ps2as`). The build merges runs of lines with equal flag lists into one slice, so copy a neighbouring line's flags exactly as written when you add an override; appending the flag elsewhere, or writing the same flags in another order, changes which lines merge.
 
-**`tools/localdecomp_flags.txt`: temporary per-function flags while you experiment.**
+**`config/frontbin/localdecomp_flags.txt`: temporary per-function flags while you experiment.**
 - Only localdecomp and `try_func.py` read it.
 - Move the setting into `text_parts.txt` before your PR.
 

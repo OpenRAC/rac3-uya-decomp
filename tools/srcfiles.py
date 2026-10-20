@@ -1,6 +1,6 @@
 """The frontbin .text sources: one C file per original source file.
 
-src/frontbin/*.c are listed in link order in tools/src_files.txt. Each file
+src/frontbin/*.c are listed in link order in config/frontbin/src_files.txt. Each file
 holds, in address order, the blocks for its functions:
 
   * decompiled C between /* localdecomp:start func_X */ and

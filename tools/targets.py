@@ -16,11 +16,28 @@ target.
 Function names are func_<address>, so two targets can both have a
 func_00381180 that are unrelated functions. Anything keyed by function name
 (divs_nops, sq_ra_funcs, localdecomp_flags, symbol files) is per target.
+
+Every program's tables (source-file list, flags, symbols, ...) are in
+config/<program>/, its splat configuration in config/splat/<program>.yaml, and
+the shared level code's tables in config/levels/ (LEVELS below).
 """
 import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# The shared level code's tables (src/levels/common/, docs/common_level_c.md),
+# relative to ROOT.
+LEVELS = {
+    "common_c": "config/levels/common_c.json",            # the catalogue (tools/seed_levels.py)
+    "sq_ra_funcs": "config/levels/common_c_sq_ra_funcs.txt",
+    "divs_nops": "config/levels/common_c_divs_nops.txt",
+    "occurrences": "config/levels/common_occurrences.tsv",  # tools/level_occurrences.py
+}
+
+
+def levels_path(key):
+    return os.path.join(ROOT, LEVELS[key])
 
 
 class Unit:
@@ -74,22 +91,21 @@ class Target:
 
 
 TARGETS = {
-    # frontbin keeps the paths it has always had.
     "frontbin": Target(
         "frontbin",
         elf="frontbin.elf",
         sha1="3bc94ee895e4b4af9b5602a229af599c1103b542",
-        yaml="frontbin.splat.yaml",
+        yaml="config/splat/frontbin.yaml",
         ld="linker_scripts/frontbin.ld",
         build_dir="build",
         bin_name="frontbin.bin",
-        files="tools/src_files.txt",
-        parts="tools/text_parts.txt",
-        divs_nops="tools/divs_nops.txt",
-        sq_ra_funcs="tools/sq_ra_funcs.txt",
-        localdecomp_flags="tools/localdecomp_flags.txt",
-        symbol_addrs="symbol_addrs.txt",
-        symbols_resolved="symbol_addrs_resolved.txt",
+        files="config/frontbin/src_files.txt",
+        parts="config/frontbin/text_parts.txt",
+        divs_nops="config/frontbin/divs_nops.txt",
+        sq_ra_funcs="config/frontbin/sq_ra_funcs.txt",
+        localdecomp_flags="config/frontbin/localdecomp_flags.txt",
+        symbol_addrs="config/frontbin/symbol_addrs.txt",
+        symbols_resolved="config/frontbin/symbol_addrs_resolved.txt",
         asm_root="asm",
         handwritten="asm/handwritten",
         remnants="asm/remnants",
@@ -114,17 +130,17 @@ TARGETS = {
         "boot_elf",
         elf="boot_elf.elf",
         sha1="487975305f8a263c750dfede50391b575ed07835",
-        yaml="boot_elf.splat.yaml",
+        yaml="config/splat/boot_elf.yaml",
         ld="linker_scripts/boot_elf.ld",
         build_dir="build/boot_elf",
         bin_name="boot_elf.bin",
-        files="targets/boot_elf/src_files.txt",
-        parts="targets/boot_elf/text_parts.txt",
-        divs_nops="targets/boot_elf/divs_nops.txt",
-        sq_ra_funcs="targets/boot_elf/sq_ra_funcs.txt",
-        localdecomp_flags="targets/boot_elf/localdecomp_flags.txt",
-        symbol_addrs="targets/boot_elf/symbol_addrs.txt",
-        symbols_resolved="targets/boot_elf/symbol_addrs_resolved.txt",
+        files="config/boot_elf/src_files.txt",
+        parts="config/boot_elf/text_parts.txt",
+        divs_nops="config/boot_elf/divs_nops.txt",
+        sq_ra_funcs="config/boot_elf/sq_ra_funcs.txt",
+        localdecomp_flags="config/boot_elf/localdecomp_flags.txt",
+        symbol_addrs="config/boot_elf/symbol_addrs.txt",
+        symbols_resolved="config/boot_elf/symbol_addrs_resolved.txt",
         asm_root="asm/boot_elf",
         handwritten="asm/boot_elf/handwritten",
         remnants="asm/boot_elf/remnants",
@@ -158,17 +174,17 @@ TARGETS = {
         "i5bootn",
         elf="i5bootn.elf",
         sha1="71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f",
-        yaml="i5bootn.splat.yaml",
+        yaml="config/splat/i5bootn.yaml",
         ld="linker_scripts/i5bootn.ld",
         build_dir="build/i5bootn",
         bin_name="i5bootn.bin",
-        files="targets/i5bootn/src_files.txt",
-        parts="targets/i5bootn/text_parts.txt",
-        divs_nops="targets/i5bootn/divs_nops.txt",
-        sq_ra_funcs="targets/i5bootn/sq_ra_funcs.txt",
-        localdecomp_flags="targets/i5bootn/localdecomp_flags.txt",
-        symbol_addrs="targets/i5bootn/symbol_addrs.txt",
-        symbols_resolved="targets/i5bootn/symbol_addrs_resolved.txt",
+        files="config/i5bootn/src_files.txt",
+        parts="config/i5bootn/text_parts.txt",
+        divs_nops="config/i5bootn/divs_nops.txt",
+        sq_ra_funcs="config/i5bootn/sq_ra_funcs.txt",
+        localdecomp_flags="config/i5bootn/localdecomp_flags.txt",
+        symbol_addrs="config/i5bootn/symbol_addrs.txt",
+        symbols_resolved="config/i5bootn/symbol_addrs_resolved.txt",
         asm_root="asm/i5bootn",
         handwritten="asm/i5bootn/handwritten",
         remnants="asm/i5bootn/remnants",

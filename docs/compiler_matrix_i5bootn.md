@@ -108,4 +108,4 @@ the libgcc comparison reads the compilers' own archives).
 - `main` and `func_008010F8` are matched in C now, with our toolchain: `main`
   at `-O0 -G0 -mno-check-zero-division` (no `-fopt-stack`: that packs the frame
   and loses the `sq $fp`), a single-function override in
-  `targets/i5bootn/text_parts.txt`; `func_008010F8` with its file's flags.
+  `config/i5bootn/text_parts.txt`; `func_008010F8` with its file's flags.

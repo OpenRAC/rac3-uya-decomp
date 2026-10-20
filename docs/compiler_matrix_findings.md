@@ -211,7 +211,7 @@ All three groups previously written off (`$s` saves in 8-byte slots, `div` witho
 | `div` followed by `break 7` trap | `-mno-check-zero-division` |
 | Missing `nop` after `mtc1` before its use | Assemble with `bin/ee-as.exe` (Aug 2000) instead of `ee/bin/as.exe` (May 2001): `-B$(TOOLBIN)/ee-` |
 
-Both compiler flags are on every line of `tools/text_parts.txt`. They changed none of the existing matched code.
+Both compiler flags are on every line of `config/frontbin/text_parts.txt`. They changed none of the existing matched code.
 
 ### The retail assembler is SN's Ps2EeAs.exe
 
@@ -260,7 +260,7 @@ func_003882D0, func_00388308 and func_00388340 load a float with `lwc1 $f0, -0x7
 
 ### Work-in-progress flag overrides
 
-`tools/localdecomp_flags.txt` (`func_XXXXXXXX <flags>`) gives a function flags in localdecomp and `tools/try_func.py` while it is still `INCLUDE_ASM`. `text_parts.txt` can't carry `@ps2as` for such a function, because Ps2EeAs can't assemble the stub. Once the function matches, its flags move to a single-function override in `text_parts.txt`.
+`config/frontbin/localdecomp_flags.txt` (`func_XXXXXXXX <flags>`) gives a function flags in localdecomp and `tools/try_func.py` while it is still `INCLUDE_ASM`. `text_parts.txt` can't carry `@ps2as` for such a function, because Ps2EeAs can't assemble the stub. Once the function matches, its flags move to a single-function override in `text_parts.txt`.
 
 ### Linux builds
 

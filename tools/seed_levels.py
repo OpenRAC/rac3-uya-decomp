@@ -96,7 +96,7 @@ def address_pairs(fcode, faddr, lcode, laddr):
 
 def frontbin_functions():
     """name -> (address, retail bytes) for every frontbin .text function."""
-    with open(ROOT / "frontbin.elf", "rb") as f:
+    with open(ROOT / "baserom" / "frontbin.elf", "rb") as f:
         retail = ELFFile(f)
         text = retail.get_section_by_name(".text")
         tb, ta = text.data(), text["sh_addr"]

@@ -4,7 +4,7 @@ localdecomp - a minimal local decomp.me-alike for splat-based PS2 decompilation
 projects, built to work with the frontbin_decomp project (or any splat project
 using the same layout).
 
-Run this from your project root (the folder containing asm/, src/, frontbin.elf,
+Run this from your project root (the folder containing asm/, src/, baserom/,
 etc) or point --project at it. It starts a local web server; open the printed
 URL in a browser.
 
@@ -1535,7 +1535,7 @@ def run_full_check(project):
     try:
         # same layout as CI (.github/workflows/build-and-report.yml): the split level
         # objects (common code/data, per-level code and data; made by
-        # tools/split_shared_levels.py) and the other executables (tools/gen_exe_targets.py)
+        # tools/objdiff/split_shared_levels.py) and the other executables (tools/objdiff/gen_exe_targets.py)
         tgt = root / "build" / "objdiff" / "target"
         lv = tgt / "levels"
         ex = tgt / "exes"
@@ -1570,7 +1570,7 @@ def run_full_check(project):
     if not step("full build + MATCH", p.returncode == 0 and match_line.startswith("MATCH"),
                 match_line or f"make exited {p.returncode}"):
         return result
-    # make objdiff also rebuilt the shared level code's base (tools/common_c_base.py
+    # make objdiff also rebuilt the shared level code's base (tools/objdiff/common_c_base.py
     # -> build_common_c.py), which fails the build if a catalogued function no
     # longer passes its gates; say how many it verified
     common_line = next((l for l in log.splitlines() if l.startswith(("MATCH common C", "common_c_base:"))), "")
@@ -1667,7 +1667,7 @@ def _perm_engine(project):
 
 
 def _is_level(project):
-    """The shared level code (localdecomp/levels.py) rather than a splatted executable."""
+    """The shared level code (tools/localdecomp/levels.py) rather than a splatted executable."""
     return getattr(project, "name", None) == "levels_common"
 
 
@@ -2018,7 +2018,7 @@ def main():
 
     root = Path(args.project).resolve()
     toolbin = Path(args.toolbin)
-    sys.path.insert(0, str(Path(__file__).resolve().parent))  # localdecomp/levels.py
+    sys.path.insert(0, str(Path(__file__).resolve().parent))  # tools/localdecomp/levels.py
     gp_value = int(args.gp, 16) if args.gp else None
 
     # the executables this repo decompiles (tools/targets.py)
@@ -2033,9 +2033,9 @@ def main():
             Handler.projects[name] = Project(root, t, toolbin, gp_value, git_sync=args.git_sync,
                                              refs_dir=args.refs, objdiff_cli=args.objdiff_cli)
         except FileNotFoundError as e:
-            Handler.unavailable[name] = (f"not set up ({e}); put {t.elf} in the repo root and run "
+            Handler.unavailable[name] = (f"not set up ({e}); put {t.elf} in place and run "
                                          f"python tools/setup_asm.py --target {name}")
-    # the code the level overlays share (localdecomp/levels.py): one source per
+    # the code the level overlays share (tools/localdecomp/levels.py): one source per
     # function in src/levels/common/, verified by tools/build_common_c.py
     import levels as level_target
     Handler.labels[level_target.NAME] = level_target.LABEL

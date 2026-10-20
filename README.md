@@ -19,7 +19,7 @@ frontbin's code is in `src/frontbin/`, one C file per original source file (see 
 ## Quick start (Windows)
 
 1. Install SN Systems ee-gcc 2.95.3 v1.36 to `C:\tools\eegcc_2.95.3_sn_v1.36`.
-2. Put your own `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf` (from the disc's `files` folder) in the repo root.
+2. Put your own `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf` (from the disc) in `baserom/`.
 3. `pip install -r tools/requirements.txt` (this includes splat)
 4. `python tools/setup_asm.py --target all`. This generates `asm/` from your `frontbin.elf`, `asm/boot_elf/` from `boot_elf.elf` and `asm/i5bootn/` from `i5bootn.elf` (all gitignored, so a fresh clone has none; without them `make` stops with "No rule to make target `asm/header.s'"). It takes a few minutes.
 5. `& "C:\tools\eegcc_2.95.3_sn_v1.36\bin\make.exe"`. It ends with one `MATCH: ...` line per executable.
@@ -44,7 +44,7 @@ The wiki sources live in [`docs/wiki/`](docs/wiki). The compiler research is in 
 
 | Tool | Purpose |
 |---|---|
-| `localdecomp/server.py` | Local web editor: build one function with its real flags and diff against retail; its Permuter panel runs decomp-permuter on the editor's code with live progress ([docs/permuter.md](docs/permuter.md)) |
+| `tools/localdecomp/server.py` | Local web editor: build one function with its real flags and diff against retail; its Permuter panel runs decomp-permuter on the editor's code with live progress ([docs/permuter.md](docs/permuter.md)) |
 | `tools/permuter_engine.py` | The permuter search from the command line (Windows or Linux), with the fence and barrier passes |
 | `tools/fence_search.py` | Tries every empty register fence, volatile barrier, `do { } while (0)` wrap and statement swap (and pairs) on a near miss |
 | `tools/sched_explain.py` | Shows why gcc's scheduler ordered two instructions the way it did (priority, register weight, ...) |

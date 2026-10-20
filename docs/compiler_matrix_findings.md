@@ -223,7 +223,7 @@ Both compiler flags are on every line of `config/frontbin/text_parts.txt`. They 
 - Its `mtc1` hazard nops depend on whether the next instruction uses the register, also for `li.s`. That's why some float functions only match with it.
 - It can't read GNU `macro.inc`, so it can't build `INCLUDE_ASM` stubs. The default assembler stays `bin/ee-as.exe`. It reproduces everything else.
 
-`text_parts.txt` accepts pseudo-flags that `tools/build_text.py` and `localdecomp/server.py` expand:
+`text_parts.txt` accepts pseudo-flags that `tools/build_text.py` and `tools/localdecomp/server.py` expand:
 
 - `@ps2as`: assemble the range with Ps2EeAs (adds `-DNO_MACRO_INC` and drops the GNU `-Wa,` options).
 - `@newas`: use `ee/bin/as.exe`.

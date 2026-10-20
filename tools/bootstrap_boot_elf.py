@@ -17,7 +17,7 @@ started (one big text.c with raw splat boundaries):
               address immediates masked. Where boot_elf has code frontbin doesn't,
               splat's boundaries are used.
        core:  splat's boundaries (every jal target plus spimdisasm's analysis, the
-              same discovery tools/gen_exe_targets.py used for the reference
+              same discovery tools/objdiff/gen_exe_targets.py used for the reference
               objects), then linker remnants glued to the front of a function are
               cut off (tools/split_remnant_prefix.py's rule).
   2. Classification.
@@ -276,6 +276,7 @@ def main():
     if os.path.exists(cache):
         found = {k: [tuple(x) for x in v] for k, v in json.load(open(cache)).items()}
     else:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "objdiff"))
         from gen_exe_targets import find_functions
         found = find_functions(BE.path("elf"), os.path.join(work, "splat"))
         json.dump(found, open(cache, "w"))

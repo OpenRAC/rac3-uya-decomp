@@ -36,8 +36,8 @@ With --objdiff FILE the level units and progress categories in that
 objdiff.json are rewritten to match (see update_objdiff).
 
 Usage:
-    python tools/split_shared_levels.py C:\\decomp-refs\\level-targets C:\\decomp-refs\\level-targets-split
-    python tools/split_shared_levels.py IN OUT --objdiff objdiff.json
+    python tools/objdiff/split_shared_levels.py C:\\decomp-refs\\level-targets C:\\decomp-refs\\level-targets-split
+    python tools/objdiff/split_shared_levels.py IN OUT --objdiff objdiff.json
 Needs pyelftools.
 """
 import argparse, glob, hashlib, io, json, os, re, struct, sys
@@ -334,7 +334,7 @@ def main():
                     help="also list uninitialised.o (.bss and zero words, ~61 MB) as a unit; off by default "
                          "because it has nothing to decompile and swamps the data total")
     a = ap.parse_args()
-    root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
     out_abs = os.path.abspath(a.out_dir)
     inside = os.path.splitdrive(root)[0] == os.path.splitdrive(out_abs)[0] and os.path.commonpath([root, out_abs]) == root
     if inside and not out_abs.startswith(os.path.join(root, "build")):

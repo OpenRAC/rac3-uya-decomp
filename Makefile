@@ -123,13 +123,13 @@ $(TARGET_BIN): $(TARGET)
 check: check-frontbin check-boot_elf check-i5bootn
 
 check-frontbin: $(TARGET_BIN)
-	python tools/check_match.py "$(TARGET_BIN)" frontbin.elf config/splat/frontbin.yaml
+	python tools/check_match.py "$(TARGET_BIN)" baserom/frontbin.elf config/splat/frontbin.yaml
 
 clean:
 	@if exist "$(subst /,\,$(BUILD_DIR))" rmdir /s /q "$(subst /,\,$(BUILD_DIR))"
 
 # --- objdiff progress report inputs ---------------------------------------
-# One objdiff unit per source file (tools/gen_objdiff_units.py writes them).
+# One objdiff unit per source file (tools/objdiff/gen_objdiff_units.py writes them).
 # target: the full build's per-file objects (build/src/frontbin/*.o). Only
 #         copied after `check` has confirmed MATCH, so every function in them
 #         (asm or C) is proven retail-exact.
@@ -140,13 +140,13 @@ clean:
 OBJDIFF_TARGET := $(BUILD_DIR)/objdiff/target/text.o
 OBJDIFF_BASE   := $(BUILD_DIR)/objdiff/base/text.o
 # common-level C (src/levels/common/, docs/common_level_c.md): the levels/common
-# unit's base. tools/common_c_base.py proves each function against your own
+# unit's base. tools/objdiff/common_c_base.py proves each function against your own
 # reference files in C:\decomp-refs (or UYA_REFS) and fails if one stops
 # matching; without those files it writes an empty base, so the report still runs.
 OBJDIFF_COMMON := $(BUILD_DIR)/objdiff/base/common.o
 # only the catalogued sources: an uncatalogued file in src/levels/common/ (work
 # in progress, which may be deleted mid-build) isn't part of the base
-COMMON_DEPS    := $(shell $(PYTHON) tools/common_c_base.py --list-sources) config/levels/common_c.json tools/build_common_c.py tools/common_c_base.py
+COMMON_DEPS    := $(shell $(PYTHON) tools/objdiff/common_c_base.py --list-sources) config/levels/common_c.json tools/build_common_c.py tools/objdiff/common_c_base.py
 
 objdiff: objdiff-frontbin objdiff-boot_elf objdiff-i5bootn
 
@@ -162,7 +162,7 @@ $(OBJDIFF_BASE): $(TEXT_DEPS) include/include_asm.h
 	$(PYTHON) tools/build_text.py --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
 
 $(OBJDIFF_COMMON): $(COMMON_DEPS)
-	$(PYTHON) tools/common_c_base.py -o "$@"
+	$(PYTHON) tools/objdiff/common_c_base.py -o "$@"
 
 
 # ===========================================================================
@@ -212,10 +212,10 @@ $(BOOT_BIN): $(BOOT_TARGET)
 	"$(OBJCOPY)" -O binary "$<" "$@"
 
 check-boot_elf: $(BOOT_BIN)
-	python tools/check_match.py --target boot_elf "$(BOOT_BIN)" boot_elf.elf config/splat/boot_elf.yaml
+	python tools/check_match.py --target boot_elf "$(BOOT_BIN)" baserom/boot_elf.elf config/splat/boot_elf.yaml
 
 # objdiff: build/objdiff/{target,base}/boot_elf/{core,text}/<file>.o, one unit
-# per source file (tools/gen_objdiff_units.py), the same way as frontbin.
+# per source file (tools/objdiff/gen_objdiff_units.py), the same way as frontbin.
 BOOT_OBJDIFF_CORE_T := $(BUILD_DIR)/objdiff/target/boot_elf/core.o
 BOOT_OBJDIFF_TEXT_T := $(BUILD_DIR)/objdiff/target/boot_elf/text.o
 BOOT_OBJDIFF_CORE_B := $(BUILD_DIR)/objdiff/base/boot_elf/core.o
@@ -280,7 +280,7 @@ $(I5_BIN): $(I5_TARGET) tools/elf2bin.py
 	$(PYTHON) tools/elf2bin.py "$<" "$@"
 
 check-i5bootn: $(I5_BIN)
-	python tools/check_match.py --target i5bootn "$(I5_BIN)" i5bootn.elf config/splat/i5bootn.yaml
+	python tools/check_match.py --target i5bootn "$(I5_BIN)" baserom/i5bootn.elf config/splat/i5bootn.yaml
 
 # objdiff: build/objdiff/{target,base}/i5bootn/<file>.o, one unit per source file
 I5_OBJDIFF_T := $(BUILD_DIR)/objdiff/target/i5bootn.o

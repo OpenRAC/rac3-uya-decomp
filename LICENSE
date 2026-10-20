@@ -10,15 +10,16 @@ relative to the repository root.
    under the GNU General Public License, version 3, reproduced below.
    This covers:
 
-   - tools/ and localdecomp/ (the project's scripts and programs,
-     including tools/decomp-permuter-aligned-scorer.patch)
-   - the build system: Makefile, linker_scripts/, *.splat.yaml,
+   - tools/ (the project's scripts and programs, including
+     tools/localdecomp/ and tools/decomp-permuter-aligned-scorer.patch)
+     and tests/
+   - the build system: Makefile, linker_scripts/, config/splat/,
      objdiff.json and .github/
    - include/ (the project's headers and assembler macros)
-   - the project's tables: targets/, symbol_addrs*.txt,
-     undefined_*_auto.txt, reloc_addrs.txt and the *.txt tables in
-     tools/
-   - docs/, README.md and CONTRIBUTING.md
+   - the project's tables in config/ (symbol_addrs*.txt,
+     undefined_*_auto.txt, reloc_addrs.txt, the flag and file tables)
+   - docs/, nonmatching/README.md, README.md, CONTRIBUTING.md,
+     AGENTS.md, CLAUDE.md, LEGAL.md and THIRD_PARTY_NOTICES.md
 
    The tables and linker scripts record facts about the original
    executables (addresses, sizes, section layout, compiler flags);

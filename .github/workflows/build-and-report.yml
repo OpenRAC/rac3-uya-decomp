@@ -18,9 +18,10 @@ jobs:
       - name: Copy retail ELFs
         shell: pwsh
         run: |
-          Copy-Item "C:\decomp-refs\frontbin.elf" -Destination "frontbin.elf" -Force
-          Copy-Item "C:\decomp-refs\boot_elf.elf" -Destination "boot_elf.elf" -Force
-          Copy-Item "C:\decomp-refs\files\i5bootn.elf" -Destination "i5bootn.elf" -Force
+          New-Item -ItemType Directory -Force -Path "baserom" | Out-Null
+          Copy-Item "C:\decomp-refs\frontbin.elf" -Destination "baserom\frontbin.elf" -Force
+          Copy-Item "C:\decomp-refs\boot_elf.elf" -Destination "baserom\boot_elf.elf" -Force
+          Copy-Item "C:\decomp-refs\files\i5bootn.elf" -Destination "baserom\i5bootn.elf" -Force
 
       - name: Copy retail-derived asm
         shell: pwsh

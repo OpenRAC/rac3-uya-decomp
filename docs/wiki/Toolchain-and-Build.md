@@ -9,7 +9,7 @@ How `make` turns the repo into a byte-identical `frontbin.elf`, and which files 
 3. `ee-ld.exe -T linker_scripts/frontbin.ld` places every section at its retail file offset. `INPUT(config/frontbin/symbol_addrs_resolved.txt)` supplies the address of every external symbol. The `.data` output is `data_a` + `text.c.o(.rodata)` (all switch jump tables, in function order) + `data_b`, the same layout the original linker produced.
 4. `ee-objcopy -O binary` makes `build/frontbin.bin`, and `tools/check_match.py` compares its SHA-1 with the one in `config/splat/frontbin.yaml`. That is the `MATCH` line.
 
-`make objdiff` also builds the objdiff inputs, one unit per source file: `build/objdiff/target/frontbin/<file>.o` (the full build) and `build/objdiff/base/frontbin/<file>.o` (the same file with every `INCLUDE_ASM` compiled away), so objdiff reports decompiled/total per file. It also builds `build/objdiff/base/common.o`, the base of the `levels/common` unit, from the common-level C in `src/levels/common/` (`tools/common_c_base.py`, which runs `tools/build_common_c.py` against the reference files in `C:\decomp-refs`; without them it writes an empty base).
+`make objdiff` also builds the objdiff inputs, one unit per source file: `build/objdiff/target/frontbin/<file>.o` (the full build) and `build/objdiff/base/frontbin/<file>.o` (the same file with every `INCLUDE_ASM` compiled away), so objdiff reports decompiled/total per file. It also builds `build/objdiff/base/common.o`, the base of the `levels/common` unit, from the common-level C in `src/levels/common/` (`tools/objdiff/common_c_base.py`, which runs `tools/build_common_c.py` against the reference files in `C:\decomp-refs`; without them it writes an empty base).
 
 `tools/build.py` runs steps 1 to 4 on Linux and macOS through wibo.
 
@@ -107,18 +107,18 @@ About 95% of the code in the 51 overlays is shared: the same function appears, a
 The pipeline runs outside the repo, in two steps:
 
 ```
-python3 tools/gen_level_targets.py <levels_dir> C:\decomp-refs\level-targets
-python tools/split_shared_levels.py C:\decomp-refs\level-targets C:\decomp-refs\level-targets-split --objdiff objdiff.json
+python3 tools/objdiff/gen_level_targets.py <levels_dir> C:\decomp-refs\level-targets
+python tools/objdiff/split_shared_levels.py C:\decomp-refs\level-targets C:\decomp-refs\level-targets-split --objdiff objdiff.json
 ```
 
 The second step writes 105 objects (`common.o`, `common_data.o`, `uninitialised.o`, 51 code objects, 51 data objects) and rewrites the level units and categories in `objdiff.json`. Only the script and `objdiff.json` are committed. The tool refuses to write into the repo (other than `build/`). Re-run it if the overlays are regenerated or a level starts being decompiled.
 
 ## Other executables
 
-`boot_elf.elf`, `i5bootn.elf`, `ntgui.elf` and `sly2.elf` (from the unpacked disc) are also counted. They have no symbols, so `tools/gen_exe_targets.py` finds functions the way the level generator does (every `jal` target, then splat), but builds each object straight from the ELF bytes, so the code is retail by construction. It writes `<name>.o` (code sections) and `<name>_data.o` (other allocated sections with bytes: `.data`, `.rodata`, `.lit`, `.irx`, VU microcode) to `C:\decomp-refs\exe-targets\`, and with `--objdiff objdiff.json` adds their units and categories (one per executable, all under "Other executables"):
+`boot_elf.elf`, `i5bootn.elf`, `ntgui.elf` and `sly2.elf` (from the unpacked disc) are also counted. They have no symbols, so `tools/objdiff/gen_exe_targets.py` finds functions the way the level generator does (every `jal` target, then splat), but builds each object straight from the ELF bytes, so the code is retail by construction. It writes `<name>.o` (code sections) and `<name>_data.o` (other allocated sections with bytes: `.data`, `.rodata`, `.lit`, `.irx`, VU microcode) to `C:\decomp-refs\exe-targets\`, and with `--objdiff objdiff.json` adds their units and categories (one per executable, all under "Other executables"):
 
 ```
-python tools/gen_exe_targets.py "<game_dir>" C:\decomp-refs\exe-targets --objdiff objdiff.json
+python tools/objdiff/gen_exe_targets.py "<game_dir>" C:\decomp-refs\exe-targets --objdiff objdiff.json
 ```
 
 About 3.0 MB of code in 15,146 functions and 6.6 MB of data. The objects have no relocations and are never committed. `.bss` and `.sbss` are left out (nothing to decompile). The main executable `SCUS_973.53` is not among these files and isn't counted yet.

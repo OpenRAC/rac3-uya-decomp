@@ -2,7 +2,7 @@ name: i5bootn
 sha1: 71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f
 options:
   basename: i5bootn
-  target_path: i5bootn.elf
+  target_path: baserom/i5bootn.elf
   base_path: ../..
   build_path: build
   # bin segments (zero gaps, raw bytes) are written here; never commit them

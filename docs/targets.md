@@ -25,7 +25,7 @@ up (its ELF and asm folder are there) and fails if any run fails:
 
 | Tool | `--target all` |
 |---|---|
-| `setup_asm.py` | every target whose ELF is in the repo root |
+| `setup_asm.py` | every target whose ELF is in `baserom/` |
 | `build.py` | builds and checks each |
 | `pr_check.py` | checks each |
 | `triage.py` | one summary per target |
@@ -76,7 +76,7 @@ In localdecomp, the dropdown above the function list picks the target.
 5. `python3 tools/build.py --target <t>` must print MATCH.
 6. Add the target to the `Makefile` (copy the i5bootn section), to
    `.github/workflows/build-and-report.yml` (copy its ELF, check its asm),
-   `.gitignore` (its ELF), and run `python tools/gen_objdiff_units.py`.
+   `.gitignore` (its ELF), and run `python tools/objdiff/gen_objdiff_units.py`.
 7. Write `docs/<t>.md` and add it to this page.
 
 boot_elf was made by its own script, `tools/bootstrap_boot_elf.py`, because its

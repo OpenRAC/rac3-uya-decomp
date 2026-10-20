@@ -21,8 +21,8 @@ With --objdiff FILE the matching units and categories are (re)written in that
 objdiff.json.
 
 Usage:
-    python tools/gen_exe_targets.py <game_dir> <out_dir>
-    python tools/gen_exe_targets.py <game_dir> <out_dir> --objdiff objdiff.json
+    python tools/objdiff/gen_exe_targets.py <game_dir> <out_dir>
+    python tools/objdiff/gen_exe_targets.py <game_dir> <out_dir> --objdiff objdiff.json
 <game_dir> is the unpacked disc (the folder containing boot_elf.elf and files\\).
 Needs splat64==0.50.0, spimdisasm==1.42.4, pyelftools.
 """
@@ -184,7 +184,7 @@ def main():
     ap.add_argument("out_dir")
     ap.add_argument("--objdiff", help="objdiff.json to update")
     a = ap.parse_args()
-    root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
     out = os.path.abspath(a.out_dir)
     if os.path.splitdrive(root)[0] == os.path.splitdrive(out)[0] and os.path.commonpath([root, out]) == root \
             and not out.startswith(os.path.join(root, "build")):

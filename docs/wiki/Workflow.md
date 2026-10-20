@@ -36,7 +36,7 @@ Tell others what you're working on (open a draft PR early) so two people don't m
 
 ## 3a. Match it in localdecomp
 
-Start the server (`python localdecomp/server.py --project . --no-git-sync`) and open http://127.0.0.1:8477.
+Start the server (`python tools/localdecomp/server.py --project . --no-git-sync`) and open http://127.0.0.1:8477.
 
 - The left pane is your C. It should hold the externs and typedefs the function needs, then the function. Types like `s32`, `u8` and `f32` come from `common.h` automatically.
 - **Build** compiles with the flags of that function's address range (from `config/frontbin/text_parts.txt`, or `config/frontbin/localdecomp_flags.txt` if the function has an entry there) and shows the diff. A score of 0 is a match.

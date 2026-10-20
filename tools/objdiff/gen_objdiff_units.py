@@ -13,13 +13,13 @@ every other unit in objdiff.json (data, levels, other executables) is left
 as it is, except the units a target says its files replace
 (objdiff_replaces: the old reference-only exes/boot_elf and exes/i5bootn units).
 
-    python tools/gen_objdiff_units.py
+    python tools/objdiff/gen_objdiff_units.py
 """
 import json
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # tools/
 import srcfiles as sf  # noqa: E402
 import targets  # noqa: E402
 

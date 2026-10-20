@@ -10,7 +10,7 @@ const diffView = document.getElementById("diff-view");
 const sidebarToggleBtn = document.getElementById("sidebar-toggle-btn");
 const funcSidebar = document.getElementById("func-sidebar");
 const profileSelect = document.getElementById("profile-select");
-// the shared level code (localdecomp/levels.py) builds one standalone source per
+// the shared level code (tools/localdecomp/levels.py) builds one standalone source per
 // function with a compiler profile instead of its range's flags
 const LEVELS_TARGET = "levels_common";
 function isLevels() { return currentTarget === LEVELS_TARGET; }

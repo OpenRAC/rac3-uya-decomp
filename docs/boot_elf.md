@@ -22,7 +22,7 @@ Every line in `config/boot_elf/text_parts.txt` (core and front end) carries
 
 ## Setup
 
-1. Put your own `boot_elf.elf` in the repo root (it is in the root of the
+1. Put your own `boot_elf.elf` in `baserom/` (it is in the root of the
    unpacked disc, next to `files` and `levels`). Its sha1 must be
    `487975305f8a263c750dfede50391b575ed07835`. It is gitignored; never add it.
 2. `python tools/setup_asm.py --target boot_elf` writes `asm/boot_elf/` (also
@@ -251,7 +251,7 @@ numbers for the executable that is picked.
 ## Progress report
 
 `objdiff.json` has one unit per source file, `boot_elf/core/<file>` and
-`boot_elf/text/<file>` (`python tools/gen_objdiff_units.py` writes them for
+`boot_elf/text/<file>` (`python tools/objdiff/gen_objdiff_units.py` writes them for
 every target), in the progress categories `boot_elf`, `boot_elf_core` and
 `boot_elf_frontend`. They replace the old reference-only `exes/boot_elf`
 code unit; `exes/boot_elf (data)` stays.

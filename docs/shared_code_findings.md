@@ -18,7 +18,7 @@ This is a **lower bound**. A shared function that differs in a `lui`/`addiu` add
 | `sly2.elf` | 6,342 (1.4 MB) | 0 | 30 (under 1 KB) |
 
 - Only 267 of about 10,700 distinct executable functions occur in more than one of the four executables, so they hardly overlap each other.
-- The 51 overlays hold 100 MB of function bytes but only 9.3 MB distinct (this is what `tools/split_shared_levels.py` collapses into `common.o`). Only 217 of those distinct functions (31 KB) also appear in frontbin.
+- The 51 overlays hold 100 MB of function bytes but only 9.3 MB distinct (this is what `tools/objdiff/split_shared_levels.py` collapses into `common.o`). Only 217 of those distinct functions (31 KB) also appear in frontbin.
 
 ## What it means
 

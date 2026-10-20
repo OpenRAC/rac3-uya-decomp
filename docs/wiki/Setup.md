@@ -26,11 +26,11 @@ i5bootn's libgcc (`src/i5bootn/libgcc/`, the `@ee29` ranges) also needs Sony's *
 
 ## 2. Your own frontbin.elf
 
-Extract `frontbin.elf` from your own copy of the game (NTSC-U, SCUS-97353) and put it in the repo root. Check it before anything else:
+Extract `frontbin.elf` from your own copy of the game (NTSC-U, SCUS-97353) and put it in `baserom/` (create the folder; it is gitignored). Check it before anything else:
 
 ```
-certutil -hashfile frontbin.elf SHA1        (Windows)
-sha1sum frontbin.elf                       (Linux/macOS)
+certutil -hashfile baserom/frontbin.elf SHA1        (Windows)
+sha1sum baserom/frontbin.elf                       (Linux/macOS)
 ```
 
 It must be `3bc94ee895e4b4af9b5602a229af599c1103b542`. The build output is compared against the same hash.
@@ -43,22 +43,22 @@ The game contents can be extracted from your legally obtained ISO using [the fol
 4. Navigate to the `\globals\misc` folder.
 5. Run the above command depending on your platform to ensure you have the correct `frontbin.elf`. 
 
-`frontbin.elf` is in `.gitignore`. Never force-add it.
+`baserom/` is in `.gitignore`. Never force-add anything from it.
 
 ### Your own boot_elf.elf
 
-The repo also decompiles `boot_elf.elf`, the game's main executable (the engine core plus a second copy of the front end). It is in the root of the unpacked disc (the same `uya_scus_973_53` folder, next to `files` and `levels`). Put it in the repo root too and check it:
+The repo also decompiles `boot_elf.elf`, the game's main executable (the engine core plus a second copy of the front end). It is in the root of the unpacked disc (the same `uya_scus_973_53` folder, next to `files` and `levels`). Put it in `baserom/` too and check it:
 
 ```
-certutil -hashfile boot_elf.elf SHA1        (Windows)
-sha1sum boot_elf.elf                       (Linux/macOS)
+certutil -hashfile baserom/boot_elf.elf SHA1        (Windows)
+sha1sum baserom/boot_elf.elf                       (Linux/macOS)
 ```
 
 It must be `487975305f8a263c750dfede50391b575ed07835`. It is in `.gitignore` as well. See [`docs/boot_elf.md`](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/boot_elf.md) for how it is laid out.
 
 ### Your own i5bootn.elf
 
-`i5bootn.elf` is the bootstrap launcher the disc starts first. It is in the unpacked disc's `files` folder. Put it in the repo root and check it the same way: the sha1 must be `71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f`. It is in `.gitignore` too. See [`docs/i5bootn.md`](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/i5bootn.md).
+`i5bootn.elf` is the bootstrap launcher the disc starts first. It is in the unpacked disc's `files` folder. Put it in `baserom/` and check it the same way: the sha1 must be `71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f`. It is in `.gitignore` too. See [`docs/i5bootn.md`](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/i5bootn.md).
 
 ## 3. Python
 
@@ -115,7 +115,7 @@ If one doesn't match, check that ELF's hash and the toolchain layout before chan
 localdecomp is the project's local, decomp.me-style web editor. It builds one function at a time with that function's real flags and shows a live diff against retail.
 
 ```
-python localdecomp/server.py --project . --no-git-sync
+python tools/localdecomp/server.py --project . --no-git-sync
 ```
 
 Then open http://127.0.0.1:8477. See [Workflow](Workflow) for how to use it. The dropdown at the top of the function list picks the executable (frontbin, boot_elf or i5bootn) or the shared level code (levels/common); an executable whose ELF or `asm/` folder is missing is listed as "not set up", and so is levels/common without the private level inputs in `--refs`.
@@ -144,10 +144,10 @@ REFS=~/uya-refs
 GAME=/path/to/unpacked/disc        # the folder with boot_elf.elf, files and levels
 PY=~/uya_refs_venv/bin/python
 
-$PY tools/gen_level_targets.py --data-only frontbin.elf $REFS/frontbin_data.o
-$PY tools/gen_level_targets.py "$GAME/levels" $REFS/level-targets
-$PY tools/split_shared_levels.py $REFS/level-targets $REFS/level-targets-split
-$PY tools/gen_exe_targets.py "$GAME" $REFS/exe-targets
+$PY tools/objdiff/gen_level_targets.py --data-only frontbin.elf $REFS/frontbin_data.o
+$PY tools/objdiff/gen_level_targets.py "$GAME/levels" $REFS/level-targets
+$PY tools/objdiff/split_shared_levels.py $REFS/level-targets $REFS/level-targets-split
+$PY tools/objdiff/gen_exe_targets.py "$GAME" $REFS/exe-targets
 
 mkdir -p /mnt/c/decomp-refs
 cp -r $REFS/level-targets $REFS/level-targets-split $REFS/exe-targets $REFS/frontbin_data.o /mnt/c/decomp-refs/
@@ -157,11 +157,11 @@ cp -r "$GAME/levels/singleplayer" "$GAME/levels/multiplayer" /mnt/c/decomp-refs/
 
 The level step takes about ten minutes (51 overlays). Check the results in `C:\decomp-refs`:
 
-- `level-targets-split` must hold **105** `.o` files (code and data for each level, `common`, `common_data` and `uninitialised`). `level-targets` (the 51 unsplit objects) and `levels` (your unpacked overlays) are what `make objdiff` uses to prove the common-level C in `src/levels/common/` and count it in the report (`tools/common_c_base.py`); without them that C counts as 0.
+- `level-targets-split` must hold **105** `.o` files (code and data for each level, `common`, `common_data` and `uninitialised`). `level-targets` (the 51 unsplit objects) and `levels` (your unpacked overlays) are what `make objdiff` uses to prove the common-level C in `src/levels/common/` and count it in the report (`tools/objdiff/common_c_base.py`); without them that C counts as 0.
 - `exe-targets` must hold **8** `.o` files (code and data for each of the four other executables).
 - `frontbin_data.o` must be there, and its generator must have printed `data sections differing from retail: none`. The level generator prints `non-reloc mismatches vs retail: 0` for every overlay; anything else means the object isn't an exact copy of retail.
 
-Then start localdecomp as usual (`python localdecomp/server.py --project .`, or add `--refs <folder>` if you used another one) and press Full check. Never commit any of these objects: they are retail code. See [Tools](Tools) for what each generator does.
+Then start localdecomp as usual (`python tools/localdecomp/server.py --project .`, or add `--refs <folder>` if you used another one) and press Full check. Never commit any of these objects: they are retail code. See [Tools](Tools) for what each generator does.
 
 ## Linux and macOS
 

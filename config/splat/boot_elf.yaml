@@ -2,7 +2,7 @@ name: boot_elf
 sha1: 487975305f8a263c750dfede50391b575ed07835
 options:
   basename: boot_elf
-  target_path: boot_elf.elf
+  target_path: baserom/boot_elf.elf
   base_path: ../..
   build_path: build
   # bin segments (zero gaps, .bss, raw bytes) are written here; never commit them

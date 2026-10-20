@@ -317,7 +317,7 @@ def check_parts(asm, defined):
 def check_status(defined, asm):
     """localdecomp's status.json vs the sources: a function it scored 0 but that is
     still INCLUDE_ASM here is either not saved yet, or was scored before a
-    server fix (see localdecomp/server.py's trailing-padding note)."""
+    server fix (see tools/localdecomp/server.py's trailing-padding note)."""
     path = os.path.join(ROOT, ".localdecomp_work", "status.json") if T.name == targets.DEFAULT \
         else os.path.join(ROOT, ".localdecomp_work", T.name, "status.json")
     if not os.path.exists(path):

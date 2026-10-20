@@ -30,7 +30,7 @@ programs from the disc, rebuilt from C and assembly until every byte equals reta
 | `config/levels/` | the shared level code's catalogue and tables | `tools/seed_levels.py` |
 | `include/`, `linker_scripts/` | headers, assembler macros, the hand-kept linker scripts | by hand |
 | `nonmatching/` | near misses, never linked (`nonmatching/README.md`) | you |
-| `progress_report.json`, `objdiff.json` | objdiff's progress report and its units | the CI and `tools/gen_objdiff_units.py` |
+| `progress_report.json`, `objdiff.json` | objdiff's progress report and its units | the CI and `tools/objdiff/gen_objdiff_units.py` |
 | `tools/`, `localdecomp/` | build, checks, the local matching editor | by hand |
 | `docs/`, `docs/wiki/` | research notes; the wiki's source | by hand |
 | the retail ELFs, `asm/`, `build/` | game data, generated assembly, build output | never committed |

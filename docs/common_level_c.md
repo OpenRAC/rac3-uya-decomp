@@ -174,7 +174,7 @@ shows the retail listing. On a match it prints the catalogue entry to add.
 ## Private inputs
 
 Supply your own extracted NTSC-U levels and the reference objects made by
-`tools/gen_level_targets.py` and `tools/split_shared_levels.py`. Generate and
+`tools/objdiff/gen_level_targets.py` and `tools/objdiff/split_shared_levels.py`. Generate and
 split the objects on a persistent Linux filesystem: `/tmp` can be volatile,
 and the documented `ld -r` merge can alter text on a Windows mount.
 
@@ -224,7 +224,7 @@ into matching by copying reference instructions.
 
 Since 2026-10-04 the `levels/common` unit in `objdiff.json` uses
 `build/objdiff/base/common.o` as its base, and `make objdiff` builds it with
-`tools/common_c_base.py`. That script runs this builder with the inputs in
+`tools/objdiff/common_c_base.py`. That script runs this builder with the inputs in
 `C:\decomp-refs` (`levels/`, `level-targets/`, `level-targets-split/common.o`;
 another folder with `UYA_REFS`), so CI and localdecomp's Full check count
 every function that passes the gates. If a catalogued function stops passing,

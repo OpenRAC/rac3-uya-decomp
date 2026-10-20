@@ -13,7 +13,7 @@ Every tool takes `--target i5bootn` (or `UYA_TARGET=i5bootn`); see
 
 ## Setup
 
-1. Put your own `i5bootn.elf` in the repo root. It is in the unpacked disc's
+1. Put your own `i5bootn.elf` in `baserom/`. It is in the unpacked disc's
    `files` folder (`files\i5bootn.elf`). Its sha1 must be
    `71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f`. It is gitignored; never add it.
 2. `python tools/setup_asm.py --target i5bootn` writes `asm/i5bootn/`

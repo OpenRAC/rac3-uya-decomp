@@ -10,7 +10,7 @@ frontbin's `.text` is written as one C file per original source file, in `src/fr
   - `INCLUDE_ASM`, `ASM_FUNC`, `LINKER_REMNANT`, `INCLUDE_RODATA` and `TEXT_PADDING` lines for everything else.
 - At the top of each file, between the `declarations from other files` markers, are the declarations from earlier files that this file's functions use. Nothing else from other files is visible: each file compiles on its own, like the original translation units.
 
-Files are named after their first function's address (`src/frontbin/3E1CC8.c`) until we know what they really were. Renaming one is a one-line change in `config/frontbin/src_files.txt` plus `python tools/gen_objdiff_units.py`.
+Files are named after their first function's address (`src/frontbin/3E1CC8.c`) until we know what they really were. Renaming one is a one-line change in `config/frontbin/src_files.txt` plus `python tools/objdiff/gen_objdiff_units.py`.
 
 ## Declarations from other files
 
@@ -44,7 +44,7 @@ The original file names and boundaries aren't in the ELF, so the current 65 file
 
 Where evidence 1 places a boundary between two functions somewhere in a gap, the cut uses evidence 2 when it can, otherwise the position right after a linker remnant, otherwise just before the next run.
 
-These boundaries are only the best estimate so far. Moving one changes nothing in the output as long as every function keeps its flags. If you find better evidence (a function that is clearly part of another group, shared code with `boot_elf.elf` that marks a file, a real file name), edit `config/frontbin/src_files.txt`, move the blocks, run `python tools/split_text.py --refresh` and `python tools/gen_objdiff_units.py`, and check `make`.
+These boundaries are only the best estimate so far. Moving one changes nothing in the output as long as every function keeps its flags. If you find better evidence (a function that is clearly part of another group, shared code with `boot_elf.elf` that marks a file, a real file name), edit `config/frontbin/src_files.txt`, move the blocks, run `python tools/split_text.py --refresh` and `python tools/objdiff/gen_objdiff_units.py`, and check `make`.
 
 ## Migration notes
 

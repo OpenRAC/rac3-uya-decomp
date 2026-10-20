@@ -14,7 +14,7 @@ Full check) counts the C functions in src/levels/common/:
     still works and simply counts no common-level C (objdiff refuses to report
     at all when a unit's base_path is missing).
 
-    python tools/common_c_base.py [--refs C:/decomp-refs] [-o build/objdiff/base/common.o]
+    python tools/objdiff/common_c_base.py [--refs C:/decomp-refs] [-o build/objdiff/base/common.o]
 
 Only the standard library is used here, so the fallback works on a machine
 without the level tools' Python packages.
@@ -25,7 +25,7 @@ import struct
 import subprocess
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def empty_elf():

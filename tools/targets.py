@@ -93,7 +93,7 @@ class Target:
 TARGETS = {
     "frontbin": Target(
         "frontbin",
-        elf="frontbin.elf",
+        elf="baserom/frontbin.elf",
         sha1="3bc94ee895e4b4af9b5602a229af599c1103b542",
         yaml="config/splat/frontbin.yaml",
         ld="linker_scripts/frontbin.ld",
@@ -112,7 +112,7 @@ TARGETS = {
         gp=0x1DC8B0,
         units=[Unit("text", 0x37D100, 0x3ECFA4, "src/frontbin", "asm/nonmatchings/text", ".text", objdir="frontbin")],
         # objdiff: unit name prefix, object folder under build/objdiff/{target,base}/
-        # and progress categories, per code section (tools/gen_objdiff_units.py)
+        # and progress categories, per code section (tools/objdiff/gen_objdiff_units.py)
         objdiff_units={"text": "frontbin/src/"},
         objdiff_dirs={"text": "frontbin"},
         objdiff_categories={"text": ["menu", "frontend"]},
@@ -128,7 +128,7 @@ TARGETS = {
     # (.text) that is frontbin's code linked at other addresses.
     "boot_elf": Target(
         "boot_elf",
-        elf="boot_elf.elf",
+        elf="baserom/boot_elf.elf",
         sha1="487975305f8a263c750dfede50391b575ed07835",
         yaml="config/splat/boot_elf.yaml",
         ld="linker_scripts/boot_elf.ld",
@@ -172,7 +172,7 @@ TARGETS = {
     # Nothing touches $gp (gp 0: no small data), so its code was built with -G0.
     "i5bootn": Target(
         "i5bootn",
-        elf="i5bootn.elf",
+        elf="baserom/i5bootn.elf",
         sha1="71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f",
         yaml="config/splat/i5bootn.yaml",
         ld="linker_scripts/i5bootn.ld",

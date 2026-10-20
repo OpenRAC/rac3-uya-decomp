@@ -4,7 +4,7 @@
 The fast command-line way to test a match, without localdecomp. It compiles
 FILE.c the way tools/build_text.py would compile that address range (flags
 from config/frontbin/localdecomp_flags.txt, then config/frontbin/text_parts.txt), then compares
-each function word by word against the retail frontbin.elf in the repo root.
+each function word by word against the retail baserom/frontbin.elf.
 Relocated fields (%hi/%lo halves, $gp offsets, jal targets) are filled in
 with the symbols' real addresses (symbol_addrs_resolved.txt, or the address in
 a D_/func_ name) and compared in full, so a wrong symbol or two swapped stores
@@ -114,7 +114,7 @@ def expand(flags, toolchain):
 class Retail:
     def __init__(self, path):
         if not os.path.exists(path):
-            sys.exit(f"{path} not found. Copy your own retail {os.path.basename(path)} to the repo root "
+            sys.exit(f"{path} not found. Copy your own retail {os.path.basename(path)} to baserom/ "
                      "(it is gitignored and must never be committed).")
         elf = ELFFile(open(path, "rb"))
         self.segs = [(s["p_vaddr"], s.data()) for s in elf.iter_segments() if s["p_type"] == "PT_LOAD"]

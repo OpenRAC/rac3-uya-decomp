@@ -2,7 +2,7 @@ name: frontbin
 sha1: 3BC94EE895E4B4AF9B5602A229AF599C1103B542
 options:
   basename: frontbin
-  target_path: frontbin.elf
+  target_path: baserom/frontbin.elf
   base_path: ../..
   build_path: build
   asm_path: asm

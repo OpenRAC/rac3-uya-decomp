@@ -7,7 +7,7 @@ tools/targets.py, with its splat config and linker script. This makes the tree
 the way frontbin's looks today:
 
   1. Function boundaries: splat's discovery run (every jal target plus
-     spimdisasm's analysis, the same as tools/gen_exe_targets.py), plus any
+     spimdisasm's analysis, the same as tools/objdiff/gen_exe_targets.py), plus any
      piece plain splat splits off on its own (setup_asm.py would otherwise drop
      it), then linker remnants glued to the front of a function cut off
      (tools/split_remnant_prefix.py's rule).
@@ -247,6 +247,7 @@ def main():
     if os.path.exists(cache):
         found = json.load(open(cache))
     else:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "objdiff"))
         from gen_exe_targets import find_functions
         found = find_functions(T.path("elf"), os.path.join(work, "splat"))
         json.dump(found, open(cache, "w"))

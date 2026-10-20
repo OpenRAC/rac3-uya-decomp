@@ -102,8 +102,9 @@ closer. Leave the attempt in `nonmatching/` with what differs, and move on.
   notes.
 - **Never delete what you did not create**, and leave other people's uncommitted work alone.
 - **Never rewrite `main`'s history** and never force-push a shared branch.
-- Before a commit, run the checks for what you touched; for anything that affects the build, the
-  full build with its three `MATCH` lines.
+- Before a commit: `python3 -m unittest discover -s tests` and `python3 tests/check_repository.py`
+  (both need no game data; CI runs them), and for anything that affects the build, the full build
+  with its three `MATCH` lines.
 
 ## Commits
 

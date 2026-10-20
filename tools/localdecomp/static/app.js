@@ -674,6 +674,7 @@ function renderCheck(r) {
     ? `<div class="${cls}"><b>${title} (${items.length})</b><div class="check-list">${items.map(escapeHtml).join("<br>")}</div></div>` : "";
   parts.push(list("Newly matched", shown.newly_matched, "check-gained"));
   parts.push(list("No longer matching", r.lost, "check-lost"));
+  parts.push(list("No longer in the report (merged into another function; the build still matches)", r.removed, "check-commits"));
   if (r.unpushed && r.unpushed.length) parts.push(list("Commits that Push will send", r.unpushed, "check-commits"));
   if (!r.ok && r.build_log_tail) parts.push(`<pre class="check-log">${escapeHtml(r.build_log_tail)}</pre>`);
   checkBody.innerHTML = parts.join("");

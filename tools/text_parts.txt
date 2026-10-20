@@ -286,7 +286,8 @@
 0x0039FFB8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # single-function override
 0x0039FFC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003A02D8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
-0x003A04A0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003A04A0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
+0x003A0D20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003A0D58     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # single-function override
 0x003A0EB0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # single-function override
 0x003A1340     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division

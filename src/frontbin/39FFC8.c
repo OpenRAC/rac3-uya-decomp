@@ -1755,7 +1755,167 @@ void func_003A3508(void) {
 }
 /* localdecomp:end func_003A3508 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A35C0);
+/* localdecomp:start func_003A35C0 */
+typedef struct { s32 a; s32 b; } P_3A35C0;
+typedef struct { s32 f0; s32 f4; P_3A35C0 e[1]; } S_160C40_3A35C0;
+#define T ((S_160C40_3A35C0 *)D_00160C40_003A3368)
+extern s32 D_001DA0B0;
+extern s32 D_001DA0B4;
+extern s32 D_001DA0B8;
+extern s32 D_001DA0BC;
+extern s32 D_001DA0C0;
+extern s32 D_001DA0D8;
+extern s32 D_001D4D40;
+extern s32 D_001D4BB0;
+extern s32 D_001D4BB4;
+extern u8 D_001D52E0;
+extern s32 D_00227480[];
+extern Struct227600 D_00227600;
+extern S_142430_3A2460 D_00142430_003A2460;
+extern u8 D_00160C40_003A3368[];
+extern S_225780_3A21C0 D_00225780_003A21C0;
+extern u8 D_00143950_b[];
+extern unsigned long D_00226080[];
+extern u8 D_13D208[];
+extern void func_0038E410(s32 *);
+extern void func_0039BF98(s32, s32);
+extern void func_003A3DA0(s32);
+extern void func_0038CAB0(void);
+extern void func_003A3C80();
+extern void func_11F0A0(s32);
+extern void func_003A0010(void);
+extern void func_0039CBA0(void);
+extern void func_13CDF0(s32);
+extern void func_00397490(void);
+extern s32 func_13CD28(s32, s32, s32, void *);
+extern void func_003A3288(s32, s32, s32, s32);
+extern u32 func_003A32E0(s32, u32);
+extern s32 func_003AA2E8(s32, s32, s32 (*)(s32, s32), s32, s32);
+extern s32 func_003A3220(s32);
+extern void func_0038E248(s32 *, s32 *, s32 *);
+extern void func_12D4D8(u8 *);
+extern s32 func_12A9F0(s32, s32);
+extern void func_003D4858();
+extern void func_003A3BB8(void);
+extern s32 func_0039BEC0(s32, s32, s32, s32, u8 *);
+void func_003A35C0(void) {
+    u8 buf[0x10];
+    s32 lo;
+    s32 n;
+    s32 a;
+    s32 c;
+    s32 done;
+    s32 r;
+    s32 addr;
+    s32 idx;
+    u8 *s;
+    s32 *p;
+    s32 v;
+
+    if (D_001DA0B4 == 0) {
+        func_0038E410(D_00227480);
+        func_0039BF98(0, 0);
+        return;
+    }
+    s = (u8 *)&D_00227600;
+    a = *(s32 *)(s + 0xC);
+    c = *(s32 *)(s + 0x14);
+    addr = c + 0xF8000;
+    func_003A3DA0(1);
+    D_001D4BB0 = D_001D4BB4;
+    func_0038CAB0();
+    func_003A3C80();
+    func_003A3DA0(1);
+    func_11F0A0(0);
+    func_003A0010();
+    func_0039CBA0();
+    func_13CDF0(0);
+    while (D_00142430_003A2460.f15C >= 3 || D_00142430_003A2460.f164 >= 0) {
+        func_00397490();
+    }
+    n = -1;
+    lo = 0;
+    done = 0;
+    do {
+        if (D_001DA0B8 != 0 && *(s32 *)D_001DA0B8 != 0) {
+            v = D_001D52E0; /* v is reused for the entry pointer below: one variable keeps both in $v1 */
+            buf[0] = 100;
+            buf[1] = v;
+            buf[2] = 0;
+            func_13CDF0(0);
+            v = D_001DA0B8;
+            func_13CD28(*(s32 *)v + T->f4, 0x10, addr, buf);
+            func_13CDF0(0);
+            D_00225780_003A21C0.f4C = addr;
+        } else {
+            D_00225780_003A21C0.f4C = 0;
+        }
+        D_00225780_003A21C0.f34 = 0;
+        func_003A3288(a, D_001DA0D8 * 2, c, 0xF8000);
+        r = func_003AA2E8(D_001DA0B0, D_001DA0B4, (s32 (*)(s32, s32))func_003A32E0, D_001DA0BC, D_001DA0C0);
+        p = D_00227480;
+        if ((r ^ 1) == 0) {
+            ((u8 *)p)[0x64] = 1;
+        }
+        if (r != 0 && !(D_001D4D40 & 0x40)) {
+            ((u8 *)p)[0x64] = 1;
+            func_0038E410(p);
+        }
+        if (D_00227480[0] != 0) {
+            D_00227480[0]++;
+            if (D_00227480[0] + D_00143950_b[0xAD] >= 4) {
+                D_00227480[0] = 1;
+            }
+            if (D_00227480[0] == 2) {
+                D_001D4D40 = 0;
+                if (D_00143950_b[0xAD] != 0) {
+                    D_001DA0C0 = 0;
+                    idx = func_003A3220(0x1D);
+                } else {
+                    D_001DA0C0 = 1;
+                    idx = func_003A3220(0x1F);
+                }
+            } else if (D_00227480[0] == 3) {
+                D_001DA0C0 = 1;
+                D_001D4D40 = 0;
+                idx = func_003A3220(0x1E);
+            } else {
+                D_001DA0C0 = 0;
+                D_001D4D40 = 1;
+                idx = func_003A3220(0);
+            }
+            D_001DA0B8 = (s32)&T->e[idx * 2];
+            D_001DA0B0 = T->e[idx * 2 + 1].a + T->f4;
+            D_001DA0B4 = T->e[idx * 2 + 1].b;
+        } else if (D_00227480[0x18] == 0) {
+            done = 1;
+        } else {
+            func_0038E248(D_00227480, &lo, &n);
+            if (n == 0) {
+                D_001DA0C0 = lo == 0x1F;
+                idx = func_003A3220(lo);
+                D_001DA0B8 = (s32)&T->e[idx * 2];
+                D_001DA0B0 = T->e[idx * 2 + 1].a + T->f4;
+                D_001DA0B4 = T->e[idx * 2 + 1].b;
+            } else if (n == 1) {
+                done = 1;
+            }
+        }
+    } while (!done);
+    func_13CDF0(0);
+    func_12D4D8(D_13D208);
+    func_12A9F0(0, 0);
+    func_003D4858();
+    D_00226080[4] = 0;
+    func_003A3BB8();
+    if (r == 0 && n == 1) {
+        func_0039BEC0(2, 2, lo, 0, 0);
+    } else {
+        func_0039BF98(0, 0);
+    }
+}
+#undef T
+/* localdecomp:end func_003A35C0 */
 
 /* localdecomp:start func_003A3A00 */
 extern s32 D_001425AC[];

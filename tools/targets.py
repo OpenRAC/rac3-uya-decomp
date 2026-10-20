@@ -167,6 +167,43 @@ TARGETS = {
         base_flags="-O2 -G8 -fopt-stack -mno-check-zero-division",
         label="boot_elf (engine core + boot front end)",
     ),
+    # Veldin's level overlay (levels/singleplayer/1_veldin/overlay.elf). Every
+    # level overlay has frontbin's layout at other addresses; most of its code
+    # is shared with the other levels (src/levels/common/, docs/common_level_c.md).
+    "veldin": Target(
+        "veldin",
+        elf="baserom/veldin.elf",
+        sha1="63ac546a87a15766052360cc9e2361ebd1600da0",
+        yaml="config/splat/veldin.yaml",
+        ld="linker_scripts/veldin.ld",
+        build_dir="build/veldin",
+        bin_name="veldin.bin",
+        files="config/veldin/src_files.txt",
+        parts="config/veldin/text_parts.txt",
+        divs_nops="config/veldin/divs_nops.txt",
+        sq_ra_funcs="config/veldin/sq_ra_funcs.txt",
+        localdecomp_flags="config/veldin/localdecomp_flags.txt",
+        symbol_addrs="config/veldin/symbol_addrs.txt",
+        symbols_resolved="config/veldin/symbol_addrs_resolved.txt",
+        asm_root="asm/veldin",
+        handwritten="asm/veldin/handwritten",
+        remnants="asm/veldin/remnants",
+        gp=0x1DC8B0,
+        base_flags="-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division",
+        units=[Unit("text", 0x2F7880, 0x51DC78, "src/veldin", "asm/veldin/nonmatchings/text", ".text", objdir="veldin")],
+        objdiff_units={"text": "veldin/src/"},
+        objdiff_dirs={"text": "veldin"},
+        objdiff_categories={"text": ["levels", "veldin"]},
+        # 0x0..0x1000: ELF and program headers; 0x3495F8..: .shstrtab and the
+        # section header table
+        raw_blobs=[("header", 0x0, 0x1000), ("trailer", 0x3495F8, 0x3497A4)],
+        splat_src="src/veldin",
+        # The jump tables sit among other data all through .data (each source
+        # file's .rodata between the data, not one block as in frontbin), so
+        # .data stays whole and switch functions stay INCLUDE_ASM for now.
+        jtbl_segments={},
+        label="veldin (level 1 overlay)",
+    ),
     # i5bootn.elf: the bootstrap launcher the disc boots first. Its startup code,
     # a small loader and Sony's libkernl; .rodata is mostly the payload it loads.
     # Nothing touches $gp (gp 0: no small data), so its code was built with -G0.

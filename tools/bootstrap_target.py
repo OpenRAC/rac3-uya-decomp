@@ -337,7 +337,9 @@ def main():
         p = os.path.join(ROOT, T.unit_for(a).asm_dir, "func_%08X.s" % a)
         if entries[a] == "INCLUDE_ASM" and os.path.exists(p):
             ts = sorted(set(re.findall(r"jtbl_[0-9A-F]{6,8}", open(p).read())))
-            if ts:
+            # only where setup_asm.py cuts the jump tables out of the data
+            # (Target.jtbl_segments); otherwise the data .s keeps them
+            if ts and T.jtbl_segments:
                 ro[a] = ts
     write_tree(T, files, entries, header + parts, ro)
     run(py, "tools/setup_asm.py", "--target", T.name)

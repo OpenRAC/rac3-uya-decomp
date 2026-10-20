@@ -85,7 +85,7 @@ HEADER_OBJ := $(BUILD_DIR)/asm/header.s.o
 # file in build/src/frontbin/) and links them into one text.c.o.
 TEXT_OBJ := $(BUILD_DIR)/src/text.c.o
 
-.PHONY: all clean check check-frontbin check-boot_elf check-i5bootn objdiff objdiff-frontbin objdiff-boot_elf objdiff-i5bootn
+.PHONY: all clean check check-frontbin check-boot_elf check-i5bootn check-veldin objdiff objdiff-frontbin objdiff-boot_elf objdiff-i5bootn
 all: check
 
 # -I include: every splat-generated .s (data segments, per-function
@@ -296,3 +296,40 @@ $(I5_OBJDIFF_T): $(I5_TEXT_OBJ) $(I5_BIN)
 $(I5_OBJDIFF_B): $(I5_DEPS) include/include_asm.h
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
 	$(PYTHON) tools/build_text.py --target i5bootn --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
+
+# ===========================================================================
+# veldin: level 1's overlay, levels/singleplayer/1_veldin/overlay.elf (docs/veldin.md)
+#
+# frontbin's layout at other addresses: one code section (.text, src/veldin/),
+# its .lit (with .bss stored as zeros), .data and lvl.* vtables, assembled from
+# asm/veldin/, which `python tools/setup_asm.py --target veldin` writes from
+# baserom/veldin.elf. Tables in config/veldin/. Not part of `make check` yet:
+# `make check-veldin`.
+# ===========================================================================
+
+VELDIN_BUILD   := $(BUILD_DIR)/veldin
+VELDIN_LD      := linker_scripts/veldin.ld
+VELDIN_TARGET  := $(VELDIN_BUILD)/veldin.elf
+VELDIN_BIN     := $(VELDIN_BUILD)/veldin.bin
+VELDIN_TABLES  := config/veldin/src_files.txt config/veldin/text_parts.txt config/veldin/divs_nops.txt config/veldin/sq_ra_funcs.txt
+VELDIN_DEPS    := $(wildcard src/veldin/*.c) $(VELDIN_TABLES) tools/build_text.py tools/ee29.py tools/srcfiles.py tools/asm_filter.py tools/targets.py
+VELDIN_TEXT_OBJ := $(VELDIN_BUILD)/src/text.c.o
+VELDIN_ASM_OBJS := $(VELDIN_BUILD)/asm/veldin/header.s.o $(VELDIN_BUILD)/asm/veldin/trailer.s.o \
+                   $(patsubst %,$(VELDIN_BUILD)/asm/veldin/data/%.data.s.o,lit data lvl_vtbl lvl_camvtbl lvl_sndvtbl)
+
+$(VELDIN_BUILD)/asm/veldin/%.s.o: asm/veldin/%.s
+	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
+	"$(AS)" $(ASFLAGS) -o "$@" "$<"
+
+$(VELDIN_TEXT_OBJ): $(VELDIN_DEPS)
+	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
+	$(PYTHON) tools/build_text.py --target veldin --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
+
+$(VELDIN_TARGET): $(VELDIN_ASM_OBJS) $(VELDIN_TEXT_OBJ) $(VELDIN_LD)
+	"$(LD)" -T "$(VELDIN_LD)" -o "$@"
+
+$(VELDIN_BIN): $(VELDIN_TARGET)
+	"$(OBJCOPY)" -O binary "$<" "$@"
+
+check-veldin: $(VELDIN_BIN)
+	python tools/check_match.py --target veldin "$(VELDIN_BIN)" baserom/veldin.elf config/splat/veldin.yaml

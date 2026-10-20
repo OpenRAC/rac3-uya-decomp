@@ -186,6 +186,10 @@ TARGETS = {
         # file's .rodata between the data, not one block as in frontbin), so
         # .data stays whole and switch functions stay INCLUDE_ASM for now.
         jtbl_segments={},
+        # the catalogue's overlay name (tools/common_c.json): Veldin owns
+        # every shared function it has, so tools/link_common_sources.py links
+        # those sources into this build as they are
+        level_overlay="singleplayer/1_veldin",
         label="veldin (level 1 overlay)",
     ),
     # i5bootn.elf: the bootstrap launcher the disc boots first. Its startup code,

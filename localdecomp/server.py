@@ -1460,8 +1460,9 @@ def _target_of_unit(name):
     return None
 
 
-def _matched_by_unit(report):
-    """{unit name: set of function names at 100%} plus overall measures."""
+def _matched_by_unit(report, every=False):
+    """{unit name: set of function names at 100%} (every=True: all function
+    names in the unit, matched or not)."""
     units = {}
     for u in report.get("units", []):
         name = u.get("name") or ""
@@ -1471,7 +1472,7 @@ def _matched_by_unit(report):
         name = _target_of_unit(name) or name
         units.setdefault(name, set()).update(
             f.get("name") for f in u.get("functions", [])
-            if float(f.get("fuzzy_match_percent", 0) or 0) == 100.0
+            if every or float(f.get("fuzzy_match_percent", 0) or 0) == 100.0
         )
     return units
 
@@ -1604,7 +1605,8 @@ def run_full_check(project):
         for t in by_target:
             by_target[t]["baseline"] = _summary(base, t)
         bu, cu = _matched_by_unit(base), _matched_by_unit(cur)
-        gained, lost = [], []
+        present = _matched_by_unit(cur, every=True)
+        gained, lost, removed = [], [], []
         # gains are counted for frontbin only at the top level, like the
         # table (and per target in by_target); losses are checked in every
         # unit so a regression in level code still fails
@@ -1614,10 +1616,18 @@ def run_full_check(project):
                 by_target[unit]["newly_matched"] = [f"{unit}: {f}" for f in sorted(c - b)]
             if unit == "frontbin":
                 gained += [f"{unit}: {f}" for f in sorted(c - b)]
-            lost += [f"{unit}: {f}" for f in sorted(b - c)]
-        result["newly_matched"], result["lost"] = gained, lost
+            # a name that is gone from the report altogether was folded into a
+            # neighbour (a linker-remnant symbol that turned out to be the end of
+            # the function before it). The full build's MATCH already proved the
+            # executables' bytes, so that is not a loss; a function that is still
+            # there but below 100% is.
+            gone = b - c
+            lost += [f"{unit}: {f}" for f in sorted(gone & present.get(unit, set()))]
+            removed += [f"{unit}: {f}" for f in sorted(gone - present.get(unit, set()))]
+        result["newly_matched"], result["lost"], result["removed"] = gained, lost, removed
+        note = f"; {len(removed)} name(s) no longer in the report (merged into another function)" if removed else ""
         step("compare with last push", not lost,
-             f"+{len(gained)} matched, -{len(lost)} lost" if lost else f"+{len(gained)} matched, none lost")
+             (f"+{len(gained)} matched, -{len(lost)} lost" if lost else f"+{len(gained)} matched, none lost") + note)
     else:
         result["baseline"] = None
         result["newly_matched"], result["lost"] = [], []

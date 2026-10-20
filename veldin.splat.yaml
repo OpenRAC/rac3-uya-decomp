@@ -1,0 +1,45 @@
+name: veldin
+sha1: 63ac546a87a15766052360cc9e2361ebd1600da0
+options:
+  basename: veldin
+  # levels/singleplayer/1_veldin/overlay.elf on the unpacked disc, copied here
+  target_path: veldin.elf
+  base_path: ../..
+  build_path: build
+  # bin segments (raw bytes) are written here; never commit them
+  asset_path: build/veldin/splat_assets
+  asm_path: asm/veldin
+  src_path: src/veldin
+  ld_script_path: linker_scripts/veldin.splat.ld
+  compiler: EEGCC
+  platform: ps2
+  find_file_boundaries: True
+  gp_value: 0x001DC8B0
+  symbol_addrs_path:
+    - targets/veldin/symbol_addrs.txt
+  asm_function_macro: glabel
+  asm_data_macro: dlabel
+  migrate_rodata_to_functions: True
+  generate_asm_macros_files: False
+  undefined_funcs_auto_path: targets/veldin/undefined_funcs_auto.txt
+  undefined_syms_auto_path: targets/veldin/undefined_syms_auto.txt
+
+# A level overlay has frontbin's layout at other addresses: .lit, .bss (stored
+# on disk as zeros, so it is part of the lit segment, as in frontbin), .data,
+# the three lvl.* vtables and .text. The trailer is .shstrtab plus the section
+# header table.
+segments:
+  - {name: header, type: bin, start: 0x0}
+  - {name: lit, type: data, start: 0x1000, vram: 0x1D5680}
+  - {name: data, type: data, start: 0xCFE00, vram: 0x2A4480}
+  - {name: lvl_vtbl, type: data, start: 0x122200, vram: 0x2F6880}
+  - {name: lvl_camvtbl, type: data, start: 0x123080, vram: 0x2F7700}
+  - {name: lvl_sndvtbl, type: data, start: 0x123180, vram: 0x2F7800}
+  - name: text
+    type: code
+    start: 0x123200
+    vram: 0x2F7880
+    subsegments:
+      - [0x123200, c, text]
+  - {name: trailer, type: bin, start: 0x3495F8}
+  - [0x3497A4]

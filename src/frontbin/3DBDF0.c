@@ -1369,7 +1369,91 @@ void func_003DE4A0(void *a) {
 
 LINKER_REMNANT("asm/remnants", func_003DE558);
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003DE560);
+/* localdecomp:start func_003DE560 */
+typedef struct {
+    u8 pad0[0x10];
+    V4_3DCD08 v10;
+    u8 pad20[0x10];
+    V4_3DCD08 v30;
+    f32 f40;
+    f32 f44;
+    f32 f48;
+    f32 f4C;
+    s32 f50;
+    f32 f54;
+} S_3DE560;
+extern S_3DE560 D_00302E20;
+extern f32 D_001D9D8C;
+extern f32 D_001D9D90;
+extern f32 D_1A4C60[];
+extern f32 func_00389410(f32);
+extern void func_00389158(void *, void *, void *, f32);
+static __inline__ void vadd_3DE560(V4_3DCD08 *d, V4_3DCD08 *a, V4_3DCD08 *b) {
+    u128_t x, y;
+    __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*a));
+    __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*b));
+    __asm__("vadd.xyz %0, %0, %1" : "+j"(x) : "j"(y));
+    __asm__("sqc2 %1, %0" : "=m"(*d) : "j"(x));
+}
+static __inline__ void vsub_3DE560(V4_3DCD08 *d, V4_3DCD08 *a, V4_3DCD08 *b) {
+    u128_t x, y;
+    __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*a));
+    __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*b));
+    __asm__("vsub.xyz %0, %0, %1" : "+j"(x) : "j"(y));
+    __asm__("sqc2 %1, %0" : "=m"(*d) : "j"(x));
+}
+void func_003DE560(void) {
+    V4_3DCD08 d;
+    V4_3DCD08 b;
+    V4_3DCD08 a;
+    f32 scale;
+    s32 i;
+    f32 diff;
+    f32 k, cur, eps, t;
+
+    if (D_001D9D8C > 1.0f || D_001D9D90 > 1.0f) {
+        scale = 2.0f;
+    } else {
+        scale = 1.0f;
+    }
+
+    vsub_3DE560(&d, &D_00222480[0], &D_00302E20.v10);
+    func_00388830(&d, &d, D_00302E20.f54);
+    for (i = 0; i < 10; i++) {
+        func_00389158(&a, &d, &D_00302E20.v30, func_00389410(i * 6.2831855f / 10.0f));
+        vadd_3DE560(&a, &a, &D_00302E20.v10);
+        func_00389158(&b, &d, &D_00302E20.v30, func_00389410((i + 1) * 6.2831855f / 10.0f));
+        vadd_3DE560(&b, &b, &D_00302E20.v10);
+    }
+    if (func_003DE8A0() && *(u8 *)0x1D5474 && D_00302E20.f50 == 0) {
+        if (D_00302E20.f48 < 0.0261799414f) {
+            D_00302E20.f48 += scale * 0.000145444108f;
+        } else {
+            D_00302E20.f48 = 0.0261799414f;
+        }
+        k = 0.0261799414f;
+        k = D_00302E20.f48 / k;
+        cur = D_00302E20.f40;
+        eps = 0.1f;
+        t = D_00302E20.f54;
+        /* keeps the f54 load and the division apart from the subtraction in both scheduling passes */
+        __asm__ __volatile__("");
+        diff = t - cur;
+        D_00302E20.f4C = k;
+        if (fabsf(diff) > eps) {
+            vsub_3DE560(&D_00222480[0], &D_00222480[0], &D_00302E20.v10);
+            D_00302E20.f40 = cur + k * 0.0350000262f * diff;
+            func_00388830(D_00222480, D_00222480, D_00302E20.f40);
+            vadd_3DE560(&D_00222480[0], &D_00222480[0], &D_00302E20.v10);
+        }
+        vsub_3DE560(&D_00222480[0], &D_00222480[0], &D_00302E20.v10);
+        func_00389158(D_00222480, D_00222480, &D_00302E20.v30, scale * D_00302E20.f48 * D_00302E20.f44);
+        vadd_3DE560(&D_00222480[0], &D_00222480[0], &D_00302E20.v10);
+        func_003886C0(&D_00302E20, &D_00302E20, D_1A4C60, D_00302E20.f4C * 0.0199999809f);
+        func_003DE4A0(&D_00302E20);
+    }
+}
+/* localdecomp:end func_003DE560 */
 
 /* localdecomp:start func_003DE870 */
 typedef struct { u8 pad[0x40]; s32 f40; u8 pad2[0x14]; s32 f58; } S_302D80;

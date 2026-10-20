@@ -517,7 +517,69 @@ void func_003A1630(s32 id, s32 *out1, s32 *out2) {
 }
 /* localdecomp:end func_003A1630 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003A1890);
+/* localdecomp:start func_003A1890 */
+typedef int u128_39C548 __attribute__((mode(TI)));
+typedef struct { u8 p0[0x1A]; u16 f1A; } S_1D6DC0_39C548;
+typedef struct { u32 f0; s16 f4, f6, f8, fA; u8 pC[4]; s16 f10; u8 p12[2]; s32 f14, f18, f1C, f20, f24; } P_39C548;
+extern u8 D_1D6DC0[8];
+extern u8 D_1A30B0[];
+extern s32 func_003A5240(s32);
+extern void func_003A2B78(s32, long);
+extern void func_13CB20(long,long,s32,s32,s16,s32,s32,s32,s32,s32,void*,unsigned long);
+void func_003A1890(s32 id, s32 a1, s32 src, s32 *pp, s32 vol) {
+    P_39C548 *p = (P_39C548 *)pp;
+    S_1D6DC0_39C548 *d;
+    s32 x, y, z;
+    s32 r, i;
+    s32 flags;
+    u8 *e;
+    u8 *e2;
+
+    if (p->f0 != 0) return;
+    func_003A1630(id, &x, &y);
+    func_003A1610(id, &z);
+    if (x == 0) return;
+    r = func_003A5240(src);
+    if (r == -1) return;
+    d = (S_1D6DC0_39C548 *)D_1D6DC0;
+    p->f0 = 0xFFFFFFFF;
+    p->f4 = id;
+    p->fA = 1;
+    p->f14 = 10;
+    p->f8 = a1;
+    p->f18 = 0xBB80;
+    p->f24 = 600;
+    p->f6 = vol;
+    p->f10 = 0;
+    p->f1C = src;
+    p->f20 = r;
+    i = r;
+    e = (u8 *)((r * 128) + (s32)D_1A30B0);
+    *(s16 *)(e + 0xC8) = d->f1A;
+    *(s16 *)(e + 0xCA) = -1;
+    *(s16 *)(e + 0xCC) = vol;
+    *(void **)(e + 0xC4) = d;
+    *(s32 *)(e + 0xDC) = src;
+    *(s32 *)(e + 0x100) = 0;
+    __asm__("sq $0,%0" : "=m"(*((u128_39C548 *)((r * 128) + (D_1A30B0 + 0xF0)))));
+    flags = 0;
+    if (src != 0) {
+        ((u128_39C548 (*)[8])D_1A30B0)[r][14] = *(u128_39C548 *)(src + 0x10);
+        *(f32 *)(e + 0xE8) += 1.0f;
+    } else {
+        flags = 0x11;
+        __asm__("sq $0,%0" : "=m"(*((u128_39C548 *)((r * 128) + (D_1A30B0 + 0xE0)))));
+    }
+    /* a second pointer, from a copy of r: retail recomputes it here */
+    e2 = (u8 *)((i * 128) + (s32)D_1A30B0);
+    *(s32 *)(e2 + 0x118) = flags;
+    *(u8 *)(e2 + 0xD0) = 8;
+    *(s16 *)(e2 + 0xCE) = 0;
+    *(s32 *)(e2 + 0xD4) = 0;
+    *(u32 *)(e2 + 0xC0) = 0xFFFFFFFF;
+    func_13CB20(x, y, 0, 0, p->f6, 0, z, 0, 0, 1, func_003A2B78, (u32)p);
+}
+/* localdecomp:end func_003A1890 */
 
 /* localdecomp:start func_003A1A58 */
 extern void func_0038CEA0(void *, s32, s32);

@@ -853,7 +853,161 @@ void func_003BD260(void) {
 }
 /* localdecomp:end func_003BD260 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003BD310);
+/* localdecomp:start func_003BD310 */
+typedef struct { u8 p0[0x20]; s16 f20; s16 f22; u8 p24[8]; s16 f2C; s16 f2E; u8 p30[0x34]; s32 f64; } S_16C580_3B7B50;
+typedef struct { s16 a; s16 b; s32 f4; s32 f8; s32 fC; } S_37BD08_3B7B50;
+typedef struct { s32 f0; s32 f4; s32 f8; s32 fC; s32 f10; s32 f14; } S_37BC30_3B7B50;
+typedef struct { u8 p0[0x228]; f32 f228; f32 f22C; u8 p230[8]; f32 f238; f32 f23C; u8 p240[0x10]; s32 f250; s32 f254; s32 f258; } S_225980_3A2460;
+typedef int u128_3B7B50 __attribute__((mode(TI)));
+typedef struct { f32 v[4]; } S_2226D0_3B7B50;
+__asm__(".extern D_001D8CE4, 4");
+__asm__(".extern D_001D8CE8, 4");
+__asm__(".extern D_001D8CEC, 4");
+__asm__(".extern D_001D8CF0, 4");
+__asm__(".extern D_001D8CF4, 4");
+__asm__(".extern D_001D8CF8, 4");
+__asm__(".extern D_001D8CFC, 4");
+__asm__(".extern D_001D8D18, 4");
+__asm__(".extern D_001D8D1C, 4");
+extern s32 D_001D5B94;
+extern s32 D_001D9DAC;
+extern s32 D_001D9D84;
+extern s32 D_001D6E90;
+extern s32 D_001D4B48;
+extern s32 D_001D8D18;
+extern s32 D_001D8D1C;
+extern s32 D_001D8CF8;
+extern s32 D_001D8CFC;
+extern void (*D_001D8CE4)(s32, s32);
+extern s32 (*D_001D8CE8)();
+extern void (*D_001D8CEC)(s32);
+extern void (*D_001D8CF0)(void);
+extern void (*D_001D8CF4)(void);
+extern u8 D_001D9CC4;
+extern u8 D_001D9CC5;
+extern u8 D_001D9CC6;
+extern f32 D_001D9CC8;
+extern f32 D_001D9CCC;
+extern f32 D_001D9CD0;
+extern f32 D_001D9CD4;
+extern u8 D_00227500[];
+extern S_16C580_3B7B50 D_16C580_003BD310;
+extern S_37BD08_3B7B50 D_0037FD48[];
+extern S_37BC30_3B7B50 D_0037FC70[];
+extern S_225980_3A2460 D_00225980;
+extern S_2226D0_3B7B50 D_002226D0;
+extern u8 D_002D2180[];
+extern void func_0038CEA0();
+extern void func_003C3028();
+extern void func_11F0A0();
+extern void func_13CF80(s32, s32, s32, s32, s32);
+extern void func_13CA28(void);
+extern void func_003A56F0(void);
+extern void func_003A1EE8(void);
+extern void func_13BF00(s32);
+extern void func_13BED0(void);
+extern void func_00392580(s32, long, long);
+extern void func_13D310(s32, void *);
+extern void func_003BE388(void);
+extern void func_003BD260(void);
+extern void func_003BCDD8(void);
+
+s32 func_003BD310(void) {
+    s32 i;
+    s32 a;
+    s32 g45C;
+    s32 g84;
+    s32 idx;
+    S_37BD08_3B7B50 *e;
+    S_37BC30_3B7B50 *t;
+    S_225980_3A2460 *s;
+    func_0038CEA0(D_00227500, -1, 0x80);
+    D_002276C0.f10 |= 0x80000000;
+    D_001D5B94 = 6;
+    func_003C3028();
+    func_11F0A0(0);
+    func_13CF80(2, 0, 0, 0, 0);
+    func_13CA28();
+    func_13B620();
+    func_003A56F0();
+    func_003A1EE8();
+    D_1CCFD0.f7 = 1;
+    for (i = 0; i < 6; i++) {
+        if (D_1A30B0.f90[i] != 0) {
+            func_13BF00(D_1A30B0.f90[i]);
+            func_13BED0();
+            D_001D9DAC = 0;
+            D_1A30B0.f90[i] = 0;
+        }
+    }
+    g45C = *(s32 *)0x1D545C;
+    g84 = D_001D9D84;
+    D_16C580_003BD310.f20 = 2;
+    D_16C580_003BD310.f2E = -1;
+    D_16C580_003BD310.f22 = -1;
+    D_16C580_003BD310.f2C = 0;
+    D_16C580_003BD310.f64 = -1;
+    D_001D6E90 = 0;
+    D_001D8D18 = g45C;
+    D_001D8D1C = g84;
+    e = D_0037FD48;
+    i = 0;
+    do {
+        if ((e->a == -1 && e->b == g84) || (e->a == g45C && (e->b == -1 || e->b == g84))) break;
+        i++;
+        e++;
+    } while (i < 0x33);
+    idx = 8;
+    D_001D8CFC = 0;
+    D_001D8CF8 = 0;
+    if (i < 0x33) {
+        D_001D8CFC = e->fC;
+        D_001D8CF8 = e->f8;
+        idx = e->f4;
+    }
+    t = &D_0037FC70[idx];
+    D_001D8CF0 = func_003BCDD8;
+    D_001D8CE4 = 0;
+    D_001D8CE8 = 0;
+    D_001D8CEC = 0;
+    D_001D8CF4 = 0;
+    if (t->f4) D_001D8CE4 = (void (*)(s32, s32))t->f4;
+    if (t->f8) D_001D8CE8 = (s32 (*)())t->f8;
+    if (t->fC) D_001D8CEC = (void (*)(s32))t->fC;
+    if (t->f10) D_001D8CF0 = (void (*)(void))t->f10;
+    if (t->f14) D_001D8CF4 = (void (*)(void))t->f14;
+    s = &D_00225980;
+    a = t->f0;
+    s->f258 = 0x10;
+    s->f250 = 0;
+    s->f254 = 0;
+    s->f228 = 0;
+    s->f22C = 524288.0f;
+    s->f238 = 255.0f;
+    s->f23C = 128.0f;
+    D_16C580_003BD310.f2E = a;
+    D_001D9CC4 = s->f250;
+    D_001D9CC5 = s->f254;
+    D_001D9CC6 = s->f258;
+    D_001D9CC8 = s->f228;
+    D_001D9CCC = s->f22C;
+    D_001D9CD0 = s->f238;
+    D_001D9CD4 = s->f23C;
+    func_00392580(0, 0, 0);
+    D_002276C0.f10 |= 0x80000000;
+    /* 128-bit zero store: gcc would build the zero in a register first */
+    __asm__("sq $0,%0" : "=m"(*(u128_3B7B50 *)&D_002226D0));
+    D_002226D0.v[2] = -1.0f;
+    *(s32 *)0x1D4B4C = 1;
+    *(s32 *)0x1D545C = D_001D9D84;
+    D_001D4B48 = 0;
+    func_13D310(D_001D9D84, D_002D2180);
+    func_003BE388();
+    func_003BD260();
+    if (D_001D8CE4 != 0) D_001D8CE4(D_001D8CF8, D_001D8CFC);
+    return 1;
+}
+/* localdecomp:end func_003BD310 */
 
 /* localdecomp:start func_003BD670 */
 typedef struct { u8 p0[0x15C]; s32 f15C; s32 f160; s32 f164; } S_142430_3B7EB0;

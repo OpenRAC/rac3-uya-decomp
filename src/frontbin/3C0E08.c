@@ -6,6 +6,8 @@ extern void (*D_00226880[])(s32);
 extern void (*D_00226C80[])(s32);
 extern void (*D_00226E80[])(s32);
 extern void (*D_00226A80[])(s32);
+extern void func_003C1130();
+extern void func_003C1440();
 extern s32 func_0039FE80();
 /* --- end of declarations from other files --- */
 

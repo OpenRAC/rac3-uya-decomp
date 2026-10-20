@@ -1055,7 +1055,195 @@ void func_003B8710(void) {
 }
 /* localdecomp:end func_003B8710 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B8D18);
+/* localdecomp:start func_003B8D18 */
+typedef struct { s32 f0; u8 pad4[0x2E]; u8 b32; u8 pad33[5]; s32 f38; s32 f3C; u8 pad40[2]; s16 h42; s32 f44; u8 pad48[0x12]; u8 b5A; u8 b5B; u8 pad5C[0x24]; } S_3B3558_A;
+typedef struct { u8 b[8]; } B8_3B10A8;
+typedef struct { u8 pad[4]; u8 b4; u8 b5; u8 pad6[10]; } S_3B3558_C;
+typedef struct { u8 pad[0x8A]; u16 h8A; u8 pad8C[0xF0 - 0x8C]; } S_3B3558_D;
+typedef struct { s32 f0; s32 pad[6]; } S_3B3558_E;
+typedef struct { u8 pad[0x18]; s16 h18; u8 pad1A[0x16]; S_3B3558_E e30[10]; s32 f148; u8 pad14C[0x28]; s32 f174; } S_3B3558_F;
+typedef struct { u8 pad[0x120]; u16 h120; } S_3B3558_G;
+typedef struct { u8 pad[0x2884]; s16 h2884; } S_3B3558_H;
+
+extern u8 D_001426E0[];
+extern S_3B3558_A D_00142660;
+extern S_3B3558_G D_001A7E18;
+extern s32 D_001D5528;
+extern s32 D_001D4C38;
+extern s32 D_001D54D0;
+extern B8_3B10A8 D_001D4BE0;
+extern u8 D_00142CA0[];
+extern s32 D_00142DE0[];
+extern u8 D_001425C0[];
+/* Declared 8 bytes or smaller so that Ps2EeAs builds their addresses with one la macro. */
+extern u8 D_001D54B0[1];
+extern u8 D_001D5468[1];
+extern u8 D_001D5498[1];
+extern u16 D_001D55A0[1];
+extern u8 D_001D55B0[1];
+extern u16 D_001D54D8[1];
+extern s32 D_001D4C60[1];
+extern s32 D_001D4C80[1];
+extern u8 D_001BBB18[];
+extern u8 D_00142A60[];
+extern u8 D_00142B00[];
+extern S_3B3558_C D_00143950_b;
+extern S_3B3558_D D_001DAAC0[];
+extern s32 D_001427F0[];
+extern S_3B3558_H D_001A4BE0;
+extern S_3B3558_F D_00142430;
+__asm__(".extern D_001D8ACC, 4");
+extern s32 D_001D8ACC;
+extern void func_0038CFB0(u8 *, u8 *, s32);
+extern void func_0038CEA0(void *, s32, s32);
+extern s32 func_003823F0(s32);
+extern void func_003C0F78(s32);
+extern void func_0039C5C8(void);
+extern s32 func_00381CB8(s32, s32);
+extern void func_0039E8A8(s32);
+
+void func_003B8D18(s32 arg0) {
+    s32 a[0x9C];
+    s32 b[0x9C];
+    s32 c[0x9C];
+    s32 d[0x20];
+    u8 e[0x9C];
+    u8 f[5];
+    s32 g[32];
+    u16 h[6];
+    u8 k[6];
+    s32 m[0x13];
+    s32 n[0x13];
+    S_3B3558_A save;
+    B8_3B10A8 save8;
+    u8 big[0x1E0];
+    s32 s54D0;
+    s32 *buf;
+    s32 s3E, sC8, sC1, sH120, s5528, s4C38;
+    s32 b45;
+    s32 i;
+    s32 nF = 5;
+    s32 nM = 0x13;
+    s32 nD = 0x20;
+    s32 nA = 0x9C;
+    s32 nBuf = 15;
+    s32 nG = 32;
+
+    buf = __builtin_alloca(15 * 4);
+    s3E = D_001426E0[0x3E];
+    sC8 = D_001426E0[0xC8];
+    sC1 = D_001426E0[0xC1];
+    sH120 = D_001A7E18.h120;
+    D_00142660.b32++;
+    D_00142660.f0 += 2;
+    D_00142660.b5A = 0;
+    D_00142660.b5B = 0;
+    save = D_00142660;
+    s5528 = D_001D5528;
+    s4C38 = D_001D4C38;
+    save8 = D_001D4BE0;
+    for (i = 0; i < nBuf; i++) buf[i] = D_001426E0[0xB0 + i];
+    for (i = 0; i < nA; i++) {
+        a[i] = D_00142CA0[i];
+        b[i] = D_00142DE0[i];
+        c[i] = D_001425C0[i];
+    }
+    s54D0 = D_001D54D0;
+    for (i = 0; i < nF; i++) f[i] = D_001426E0[0xC3 + i];
+    for (i = 0; i < nD; i++) d[i] = D_001D54B0[i];
+    for (i = 0; i < nM; i++) {
+        m[i] = D_001D5468[i];
+        n[i] = D_001D5498[i];
+    }
+    for (i = 0; i < 6; i++) {
+        h[i] = D_001D55A0[i];
+        k[i] = D_001D55B0[i];
+    }
+    a[0x1B] = 0;
+    a[0x0E] = 0;
+    a[0x0B] = 0;
+    a[0x18] = 0;
+    a[0x1E] = 0;
+    a[0x0F] = 0;
+    a[0x02] = 0;
+    a[0x03] = 0;
+    a[0x04] = 0;
+    a[0x0D] = 0;
+    a[0x08] = 0;
+    a[0x1F] = 0;
+    a[0x12] = 0;
+    a[0x21] = 0;
+    a[0x22] = 0;
+    func_0038CFB0(big, D_001BBB18, 0x128);
+    b45 = D_001426E0[0x45];
+    for (i = 0; i < nA; i++) e[i] = D_00142A60[i];
+    {
+        s32 j;
+        for (j = 0; j < nG; j++) g[j] = D_001D54D8[j];
+    }
+    func_003C0F78(func_003823F0(0xBB7));
+    func_0039C5C8();
+    {
+        s32 j;
+        for (j = 0; j < 32; j++) D_001D54D8[j] = g[j];
+    }
+    D_001426E0[0x3E] = s3E;
+    D_001426E0[0xC8] = sC8;
+    D_001426E0[0xC1] = sC1;
+    func_0038CFB0(D_001BBB18, big, 0x128);
+    D_001426E0[0x45] = b45;
+    for (i = 0; i < 6; i++) D_001D55A0[i] = h[i];
+    for (i = 0; i < 15; i++) D_001426E0[0xB0 + i] = buf[i];
+    func_0038CEA0(D_00142B00, 0, 0x9C);
+    for (i = 0; i < 0x9C; i++) D_00142A60[i] = e[i];
+    for (i = 0; i < 8; i++) {
+        D_001D4C60[i] = 0;
+        D_001D4C80[i] = 0;
+    }
+    D_001D5528 = s5528;
+    D_001D4C38 = s4C38;
+    D_001D4BE0 = save8;
+    D_00142660 = save;
+    D_00142660.h42 = 0;
+    D_00142660.f44 = 0;
+    D_00142660.f38 = 0;
+    D_00143950_b.b4 = 0;
+    D_00142660.f3C = 0;
+    D_00143950_b.b5 = 0;
+    if (sH120 != 0 && D_001A7E18.h120 == 0) D_001A7E18.h120 = 1;
+    for (i = 0; i < nF; i++) D_001426E0[0xC3 + i] = f[i];
+    for (i = 0; i < 0x9C; i++) {
+        S_3B3558_D *t;
+        D_00142CA0[i] = a[i];
+        D_00142DE0[i] = b[i];
+        D_001425C0[i] = c[i];
+        t = &D_001DAAC0[D_001425C0[i]];
+        D_001427F0[i] = t->h8A;
+    }
+    for (i = 0; i < 0x20; i++) D_001D54B0[i] = d[i];
+    for (i = 0; i < 0x13; i++) {
+        D_001D5468[i] = m[i];
+        D_001D5498[i] = n[i];
+    }
+    D_00143950_b.b5 = 0;
+    D_00143950_b.b4 = 0;
+    func_00381CB8(9, 3);
+    D_001A4BE0.h2884 = 1;
+    D_001D54D0 = s54D0;
+    if (arg0 >= 0) {
+        S_3B3558_E *p;
+        s32 old;
+        D_00142430.h18 = arg0;
+        p = &D_00142430.e30[arg0];
+        old = p->f0;
+        p->f0 = 1;
+        func_0039E8A8(D_001D8ACC);
+        p->f0 = old;
+        D_00142430.f174 = D_001D8ACC;
+        D_00142430.f148 = 0;
+    }
+}
+/* localdecomp:end func_003B8D18 */
 
 /* localdecomp:start func_003B9578 */
 /* MATCH */

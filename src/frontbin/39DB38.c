@@ -12,6 +12,7 @@ extern void (*D_00226A80[])(s32);
 extern s32 func_0039E928(s32, s32);
 extern s32 func_0039FF28(s32, s32, s32);
 extern void func_0039EE40(void);
+extern s32 func_0039FB60(s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_0039DB38 */

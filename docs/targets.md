@@ -16,8 +16,8 @@ reads it.
 Every tool works on frontbin unless told otherwise:
 
 ```
-python tools/triage.py --target boot_elf
-UYA_TARGET=i5bootn python3 tools/try_func.py scratch/f.c
+python tools/todo.py --target boot_elf
+UYA_TARGET=i5bootn python3 tools/check.py scratch/f.c
 ```
 
 These also take `--target all`, which runs them once per target that is set
@@ -25,10 +25,10 @@ up (its ELF and asm folder are there) and fails if any run fails:
 
 | Tool | `--target all` |
 |---|---|
-| `setup_asm.py` | every target whose ELF is in the repo root |
+| `setup_asm.py` | every target whose ELF is in `baserom/` |
 | `build.py` | builds and checks each |
 | `pr_check.py` | checks each |
-| `triage.py` | one summary per target |
+| `todo.py` | one summary per target |
 | `split_text.py --refresh` | refreshes each |
 | `gen_divs_nops.py`, `migrate_asm_sources.py` | each |
 
@@ -39,9 +39,10 @@ Per target:
 
 | | frontbin | boot_elf, i5bootn |
 |---|---|---|
-| source file list, flags | `tools/src_files.txt`, `tools/text_parts.txt` | `targets/<t>/src_files.txt`, `targets/<t>/text_parts.txt` |
-| `divs_nops`, `sq_ra_funcs`, `localdecomp_flags` | `tools/*.txt` | `targets/<t>/*.txt` |
-| symbols | `symbol_addrs.txt`, `symbol_addrs_resolved.txt` | `targets/<t>/symbol_addrs*.txt` |
+| source file list, flags | `config/frontbin/src_files.txt`, `config/frontbin/text_parts.txt` | `config/<t>/src_files.txt`, `config/<t>/text_parts.txt` |
+| `divs_nops`, `sq_ra_funcs`, `localdecomp_flags` | `config/frontbin/*.txt` | `config/<t>/*.txt` |
+| symbols | `config/frontbin/symbol_addrs*.txt` | `config/<t>/symbol_addrs*.txt` |
+| splat config | `config/splat/frontbin.yaml` | `config/splat/<t>.yaml` |
 | asm | `asm/` | `asm/<t>/` |
 | build | `build/` | `build/<t>/` |
 | localdecomp cache | `.localdecomp_work/` | `.localdecomp_work/<t>/` |
@@ -75,7 +76,7 @@ In localdecomp, the dropdown above the function list picks the target.
 5. `python3 tools/build.py --target <t>` must print MATCH.
 6. Add the target to the `Makefile` (copy the i5bootn section), to
    `.github/workflows/build-and-report.yml` (copy its ELF, check its asm),
-   `.gitignore` (its ELF), and run `python tools/gen_objdiff_units.py`.
+   `.gitignore` (its ELF), and run `python tools/objdiff/gen_objdiff_units.py`.
 7. Write `docs/<t>.md` and add it to this page.
 
 boot_elf was made by its own script, `tools/bootstrap_boot_elf.py`, because its

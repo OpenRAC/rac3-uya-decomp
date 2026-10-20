@@ -8,7 +8,7 @@ therefore has no asm/ at all and `make` stops with
     python tools/setup_asm.py                    # frontbin.elf  -> asm/
     python tools/setup_asm.py --target boot_elf  # boot_elf.elf  -> asm/boot_elf/
     python tools/setup_asm.py --target i5bootn   # i5bootn.elf   -> asm/i5bootn/
-    python tools/setup_asm.py --target all       # every target whose ELF is in the repo root
+    python tools/setup_asm.py --target all       # every target whose ELF is in baserom/
 
 then build (`make` on Windows, `python3 tools/build.py` on Linux/macOS). Re-run it
 after pulling if the build says an asm/ file is missing; it is safe to repeat.
@@ -40,7 +40,7 @@ What it does, in order (a plain `splat split` is NOT enough, see 3 and 6):
          <section>/rodata/jtbl_*.s and splits the segment into <name>_a.data.s /
          <name>_b.data.s (the steps of tools/migrate_jtbls.py that touch asm/).
 
-Needs: the ELF in the repo root, `pip install -r tools/requirements.txt` and splat
+Needs: the ELF in baserom/, `pip install -r tools/requirements.txt` and splat
 (`pip install splat64`).
 """
 import hashlib, os, re, shutil, subprocess, sys
@@ -202,7 +202,7 @@ def main():
     t = targets.from_argv(allow_all="elf")
     elf = t.path("elf")
     if not os.path.exists(elf):
-        sys.exit("%s not found in the repo root (see docs/wiki/Setup.md, step 2)" % t.elf)
+        sys.exit("%s not found (put your own copy in baserom/; see docs/wiki/Setup.md, step 2)" % t.elf)
     h = hashlib.sha1(rd(elf)).hexdigest()
     if h != t.sha1:
         sys.exit("%s has sha1 %s, expected %s (NTSC-U, SCUS-97353)" % (t.elf, h, t.sha1))
@@ -244,7 +244,8 @@ def main():
     # Hand splat those addresses as function symbols through a temporary extra symbol
     # file and a temporary yaml.
     extra = os.path.join(ROOT, "symbol_addrs_setup.txt" if t.name == "frontbin" else "symbol_addrs_setup_%s.txt" % t.name)
-    tmp_yaml = os.path.join(ROOT, "%s.setup.yaml" % t.name)
+    # next to the real yaml, so its base_path (the repo root, relative to the yaml) holds
+    tmp_yaml = os.path.join(os.path.dirname(t.path("yaml")), "%s.setup.yaml" % t.name)
     with open(extra, "w") as f:
         for a in sorted(names):
             if a not in taken:
@@ -260,7 +261,7 @@ def main():
         for p, body in temps:
             os.makedirs(os.path.dirname(p), exist_ok=True)
             wr(p, body)
-        run(sys.executable, "-m", "splat", "split", os.path.basename(tmp_yaml))
+        run(sys.executable, "-m", "splat", "split", os.path.relpath(tmp_yaml, ROOT))
     finally:
         for p, _ in temps:
             if os.path.exists(p):

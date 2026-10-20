@@ -2,14 +2,14 @@
 """Split the old single src/text.c into one C file per source file, or refresh
 the cross-file declarations of the files that already exist.
 
-  python tools/split_text.py --from src/text.c --boundaries tools/src_files.txt
-      Cut text.c at the start addresses listed in tools/src_files.txt and
+  python tools/split_text.py --from src/text.c --boundaries config/frontbin/src_files.txt
+      Cut text.c at the start addresses listed in config/frontbin/src_files.txt and
       write each file. Used once for the migration (and again if text.c-based
       branches have to be carried over).
 
   python tools/split_text.py --refresh
       Recompute the "declarations from other files" section at the top of
-      every file in tools/src_files.txt. Run it after adding a prototype or
+      every file in config/frontbin/src_files.txt. Run it after adding a prototype or
       extern that a later file relies on; the build and pr_check.py report
       when it is stale.
 

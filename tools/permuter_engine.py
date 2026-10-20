@@ -104,7 +104,7 @@ def prepare(src_text, func, target, toolchain, runner, mode=None, asm=None, no_c
     os.chdir(ROOT)
     try:
         import targets
-        import try_func as tf
+        import check as tf
         import permuter_setup as psu
         targets.get(target)
         cpp = cpp or psu.default_cpp(toolchain, runner)
@@ -126,7 +126,7 @@ class _Compiler:
     """compile.sh from tools/permuter_setup.py, in Python."""
 
     def __init__(self, cfg, tmp):
-        import try_func as tf
+        import check as tf
         import permuter_setup as psu
         self.cfg, self.tmp, self.psu = cfg, tmp, psu
         self.cc_flags = tf.expand(cfg["flags"], cfg["toolchain"])
@@ -447,7 +447,7 @@ def prepare_exhaustive(src_text, func, target, toolchain, runner, mode=None, asm
     os.chdir(ROOT)
     try:
         import targets
-        import try_func as tf
+        import check as tf
         targets.get(target)
         flags = tf.apply_overrides(tf.flags_for(int(func[5:13], 16)), mode, asm)
         return dict(func=func, target=target, source=src_text, flags=flags, toolchain=toolchain,
@@ -470,7 +470,7 @@ def _exh_score(job):
         os.environ["UYA_TARGET"] = cfg["target"]
         if TOOLS not in sys.path:
             sys.path.insert(0, TOOLS)
-        import try_func as tf
+        import check as tf
         import permuter_scorer as ps
         import io, contextlib
         d = tempfile.mkdtemp(prefix="fence_")

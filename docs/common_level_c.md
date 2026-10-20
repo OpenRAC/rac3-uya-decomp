@@ -3,7 +3,7 @@
 `src/levels/common/func_004D0538.c` is a C implementation of the canonical
 Veldin function at `0x004D0538`, 304 bytes. Its source is adapted from this
 project's existing `func_003ABC30`, not from a retail instruction listing.
-The compiler settings come from that donor's range in `tools/text_parts.txt`.
+The compiler settings come from that donor's range in `config/frontbin/text_parts.txt`.
 
 The first catalogue entry uses the existing SN compiler, N/default settings,
 and no inline assembly. The eight calls refer to the singleplayer executable's
@@ -123,11 +123,11 @@ that is already C, apart from addresses. `tools/seed_levels.py` copies those:
    the gates allow no assembly; a function that needed them fails the byte
    gates.
 4. Every candidate goes through `build_common_c.py`'s gates. Only passing ones
-   are kept and added to `tools/common_c.json`; `--report FILE` lists the rest
+   are kept and added to `config/levels/common_c.json`; `--report FILE` lists the rest
    with the reason.
 
-A donor in `tools/sq_ra_funcs.txt` or `tools/divs_nops.txt` passes its entry on
-to `tools/common_c_sq_ra_funcs.txt` / `tools/common_c_divs_nops.txt`, which
+A donor in `config/frontbin/sq_ra_funcs.txt` or `config/frontbin/divs_nops.txt` passes its entry on
+to `config/levels/common_c_sq_ra_funcs.txt` / `config/levels/common_c_divs_nops.txt`, which
 `tools/asm_filter.py` reads alongside the target's own tables. The tool never
 adds a name that is also a function in a built target.
 
@@ -143,7 +143,7 @@ gate rejects because the target names each address; the donor needs Ps2EeAs's
 
 A source is named after its canonical owner (the first level, in level
 order, with that code), so its name says nothing about the other overlays.
-`targets/levels/common_occurrences.tsv` lists every shared function: canonical
+`config/levels/common_occurrences.tsv` lists every shared function: canonical
 name, owner level, size, how many levels have it, C or asm, and the level
 numbers. `tools/level_occurrences.py` regenerates it and prints the addresses:
 
@@ -162,7 +162,7 @@ tells them apart by its `overlay` field.
 
 ## Trying one function
 
-`tools/try_level.py` is the level counterpart of `try_func.py`. It runs the
+`tools/try_level.py` is the level counterpart of `check.py`. It runs the
 gates for one source and, when the bytes differ, prints the compiled and
 retail listings side by side:
 
@@ -174,7 +174,7 @@ shows the retail listing. On a match it prints the catalogue entry to add.
 ## Private inputs
 
 Supply your own extracted NTSC-U levels and the reference objects made by
-`tools/gen_level_targets.py` and `tools/split_shared_levels.py`. Generate and
+`tools/objdiff/gen_level_targets.py` and `tools/objdiff/split_shared_levels.py`. Generate and
 split the objects on a persistent Linux filesystem: `/tmp` can be volatile,
 and the documented `ld -r` merge can alter text on a Windows mount.
 
@@ -224,7 +224,7 @@ into matching by copying reference instructions.
 
 Since 2026-10-04 the `levels/common` unit in `objdiff.json` uses
 `build/objdiff/base/common.o` as its base, and `make objdiff` builds it with
-`tools/common_c_base.py`. That script runs this builder with the inputs in
+`tools/objdiff/common_c_base.py`. That script runs this builder with the inputs in
 `C:\decomp-refs` (`levels/`, `level-targets/`, `level-targets-split/common.o`;
 another folder with `UYA_REFS`), so CI and localdecomp's Full check count
 every function that passes the gates. If a catalogued function stops passing,

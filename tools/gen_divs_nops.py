@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""gen_divs_nops.py: write tools/divs_nops.txt, the `nop` padding retail has in front of each div.s / sqrt.s.
+"""gen_divs_nops.py: write config/frontbin/divs_nops.txt, the `nop` padding retail has in front of each div.s / sqrt.s.
 
 Retail pads most div.s and sqrt.s with 0-3 `nop`s. gcc and both assemblers drop or ignore
 them (see docs/wiki/Matching-Patterns.md), so tools/asm_filter.py puts them back as raw

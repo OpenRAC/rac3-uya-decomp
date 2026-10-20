@@ -5,7 +5,7 @@
 1. Fork the repo and work on a branch (`match/func_0039BEC0` or `match/vtable-isa-family`), not `main`. Start it from the current `main`.
    - The sources are `src/frontbin/*.c`. A branch that still edits `src/text.c` is from before the 2026-10-03 split and can't be merged as it is; see `docs/source_files.md` ("Migration notes") to carry it over.
    - `main`'s history was rewritten on 2026-10-03 (commit messages only). If your clone or fork is older, `git fetch` and `git reset --hard origin/main` (or re-clone) before branching, and rebase open branches onto the new `main`.
-2. Run `python tools/pr_check.py`. It must print `OK`.
+2. Run `python tests/check_repository.py` (every program, plus the no-game-data check) and `python tools/pr_check.py --target <program>` (it also compiles every file and slice). Both must pass.
 3. Run the full build (`make.exe`, or `python3 tools/build.py`). It must end with `MATCH`.
 4. Check `git status` for anything that shouldn't be there (below).
 
@@ -13,9 +13,9 @@
 
 Usually just:
 
-- `src/frontbin/*.c`: the new blocks, each replacing its `INCLUDE_ASM` line, inside `localdecomp:start/end` markers, in the file whose address range (`tools/src_files.txt`) contains the function. If a new block uses another file's prototype, run `python tools/split_text.py --refresh` (localdecomp does this when it saves); the changed "declarations from other files" section belongs in the PR too.
-- `tools/text_parts.txt`: single-function overrides, only if a function needs non-default flags.
-- `symbol_addrs_resolved.txt`: addresses for any new aliases.
+- `src/frontbin/*.c`: the new blocks, each replacing its `INCLUDE_ASM` line, inside `localdecomp:start/end` markers, in the file whose address range (`config/frontbin/src_files.txt`) contains the function. If a new block uses another file's prototype, run `python tools/split_text.py --refresh` (localdecomp does this when it saves); the changed "declarations from other files" section belongs in the PR too.
+- `config/frontbin/text_parts.txt`: single-function overrides, only if a function needs non-default flags.
+- `config/<program>/symbol_addrs_resolved.txt`: addresses for any new aliases.
 
 Sometimes: tool fixes, docs, or new symbol names. Keep those in separate PRs from matches when they're large.
 
@@ -46,7 +46,7 @@ Reviewers build every PR locally, since CI doesn't run on forks.
 - [ ] Every new block is inside `localdecomp:start/end` markers, in the right file for its address, and its `INCLUDE_ASM` line is gone.
 - [ ] The PR is based on the current `main` and doesn't touch `src/text.c`.
 - [ ] No variable definitions: every global is `extern`.
-- [ ] Typedefs and aliases have unique names; aliases are in `symbol_addrs_resolved.txt`.
+- [ ] Typedefs and aliases have unique names; aliases are in `config/<program>/symbol_addrs_resolved.txt`.
 - [ ] Flag overrides are single-function (two lines) and restore the range's flags after.
 - [ ] Inline asm or `$gp` hacks are called out and justified.
 - [ ] Code reads like source: sensible types, struct fields over raw offsets where the struct is known, no leftover debugging comments.

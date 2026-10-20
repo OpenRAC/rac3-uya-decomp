@@ -2,7 +2,7 @@
 
 The common code of the 51 level overlays isn't a splatted executable: each
 function is a standalone source in src/levels/common/, catalogued in
-tools/common_c.json, and verified by tools/build_common_c.py's gates against
+config/levels/common_c.json, and verified by tools/build_common_c.py's gates against
 its canonical owner overlay (docs/common_level_c.md). This class gives the
 server the same interface as server.Project (list, asm, C, build, save) on top
 of those tools:
@@ -58,7 +58,7 @@ class LevelProject:
         self._target_lock = target_lock
         self.git_sync = git_sync
         self.src_dir = root / "src" / "levels" / "common"
-        self.catalogue_path = root / "tools" / "common_c.json"
+        self.catalogue_path = root / "config" / "levels" / "common_c.json"
         self.work_dir = root / ".localdecomp_work" / NAME
         (self.work_dir / "src").mkdir(parents=True, exist_ok=True)
         self.status_path = self.work_dir / "status.json"
@@ -95,7 +95,7 @@ class LevelProject:
         return _Active()
 
     def _tools(self):
-        import try_func, build_common_c, try_level  # noqa: E401 (tools/, on sys.path)
+        import check as try_func, build_common_c, try_level  # noqa: E401 (tools/, on sys.path)
         return try_func, build_common_c, try_level
 
     def owners(self):
@@ -343,7 +343,7 @@ class LevelProject:
 
     def _catalogue_dirty(self):
         try:
-            return self._run_git(self.root, ["diff", "--quiet", "HEAD", "--", "tools/common_c.json"]).returncode == 1
+            return self._run_git(self.root, ["diff", "--quiet", "HEAD", "--", "config/levels/common_c.json"]).returncode == 1
         except Exception:
             return False
 
@@ -353,6 +353,6 @@ class LevelProject:
         if not self.git_sync:
             return result(False, True, "git sync disabled")
         if getattr(self, "catalogue_was_dirty", False):
-            return result(False, False, "saved but not committed: tools/common_c.json already had uncommitted "
+            return result(False, False, "saved but not committed: config/levels/common_c.json already had uncommitted "
                           "entries from elsewhere; commit those (with their sources) first")
         return self._git_commit(self.root, "levels/common %s" % name, paths)

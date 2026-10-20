@@ -15,14 +15,14 @@ Every tool that works on frontbin works on boot_elf with `--target boot_elf`
 Status on 2026-10-07 (`pr_check.py --target boot_elf`): 1479 functions in C,
 650 INCLUDE_ASM (52.5% in C). The front end has 1376 in C and 154 left; the
 engine core 103 in C and 496 left, most of it library code built with other
-compilers (see "The engine core" below). `triage.py --target boot_elf` buckets
+compilers (see "The engine core" below). `todo.py --target boot_elf` buckets
 the 650 as 434 plain, 43 sibcall, 21 switch, 41 vu0, 29 mmi, 2 sys and 80 odd.
-Every line in `targets/boot_elf/text_parts.txt` (core and front end) carries
+Every line in `config/boot_elf/text_parts.txt` (core and front end) carries
 `-mvu0-use-vf0-vf2`, as frontbin's do (see Toolchain-and-Build).
 
 ## Setup
 
-1. Put your own `boot_elf.elf` in the repo root (it is in the root of the
+1. Put your own `boot_elf.elf` in `baserom/` (it is in the root of the
    unpacked disc, next to `files` and `levels`). Its sha1 must be
    `487975305f8a263c750dfede50391b575ed07835`. It is gitignored; never add it.
 2. `python tools/setup_asm.py --target boot_elf` writes `asm/boot_elf/` (also
@@ -54,11 +54,11 @@ offset, and the gaps (both `.bss` regions included) are zeros. $gp is
 | `patch.data`, `legal.data`, `mc1.data` (2) | 0x3F2600, 0x1800000, .. | | `asm/boot_elf/data/*.data.s` |
 | `.shstrtab`, section headers | file 0x35EA98 | | `asm/boot_elf/trailer.s` |
 
-The tables that frontbin keeps in `tools/` are in `targets/boot_elf/`:
+The tables that frontbin keeps in `config/frontbin/` are in `config/boot_elf/`:
 `src_files.txt`, `text_parts.txt`, `divs_nops.txt`, `sq_ra_funcs.txt`,
 `localdecomp_flags.txt`, `symbol_addrs.txt` and `symbol_addrs_resolved.txt`.
 The linker script is `linker_scripts/boot_elf.ld`, the splat config
-`boot_elf.splat.yaml`.
+`config/splat/boot_elf.yaml`.
 
 Function names are `func_<address>` in both executables, so the same name can
 mean two unrelated functions (`func_00381180` exists in both). Anything keyed
@@ -92,7 +92,7 @@ another flag set). Things to know:
 - 43 core functions end in a sibling call (`j func_...` after the epilogue),
   which SN ee-gcc 2.95.3 never emits: those parts of the core were built with
   another compiler (Sony's 2.9-ee-991111 for the libraries, likely 2.96 for
-  the newlib region; see "The engine core" below). `tools/triage.py` lists
+  the newlib region; see "The engine core" below). `tools/todo.py` lists
   them as `sibcall`; see Matching-Patterns, "Code from another compiler".
 - 56 core functions (0x4568 bytes) are byte-identical to objects in the
   prebuilt `libgcc.a` (C++ exception runtime, soft-float, 64-bit division);
@@ -251,7 +251,7 @@ numbers for the executable that is picked.
 ## Progress report
 
 `objdiff.json` has one unit per source file, `boot_elf/core/<file>` and
-`boot_elf/text/<file>` (`python tools/gen_objdiff_units.py` writes them for
+`boot_elf/text/<file>` (`python tools/objdiff/gen_objdiff_units.py` writes them for
 every target), in the progress categories `boot_elf`, `boot_elf_core` and
 `boot_elf_frontend`. They replace the old reference-only `exes/boot_elf`
 code unit; `exes/boot_elf (data)` stays.

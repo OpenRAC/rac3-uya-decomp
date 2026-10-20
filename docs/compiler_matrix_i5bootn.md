@@ -33,7 +33,7 @@ The `sibcall` bucket and the docs said a `j func_` tail call meant Sony 2.96 or
 (`func_008007C8` and `func_008014D8` match with them and with nothing newer).
 What the matrix shows is narrower: **SN 2.95.3 never does**, so a sibling call
 means "not our compiler" (in practice, Sony's 2.9-ee-991111, a library
-compiler). The docs and `tools/triage.py` now say that.
+compiler). The docs and `tools/todo.py` now say that.
 
 ## The libgcc result in detail
 
@@ -108,4 +108,4 @@ the libgcc comparison reads the compilers' own archives).
 - `main` and `func_008010F8` are matched in C now, with our toolchain: `main`
   at `-O0 -G0 -mno-check-zero-division` (no `-fopt-stack`: that packs the frame
   and loses the `sq $fp`), a single-function override in
-  `targets/i5bootn/text_parts.txt`; `func_008010F8` with its file's flags.
+  `config/i5bootn/text_parts.txt`; `func_008010F8` with its file's flags.

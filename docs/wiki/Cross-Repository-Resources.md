@@ -118,7 +118,7 @@ This note describes relationships and methods. It distributes no new shared impl
 
 [u-text]: https://github.com/vetusmagnus/ratchet-uya-decomp/blob/f0685ac7cc859d469aced63b9b892679e33bdee6/src/text.c
 [u-common]: https://github.com/vetusmagnus/ratchet-uya-decomp/blob/f0685ac7cc859d469aced63b9b892679e33bdee6/include/common.h
-[u-shared]: https://github.com/vetusmagnus/ratchet-uya-decomp/blob/f0685ac7cc859d469aced63b9b892679e33bdee6/tools/split_shared_levels.py
+[u-shared]: https://github.com/vetusmagnus/ratchet-uya-decomp/blob/f0685ac7cc859d469aced63b9b892679e33bdee6/tools/objdiff/split_shared_levels.py
 [u-patterns]: https://github.com/vetusmagnus/ratchet-uya-decomp/blob/f0685ac7cc859d469aced63b9b892679e33bdee6/docs/wiki/Matching-Patterns.md
 [u-contrib]: https://github.com/vetusmagnus/ratchet-uya-decomp/blob/f0685ac7cc859d469aced63b9b892679e33bdee6/CONTRIBUTING.md
 [r-c]: https://github.com/llesieur99/rac2-decomp/blob/8c781ebf62b5ceff9615ad20373ba14d4070abc9/candidates/boot.c

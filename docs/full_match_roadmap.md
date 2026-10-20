@@ -1,16 +1,16 @@
 # Road to 100%: blockers and plan
 
-Written on 2026-09-26; the dated updates below are a log, newest last. The current state is in **Update 2026-10-07** at the end. `python tools/pr_check.py --target all` and `python tools/triage.py --target all` print the live numbers.
+Written on 2026-09-26; the dated updates below are a log, newest last. The current state is in **Update 2026-10-07** at the end. `python tools/pr_check.py --target all` and `python tools/todo.py --target all` print the live numbers.
 
 > **Note 2026-10-03:** `src/text.c` was split into one file per original source file in `src/frontbin/` ([source_files.md](source_files.md)). The dated entries below are a log and still say `text.c`; read it as "the sources".
 
-> **Update 2026-09-27:** the handwritten (100) and remnant (203) buckets are done: they moved to `asm/handwritten/` and `asm/remnants/`, included with `ASM_FUNC` / `LINKER_REMNANT`, and count as finished in objdiff. Current state: 763 functions in C, 303 assembly sources, 779 still to match (655 plain, 31 switch, 72 vu0, 14 mmi, 7 other). `python tools/triage.py` has live numbers.
+> **Update 2026-09-27:** the handwritten (100) and remnant (203) buckets are done: they moved to `asm/handwritten/` and `asm/remnants/`, included with `ASM_FUNC` / `LINKER_REMNANT`, and count as finished in objdiff. Current state: 763 functions in C, 303 assembly sources, 779 still to match (655 plain, 31 switch, 72 vu0, 14 mmi, 7 other). `python tools/todo.py` has live numbers.
 
 ## Where we are
 
 The build has matched byte for byte since the start. The goal is to have every function come from real source: C for compiled code, `.s` for code that was assembly in the original.
 
-On 2026-10-07 (`pr_check.py --target all`, `triage.py --target all`), all three targets build byte-identical:
+On 2026-10-07 (`pr_check.py --target all`, `todo.py --target all`), all three targets build byte-identical:
 
 | Target | In C | `ASM_FUNC` | `LINKER_REMNANT` | Still `INCLUDE_ASM` | % in C |
 |---|---|---|---|---|---|
@@ -131,7 +131,7 @@ Recommendation: make "100% C frontbin, byte-identical" plus "modified menu boots
 
 `python tools/pr_check.py`: 763 functions in C, 139 `ASM_FUNC`, 204 `LINKER_REMNANT`, 740 `INCLUDE_ASM` left. 1,106 of 1,846 entries (59.9%) are final source.
 
-- **Context-aware single-function builds (done).** `tools/try_func.py` and the localdecomp server compile a function with the declarations from earlier text.c parts (`build_text.function_context`), so a block that matches alone also compiles in the full build. All 764 C blocks re-verified with it.
+- **Context-aware single-function builds (done).** `tools/check.py` and the localdecomp server compile a function with the declarations from earlier text.c parts (`build_text.function_context`), so a block that matches alone also compiles in the full build. All 764 C blocks re-verified with it.
 - **`$gp` register hacks (done).** No `register char *_gpreg` or `#define X (*(T *)(_gpreg + off))` macros remain. The six affected functions use plain sized externs. Remaining inline asm is either VU0/COP0 code (original was inline asm too), the `sqrt.s` helper in func_003BF778 (retail's two nops before `sqrt.s` come from the original's inline asm), or two small register fences (func_0037DF98, func_003A5608) that no C variant tried so far reproduces.
 - **Bad splits 0x3CC880 to 0x3CD548 (done).** The range is one hand-written VU0 clipper (register calling convention through `jalr $9`, `$at` as data, shared labels across the splat "functions"). All 11 pieces are now `ASM_FUNC`. Re-splitting would only rename symbols, so the boundaries are left as splat found them.
 - **Trailing padding (done).** 17 functions are followed by more nops than gcc's 8-byte alignment adds. `TEXT_PADDING(N)` (include/include_asm.h) now sits after each of them in text.c and the extra nops were cut from their `.s`, so converting one to C needs nothing special. `python tools/trailing_padding.py` reports new cases, `--apply` fixes them. func_003ECDF0 (the last function, which ends in data) is not covered.
@@ -151,7 +151,7 @@ Recommendation: make "100% C frontbin, byte-identical" plus "modified menu boots
 
 `python tools/pr_check.py`: 813 functions in C (up from 764 this morning), 144 `ASM_FUNC`, 225 `LINKER_REMNANT`, 685 `INCLUDE_ASM` left. 1,182 of 1,867 entries (63.3%) are final source.
 
-- **Short-loop padding solved (`tools/asm_filter.py`).** Retail's assembler padded every loop shorter than 6 instructions with nops before the backward branch; retail has 142 such loops and none shorter than 6. `ee-as` never pads them and Ps2EeAs pads to 7, so no C function with a short loop could match before. The filter runs between gcc and the assembler in every build path (build_text.py, try_func.py, localdecomp, permuter_setup.py). 177 remaining functions contain such loops.
+- **Short-loop padding solved (`tools/asm_filter.py`).** Retail's assembler padded every loop shorter than 6 instructions with nops before the backward branch; retail has 142 such loops and none shorter than 6. `ee-as` never pads them and Ps2EeAs pads to 7, so no C function with a short loop could match before. The filter runs between gcc and the assembler in every build path (build_text.py, check.py, localdecomp, permuter_setup.py). 177 remaining functions contain such loops.
 - **Remnant prefixes split (`tools/split_remnant_prefix.py`).** 21 functions started with linker-remnant `[insn, nop]` pairs glued on by splat. Each is now a `LINKER_REMNANT` plus a new function at the real address (1,846 entries became 1,867).
 - **Matching lessons:**
   - Callees whose result is unused should be declared `void`; an `s32` return keeps `$v0` busy and swaps `$v0`/`$v1` later.
@@ -169,7 +169,7 @@ The permuter found only one of them (func_003997F0: load `arg0[0]` before the `i
 - **Pointer arithmetic on typed pointers.** m2c writes `D_X + 0x40` or `p->f4 + 0x20` where `D_X`/`f4` has a struct or `s32 *` type, so the offset gets scaled. Cast to `u8 *` or give the field a `u8 *` type (func_0039D510, func_003E16B8).
 - **Wrong callee prototype.** A per-function alias hides the prototype text.c already uses. func_003A3EF0 takes `unsigned long`; declaring it `(s32, s32)` leaves the constant load scheduled differently (func_003D47A0). A callee that takes one argument but is declared with three leaves extra argument moves (func_0037EAA0). Look up the real declaration in the sources (`src/frontbin/`) first.
 - **Base + index + field offset.** Retail often keeps `base + i * size` in a register and uses the field offset in the load (`lw 0x50($a0)`), where gcc folds `base + 0x50` into the `lui`/`addiu`. Take a pointer to the element first: `S *p = &D[i]; p->f50` (func_0037E7D8), `s32 **b = p->slots; slot = b + i;` (func_003E1460).
-- **Store order.** gcc emits the last of a run of stores to the same base first. To get retail's order A, B, C, D write B, C, D, A (func_003A61D0, func_003A6888). Trying every order of the stores with `try_func.py` takes seconds.
+- **Store order.** gcc emits the last of a run of stores to the same base first. To get retail's order A, B, C, D write B, C, D, A (func_003A61D0, func_003A6888). Trying every order of the stores with `check.py` takes seconds.
 - **`abs.s` that is not scheduled.** Where retail has `abs.s` right before `jr $ra` (not in the delay slot) or before a load, `fabsf()` doesn't match; `__asm__("abs.s %0, %1" : "=f"(r) : "f"(x))` does (func_003BEBF8, func_0037E920). SN's math header probably defined fabsf as inline asm.
 - **Mixed `$gp`/`lui` with `@ps2as`.** `__asm__(".extern D_X, 4");` before the function (Matching-Patterns, option A) fixed func_00396248.
 - **Branch sense and conditions.** Writing the `if` the other way round (`arg1 == 1` first) and using `(x ^ 4) == 0` where retail has `xori` fixed func_003EB620 and func_003E9C50.
@@ -200,7 +200,7 @@ The permuter got none of the three in 25 minutes each. Matching-Patterns has the
 
 ## Update 2026-10-02: where things stand
 
-`python tools/triage.py`: 464 functions (0x41B9C bytes) still `INCLUDE_ASM`: 371 plain (122 under 0x100 bytes), 26 switch, 53 vu0, 14 mmi.
+`python tools/todo.py`: 464 functions (0x41B9C bytes) still `INCLUDE_ASM`: 371 plain (122 under 0x100 bytes), 26 switch, 53 vu0, 14 mmi.
 
 - All the toolchain-level open problems are solved: jump tables, remnants, hand-written asm, trailing padding, short-loop padding (including loops with a `jal`), `$ra` saved with `sq`, the `lwc1`/`nop` load, 64-bit constants and `div.s`/`sqrt.s` padding.
 - What blocks the rest is register allocation and scheduling near misses (`docs/permuter_todo.md`, status list at the top) and the volume of large functions.

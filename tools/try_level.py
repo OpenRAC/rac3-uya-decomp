@@ -6,7 +6,7 @@ one function and, when the resolved bytes differ, prints both instruction
 listings side by side with the differing lines marked.
 
     python tools/try_level.py src/levels/common/func_004D0538.c --overlay singleplayer/1_veldin --flags-from func_003ABC30
-    python tools/try_level.py src/levels/common/func_004D0538.c      (an entry already in tools/common_c.json)
+    python tools/try_level.py src/levels/common/func_004D0538.c      (an entry already in config/levels/common_c.json)
 
 --overlay defaults to the function's canonical owner; --flags-from names the
 frontbin function whose text_parts.txt flags to compile with (--mode N|S and
@@ -22,7 +22,7 @@ from elftools.elf.elffile import ELFFile
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import build_common_c as bcc  # noqa: E402
-import try_func as matching  # noqa: E402
+import check as matching  # noqa: E402
 
 
 def disasm(code, addr, toolchain):
@@ -85,7 +85,7 @@ def main():
     a = ap.parse_args()
     src = a.source.resolve()
     name = src.stem
-    entry = next((e for e in json.loads((ROOT / "tools" / "common_c.json").read_text()) if e["name"] == name), {})
+    entry = next((e for e in json.loads((ROOT / "config" / "levels" / "common_c.json").read_text()) if e["name"] == name), {})
     owners, common = load_refs(a.refs)
     owner = next(((lv, off, sz) for lv, n, off, sz in owners.values() if n == name), None)
     if owner is None:

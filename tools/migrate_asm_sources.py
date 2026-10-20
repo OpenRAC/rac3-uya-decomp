@@ -36,7 +36,7 @@ def main():
     t = targets.from_argv(allow_all=True)   # --target boot_elf
     DEST = {"handwritten": (t.handwritten, "ASM_FUNC"),
             "remnant": (t.remnants, "LINKER_REMNANT")}
-    spec = importlib.util.spec_from_file_location("triage", os.path.join(ROOT, "tools", "triage.py"))
+    spec = importlib.util.spec_from_file_location("todo", os.path.join(ROOT, "tools", "todo.py"))
     triage = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(triage)
 

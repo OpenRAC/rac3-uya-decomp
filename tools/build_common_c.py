@@ -15,9 +15,12 @@ from types import SimpleNamespace
 from elftools.elf.elffile import ELFFile
 from elftools.elf.relocation import RelocationSection
 
-import pr_check
-import split_shared_levels as shared
-import try_func as matching
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "objdiff"))  # split_shared_levels.py
+import pr_check  # noqa: E402
+import split_shared_levels as shared  # noqa: E402
+import check as matching
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -179,7 +182,7 @@ def main():
     parser.add_argument("--levels-dir", required=True, type=Path)
     parser.add_argument("--targets-dir", required=True, type=Path)
     parser.add_argument("--common-target", required=True, type=Path)
-    parser.add_argument("--catalogue", type=Path, default=ROOT / "tools/common_c.json")
+    parser.add_argument("--catalogue", type=Path, default=ROOT / "config/levels/common_c.json")
     parser.add_argument("--output", type=Path, default=ROOT / "build/objdiff/base/common.o")
     parser.add_argument("--toolchain", default=matching.DEFAULT_TOOLCHAIN)
     parser.add_argument("--runner")

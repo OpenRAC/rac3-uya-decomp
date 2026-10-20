@@ -24,11 +24,11 @@ Start localdecomp as usual, pick a function, get the editor to your closest atte
 - **Workers**: processes compiling candidates in parallel (default: CPU count minus one).
 - **Minutes**: time limit, 0 for no limit. A run also stops on its own at 0 diffs.
 - **Fence/barrier passes**: also try the empty-asm edits below.
-- **Start from editor code** starts a run from whatever is in the editor; the compile flags are the function's own (`tools/localdecomp_flags.txt`, then `tools/text_parts.txt`) and are shown in the stats line.
+- **Start from editor code** starts a run from whatever is in the editor; the compile flags are the function's own (`config/frontbin/localdecomp_flags.txt`, then `config/frontbin/text_parts.txt`) and are shown in the stats line.
 
 While it runs the panel shows:
 
-- **Stats**: elapsed time, candidates tried, candidates per second, how many didn't compile, the base score and the best so far (aligned instruction diffs, the same number `tools/try_func.py` and `cmp` report).
+- **Stats**: elapsed time, candidates tried, candidates per second, how many didn't compile, the base score and the best so far (aligned instruction diffs, the same number `tools/check.py` and `cmp` report).
 - **Aligned diffs over time**: the best score as a step line, a sample of candidate scores as dots, and the base score as a dashed line. Dots spread far above the base mean the passes are breaking the function; dots hugging it mean it is exploring nearby.
 - **Passes**: for each randomization pass, how often it was tried, how many new bests it produced, and how often its candidates didn't compile.
 - **Activity**: the newest candidates, each with the worker, the pass that made it and its score. New bests are highlighted; fence and barrier passes are purple.
@@ -68,9 +68,9 @@ python3 tools/fence_search.py scratch/func_XXXXXXXX.c -j4
 
 It prints each new best as it finds it and writes the variants to `scratch/fence_search/<func>/`. A function of 40 statements takes a few minutes. It can't invent a variable: a fence on a value that is only an expression (a load inside a condition) needs a temporary first, which the permuter's `perm_temp_for_expr` plus `perm_reg_fence` can find.
 
-## Flags: tools/localdecomp_flags.txt and tools/flags_probe.py
+## Flags: config/frontbin/localdecomp_flags.txt and tools/flags_probe.py
 
-Every single-function tool (localdecomp, `try_func.py`, `try_in_context.py`, `permuter_setup.py`, the engine, `fence_search.py`, `sched_explain.py`) takes a function's flags from `tools/localdecomp_flags.txt` first, then `tools/text_parts.txt`. A near miss that needs its own mode or assembler (S/N, `@ps2as`) has to be listed in `localdecomp_flags.txt`, or every tool measures it with the file's default flags and reports a much worse score (`func_003B9730`: 14 diffs with N + `@ps2as`, 27 with the default).
+Every single-function tool (localdecomp, `check.py`, `try_in_context.py`, `permuter_setup.py`, the engine, `fence_search.py`, `sched_explain.py`) takes a function's flags from `config/frontbin/localdecomp_flags.txt` first, then `config/frontbin/text_parts.txt`. A near miss that needs its own mode or assembler (S/N, `@ps2as`) has to be listed in `localdecomp_flags.txt`, or every tool measures it with the file's default flags and reports a much worse score (`func_003B9730`: 14 diffs with N + `@ps2as`, 27 with the default).
 
 `tools/flags_probe.py` compiles a draft in each mode and assembler, prints the aligned diffs for each, and with `--write` records the best in `localdecomp_flags.txt`:
 
@@ -78,7 +78,7 @@ Every single-function tool (localdecomp, `try_func.py`, `try_in_context.py`, `pe
 python3 tools/flags_probe.py scratch/func_XXXXXXXX.c func_XXXXXXXX --write
 ```
 
-Extra flags it doesn't try (`-fforce-mem`, dropping `-fopt-stack`) go in by hand. When a function matches and goes into its source file, move its line to `tools/text_parts.txt` as a single-function override with a restore line.
+Extra flags it doesn't try (`-fforce-mem`, dropping `-fopt-stack`) go in by hand. When a function matches and goes into its source file, move its line to `config/frontbin/text_parts.txt` as a single-function override with a restore line.
 
 ## Why did gcc schedule it that way? tools/sched_explain.py
 
@@ -107,15 +107,15 @@ export UYA_RUNNER=/path/to/wibo
 
 ## Per function
 
-1. Write your closest attempt as a snippet, the same format `tools/try_func.py` takes (externs, typedefs, the function).
+1. Write your closest attempt as a snippet, the same format `tools/check.py` takes (externs, typedefs, the function).
 2. `python3 tools/permuter_setup.py scratch/func_XXXXXXXX.c`
    This writes `nonmatchings/func_XXXXXXXX/` (gitignored) with:
    - `base.c`: your snippet after the declarations its source file puts in front of it, preprocessed;
    - `target.o`: the retail `.s` assembled, with bare `$gp` offsets turned into named relocations so both sides score alike;
-   - `compile.sh`: the function's real flags from `tools/text_parts.txt` / `tools/localdecomp_flags.txt`, including `@ps2as`;
+   - `compile.sh`: the function's real flags from `config/frontbin/text_parts.txt` / `config/frontbin/localdecomp_flags.txt`, including `@ps2as`;
    - `prelude.c`: `.extern` size hints, which the permuter's C parser can't read.
 3. `python3 ../decomp-permuter/permuter.py nonmatchings/func_XXXXXXXX -j$(nproc) --stop-on-zero`
-4. Improvements are written to `nonmatchings/func_XXXXXXXX/output-<score>-<n>/source.c`. Copy the function out of the best one, check it with `tools/try_func.py`, then paste it into its source file as usual.
+4. Improvements are written to `nonmatchings/func_XXXXXXXX/output-<score>-<n>/source.c`. Copy the function out of the best one, check it with `tools/check.py`, then paste it into its source file as usual.
 
 Pass `--mode S|N` or `--as ps2as` to `permuter_setup.py` to try another address mode or assembler than the range's default.
 
@@ -131,7 +131,7 @@ The permuter only moves a function if some C rewrite reaches retail. If nothing 
 
 ## Aligned-diff scoring (recommended)
 
-decomp-permuter's built-in score weights objdump differences in its own way and often disagrees with how close a function really is (one near miss scored 180 at 5 real diffs). `tools/permuter_scorer.py` scores a candidate the way `try_func.py` and the matching agents measure it: instructions aligned against retail, relocations resolved, branch targets compared through the alignment. Score = 10 x aligned diffs, 0 = match.
+decomp-permuter's built-in score weights objdump differences in its own way and often disagrees with how close a function really is (one near miss scored 180 at 5 real diffs). `tools/permuter_scorer.py` scores a candidate the way `check.py` and the matching agents measure it: instructions aligned against retail, relocations resolved, branch targets compared through the alignment. Score = 10 x aligned diffs, 0 = match.
 
 1. Once, in your decomp-permuter checkout: `git apply <repo>/tools/decomp-permuter-aligned-scorer.patch` (a 20-line hook in `src/scorer.py`; without the variables below it changes nothing).
 2. Per run:
@@ -147,4 +147,4 @@ With it the permuter's base score equals the aligned diff count x 10. `python3 t
 
 Every output still needs checking: random rewrites can change what the code does, and the aligned score accepts them. In k1's boot_elf run (2026-10-07) about half of the "improvements" were invalid (passing 0 instead of an argument, shrinking a type to `u16`, dropping a store); g4 rejected two of the same kind. Treat outputs as hints and rewrite the useful ones by hand. With the aligned scorer the permuter contributed to 4 of g4's 5 matches in the second final pass, and its finds carried over in several functions: `i = 0; if (n > i) do ... while`, an early `v = const`, `do { } while (0)` wraps, a callee's return type.
 
-`permuter_setup.py` also records the typedef attributes (`mode(TI)`, `aligned(16)`) that the parser can't read in `attrs.json`, and `compile.sh` puts them back before compiling each candidate. Before this, 128-bit and vector types silently became plain `int` in permuter runs (a draft at 5 real diffs scored 25 diffs' worth), and j-form VU0 drafts couldn't be permuted at all. The flags in `compile.sh` come from `tools/text_parts.txt`, so they include `-mvu0-use-vf0-vf2` since 2026-10-07 (a function with a line in `tools/localdecomp_flags.txt` gets that line instead, so put the flag there too); to drop a flag, edit `compile.sh` by hand (`permuter_setup.py` has no option for it).
+`permuter_setup.py` also records the typedef attributes (`mode(TI)`, `aligned(16)`) that the parser can't read in `attrs.json`, and `compile.sh` puts them back before compiling each candidate. Before this, 128-bit and vector types silently became plain `int` in permuter runs (a draft at 5 real diffs scored 25 diffs' worth), and j-form VU0 drafts couldn't be permuted at all. The flags in `compile.sh` come from `config/frontbin/text_parts.txt`, so they include `-mvu0-use-vf0-vf2` since 2026-10-07 (a function with a line in `config/frontbin/localdecomp_flags.txt` gets that line instead, so put the flag there too); to drop a flag, edit `compile.sh` by hand (`permuter_setup.py` has no option for it).

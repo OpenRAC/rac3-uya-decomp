@@ -1,15 +1,15 @@
 # Toolchain and build
 
-How `make` turns the repo into a byte-identical `frontbin.elf`, and which files you touch when a function needs something special. `boot_elf.elf` and `i5bootn.elf` are built the same way from their own tables (`targets/<target>/`, see `docs/targets.md`); `make` builds and checks all three.
+How `make` turns the repo into a byte-identical `frontbin.elf`, and which files you touch when a function needs something special. `boot_elf.elf` and `i5bootn.elf` are built the same way from their own tables (`config/<target>/`, see `docs/targets.md`); `make` builds and checks all three.
 
 ## Pipeline
 
 1. `asm/header.s` (the retail ELF header) and the data segments `asm/data/{lit,data_a,data_b,lvl_vtbl,lvl_camvtbl,lvl_sndvtbl}.data.s` are assembled with `bin/ee-as.exe`.
-2. `src/frontbin/*.c` (one file per original source file, listed in `tools/src_files.txt`) are built by `tools/build_text.py`. Each file is compiled with its flags from `tools/text_parts.txt` (in slices if some functions need other flags), giving one object per file in `build/src/frontbin/` (the per-slice objects go in `build/src/frontbin/slices/`), and the objects are joined with `ld -r` into `build/src/text.c.o`. See `docs/source_files.md`.
-3. `ee-ld.exe -T linker_scripts/frontbin.ld` places every section at its retail file offset. `INPUT(symbol_addrs_resolved.txt)` supplies the address of every external symbol. The `.data` output is `data_a` + `text.c.o(.rodata)` (all switch jump tables, in function order) + `data_b`, the same layout the original linker produced.
-4. `ee-objcopy -O binary` makes `build/frontbin.bin`, and `tools/check_match.py` compares its SHA-1 with the one in `frontbin.splat.yaml`. That is the `MATCH` line.
+2. `src/frontbin/*.c` (one file per original source file, listed in `config/frontbin/src_files.txt`) are built by `tools/build_text.py`. Each file is compiled with its flags from `config/frontbin/text_parts.txt` (in slices if some functions need other flags), giving one object per file in `build/src/frontbin/` (the per-slice objects go in `build/src/frontbin/slices/`), and the objects are joined with `ld -r` into `build/src/text.c.o`. See `docs/source_files.md`.
+3. `ee-ld.exe -T linker_scripts/frontbin.ld` places every section at its retail file offset. `INPUT(config/frontbin/symbol_addrs_resolved.txt)` supplies the address of every external symbol. The `.data` output is `data_a` + `text.c.o(.rodata)` (all switch jump tables, in function order) + `data_b`, the same layout the original linker produced.
+4. `ee-objcopy -O binary` makes `build/frontbin.bin`, and `tools/check_match.py` compares its SHA-1 with the one in `config/splat/frontbin.yaml`. That is the `MATCH` line.
 
-`make objdiff` also builds the objdiff inputs, one unit per source file: `build/objdiff/target/frontbin/<file>.o` (the full build) and `build/objdiff/base/frontbin/<file>.o` (the same file with every `INCLUDE_ASM` compiled away), so objdiff reports decompiled/total per file. It also builds `build/objdiff/base/common.o`, the base of the `levels/common` unit, from the common-level C in `src/levels/common/` (`tools/common_c_base.py`, which runs `tools/build_common_c.py` against the reference files in `C:\decomp-refs`; without them it writes an empty base).
+`make objdiff` also builds the objdiff inputs, one unit per source file: `build/objdiff/target/frontbin/<file>.o` (the full build) and `build/objdiff/base/frontbin/<file>.o` (the same file with every `INCLUDE_ASM` compiled away), so objdiff reports decompiled/total per file. It also builds `build/objdiff/base/common.o`, the base of the `levels/common` unit, from the common-level C in `src/levels/common/` (`tools/objdiff/common_c_base.py`, which runs `tools/build_common_c.py` against the reference files in `C:\decomp-refs`; without them it writes an empty base).
 
 `tools/build.py` runs steps 1 to 4 on Linux and macOS through wibo.
 
@@ -39,7 +39,7 @@ Every source file starts with a line at its first function's address: those are 
 
 The build groups a run of lines with **equal flag lists** into one slice. Two adjacent `@ps2as` overrides therefore become one slice, and the first function's `.extern` hints then reach the second. Writing the same flags in another order makes the lists unequal and keeps the slices apart (the large-function batch used this for `func_003D2878`); per-function alias names in the later block are the other fix. The same rule is why `-mvu0-use-vf0-vf2` was put first on the lines that didn't have it: appending it would have made more neighbouring lines equal, merged their slices and exposed declaration conflicts (the first in `39FFC8.c`). Copy a neighbour's flags exactly as written when you add a line.
 
-Pseudo-flags, expanded by `build_text.py`, localdecomp and `try_func.py`:
+Pseudo-flags, expanded by `build_text.py`, localdecomp and `check.py`:
 
 | Flag | Effect |
 |---|---|
@@ -52,15 +52,15 @@ gcc uses the last `-B` on its command line, so a range's assembler choice wins o
 `@ee29` is for library code that came prebuilt with Sony's own compiler (i5bootn's libgcc in `src/i5bootn/libgcc/`; see `docs/compiler_matrix_i5bootn.md`). It runs the 2.9-ee **driver** (`bin/ee-gcc.exe`, never `cc1` directly: the driver defines `__mips__`, `__R5900__` and the other target macros libgcc's `longlong.h` depends on), with its `lib/gcc-lib/ee/<version>/` folder passed explicitly as `-B` (and its `include/` as `-I` when there is one). Where it is:
 
 - `make`: the `EE29` variable, default `C:/tools/testfolder/ee-gcc2.9-991111`, or the `UYA_EE29` environment variable (`make EE29=D:/cc/ee-gcc2.9-991111`).
-- `build.py`, `build_text.py`, `try_func.py`, `try_in_context.py`, `permuter_setup.py`: `--ee29 DIR` or `UYA_EE29`, same default. On Linux and macOS the Windows driver runs through `UYA_RUNNER` (wibo). A folder with a Linux `bin/ee-gcc` instead (Sony's 2.9-ee-991111-01) works too, for experiments; committed code must match with the Windows 2.9-ee-991111, which the maintainer's build uses.
+- `build.py`, `build_text.py`, `check.py`, `try_in_context.py`, `permuter_setup.py`: `--ee29 DIR` or `UYA_EE29`, same default. On Linux and macOS the Windows driver runs through `UYA_RUNNER` (wibo). A folder with a Linux `bin/ee-gcc` instead (Sony's 2.9-ee-991111-01) works too, for experiments; committed code must match with the Windows 2.9-ee-991111, which the maintainer's build uses.
 - localdecomp: `UYA_EE29`, same default.
-- `try_func.py --flags=@ee29` compiles any function with it.
+- `check.py --flags=@ee29` compiles any function with it.
 
 The Windows 2.9-ee `cpp` rejects `#line 1 "file"` (it writes `# 0`, which its `cc1` refuses); `tools/ee29.py` turns those into `#line 2`, so compiler messages in that stretch are one line late. `regalloc.py` takes it in `--flags` (`--flags "@ee29 -O2 -G0"`). There is no pseudo-flag for 2.96 (boot_elf's newlib region, i5bootn's `exit`) yet.
 
 ## localdecomp_flags.txt
 
-`tools/localdecomp_flags.txt` gives a **work-in-progress** function its own flags in localdecomp and `try_func.py` while it is still `INCLUDE_ASM` in its source file (an `@ps2as` range can't contain the asm stub, so `text_parts.txt` can't hold it yet):
+`config/frontbin/localdecomp_flags.txt` gives a **work-in-progress** function its own flags in localdecomp and `check.py` while it is still `INCLUDE_ASM` in its source file (an `@ps2as` range can't contain the asm stub, so `text_parts.txt` can't hold it yet):
 
 ```
 func_0039BEC0 -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -72,9 +72,9 @@ The line replaces the range's flags, so it needs `-mvu0-use-vf0-vf2` too (the tw
 
 | File | Used by | Holds |
 |---|---|---|
-| `symbol_addrs_resolved.txt` | the linker | `NAME = 0xADDR;` for every external symbol, including per-function aliases. Add yours here. |
-| `symbol_addrs.txt` | splat | Names for splat's disassembly |
-| `undefined_syms_auto.txt`, `undefined_funcs_auto.txt`, `reloc_addrs.txt` | splat | Generated by splat. Don't edit by hand. |
+| `config/<program>/symbol_addrs_resolved.txt` | the linker | `NAME = 0xADDR;` for every external symbol, including per-function aliases. Add yours here. |
+| `config/<program>/symbol_addrs.txt` | splat | Names for splat's disassembly |
+| `config/<program>/undefined_syms_auto.txt`, `undefined_funcs_auto.txt`, `reloc_addrs.txt` | splat | Generated by splat. Don't edit by hand. |
 
 ## include/
 
@@ -107,18 +107,18 @@ About 95% of the code in the 51 overlays is shared: the same function appears, a
 The pipeline runs outside the repo, in two steps:
 
 ```
-python3 tools/gen_level_targets.py <levels_dir> C:\decomp-refs\level-targets
-python tools/split_shared_levels.py C:\decomp-refs\level-targets C:\decomp-refs\level-targets-split --objdiff objdiff.json
+python3 tools/objdiff/gen_level_targets.py <levels_dir> C:\decomp-refs\level-targets
+python tools/objdiff/split_shared_levels.py C:\decomp-refs\level-targets C:\decomp-refs\level-targets-split --objdiff objdiff.json
 ```
 
 The second step writes 105 objects (`common.o`, `common_data.o`, `uninitialised.o`, 51 code objects, 51 data objects) and rewrites the level units and categories in `objdiff.json`. Only the script and `objdiff.json` are committed. The tool refuses to write into the repo (other than `build/`). Re-run it if the overlays are regenerated or a level starts being decompiled.
 
 ## Other executables
 
-`boot_elf.elf`, `i5bootn.elf`, `ntgui.elf` and `sly2.elf` (from the unpacked disc) are also counted. They have no symbols, so `tools/gen_exe_targets.py` finds functions the way the level generator does (every `jal` target, then splat), but builds each object straight from the ELF bytes, so the code is retail by construction. It writes `<name>.o` (code sections) and `<name>_data.o` (other allocated sections with bytes: `.data`, `.rodata`, `.lit`, `.irx`, VU microcode) to `C:\decomp-refs\exe-targets\`, and with `--objdiff objdiff.json` adds their units and categories (one per executable, all under "Other executables"):
+`boot_elf.elf`, `i5bootn.elf`, `ntgui.elf` and `sly2.elf` (from the unpacked disc) are also counted. They have no symbols, so `tools/objdiff/gen_exe_targets.py` finds functions the way the level generator does (every `jal` target, then splat), but builds each object straight from the ELF bytes, so the code is retail by construction. It writes `<name>.o` (code sections) and `<name>_data.o` (other allocated sections with bytes: `.data`, `.rodata`, `.lit`, `.irx`, VU microcode) to `C:\decomp-refs\exe-targets\`, and with `--objdiff objdiff.json` adds their units and categories (one per executable, all under "Other executables"):
 
 ```
-python tools/gen_exe_targets.py "<game_dir>" C:\decomp-refs\exe-targets --objdiff objdiff.json
+python tools/objdiff/gen_exe_targets.py "<game_dir>" C:\decomp-refs\exe-targets --objdiff objdiff.json
 ```
 
 About 3.0 MB of code in 15,146 functions and 6.6 MB of data. The objects have no relocations and are never committed. `.bss` and `.sbss` are left out (nothing to decompile). The main executable `SCUS_973.53` is not among these files and isn't counted yet.

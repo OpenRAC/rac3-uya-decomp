@@ -33,7 +33,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 os.chdir(ROOT)
 import targets  # noqa: E402
-import try_func as tf  # noqa: E402
+import check as tf  # noqa: E402
 import permuter_scorer as ps  # noqa: E402
 
 DECL_RE = re.compile(r"^(const\s+|volatile\s+|static\s+|register\s+|unsigned\s+|signed\s+)*"

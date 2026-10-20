@@ -7,7 +7,7 @@ tools/targets.py, with its splat config and linker script. This makes the tree
 the way frontbin's looks today:
 
   1. Function boundaries: splat's discovery run (every jal target plus
-     spimdisasm's analysis, the same as tools/gen_exe_targets.py), plus any
+     spimdisasm's analysis, the same as tools/objdiff/gen_exe_targets.py), plus any
      piece plain splat splits off on its own (setup_asm.py would otherwise drop
      it), then linker remnants glued to the front of a function cut off
      (tools/split_remnant_prefix.py's rule).
@@ -247,6 +247,7 @@ def main():
     if os.path.exists(cache):
         found = json.load(open(cache))
     else:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "objdiff"))
         from gen_exe_targets import find_functions
         found = find_functions(T.path("elf"), os.path.join(work, "splat"))
         json.dump(found, open(cache, "w"))
@@ -326,7 +327,7 @@ def main():
             parts.append("0x%08X     %s%s" % (f, base, " -mno-split-addresses" if nmode else ""))
             files.append((f, u))
         print("%s: %d source files" % (u.name, len(fs)))
-    header = ["# Compiler flags for %s by address (see tools/text_parts.txt for the format)." % T.name,
+    header = ["# Compiler flags for %s by address (see config/frontbin/text_parts.txt for the format)." % T.name,
               "# Estimates from tools/bootstrap_target.py: the target's base flags, plus",
               "# -mno-split-addresses where the assembly looks like N mode."]
 

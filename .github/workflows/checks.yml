@@ -1,0 +1,39 @@
+name: Checks
+
+# Toolchain-free checks: they need no game data and no compiler, so they run on
+# every push and pull request (the full build runs in build-and-report.yml on the
+# maintainer's runner, and on each contributor's machine).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Sources, tables and no game data
+        run: python tests/check_repository.py
+      - name: Compile tools
+        run: |
+          python - <<'PY'
+          import py_compile
+          from pathlib import Path
+          files = sorted({*Path("tools").rglob("*.py"), *Path("tests").glob("*.py"), *Path("localdecomp").rglob("*.py")})
+          for f in files:
+              py_compile.compile(str(f), doraise=True)
+          print(f"compiled {len(files)} files")
+          PY

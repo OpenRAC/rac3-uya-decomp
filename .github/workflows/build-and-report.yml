@@ -18,9 +18,10 @@ jobs:
       - name: Copy retail ELFs
         shell: pwsh
         run: |
-          Copy-Item "C:\decomp-refs\frontbin.elf" -Destination "frontbin.elf" -Force
-          Copy-Item "C:\decomp-refs\boot_elf.elf" -Destination "boot_elf.elf" -Force
-          Copy-Item "C:\decomp-refs\files\i5bootn.elf" -Destination "i5bootn.elf" -Force
+          New-Item -ItemType Directory -Force -Path "baserom" | Out-Null
+          Copy-Item "C:\decomp-refs\frontbin.elf" -Destination "baserom\frontbin.elf" -Force
+          Copy-Item "C:\decomp-refs\boot_elf.elf" -Destination "baserom\boot_elf.elf" -Force
+          Copy-Item "C:\decomp-refs\files\i5bootn.elf" -Destination "baserom\i5bootn.elf" -Force
 
       - name: Copy retail-derived asm
         shell: pwsh
@@ -71,6 +72,14 @@ jobs:
         shell: pwsh
         run: |
           objdiff-cli.exe report generate -o build/report.json
+
+      # progress/report.json is updated from this artifact by a maintainer
+      # (python tools/progress.py --write build/report.json, committed on its own)
+      - name: Check the report, print the counts
+        shell: pwsh
+        run: |
+          python tools/progress.py --write build/report.json
+          python tools/progress.py
 
       - name: Upload report artifact
         uses: actions/upload-artifact@v4

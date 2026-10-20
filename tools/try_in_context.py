@@ -27,7 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 import build_text as bt
-import try_func as tf
+import check as tf
 
 CFLAGS = ["-I", "include", "-I", ".", "-Wa,-I,include,-mips3,-mcpu=5900,-mabi=eabi",
           "-DINCLUDE_ASM_USE_MACRO_INC=1"]

@@ -17,7 +17,7 @@ started (one big text.c with raw splat boundaries):
               address immediates masked. Where boot_elf has code frontbin doesn't,
               splat's boundaries are used.
        core:  splat's boundaries (every jal target plus spimdisasm's analysis, the
-              same discovery tools/gen_exe_targets.py used for the reference
+              same discovery tools/objdiff/gen_exe_targets.py used for the reference
               objects), then linker remnants glued to the front of a function are
               cut off (tools/split_remnant_prefix.py's rule).
   2. Classification.
@@ -27,7 +27,7 @@ started (one big text.c with raw splat boundaries):
               return; handwritten: spimdisasm's "Handwritten function", COP0
               performance counters, lq/sq with $at).
   3. Source files.
-       .text: frontbin's files (tools/src_files.txt), each starting at its first
+       .text: frontbin's files (config/frontbin/src_files.txt), each starting at its first
               function's new address. Named after that address, like frontbin's.
        core:  estimated from the evidence available without any C yet:
               runs of hand-written functions are their own file (the original was a
@@ -36,7 +36,7 @@ started (one big text.c with raw splat boundaries):
               register) splits the rest where it changes for three or more
               functions in a row. Like frontbin's, these are estimates; moving a
               boundary changes nothing in the output.
-  4. Flags (targets/boot_elf/text_parts.txt).
+  4. Flags (config/boot_elf/text_parts.txt).
        .text: frontbin's lines, moved to the new addresses.
        core:  the project's base flags, plus -mno-split-addresses for files that
               look like N mode. They only matter once a function becomes C.
@@ -45,7 +45,7 @@ started (one big text.c with raw splat boundaries):
      comes from tools/gen_divs_nops.py --target boot_elf.
 
 Then it runs tools/setup_asm.py --target boot_elf, adds the INCLUDE_RODATA lines for
-the overlay's jump tables and writes targets/boot_elf/symbol_addrs_resolved.txt.
+the overlay's jump tables and writes config/boot_elf/symbol_addrs_resolved.txt.
 
     python tools/bootstrap_boot_elf.py   (needs frontbin.elf, boot_elf.elf, frontbin's asm/)
 """
@@ -276,6 +276,7 @@ def main():
     if os.path.exists(cache):
         found = {k: [tuple(x) for x in v] for k, v in json.load(open(cache)).items()}
     else:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "objdiff"))
         from gen_exe_targets import find_functions
         found = find_functions(BE.path("elf"), os.path.join(work, "splat"))
         json.dump(found, open(cache, "w"))
@@ -449,7 +450,7 @@ def main():
     if text_starts[0] not in raw:
         raw[text_starts[0]] = "0x%08X     %s" % (text_starts[0], " ".join(bt.flags_for(fparts, fstart)))
     parts += [raw[k] for k in sorted(raw)]
-    header = ["# Compiler flags for boot_elf by address (see tools/text_parts.txt for the format).",
+    header = ["# Compiler flags for boot_elf by address (see config/frontbin/text_parts.txt for the format).",
               "# core.text: base flags, -mno-split-addresses where the assembly looks like N mode",
               "# (tools/bootstrap_boot_elf.py). Overlay .text: frontbin's lines at the new addresses."]
 
@@ -490,7 +491,7 @@ def main():
 
 
 def write_symbols():
-    """targets/boot_elf/symbol_addrs_resolved.txt: every symbol the asm references
+    """config/boot_elf/symbol_addrs_resolved.txt: every symbol the asm references
     that no object defines, at the address its name gives."""
     defined, used = set(), set()
     root = BE.path("asm_root")

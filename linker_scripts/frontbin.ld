@@ -1,4 +1,4 @@
-INPUT(symbol_addrs_resolved.txt)
+INPUT(config/frontbin/symbol_addrs_resolved.txt)
 
 SECTIONS
 {
@@ -31,7 +31,7 @@ SECTIONS
     lit_VRAM = ADDR(.lit);
     lit_VRAM_END = .;
     /* Real $gp value of the running game (PCSX2 live debug, see
-       frontbin.splat.yaml gp_value). Needed once C code built with -G8 emits
+       config/splat/frontbin.yaml gp_value). Needed once C code built with -G8 emits
        genuine %gp_rel relocations. */
     _gp = 0x001DC8B0;
 

@@ -288,8 +288,6 @@ typedef struct {
     u8 mC0[0x40];
 } S_3B9730;
 extern E_3B9730 D_001D8D90;
-extern V4_3B92B8 D_001DA360;
-extern V4_3B92B8 D_001DA370;
 extern f32 D_001DA358;
 extern f32 D_001DA35C;
 extern s32 func_003BE1C8(void);
@@ -301,16 +299,7 @@ void func_003BEEF0(void *arg) {
     V4_3B92B8 t;
     s32 r;
     Q_3B9730 x, y;
-    E_3B9730 *src, *hi;
-
-    /* retail splits this address's lui/addiu around the prologue; -mno-split-addresses emits one la */
-    __asm__("lui %0, %%hi(D_001D8D90)" : "=r"(hi));
-    __asm__("addiu %0, %1, %%lo(D_001D8D90)" : "=r"(src) : "r"(hi));
-    {
-        Q_3B9730 qa = *(Q_3B9730 *)&src->a, qb = *(Q_3B9730 *)&src->b;
-        *(Q_3B9730 *)&e.b = qb;
-        *(Q_3B9730 *)&e.a = qa;
-    }
+    e = D_001D8D90;
     r = func_003BE1C8() == 0;
     func_0038D148(&t.x, &e.a, p->f2C);
     t = e.a;
@@ -319,9 +308,11 @@ void func_003BEEF0(void *arg) {
     __asm__("lqc2 %0, %1" : "=j"(y) : "m"(p->v10));
     __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
     __asm__("sqc2 %1, %0" : "=m"(t) : "j"(x));
-    if (r) D_001DA360 = t;
+    /* D_001DA360 / D_001DA370 as offsets of D_001DA358: one la per address (adjacent lui/addiu), kept in a saved
+       register for both stores; the plain symbols give a split lui/lo_sum per store in split-address mode */
+    if (r) *(V4_3B92B8 *)((u8 *)&D_001DA358 + 8) = t;
     func_003BEA78((u8 *)p, &t, (V4_3B92B8 *)((u8 *)&D_001DA358 + 8), &D_001DA358);
-    D_001DA360 = t;
+    *(V4_3B92B8 *)((u8 *)&D_001DA358 + 8) = t;
 
     func_0038D148(&t.x, &e.b, p->f2C);
     t = e.b;
@@ -330,9 +321,9 @@ void func_003BEEF0(void *arg) {
     __asm__("lqc2 %0, %1" : "=j"(y) : "m"(p->v10));
     __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
     __asm__("sqc2 %1, %0" : "=m"(t) : "j"(x));
-    if (r) D_001DA370 = t;
+    if (r) *(V4_3B92B8 *)((u8 *)&D_001DA358 + 0x18) = t;
     func_003BEA78((u8 *)p, &t, (V4_3B92B8 *)((u8 *)&D_001DA358 + 0x18), &D_001DA35C);
-    D_001DA370 = t;
+    *(V4_3B92B8 *)((u8 *)&D_001DA358 + 0x18) = t;
 }
 /* localdecomp:end func_003BEEF0 */
 

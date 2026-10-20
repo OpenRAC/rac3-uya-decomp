@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """Toolchain-free repository checks (no game data needed).
 
-  python3 tests/check_repository.py
+  python3 tests/check_repository.py                     # every program, no toolchain needed
+  python3 tests/check_repository.py --target boot_elf   # one program
+  python3 tests/check_repository.py --compile           # also compile every file and slice
+                                                        # (UYA_TOOLCHAIN / UYA_RUNNER, as pr_check)
+
+This is the main pre-commit check; tools/pr_check.py is the per-program engine behind it and
+keeps working on its own (`--obj`, `--no-git`, ...).
 
 1. Every program's source checks: tools/pr_check.py --target NAME --no-compile --no-git
    for frontbin, boot_elf and i5bootn (files, markers, duplicates, extern-only variables,
@@ -26,7 +32,7 @@ import targets  # noqa: E402
 
 # Tracked files that look like game data by name but are not (checked by hand).
 KNOWN = {"docs/wiki/build_log.zip"}          # a build log, kept for the wiki
-BIG_OK = {"progress_report.json", "progress/report.json"}
+BIG_OK = {"progress/report.json"}
 MAX_BYTES = 2_500_000
 DATA_SUFFIXES = (".elf", ".bin", ".o", ".a", ".iso", ".wad", ".irx", ".7z", ".zip", ".gz")
 DATA_DIRS = ("asm/", "build/", "baserom/", "toolchain/", "toolchains/", ".localdecomp_work/")
@@ -84,10 +90,10 @@ def check_tables(errors):
                     errors.append(f"{t.files}:{n}: {f[0]} does not exist")
 
 
-def check_sources(errors):
-    for name in targets.TARGETS:
-        r = subprocess.run([sys.executable, str(ROOT / "tools" / "pr_check.py"), "--target", name,
-                            "--no-compile", "--no-git"], cwd=ROOT, capture_output=True, text=True)
+def check_sources(errors, names=None, compile_=False):
+    for name in names or targets.TARGETS:
+        r = subprocess.run([sys.executable, str(ROOT / "tools" / "pr_check.py"), "--target", name, "--no-git"]
+                           + ([] if compile_ else ["--no-compile"]), cwd=ROOT, capture_output=True, text=True)
         lines = (r.stdout + r.stderr).splitlines()
         summary = next((l for l in reversed(lines) if "functions in C" in l), "")
         print(f"{name}: {summary or 'no summary'}")
@@ -98,10 +104,15 @@ def check_sources(errors):
 
 
 def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--target", choices=list(targets.TARGETS) + ["all"], default="all")
+    ap.add_argument("--compile", action="store_true", help="also compile every file (needs the toolchain)")
+    a = ap.parse_args()
     errors: list = []
     check_game_data(errors)
     check_tables(errors)
-    check_sources(errors)
+    check_sources(errors, None if a.target == "all" else [a.target], a.compile)
     if errors:
         print(f"\n{len(errors)} problem(s):", file=sys.stderr)
         for e in errors[:200]:

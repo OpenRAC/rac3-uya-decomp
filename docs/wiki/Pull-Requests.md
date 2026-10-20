@@ -5,7 +5,7 @@
 1. Fork the repo and work on a branch (`match/func_0039BEC0` or `match/vtable-isa-family`), not `main`. Start it from the current `main`.
    - The sources are `src/frontbin/*.c`. A branch that still edits `src/text.c` is from before the 2026-10-03 split and can't be merged as it is; see `docs/source_files.md` ("Migration notes") to carry it over.
    - `main`'s history was rewritten on 2026-10-03 (commit messages only). If your clone or fork is older, `git fetch` and `git reset --hard origin/main` (or re-clone) before branching, and rebase open branches onto the new `main`.
-2. Run `python tools/pr_check.py`. It must print `OK`.
+2. Run `python tests/check_repository.py` (every program, plus the no-game-data check) and `python tools/pr_check.py --target <program>` (it also compiles every file and slice). Both must pass.
 3. Run the full build (`make.exe`, or `python3 tools/build.py`). It must end with `MATCH`.
 4. Check `git status` for anything that shouldn't be there (below).
 

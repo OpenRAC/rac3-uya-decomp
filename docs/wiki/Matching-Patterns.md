@@ -85,7 +85,7 @@ Retail was built from many source files, and some used `-mno-split-addresses` (N
 - **S:** `lui $v0, %hi(X)` + `lw $v0, %lo(X)($v0)`, and array bases as `lui` + `addiu`.
 - **N:** the compiler emits `lw $v0, X` and the assembler expands it, so you see `lui $at` pairs and loads that fold the offset differently.
 
-A function's mode only shows when it touches a global. If the diff is all about how addresses are formed, run `try_func.py --all-modes`. Known N-only shapes: constructors that return `p`, destructors that save `ra` with `sd`, and the "no-split global load" class.
+A function's mode only shows when it touches a global. If the diff is all about how addresses are formed, run `check.py --all-modes`. Known N-only shapes: constructors that return `p`, destructors that save `ra` with `sd`, and the "no-split global load" class.
 
 ## Choosing the assembler
 
@@ -107,11 +107,11 @@ with four real four-byte scalars and a float constant demonstrated both
 `GPREL16` access and inline constants once the same size metadata was made
 visible early. Alignment attributes alone did not change that result.
 
-For a scoped candidate, `tools/try_func.py` accepts repeated
+For a scoped candidate, `tools/check.py` accepts repeated
 `--early-extern-size SYMBOL=SIZE` options, for example:
 
 ```text
-python tools/try_func.py scratch/candidate.c --mode N --as ps2as --early-extern-size D_001DB6DC=4
+python tools/check.py scratch/candidate.c --mode N --as ps2as --early-extern-size D_001DB6DC=4
 ```
 
 The helper requires a positive size exactly present in the compiler's own
@@ -145,7 +145,7 @@ A few such loads reach below 0x1D5680, into the main executable's small data; de
 
 ## Code from another compiler (`sibcall`)
 
-A function that ends `ld $ra, ...; j func_X; addiu $sp, $sp, N` (or `j func_X` straight after the `$ra` reload) makes a sibling call: it jumps to its last callee instead of calling it and returning. SN ee-gcc 2.95.3 never does that (it emits `jal` and `jr $ra`), and frontbin has no such function. boot_elf's engine core has 43 and i5bootn 3. Sony's library compiler, ee-gcc 2.9-ee-991111, does make them (i5bootn's compiler matrix matched them with it, and with nothing newer), and so do 2.96 and 3.2 (about 11% of functions in the 2026-10-07 calibration builds; boot_elf's newlib region looks like 2.96, see `docs/boot_elf.md`). So a sibling call only says "not our compiler". `tools/triage.py` puts them in the `sibcall` bucket; skip them until that compiler is in the toolchain. See `docs/compiler_matrix_i5bootn.md`, which also lists the libgcc code (byte-identical to the prebuilt `libgcc.a`) in i5bootn and boot_elf's core.
+A function that ends `ld $ra, ...; j func_X; addiu $sp, $sp, N` (or `j func_X` straight after the `$ra` reload) makes a sibling call: it jumps to its last callee instead of calling it and returning. SN ee-gcc 2.95.3 never does that (it emits `jal` and `jr $ra`), and frontbin has no such function. boot_elf's engine core has 43 and i5bootn 3. Sony's library compiler, ee-gcc 2.9-ee-991111, does make them (i5bootn's compiler matrix matched them with it, and with nothing newer), and so do 2.96 and 3.2 (about 11% of functions in the 2026-10-07 calibration builds; boot_elf's newlib region looks like 2.96, see `docs/boot_elf.md`). So a sibling call only says "not our compiler". `tools/todo.py` puts them in the `sibcall` bucket; skip them until that compiler is in the toolchain. See `docs/compiler_matrix_i5bootn.md`, which also lists the libgcc code (byte-identical to the prebuilt `libgcc.a`) in i5bootn and boot_elf's core.
 
 ## boot_elf's engine core
 
@@ -208,8 +208,8 @@ Most VU0 functions are pure assembly leaves: a few `lqc2` loads, vector math, an
 
 ## Not everything is C
 
-- **Trailing padding is part of the layout.** A function's `.s` file also holds the padding words that follow it (`func_0039BD08` is 0x24 bytes with 5 `nop`s after it, because the next function starts at 0x39BD40). Converting such a function to C drops that padding and shifts everything after it, which changes every `jal` target in the build even though the function itself is byte-exact and `try_func.py` says MATCH. Before converting, check the gap to the next function's address; if there is one, the padding has to be reproduced or the function left as asm.
-- **Linker remnants** (the `remnant` bucket in `triage.py`, about 200 entries). Retail has about 620 single instructions, each followed by a `nop`, between functions. Nothing references them, and 449 of them are `addiu $sp, $sp, N`, a function epilogue. They are what the original linker left behind when it stripped unused functions: the final odd instruction plus its alignment `nop`. They are not source code: they live in `asm/remnants/` and are included with `LINKER_REMNANT(...)`. Don't write C for them.
+- **Trailing padding is part of the layout.** A function's `.s` file also holds the padding words that follow it (`func_0039BD08` is 0x24 bytes with 5 `nop`s after it, because the next function starts at 0x39BD40). Converting such a function to C drops that padding and shifts everything after it, which changes every `jal` target in the build even though the function itself is byte-exact and `check.py` says MATCH. Before converting, check the gap to the next function's address; if there is one, the padding has to be reproduced or the function left as asm.
+- **Linker remnants** (the `remnant` bucket in `todo.py`, about 200 entries). Retail has about 620 single instructions, each followed by a `nop`, between functions. Nothing references them, and 449 of them are `addiu $sp, $sp, N`, a function epilogue. They are what the original linker left behind when it stripped unused functions: the final odd instruction plus its alignment `nop`. They are not source code: they live in `asm/remnants/` and are included with `LINKER_REMNANT(...)`. Don't write C for them.
 
   A C function whose whole body is one `asm volatile("addiu $sp, $sp, 0x50")` looks like a match in localdecomp but is not one: gcc still appends `j $31` and a `nop`, which shifts every later function. 26 of these were scored 0 before localdecomp stopped trimming real instructions past the target size; `pr_check.py` now warns when its count runs ahead of the sources.
 - **Handwritten assembly** (the `handwritten` bucket, 100 functions). spimdisasm flags them (`addi`, `$at`, unusual registers). The original was a `.s` file, so their `.s` in `asm/handwritten/` is the source, included with `ASM_FUNC(...)`. The same goes for VU0 leaves whose last instruction sits in the `jr $ra` delay slot after a dependent instruction (`mtc1 $4, $f0` after `qmfc2 $4`, `ppacb` after `ppach`): neither assembler nor gcc will put it there, even when gcc emits the `mtc1` itself, so the original wrote the whole function, `jr` included, in assembly.
@@ -396,7 +396,7 @@ Leave these for now, or open an issue if you crack one:
 - **Resolved:** 64-bit constant synthesis `li 0x8000; dsll 24` (`func_00383B08`): pass the constant as an `unsigned long` literal with `@ps2as`.
 - **Resolved: `div.s`/`sqrt.s` `nop` padding** (`func_003E1D18` and 69 other functions). Retail pads most `div.s`/`sqrt.s` with 0 to 3 `nop`s; no rule predicts the count, and both assemblers delete explicit `nop`s in reorder mode. `tools/asm_filter.py` now puts them back as raw `.word 0` lines, driven by `config/frontbin/divs_nops.txt` (one line per function: `func_0037E568 2`, one count per `div.s`/`sqrt.s` in order). Run `python tools/gen_divs_nops.py` to add lines for every function that is still `INCLUDE_ASM`; existing lines are kept so a function keeps its padding after it is decompiled. If the number of `div.s`/`sqrt.s` in your C differs from the table, the function is left unpadded. First function matched this way: `func_0037E568`. Functions that were already in C without the table are not in it.
 - **Resolved 2026-10-06: register allocation where retail keeps an argument in a temporary (`move $t3, $a0` at entry) while `$a0` holds something else** (`func_0039BEC0`): solvable in C. The cause is gcc's priority order (see `tools/regalloc.py`): a block-local temporary outranks the parameter and overlaps it, so the parameter is pushed out of its incoming register. Two changes reproduce retail's exact allocation for `func_0039BEC0` (`screenId` `$t3`, the `-2` constant `$a0`, `result` `$t2`, `flag` `$t1`): declare `D_001A7430` unsized (`extern s32 D_001A7430[];`, read as `D_001A7430[0]`), because retail reaches it with a compiler `lui`, and write the flag as `s32 flag = (screenId >= 0) ? D_001D5B78[screenId] : 0;`. That takes the diff from 1,680 to 210; what is left is the branch shape (which instruction lands in the `bltz` delay slot). The forms that get the registers right changed the branch layout, and the forms that got the layout right changed the registers. It matched in the first final pass under `@ps2as`, with a one-element alias of `D_001DA050` and `do { flag = 0; } while (0);` (found with f2's `do { } while (0)` brute force).
-- **Resolved: "a match in isolation can still differ in the full build".** `func_003AEDC8` and `func_003AED08` passed `try_func.py` but failed the full build with two `$gp` stores swapped. The cause was the tool, not the build: it masked every relocated field, and two stores through `$gp` differ only in their relocated offsets, so the wrong order looked identical. `try_func.py` now fills relocations in with the symbols' real addresses and compares them in full (checked against all 617 previously matched blocks: no false failures). The `#define D_001D5B34 ...` hack macros above some functions still replace a later `extern` of the same name; `#undef` it in your block (see `func_00389908`).
+- **Resolved: "a match in isolation can still differ in the full build".** `func_003AEDC8` and `func_003AED08` passed `check.py` but failed the full build with two `$gp` stores swapped. The cause was the tool, not the build: it masked every relocated field, and two stores through `$gp` differ only in their relocated offsets, so the wrong order looked identical. `check.py` now fills relocations in with the symbols' real addresses and compares them in full (checked against all 617 previously matched blocks: no false failures). The `#define D_001D5B34 ...` hack macros above some functions still replace a later `extern` of the same name; `#undef` it in your block (see `func_00389908`).
 - About 20 matched functions use inline `__asm__` or a hand-rolled `$gp` register. They count, but plain-C rewrites of them are welcome.
 - **Init order before a loop:** loop-invariant constants gcc hoists (a divisor `3`, a `&symbol`) land between the loop variable's init and the other inits. To reproduce retail's order, name them as locals and assign in retail's order (`i = 0; three = 3; sent = &sym; off = 0;`, then `for (; i < 3; i++)`). Matched the three 3-slot hash lookups func_003E4890/4918/4DA0.
 - **A quad store that the scheduler moves behind a narrow store:** make that one `sq` store volatile (`*(volatile u128_t *)(d + 0) = ...`) and keep the narrow stores plain; retail's `sq, sb, sh` order then holds (`func_0037FEE8`). Also: a down-counting `n` that retail keeps in the callee-saved register ahead of a copy of `q + 0x41DC` wants `n--` in the loop instead of `m = n - 1; n = m` (`func_003E0478`). A `do { h = f(&s, 1); } while (h == 0);` poll loop followed by `do {} while (g(h) >= 0);` matches the retail pair of raw-branch loops (`func_003AB180`).
@@ -413,7 +413,7 @@ function rather than rewriting the C.
   `$at` is not something this compiler hands to a value. In `frontbin.elf` the only
   files containing `lq $at` are the nine under `asm/handwritten/`, plus
   `func_00388E58` and `func_00388E38`, which are now `ASM_FUNC` there too (2026-10-05:
-  `tools/triage.py` files `lq`/`sq $at` and the COP0 performance-counter ops as hand-written).
+  `tools/todo.py` files `lq`/`sq $at` and the COP0 performance-counter ops as hand-written).
 - **`sq $zero` - a 128-bit zero store.** `*(u128_t *)p = 0;`, `(u128_t)0` and a named
   `register u128_t z = 0;` all compile to `por $2,$zero,$zero` followed by `sq $2,0($a0)`:
   the TImode zero is materialised in a register first, so retail's single `sq $zero` is out
@@ -429,8 +429,8 @@ what the next section is about.
 Reproduce any of them from the repo root:
 
 ```
-python tools/try_func.py <your attempt>.c func_XXXXXXXX      # the ordinary judge
-python tools/try_func.py <your attempt>.c func_XXXXXXXX --all-modes   # 4 flag/assembler combos
+python tools/check.py <your attempt>.c func_XXXXXXXX      # the ordinary judge
+python tools/check.py <your attempt>.c func_XXXXXXXX --all-modes   # 4 flag/assembler combos
 ```
 
 Two more things worth knowing before a long session: `sizeof(long)` is 8 here, so the
@@ -518,9 +518,9 @@ Each was confirmed by a function that now matches in the full build.
 - **Stores of different constants to one global in several branches:** write the separate stores with no result variable; gcc tail-merges them into one `sw` with retail's registers (`func_00396680`).
 - **Index a struct-array member each time** (`D.row[a].f`) rather than taking a row pointer once; the pointer form folds the member offset into the base register (`func_00395AC8`).
 - **Same family, different data:** adapt a matched sibling and change only the callee and the table global (`func_003E1F40` from `func_003E1E50`).
-- **Extra compiler flags are a per-file question, not a per-function trick.** The original build set flags per source file, so a flag a function needs must also leave every other function in its file matching. Check that before adding one: compile the file's other C functions with it (`try_func.py --flags="-fno-..."` on each).
+- **Extra compiler flags are a per-file question, not a per-function trick.** The original build set flags per source file, so a flag a function needs must also leave every other function in its file matching. Check that before adding one: compile the file's other C functions with it (`check.py --flags="-fno-..."` on each).
   - `-fno-force-mem` (needed by `func_0039A040`): all 88 C functions in `3958F0.c` still match with it, and 1069 of all 1123 do. It's the flag on `3958F0.c`'s file line. It is **not** file-wide in practice: `func_00397490`, `func_0039ABB0`, `func_00399C90`, `func_003959A8` and `func_0039A3B0` need `-fforce-mem` (the default) and each has a single-function override without it (see the `func_00397490` section below; the `or`/`addu` operand order shows it). So either the file boundaries there are wrong or the original did not set it per file.
-  - `-fno-schedule-insns` (now only `func_003C8D50` and `func_00384C98`; `func_003AD650` lost its override, see the blocker pass below): 524 of the 1123 C functions change with it, so it wasn't a project-wide flag. Around those two, the C functions that still match with it form runs of only 3 and 1, so each would have to be its own small source file. That is possible (our file boundaries are estimates), but unproven. They stay single-function overrides; if more neighbours turn out to need the flag, that's evidence for a small file there. A test on 44 scheduling near misses (`tools/try_func.py --flags="-fno-schedule-insns"`): 0 matched and 44 got worse, so the flag is not a general fix for instruction-order near misses.
+  - `-fno-schedule-insns` (now only `func_003C8D50` and `func_00384C98`; `func_003AD650` lost its override, see the blocker pass below): 524 of the 1123 C functions change with it, so it wasn't a project-wide flag. Around those two, the C functions that still match with it form runs of only 3 and 1, so each would have to be its own small source file. That is possible (our file boundaries are estimates), but unproven. They stay single-function overrides; if more neighbours turn out to need the flag, that's evidence for a small file there. A test on 44 scheduling near misses (`tools/check.py --flags="-fno-schedule-insns"`): 0 matched and 44 got worse, so the flag is not a general fix for instruction-order near misses.
   - `-fno-schedule-insns2` was on: only 392 of the 1123 C functions still match without it.
 
 ## Patterns from agent batch 19 (2026-10-05)
@@ -546,7 +546,7 @@ A pass over the remaining `INCLUDE_ASM` functions, sorted by what each one needs
   An asm with no outputs is implicitly volatile, so the `__volatile__` is just documentation; the `"=m"` output form is the only one that is not. Write the loop with the index in the address, `QZERO(D_1A3100 + i * 0x10)` for `i = 3; i >= 0; i--`, not with a running pointer: the running pointer makes gcc keep a second `lui` in a saved register and grows the frame (`func_003A0010`).
 - **Which register comes first in `addu`.** For a C pointer plus an integer gcc always puts the pointer first in the tree, so `base + off` gives `addu $v0, $base, $off`. When retail has the offset register first, write the sum as integers with the offset on the left: `(u8 *)(off + (s32)b)`. For a loaded base, load it into a local first (`g = *(s32 *)0x1D4B38; base = g + off;`). Matched `func_0037F4F8` (a VU0 function: `lqc2`/`vadd.xyz`/`sqc2` in `__asm__` around plain `u128_t` copies).
 - **A `do { } while (0)` macro changes scheduling.** Wrapping the loop's increment in a statement macro, `#define ADVANCE(o) do { (o) += 0x27E40; } while (0)`, reorders gcc 2.95's output enough that `func_003AD650` matches at the project flags; it needed `-fno-schedule-insns` before. Try this before reaching for a flag when the diff is only the position of an increment or a store.
-- **Hand-written code the tools now flag.** `tools/triage.py` classifies as hand-written any function that reads or writes the COP0 performance counters (`mfpc`/`mtpc`, which spimdisasm cannot decode) or that uses `$at` as the data register of `lq`/`sq`; no compiler emits either. Seven functions moved to `asm/handwritten/` on that rule: `func_0039BC18`, `0039BC40`, `0039BC70`, `0039BC80`, `0039BCC8` (performance counters) and `func_00388E38`, `func_00388E58` (`$at` quadword copies).
+- **Hand-written code the tools now flag.** `tools/todo.py` classifies as hand-written any function that reads or writes the COP0 performance counters (`mfpc`/`mtpc`, which spimdisasm cannot decode) or that uses `$at` as the data register of `lq`/`sq`; no compiler emits either. Seven functions moved to `asm/handwritten/` on that rule: `func_0039BC18`, `0039BC40`, `0039BC70`, `0039BC80`, `0039BCC8` (performance counters) and `func_00388E38`, `func_00388E58` (`$at` quadword copies).
 - **Keep one prototype per callee across files.** The split build copies declarations from earlier files, so `extern void func_13B620();` in one file and `extern s32 func_13B620(void);` in another is a compile error in `pr_check.py` and the file check of `try_in_context.py`. Fix the older declaration (it was `void` only because that file ignored the result) rather than adding an alias.
 
 ## Patterns from `func_00397490` (2026-10-05, 0x21CC bytes)
@@ -562,13 +562,13 @@ The memory card state machine in `3958F0.c`, the largest function that was still
 - **No shared temporaries across the cases of a big switch.** One function-level `s32 t` reused in several cases pushed values into callee-saved registers everywhere; making them block-local took the diff from 544 to 278.
 - **Strength-reduced loop pointers:** retail keeps three pointers into a 0x40-byte table (`entry`, `entry+0x20`, `entry+0x25`). That came from `de = &tbl[i]` for `de->size`/`de->name[4]` plus `tbl[i].name` for the string arguments; other combinations gave two pointers.
 - Smaller ones: `func_11B2E8` (sprintf-like) must return `s32`, and `func_0038E6D0` is called through an `s32` cast, to keep `$v0` live. A `total + 1` that retail evaluates first needs its own temporary, since gcc reassociates `total + 1 + q`.
-- **Tooling for very large functions:** `try_func.py`'s positional diff is unusable until the size matches. An aligned diff (difflib over the disassembly, branch targets mapped to labels) made progress measurable from 883 diffs to 0.
+- **Tooling for very large functions:** `check.py`'s positional diff is unusable until the size matches. An aligned diff (difflib over the disassembly, branch targets mapped to labels) made progress measurable from 883 diffs to 0.
 
 ## Patterns from batch 21 (MMI bucket, 2026-10-06)
 
 Each was confirmed by a function that now matches in the full build.
 
-- **Check drafts with `try_in_context.py`, not only `try_func.py`.** `try_func.py` sees the extern declarations of earlier blocks but not their definitions, so a callee defined earlier in the file becomes an implicit `int` and gives false diffs (`func_003D1650` went from 23 diffs to MATCH in context; `func_0037F588`).
+- **Check drafts with `try_in_context.py`, not only `check.py`.** `check.py` sees the extern declarations of earlier blocks but not their definitions, so a callee defined earlier in the file becomes an implicit `int` and gives false diffs (`func_003D1650` went from 23 diffs to MATCH in context; `func_0037F588`).
 - **GS/GIF packet writers:** `long **pp` with `*(*pp)++ = value;` under `@ps2as` matches quickly. If callers declare the first parameter `s32`, define it `s32` and cast inside (`func_003D1E68`).
 - **An earlier block's `.extern X, N` hint forces `$gp` for the rest of the file.** Where retail uses `lui` later in the file, use a per-function alias with no hint. Ps2EeAs still uses `$gp` in delay slots (`func_003D2878`).
 - **A volatile read steers delay-slot filling**, since gcc keeps volatile loads out of delay slots (`func_00380AB0`).
@@ -663,7 +663,7 @@ Each was confirmed by a function that now matches in the full build.
 - **Two stores to the same object can be written in either order;** try both (`func_00386D98`: the `q+0x10` store comes after `q+0x48`).
 - **Struct-member reads vs cast-pointer reads.** This gcc runs without strict aliasing, so a load through a cast pointer is untyped memory and the scheduler keeps stores to plain globals after it. Struct-member loads don't conflict with stores to fixed scalar globals. Reading a header through `struct { s32 x[0x27]; }` instead of `((s32 *)hdr)[i]` was the biggest gain on `func_003B6528`.
 - **Float constants:** write the exact decimal of retail's bits, including truncated ones (`0.0749999955f` is `0x3D999999`, not `0.075f`) (`func_003A0EB0`).
-- **decomp-permuter is useful once its score is replaced** with `try_func.py`'s own metric (relocations resolved against retail). Its default score tracked `try_func` diffs poorly; with the replacement it improved 9 of 11 near misses in under an hour. Check the semantics of its rewrites before building on them.
+- **decomp-permuter is useful once its score is replaced** with `check.py`'s own metric (relocations resolved against retail). Its default score tracked `try_func` diffs poorly; with the replacement it improved 9 of 11 near misses in under an hour. Check the semantics of its rewrites before building on them.
 
 ## Patterns from rounds d, f, g and k and the large-function batches (2026-10-05 to 10-07)
 
@@ -691,7 +691,7 @@ These produce retail's bytes and are in the build, each in its own commit, but t
 
 ### Callee prototypes and arguments
 
-- **Implicit-int callees in override slices.** A function with its own override slice can't see same-file definitions in other slices, so every same-file callee needs a prototype in the block. Without one the call silently becomes `int f()`: float arguments go as doubles and `$v0` stays busy. `--flags=-Werror-implicit-function-declaration` on `try_func.py` lists them. Declaring the callee alone took `func_003A0EB0` from 190 to 78 diffs; several old drafts had been measured with implicit-int calls (`func_0039C548` 27 to 25, `func_0039EE68` 411 to 398).
+- **Implicit-int callees in override slices.** A function with its own override slice can't see same-file definitions in other slices, so every same-file callee needs a prototype in the block. Without one the call silently becomes `int f()`: float arguments go as doubles and `$v0` stays busy. `--flags=-Werror-implicit-function-declaration` on `check.py` lists them. Declaring the callee alone took `func_003A0EB0` from 190 to 78 diffs; several old drafts had been measured with implicit-int calls (`func_0039C548` 27 to 25, `func_0039EE68` 411 to 398).
 - **Extra callee arguments.** A value retail keeps in an argument register for no visible reason can be an extra argument of the callee: `func_003E8FB0` (the `f44` virtual call takes `s` third), `func_0039E4B0` (a third argument to `func_12F9E0`), `func_00394A20` (`func_00394660` reads a 6th argument from `$t1`). Read the callee before trusting a caller's argument count.
 - **Ignored callee arguments still set registers.** When retail loads argument registers the callee ignores, pass them through a per-function alias prototype: `func_0037DCF0_0039A3B0(a0, a2)` (`func_0039A3B0`).
 - **Pass-through arguments.** When retail keeps a copy of the first argument in a higher argument register, the function has extra parameters it passes untouched to its callee: `f(p, b, c)` calls `g(p, b, c)` (`func_00135E40`, boot_elf).

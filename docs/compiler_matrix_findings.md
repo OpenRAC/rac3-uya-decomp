@@ -260,15 +260,15 @@ func_003882D0, func_00388308 and func_00388340 load a float with `lwc1 $f0, -0x7
 
 ### Work-in-progress flag overrides
 
-`config/frontbin/localdecomp_flags.txt` (`func_XXXXXXXX <flags>`) gives a function flags in localdecomp and `tools/try_func.py` while it is still `INCLUDE_ASM`. `text_parts.txt` can't carry `@ps2as` for such a function, because Ps2EeAs can't assemble the stub. Once the function matches, its flags move to a single-function override in `text_parts.txt`.
+`config/frontbin/localdecomp_flags.txt` (`func_XXXXXXXX <flags>`) gives a function flags in localdecomp and `tools/check.py` while it is still `INCLUDE_ASM`. `text_parts.txt` can't carry `@ps2as` for such a function, because Ps2EeAs can't assemble the stub. Once the function matches, its flags move to a single-function override in `text_parts.txt`.
 
 ### Linux builds
 
-The whole build runs on Linux with wibo 1.0.0-beta.1 running the Windows toolchain, and gives the same `MATCH` (`tools/build.py`). Per-function matching works the same way through `tools/try_func.py`.
+The whole build runs on Linux with wibo 1.0.0-beta.1 running the Windows toolchain, and gives the same `MATCH` (`tools/build.py`). Per-function matching works the same way through `tools/check.py`.
 
 ### Contributor tooling
 
-- `tools/try_func.py`: compile one C file with its range's flags and diff it against retail, with relocations masked. `--all-modes` tries split/no-split times ee-as/Ps2EeAs.
+- `tools/check.py`: compile one C file with its range's flags and diff it against retail, with relocations masked. `--all-modes` tries split/no-split times ee-as/Ps2EeAs.
 - `tools/pr_check.py`: source checks for the usual full-build failures (unbalanced markers, C plus `INCLUDE_ASM` for one function, variable definitions, conflicting typedefs, aliases missing from `symbol_addrs_resolved.txt`, `@ps2as` ranges containing stubs, retail files tracked by git) and, with `--obj`, data sections in `text.c.o`.
 - The contributor guide lives in `docs/wiki/` and is synced to the GitHub wiki.
 
@@ -294,7 +294,7 @@ The full breakdown and plan are in `docs/full_match_roadmap.md`. The findings in
   - Functions ending `mtc1 $x, $f0` still fail (2 instructions off): retail has that in the delay slot, and gcc owns the return value, so the value has to come out of C, not out of the asm block.
 - **Trailing padding blocks conversion.** A function whose `.s` carries padding words after it (func_0039BD08: 0x24 bytes + 5 nops before the next function at 0x39BD40) cannot simply become C: dropping the padding shifts every later function and rewrites every `jal` target, even though the function's own bytes are exact and the single-function diff says MATCH.
 - **localdecomp scored 26 non-functions as perfect.** Its single-function diff trimmed up to 8 bytes of overshoot to ignore `.align` padding, which also hid gcc's `j $31` + `nop`. A "function" whose body is one `asm volatile("addiu $sp, $sp, 0x10")` therefore scored 0 while being unusable in the build. The trim now only removes trailing zero words, and `tools/pr_check.py` warns when status.json's perfect count runs ahead of what text.c actually has as C.
-- **`try_func.py` gave false MATCHes on swapped `$gp` stores.** It masked every relocated field, and two stores through `$gp` differ only in their relocated offsets. It now fills relocations in with the symbols' real addresses (symbol_addrs_resolved.txt, or the address in a D_/func_ name) and compares them in full; only section-relative relocations are still masked. Rechecked against all 617 previously matching blocks: no false failures. This, not "context in the full build", was why func_003AEDC8 and func_003AED08 needed their stores reordered.
+- **`check.py` gave false MATCHes on swapped `$gp` stores.** It masked every relocated field, and two stores through `$gp` differ only in their relocated offsets. It now fills relocations in with the symbols' real addresses (symbol_addrs_resolved.txt, or the address in a D_/func_ name) and compares them in full; only section-relative relocations are still masked. Rechecked against all 617 previously matching blocks: no false failures. This, not "context in the full build", was why func_003AEDC8 and func_003AED08 needed their stores reordered.
 - **VU0 leaves ending `mtc1 $x, $f0` in the delay slot are hand-written.** Even with gcc emitting the `mtc1` itself (a union return from an asm output bound to `$4`), neither gcc's delay-slot filler, ee-as, Ps2EeAs nor ee/bin/as.exe puts it in the `jr $ra` slot. The originals wrote the whole function, `jr` included, in assembly.
 - **Hand-written functions and linker remnants moved out of INCLUDE_ASM** (`tools/migrate_asm_sources.py`): 100 to `asm/handwritten/` via `ASM_FUNC`, 203 to `asm/remnants/` via `LINKER_REMNANT`. Same bytes; they stay in the objdiff base build, so they count as done.
 

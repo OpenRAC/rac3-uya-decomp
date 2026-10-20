@@ -30,19 +30,20 @@ programs from the disc, rebuilt from C and assembly until every byte equals reta
 | `config/levels/` | the shared level code's catalogue and tables | `tools/seed_levels.py` |
 | `include/`, `linker_scripts/` | headers, assembler macros, the hand-kept linker scripts | by hand |
 | `nonmatching/` | near misses, never linked (`nonmatching/README.md`) | you |
-| `progress_report.json`, `objdiff.json` | objdiff's progress report and its units | the CI and `tools/objdiff/gen_objdiff_units.py` |
+| `progress/report.json`, the README table | objdiff's progress report; the counts per program | `tools/progress.py`, by a maintainer |
+| `objdiff.json` | objdiff's units (stays in the root, where objdiff looks) | `tools/objdiff/gen_objdiff_units.py` |
 | `tools/`, `localdecomp/` | build, checks, the local matching editor | by hand |
 | `docs/`, `docs/wiki/` | research notes; the wiki's source | by hand |
 | the retail ELFs, `asm/`, `build/` | game data, generated assembly, build output | never committed |
 
 ## How a function is matched
 
-1. Pick a function with an `INCLUDE_ASM` marker (`python3 tools/triage.py` sorts what is left).
-2. Write C for it in localdecomp or with `python3 tools/try_func.py func_XXXXXXXX` until it
+1. Pick a function with an `INCLUDE_ASM` marker (`python3 tools/todo.py` sorts what is left).
+2. Write C for it in localdecomp or with `python3 tools/check.py FILE.c [func_XXXXXXXX]` until it
    compiles to retail's bytes with its range's flags.
 3. Replace the marker with the C, in place, in the file that owns its address, inside
    `/* localdecomp:start func_XXXXXXXX */ ... /* localdecomp:end func_XXXXXXXX */`.
-4. `python3 tools/pr_check.py --target <program>`: the source checks (declarations, markers,
+4. `python3 tests/check_repository.py` and `python3 tools/pr_check.py --target <program>`: the source checks (declarations, markers,
    extern-only globals, aliases, jump tables, compiles every file and slice).
 5. The real check: the full build (`make` on Windows, `python3 tools/build.py --target all` on
    Linux and macOS) prints one `MATCH` line per program with the SHA-1s above. A function counts
@@ -50,6 +51,18 @@ programs from the disc, rebuilt from C and assembly until every byte equals reta
 
 If you get close but not exact, put your C in `nonmatching/<program>/func_XXXXXXXX.c` with a line
 in `nonmatching/README.md` saying what still differs, and put the `INCLUDE_ASM` marker back.
+
+## Commands
+
+| Command | What it does | Old name (still works) |
+| --- | --- | --- |
+| `python3 tools/setup_asm.py --target all` | generates `asm/` from your ELFs in `baserom/` | |
+| `python3 tools/build.py --target all --toolchain DIR --runner WIBO [--ee29 DIR]` | the full build, one `MATCH` per program (Linux, macOS) | `make` (Windows) |
+| `python3 tools/check.py FILE.c [func_XXXXXXXX]` | compiles a snippet with its range's flags and diffs it against retail | `tools/try_func.py` |
+| `python3 tools/todo.py [--target NAME]` | the functions still to match, sorted by what they need | `tools/triage.py` |
+| `python3 tests/check_repository.py` | source checks of every program, tables, no game data (CI) | `tools/pr_check.py` (per program, also compiles) |
+| `python3 -m unittest discover -s tests` | the tools' unit tests (CI) | |
+| `python3 tools/progress.py [--check]` | counts per program; checks `progress/report.json` | |
 
 ## Compiler flags: per-function overrides are being migrated
 

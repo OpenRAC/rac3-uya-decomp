@@ -36,7 +36,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 os.chdir(ROOT)
 import targets  # noqa: E402
-import try_func as tf  # noqa: E402
+import check as tf  # noqa: E402
 
 CLASS_NAMES = {3: "indep", 2: "anti/out", 1: "data>1"}
 

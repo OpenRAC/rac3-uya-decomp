@@ -123,6 +123,33 @@ class FlagTableTest(unittest.TestCase):
             self.assertTrue(parts, t.name)
 
 
+class EntryPointTest(unittest.TestCase):
+    def test_old_names_are_the_new_modules(self):
+        import todo
+        import triage
+        self.assertIs(triage, todo)
+        for old, new in (("try_func", "check"), ("triage", "todo")):
+            text = (ROOT / "tools" / (old + ".py")).read_text()
+            self.assertIn('run_path(os.path.join(_HERE, "%s.py"), run_name="__main__")' % new, text)
+            self.assertTrue((ROOT / "tools" / (new + ".py")).is_file())
+
+    def test_progress_report_is_valid(self):
+        import progress
+        self.assertEqual(progress.check_report(progress.REPORT), [])
+
+    def test_progress_table(self):
+        import progress
+        row = {"c": 6, "asm_func": 1, "remnant": 1, "include_asm": 2, "ok": True}
+        text = progress.table([("frontbin", row)])
+        self.assertIn("| frontbin | 10 | 8 (80.0%) | 6 | 1 | 1 | 2 |", text)
+
+    def test_readme_has_the_progress_block(self):
+        import progress
+        text = (ROOT / "README.md").read_text()
+        self.assertIn(progress.BEGIN, text)
+        self.assertIn(progress.END, text)
+
+
 class RepositoryCheckTest(unittest.TestCase):
     def test_tables_check_passes(self):
         errors = []

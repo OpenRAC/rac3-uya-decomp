@@ -2,15 +2,15 @@
 
 Every script in `tools/`, plus localdecomp and the Makefile, and what each is for. Run the Python tools from anywhere: they find the repo root themselves. Install their dependencies once with `pip install -r tools/requirements.txt`.
 
-**Three executables.** The repo builds `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf`. Every tool works on frontbin unless you pass `--target boot_elf` / `--target i5bootn` (or set `UYA_TARGET`): `setup_asm.py`, `build.py`, `build_text.py`, `try_func.py`, `try_in_context.py`, `triage.py`, `pr_check.py`, `split_text.py`, `gen_divs_nops.py`, `migrate_asm_sources.py`, `split_remnant_prefix.py`, `trailing_padding.py`, `check_match.py`, `permuter_setup.py` and `gen_asm_func.py`. `setup_asm.py`, `build.py`, `pr_check.py`, `triage.py`, `split_text.py`, `gen_divs_nops.py` and `migrate_asm_sources.py` also take `--target all` (once per target that is set up; fails if any run fails). `tools/targets.py` lists each target's ELF, sections, source folders and tables (in `config/<target>/`, with the splat configs in `config/splat/`). See [`docs/targets.md`](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/targets.md), which also covers adding a target.
+**Three executables.** The repo builds `frontbin.elf`, `boot_elf.elf` and `i5bootn.elf`. Every tool works on frontbin unless you pass `--target boot_elf` / `--target i5bootn` (or set `UYA_TARGET`): `setup_asm.py`, `build.py`, `build_text.py`, `check.py`, `try_in_context.py`, `todo.py`, `pr_check.py`, `split_text.py`, `gen_divs_nops.py`, `migrate_asm_sources.py`, `split_remnant_prefix.py`, `trailing_padding.py`, `check_match.py`, `permuter_setup.py` and `gen_asm_func.py`. `setup_asm.py`, `build.py`, `pr_check.py`, `todo.py`, `split_text.py`, `gen_divs_nops.py` and `migrate_asm_sources.py` also take `--target all` (once per target that is set up; fails if any run fails). `tools/targets.py` lists each target's ELF, sections, source folders and tables (in `config/<target>/`, with the splat configs in `config/splat/`). See [`docs/targets.md`](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/targets.md), which also covers adding a target.
 
 ## Which tool do I need?
 
 | I want to... | Use |
 |---|---|
-| Pick a function to work on | [`triage.py`](#triagepy) |
+| Pick a function to work on | [`todo.py`](#triagepy) |
 | Match a function in a browser | [localdecomp](#localdecomp) |
-| Match a function on the command line | [`try_func.py`](#try_funcpy) |
+| Match a function on the command line | [`check.py`](#try_funcpy) |
 | Check a function exactly as the full build compiles it | [`try_in_context.py`](#try_in_contextpy) |
 | Get unstuck on a register or ordering near miss | [`permuter_setup.py`](#permuter_setuppy) with [`permuter_scorer.py`](#permuter_scorerpy) |
 | Draft inline asm for a VU0/MMI leaf | [`gen_asm_func.py`](#gen_asm_funcpy) |
@@ -52,20 +52,20 @@ Useful options:
 
 A score of 0 in localdecomp is necessary, not sufficient. The full build (`make`) still has to print MATCH.
 
-### try_func.py
+### check.py (formerly check.py)
 
 The command-line equivalent of localdecomp's Build. Give it a self-contained snippet (externs, typedefs, the function) and it compiles it with the function's real flags and diffs against retail:
 
 ```
-python tools/try_func.py scratch/func_0039BEC0.c
-python tools/try_func.py scratch/func_0039BEC0.c --all-modes     # split/no-split x ee-as/Ps2EeAs
-python tools/try_func.py scratch/f.c func_0039BEC0 --mode S --as ps2as
+python tools/check.py scratch/func_0039BEC0.c
+python tools/check.py scratch/func_0039BEC0.c --all-modes     # split/no-split x ee-as/Ps2EeAs
+python tools/check.py scratch/f.c func_0039BEC0 --mode S --as ps2as
 ```
 
 - Relocations are filled in with real addresses, so a wrong symbol or two swapped stores show up as differences.
 - The source-file context is included by default. `--no-context` compiles your file alone.
 - `--flags "..."` appends extra compiler flags to the range's flags, for experiments. It can't remove one; to try a function without `-fopt-stack`, append `--flags=-fno-opt-stack`. Write it with `=` when the value starts with `-` (`--flags=-mvu0-use-vf0-vf2`).
-- `try_func.py` doesn't show compiler warnings, so a callee with no prototype silently becomes `int f()` (floats passed as doubles, `$v0` kept busy). `--flags=-Werror-implicit-function-declaration` turns those into errors that name the callee. Check every draft this way, especially one that needs its own override slice: a slice doesn't see the definitions in its file's other slices.
+- `check.py` doesn't show compiler warnings, so a callee with no prototype silently becomes `int f()` (floats passed as doubles, `$v0` kept busy). `--flags=-Werror-implicit-function-declaration` turns those into errors that name the callee. Check every draft this way, especially one that needs its own override slice: a slice doesn't see the definitions in its file's other slices.
 - Its `flags:` line prints the range's flags even when `--mode` / `--as` are given; the overrides are applied anyway.
 - `--early-extern-size SYMBOL=SIZE` (repeatable) is an experiment for Ps2EeAs `$gp` selection; the full build doesn't do this, so a function that only matches with it is not done. See [Matching patterns](Matching-Patterns#early-extern-sizes-for-ps2eeas).
 - On Linux, pass `--toolchain` and `--runner` (the path to wibo), or set `UYA_TOOLCHAIN` and `UYA_RUNNER`.
@@ -74,7 +74,7 @@ Output is `func_X: MATCH` or `func_X: N diff` plus a side-by-side listing.
 
 ### try_in_context.py
 
-Puts your snippet into a copy of the function's source file in place of the function, builds that file (or the slice holding the function) the way the real build does, and diffs it. Then it compiles the rest of the file and every later file that would receive the block's declarations through `split_text.py --refresh`, and reports any `conflicting types` error there. That is the usual reason a function that matches in `try_func.py` stops `make`: a later block or file declares the same name differently. Run it on every function before you insert it (`--no-file-check` skips the second part).
+Puts your snippet into a copy of the function's source file in place of the function, builds that file (or the slice holding the function) the way the real build does, and diffs it. Then it compiles the rest of the file and every later file that would receive the block's declarations through `split_text.py --refresh`, and reports any `conflicting types` error there. That is the usual reason a function that matches in `check.py` stops `make`: a later block or file declares the same name differently. Run it on every function before you insert it (`--no-file-check` skips the second part).
 
 It doesn't catch everything. Several times a callee prototype that `split_text.py --refresh` later copied into a file defining that callee differently (for example as `(void)`) passed it and failed `pr_check.py`; run `pr_check.py` after adding an `extern` for a function that isn't a per-function alias, or use a K&R declaration or an alias. It also ignores `config/frontbin/localdecomp_flags.txt`, so an `@ps2as` candidate can only be checked in place once its `text_parts.txt` override exists.
 
@@ -99,7 +99,7 @@ Always check what a permuter output does before building on it. In k1's boot_elf
 
 ### permuter_scorer.py
 
-Scores a candidate object the way `try_func.py` and the matching agents measure functions: instructions aligned against retail with difflib, relocated fields resolved, branch targets compared through the alignment. The score is 10 x aligned diffs; 0 is a match (confirm with `try_func.py`). decomp-permuter's own score often disagrees with this (one near miss scored 180 at 5 real diffs, another 3010 at 2).
+Scores a candidate object the way `check.py` and the matching agents measure functions: instructions aligned against retail with difflib, relocated fields resolved, branch targets compared through the alignment. The score is 10 x aligned diffs; 0 is a match (confirm with `check.py`). decomp-permuter's own score often disagrees with this (one near miss scored 180 at 5 real diffs, another 3010 at 2).
 
 To use it inside the permuter, apply `tools/decomp-permuter-aligned-scorer.patch` once in your decomp-permuter checkout (a 20-line hook in `src/scorer.py` that does nothing unless the variables below are set), then:
 
@@ -135,13 +135,13 @@ Drafts an inline-asm C function from retail assembly, for leaf functions that we
 python tools/gen_asm_func.py scratch func_003886B0 func_00388B40
 ```
 
-Test each result with `try_func.py`, both with and without `--as ps2as`. `NOREORDER=1` wraps the block in `.set noreorder`, which is rarely what retail has. See [Matching patterns](Matching-Patterns#vu0-code-inline-asm).
+Test each result with `check.py`, both with and without `--as ps2as`. `NOREORDER=1` wraps the block in `.set noreorder`, which is rarely what retail has. See [Matching patterns](Matching-Patterns#vu0-code-inline-asm).
 
 ---
 
 ## Planning and checking
 
-### triage.py
+### todo.py (formerly todo.py)
 
 Sorts every remaining `INCLUDE_ASM` function into one bucket:
 
@@ -156,15 +156,23 @@ Sorts every remaining `INCLUDE_ASM` function into one bucket:
 | `handwritten`, `remnant` | not decompilation targets (see [`migrate_asm_sources.py`](#migrate_asm_sourcespy)) |
 
 ```
-python tools/triage.py                                  # summary by bucket
-python tools/triage.py --tsv docs/remaining_functions.tsv   # full list with sizes
-python tools/triage.py --target boot_elf --unit core        # another target, one code section
-python tools/triage.py --target all                     # one summary per target
+python tools/todo.py                                  # summary by bucket
+python tools/todo.py --tsv docs/remaining_functions.tsv   # full list with sizes
+python tools/todo.py --target boot_elf --unit core        # another target, one code section
+python tools/todo.py --target all                     # one summary per target
 ```
 
 Start with `plain`, smallest first. `docs/remaining_functions.tsv` is its saved output for frontbin.
 
-On 2026-10-07 (`python tools/triage.py --target all`): frontbin 72 left (41 plain, 9 switch, 11 vu0, 11 mmi; one of the plain is `func_003ECDF0`, a data blob), boot_elf 650 (434 plain, 43 sibcall, 21 switch, 41 vu0, 29 mmi, 2 sys, 80 odd), i5bootn 42 (36 plain, 3 sibcall, 1 switch, 1 mmi, 1 odd).
+On 2026-10-07 (`python tools/todo.py --target all`): frontbin 72 left (41 plain, 9 switch, 11 vu0, 11 mmi; one of the plain is `func_003ECDF0`, a data blob), boot_elf 650 (434 plain, 43 sibcall, 21 switch, 41 vu0, 29 mmi, 2 sys, 80 odd), i5bootn 42 (36 plain, 3 sibcall, 1 switch, 1 mmi, 1 odd).
+
+### tests/check_repository.py
+
+The pre-commit check, run by CI on every push and pull request with the unit tests (`python -m unittest discover -s tests`). It runs `pr_check.py --no-compile --no-git` for every program, checks that every table `tools/targets.py` names exists and parses, and that no game data or build output is tracked. Needs no toolchain and no game files. `--target NAME` checks one program, `--compile` also compiles every file (needs the toolchain, as `pr_check.py`).
+
+### progress.py
+
+Counts per program from the sources (C, `ASM_FUNC`, `LINKER_REMNANT`, `INCLUDE_ASM`), with `--readme` to refresh the table in README.md. `--check` validates `progress/report.json`, objdiff's report; `--write build/report.json` installs the one CI's `make objdiff` + `objdiff-cli report generate` made.
 
 ### pr_check.py
 
@@ -180,7 +188,7 @@ Catches the mistakes that break the full build, and names the line to fix:
 - stale localdecomp scores;
 - C functions whose retail code saves `$ra` with `sq`/`lq` but that are missing from `config/frontbin/sq_ra_funcs.txt` (a warning; see [Matching patterns](Matching-Patterns));
 - retail files staged in git;
-- every source file, and every slice of a file with mixed flags, compiles the way the build compiles it (under a minute; `--no-compile` skips it). This catches a declaration that clashes with a later block or a later file. On Linux it needs `UYA_TOOLCHAIN` and `UYA_RUNNER`, like `try_func.py`.
+- every source file, and every slice of a file with mixed flags, compiles the way the build compiles it (under a minute; `--no-compile` skips it). This catches a declaration that clashes with a later block or a later file. On Linux it needs `UYA_TOOLCHAIN` and `UYA_RUNNER`, like `check.py`.
 
 ```
 python tools/pr_check.py
@@ -223,7 +231,7 @@ Both do the same four steps:
 
 Called by the build; you don't run it yourself. It compiles each file in `config/frontbin/src_files.txt` with its flags from `config/frontbin/text_parts.txt`: as it is when all its functions share flags, otherwise in slices (each with the file's own declarations, nothing from other files). Every file becomes one object in `build/src/frontbin/` (slice objects are kept apart in `build/src/frontbin/slices/`, so that folder holds exactly one `.o` per source file); they are linked into one `text.c.o`.
 
-Its `function_context` function is what gives localdecomp, `try_func.py` and `permuter_setup.py` the same declarations as the real build.
+Its `function_context` function is what gives localdecomp, `check.py` and `permuter_setup.py` the same declarations as the real build.
 
 ### build_common_c.py
 
@@ -251,7 +259,7 @@ Copies frontbin's matched C into boot_elf's front end (`.text`), which is frontb
 
 ### asm_filter.py
 
-Runs between gcc and the assembler in every build path (`build_text.py`, `try_func.py`, localdecomp, `permuter_setup.py`); you don't call it yourself. Retail's assembler padded every loop shorter than 6 instructions with `nop`s before the backward branch. Neither assembler we have does that: `ee-as` never pads such loops and Ps2EeAs pads them to 7. The filter adds the `nop`s to reach 6, then writes the branch as a raw `.word` so neither assembler pads it again. It handles branches gcc wrote in either `.set` mode; in reorder mode it counts the delay-slot `nop` the assembler adds after every branch (ee-as never fills a delay slot itself) and writes that `nop` out after the raw branch. Loops whose body contains a macro instruction or wider-than-4-byte alignment are left alone.
+Runs between gcc and the assembler in every build path (`build_text.py`, `check.py`, localdecomp, `permuter_setup.py`); you don't call it yourself. Retail's assembler padded every loop shorter than 6 instructions with `nop`s before the backward branch. Neither assembler we have does that: `ee-as` never pads such loops and Ps2EeAs pads them to 7. The filter adds the `nop`s to reach 6, then writes the branch as a raw `.word` so neither assembler pads it again. It handles branches gcc wrote in either `.set` mode; in reorder mode it counts the delay-slot `nop` the assembler adds after every branch (ee-as never fills a delay slot itself) and writes that `nop` out after the raw branch. Loops whose body contains a macro instruction or wider-than-4-byte alignment are left alone.
 
 Without it, no C function containing a short loop could match. With it, loops match with no special C.
 
@@ -278,7 +286,7 @@ Not scripts, but they decide how every function is compiled.
 - Every frontbin and boot_elf line has `-mvu0-use-vf0-vf2` (since 2026-10-07; it was put first on the lines that didn't have it, so slice boundaries stayed; the older j-form overrides have it just before `@ps2as`). The build merges runs of lines with equal flag lists into one slice, so copy a neighbouring line's flags exactly as written when you add an override; appending the flag elsewhere, or writing the same flags in another order, changes which lines merge.
 
 **`config/frontbin/localdecomp_flags.txt`: temporary per-function flags while you experiment.**
-- Only localdecomp and `try_func.py` read it.
+- Only localdecomp and `check.py` read it.
 - Move the setting into `text_parts.txt` before your PR.
 
 Details in [Toolchain and build](Toolchain-and-Build#text_partstxt).
@@ -362,4 +370,4 @@ Turns those objects into common and level-specific code and data, so shared cont
 
 - `requirements.txt`: Python packages for the tools (pyelftools, capstone).
 - `decomp-permuter-aligned-scorer.patch`: the hook that lets decomp-permuter use [`permuter_scorer.py`](#permuter_scorerpy).
-- `remaining_functions.tsv`: an older copy of `triage.py --tsv` output. `docs/remaining_functions.tsv` is the current one.
+- `remaining_functions.tsv`: an older copy of `todo.py --tsv` output. `docs/remaining_functions.tsv` is the current one.

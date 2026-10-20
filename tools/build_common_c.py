@@ -20,7 +20,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "objdiff"))  # split_shared_levels.py
 import pr_check  # noqa: E402
 import split_shared_levels as shared  # noqa: E402
-import try_func as matching
+import check as matching
 
 
 ROOT = Path(__file__).resolve().parent.parent

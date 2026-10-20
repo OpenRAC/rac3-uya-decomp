@@ -73,6 +73,14 @@ jobs:
         run: |
           objdiff-cli.exe report generate -o build/report.json
 
+      # progress/report.json is updated from this artifact by a maintainer
+      # (python tools/progress.py --write build/report.json, committed on its own)
+      - name: Check the report, print the counts
+        shell: pwsh
+        run: |
+          python tools/progress.py --write build/report.json
+          python tools/progress.py
+
       - name: Upload report artifact
         uses: actions/upload-artifact@v4
         with:

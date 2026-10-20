@@ -33,7 +33,7 @@ The `sibcall` bucket and the docs said a `j func_` tail call meant Sony 2.96 or
 (`func_008007C8` and `func_008014D8` match with them and with nothing newer).
 What the matrix shows is narrower: **SN 2.95.3 never does**, so a sibling call
 means "not our compiler" (in practice, Sony's 2.9-ee-991111, a library
-compiler). The docs and `tools/triage.py` now say that.
+compiler). The docs and `tools/todo.py` now say that.
 
 ## The libgcc result in detail
 

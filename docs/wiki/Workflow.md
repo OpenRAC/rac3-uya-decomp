@@ -6,7 +6,7 @@ The loop for one function: pick it, read its assembly, write C until it matches,
 
 Every not-yet-decompiled function is an `INCLUDE_ASM("asm/nonmatchings/text", func_XXXXXXXX);` line in one of the source files in `src/frontbin/` (the one whose address range in `config/frontbin/src_files.txt` contains it), and its retail assembly is `asm/nonmatchings/text/func_XXXXXXXX.s`. The header line gives the size: `nonmatching func_0037D100, 0x20`.
 
-`python tools/triage.py --tsv remaining.tsv` sorts every remaining function into a bucket (plain, switch, vu0, mmi, handwritten, remnant, ...) with its size. Pick from **plain**, smallest first, or from **switch** and **vu0** once you know those patterns.
+`python tools/todo.py --tsv remaining.tsv` sorts every remaining function into a bucket (plain, switch, vu0, mmi, handwritten, remnant, ...) with its size. Pick from **plain**, smallest first, or from **switch** and **vu0** once you know those patterns.
 
 Good first functions:
 
@@ -25,7 +25,7 @@ Tell others what you're working on (open a draft PR early) so two people don't m
 
 **levels/common** (the code the 51 level overlays share) is the last entry in the dropdown. It isn't a splatted executable: each function is its own file in `src/levels/common/`, listed in `config/levels/common_c.json` and checked by `tools/build_common_c.py`'s gates against its canonical owner overlay ([docs/common_level_c.md](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/common_level_c.md)); it needs the private level inputs in `--refs`. The list holds every canonical owner. Pick a compiler profile next to Save (mode N or S, default assembler or Ps2EeAs; *auto* tries the catalogue's entry and then all four). A build at 0 also runs the gates (exact size, raw object body, no data sections, no assembly), and only a build that passes them can be saved: Save writes the file and its catalogue entry. A source in `src/levels/common/` that isn't catalogued yet shows as unverified. Full check reports the gates' result (`make objdiff` rebuilds the shared code's base) and the levels/common numbers. The permuter doesn't support it yet.
 
-**i5bootn** (the bootstrap launcher, `src/i5bootn/`, `--target i5bootn`) is set up the same way, but most of its compiled code is Sony library code built with Sony's ee-gcc 2.9-ee-991111 (libgcc, libc helpers), so expect near misses there until that compiler is in the toolchain. Its own code (`main`, `func_008010F8`) matches with ours. `triage.py` puts the clearest library cases in its `sibcall` bucket. See `docs/i5bootn.md` and `docs/compiler_matrix_i5bootn.md`.
+**i5bootn** (the bootstrap launcher, `src/i5bootn/`, `--target i5bootn`) is set up the same way, but most of its compiled code is Sony library code built with Sony's ee-gcc 2.9-ee-991111 (libgcc, libc helpers), so expect near misses there until that compiler is in the toolchain. Its own code (`main`, `func_008010F8`) matches with ours. `todo.py` puts the clearest library cases in its `sibcall` bucket. See `docs/i5bootn.md` and `docs/compiler_matrix_i5bootn.md`.
 
 ## 2. Read the assembly
 
@@ -48,16 +48,16 @@ Start the server (`python tools/localdecomp/server.py --project . --no-git-sync`
   func_0039BEC0 -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
   ```
 
-  This affects localdecomp and `try_func.py` only, not the real build. The line replaces the range's flags, so include `-mvu0-use-vf0-vf2` like the `text_parts.txt` lines do.
+  This affects localdecomp and `check.py` only, not the real build. The line replaces the range's flags, so include `-mvu0-use-vf0-vf2` like the `text_parts.txt` lines do.
 
 ## 3b. Or match it on the command line
 
-`tools/try_func.py` does the same compile and diff without a browser, and works on Linux through wibo:
+`tools/check.py` does the same compile and diff without a browser, and works on Linux through wibo:
 
 ```
-python tools/try_func.py scratch/func_0039BEC0.c              # flags from its range
-python tools/try_func.py scratch/func_0039BEC0.c --all-modes  # S/N x ee-as/Ps2EeAs
-python tools/try_func.py scratch/f.c --mode S --as ps2as       # force a combination
+python tools/check.py scratch/func_0039BEC0.c              # flags from its range
+python tools/check.py scratch/func_0039BEC0.c --all-modes  # S/N x ee-as/Ps2EeAs
+python tools/check.py scratch/f.c --mode S --as ps2as       # force a combination
 ```
 
 It prints `func_X: MATCH` or `func_X: N diff` with a side-by-side listing (left is yours, right is retail, `**` marks differing lines). Relocated fields are masked, so `lui $a0, 0` against `lui $a0, 0x1e` is not a difference. Keep scratch files outside `src/` (for example in a gitignored `scratch/` folder).
@@ -101,7 +101,7 @@ python tools/pr_check.py
 ## When a function is stuck
 
 - **Start over.** A clean rewrite, or a copy of a matched sibling with the data changed, often beats tuning an old draft (`func_003A3FB0` went from 46 diffs to a match with a plain rewrite).
-- **Search orders.** Store order, statement order and prototype parameter order are cheap to brute-force with a script around `try_func.py`; respect data dependencies, or the search changes what the code does.
+- **Search orders.** Store order, statement order and prototype parameter order are cheap to brute-force with a script around `check.py`; respect data dependencies, or the search changes what the code does.
 - **Permuter.** `tools/permuter_setup.py` with the aligned scorer (`tools/permuter_scorer.py`, see `docs/permuter.md`). Check every output for semantics: in one run about half of its improvements changed what the code does.
 - **Under load** (several builds sharing a machine), wibo occasionally hangs in Ps2EeAs or the ee-gcc driver, and a full build can fail once without an error; a rerun passes. Wrap batch runs in `timeout`, and don't run two builds in one checkout at once (they corrupt `build/`).
 - Leave a header on a near-miss draft: flags, diff count, what is left, what you tried.
@@ -118,4 +118,4 @@ python tools/pr_check.py
 | Ps2EeAs errors about `macro.inc` or unknown options | An `@ps2as` range contains an `INCLUDE_ASM` stub | Narrow the override to end after the C function |
 | `implicit declaration of function` or `'X' undeclared` in a file that used to build | The block uses something only another file declares | `python tools/split_text.py --refresh` |
 | `conflicting types for 'func_X'` (or `D_X`) in a later block or another file | Your block declares a name with a different type than another declaration the compiler sees: a later block of the same file, or a later file that uses the name without declaring it (`split_text.py --refresh` gives it yours) | Use the existing declaration (grep `src/frontbin/`), or a per-function alias in your block plus its line in `symbol_addrs_resolved.txt`. `try_in_context.py` and `pr_check.py` report this before `make` does |
-| `NO MATCH` with no compile error | A function compiled but doesn't match, often a partial saved from localdecomp | Rebuild each changed function in localdecomp or `try_func.py`; restore `INCLUDE_ASM` for any that aren't at 0 |
+| `NO MATCH` with no compile error | A function compiled but doesn't match, often a partial saved from localdecomp | Rebuild each changed function in localdecomp or `check.py`; restore `INCLUDE_ASM` for any that aren't at 0 |

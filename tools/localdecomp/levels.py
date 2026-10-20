@@ -95,7 +95,7 @@ class LevelProject:
         return _Active()
 
     def _tools(self):
-        import try_func, build_common_c, try_level  # noqa: E401 (tools/, on sys.path)
+        import check as try_func, build_common_c, try_level  # noqa: E401 (tools/, on sys.path)
         return try_func, build_common_c, try_level
 
     def owners(self):

@@ -16,7 +16,7 @@ Files are named after their first function's address (`src/frontbin/3E1CC8.c`) u
 
 `python tools/split_text.py --refresh` recomputes that section for every file: each statement from an earlier file (in link order) that declares a name the file uses before declaring it itself, plus whatever those statements need in turn (a typedef's struct, a macro's expansion). A name the file declares itself is never copied in, so a file's own declaration can't clash with another file's. localdecomp runs it for the file it saves into. `pr_check.py` reports a file whose section is out of date.
 
-`try_func.py`, `try_in_context.py`, the permuter and localdecomp compile a function with its file's declarations, the declarations of the earlier functions in the same file, and anything from earlier files the new code needs that the file doesn't declare yet.
+`check.py`, `try_in_context.py`, the permuter and localdecomp compile a function with its file's declarations, the declarations of the earlier functions in the same file, and anything from earlier files the new code needs that the file doesn't declare yet.
 
 Before the split, every build part was given every declaration from every earlier part, up to 2,700 lines and 110 KB in front of the last parts. Now the whole tree has about 390 lines of cross-file declarations.
 

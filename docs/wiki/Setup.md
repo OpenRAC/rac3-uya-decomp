@@ -63,7 +63,7 @@ It must be `487975305f8a263c750dfede50391b575ed07835`. It is in `.gitignore` as 
 ## 3. Python
 
 - Python 3.9 or newer.
-- `pip install -r tools/requirements.txt` (pyelftools and capstone, used by `try_func.py` and `pr_check.py --obj`, and splat, used by `tools/setup_asm.py`).
+- `pip install -r tools/requirements.txt` (pyelftools and capstone, used by `check.py` and `pr_check.py --obj`, and splat, used by `tools/setup_asm.py`).
 - For localdecomp: [asm-differ](https://github.com/simonlindholm/asm-differ). localdecomp runs it as `python -m diff`, so `diff.py` has to be importable (put it on `PYTHONPATH` or in `site-packages`), plus its dependencies: `pip install colorama ansiwrap watchdog levenshtein cxxfilt`.
 - Optional: [objdiff](https://github.com/encounter/objdiff) (`objdiff-cli.exe`) for progress reports.
 
@@ -168,9 +168,9 @@ Then start localdecomp as usual (`python tools/localdecomp/server.py --project .
 The compiler and binutils are Windows executables. [wibo](https://github.com/decompals/wibo) runs them. The project was verified with wibo 1.0.0-beta.1.
 
 1. Copy the toolchain folder over with the same layout.
-2. Test a function: `export UYA_TOOLCHAIN=~/sn UYA_RUNNER=~/bin/wibo`, then `python3 tools/try_func.py some.c`.
+2. Test a function: `export UYA_TOOLCHAIN=~/sn UYA_RUNNER=~/bin/wibo`, then `python3 tools/check.py some.c`.
 3. Full build: `python3 tools/build.py --target all` (or one `--target`). It runs the same steps as the Makefile and ends each target with the same `MATCH` line.
 
-wibo occasionally hangs, in Ps2EeAs or in the ee-gcc driver, most often on a busy machine. `try_func.py` and the build have no timeout of their own, so wrap scripted runs in one (`timeout 120 python3 tools/try_func.py ...`) and rerun a build that stops without printing `MATCH` after a clean `rm -rf build`.
+wibo occasionally hangs, in Ps2EeAs or in the ee-gcc driver, most often on a busy machine. `check.py` and the build have no timeout of their own, so wrap scripted runs in one (`timeout 120 python3 tools/check.py ...`) and rerun a build that stops without printing `MATCH` after a clean `rm -rf build`.
 
-localdecomp's `server.py` assumes Windows paths and executables. On Linux, use `tools/try_func.py` for matching.
+localdecomp's `server.py` assumes Windows paths and executables. On Linux, use `tools/check.py` for matching.

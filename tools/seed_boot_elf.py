@@ -355,7 +355,7 @@ def build(args):
 def check_functions(addrs):
     """{addr: diffs} for seeded functions, from the per-file objects of the last build."""
     import io, contextlib
-    import try_func as tf
+    import check as tf
     retail = tf.Retail(BE.path("elf"))
     out = {}
     by_file = collections.defaultdict(list)

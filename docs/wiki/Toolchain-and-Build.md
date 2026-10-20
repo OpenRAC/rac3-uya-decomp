@@ -39,7 +39,7 @@ Every source file starts with a line at its first function's address: those are 
 
 The build groups a run of lines with **equal flag lists** into one slice. Two adjacent `@ps2as` overrides therefore become one slice, and the first function's `.extern` hints then reach the second. Writing the same flags in another order makes the lists unequal and keeps the slices apart (the large-function batch used this for `func_003D2878`); per-function alias names in the later block are the other fix. The same rule is why `-mvu0-use-vf0-vf2` was put first on the lines that didn't have it: appending it would have made more neighbouring lines equal, merged their slices and exposed declaration conflicts (the first in `39FFC8.c`). Copy a neighbour's flags exactly as written when you add a line.
 
-Pseudo-flags, expanded by `build_text.py`, localdecomp and `try_func.py`:
+Pseudo-flags, expanded by `build_text.py`, localdecomp and `check.py`:
 
 | Flag | Effect |
 |---|---|
@@ -52,15 +52,15 @@ gcc uses the last `-B` on its command line, so a range's assembler choice wins o
 `@ee29` is for library code that came prebuilt with Sony's own compiler (i5bootn's libgcc in `src/i5bootn/libgcc/`; see `docs/compiler_matrix_i5bootn.md`). It runs the 2.9-ee **driver** (`bin/ee-gcc.exe`, never `cc1` directly: the driver defines `__mips__`, `__R5900__` and the other target macros libgcc's `longlong.h` depends on), with its `lib/gcc-lib/ee/<version>/` folder passed explicitly as `-B` (and its `include/` as `-I` when there is one). Where it is:
 
 - `make`: the `EE29` variable, default `C:/tools/testfolder/ee-gcc2.9-991111`, or the `UYA_EE29` environment variable (`make EE29=D:/cc/ee-gcc2.9-991111`).
-- `build.py`, `build_text.py`, `try_func.py`, `try_in_context.py`, `permuter_setup.py`: `--ee29 DIR` or `UYA_EE29`, same default. On Linux and macOS the Windows driver runs through `UYA_RUNNER` (wibo). A folder with a Linux `bin/ee-gcc` instead (Sony's 2.9-ee-991111-01) works too, for experiments; committed code must match with the Windows 2.9-ee-991111, which the maintainer's build uses.
+- `build.py`, `build_text.py`, `check.py`, `try_in_context.py`, `permuter_setup.py`: `--ee29 DIR` or `UYA_EE29`, same default. On Linux and macOS the Windows driver runs through `UYA_RUNNER` (wibo). A folder with a Linux `bin/ee-gcc` instead (Sony's 2.9-ee-991111-01) works too, for experiments; committed code must match with the Windows 2.9-ee-991111, which the maintainer's build uses.
 - localdecomp: `UYA_EE29`, same default.
-- `try_func.py --flags=@ee29` compiles any function with it.
+- `check.py --flags=@ee29` compiles any function with it.
 
 The Windows 2.9-ee `cpp` rejects `#line 1 "file"` (it writes `# 0`, which its `cc1` refuses); `tools/ee29.py` turns those into `#line 2`, so compiler messages in that stretch are one line late. `regalloc.py` takes it in `--flags` (`--flags "@ee29 -O2 -G0"`). There is no pseudo-flag for 2.96 (boot_elf's newlib region, i5bootn's `exit`) yet.
 
 ## localdecomp_flags.txt
 
-`config/frontbin/localdecomp_flags.txt` gives a **work-in-progress** function its own flags in localdecomp and `try_func.py` while it is still `INCLUDE_ASM` in its source file (an `@ps2as` range can't contain the asm stub, so `text_parts.txt` can't hold it yet):
+`config/frontbin/localdecomp_flags.txt` gives a **work-in-progress** function its own flags in localdecomp and `check.py` while it is still `INCLUDE_ASM` in its source file (an `@ps2as` range can't contain the asm stub, so `text_parts.txt` can't hold it yet):
 
 ```
 func_0039BEC0 -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as

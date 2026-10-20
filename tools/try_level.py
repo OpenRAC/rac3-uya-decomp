@@ -22,7 +22,7 @@ from elftools.elf.elffile import ELFFile
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import build_common_c as bcc  # noqa: E402
-import try_func as matching  # noqa: E402
+import check as matching  # noqa: E402
 
 
 def disasm(code, addr, toolchain):

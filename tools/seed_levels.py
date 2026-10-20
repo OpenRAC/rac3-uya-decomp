@@ -38,7 +38,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import asm_filter  # noqa: E402
 import build_common_c as bcc  # noqa: E402
 import pr_check  # noqa: E402
-import try_func as matching  # noqa: E402
+import check as matching  # noqa: E402
 
 GP = 0x1DC8B0
 NAME_RE = re.compile(r"\b(func|D|jtbl)_([0-9A-Fa-f]{5,8})((?:_\w+)?)\b")

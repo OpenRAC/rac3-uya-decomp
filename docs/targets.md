@@ -16,8 +16,8 @@ reads it.
 Every tool works on frontbin unless told otherwise:
 
 ```
-python tools/triage.py --target boot_elf
-UYA_TARGET=i5bootn python3 tools/try_func.py scratch/f.c
+python tools/todo.py --target boot_elf
+UYA_TARGET=i5bootn python3 tools/check.py scratch/f.c
 ```
 
 These also take `--target all`, which runs them once per target that is set
@@ -28,7 +28,7 @@ up (its ELF and asm folder are there) and fails if any run fails:
 | `setup_asm.py` | every target whose ELF is in `baserom/` |
 | `build.py` | builds and checks each |
 | `pr_check.py` | checks each |
-| `triage.py` | one summary per target |
+| `todo.py` | one summary per target |
 | `split_text.py --refresh` | refreshes each |
 | `gen_divs_nops.py`, `migrate_asm_sources.py` | each |
 

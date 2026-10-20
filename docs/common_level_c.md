@@ -162,7 +162,7 @@ tells them apart by its `overlay` field.
 
 ## Trying one function
 
-`tools/try_level.py` is the level counterpart of `try_func.py`. It runs the
+`tools/try_level.py` is the level counterpart of `check.py`. It runs the
 gates for one source and, when the bytes differ, prints the compiled and
 retail listings side by side:
 

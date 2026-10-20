@@ -34,7 +34,7 @@ sys.path.insert(0, os.path.join(ROOT, "tools"))
 _cwd = os.getcwd()
 os.chdir(ROOT)
 import targets  # noqa: E402
-import try_func as tf  # noqa: E402
+import check as tf  # noqa: E402
 os.chdir(_cwd)
 from elftools.elf.elffile import ELFFile  # noqa: E402
 

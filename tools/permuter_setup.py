@@ -187,7 +187,7 @@ def main():
                     help="don't enable the empty-asm passes (perm_reg_fence, perm_sched_barrier)")
     args = ap.parse_args()
 
-    tf = load("try_func")
+    tf = load("check")
     src = open(args.file).read()
     name = args.name or next(iter(dict.fromkeys(tf.FUNC_DEF_RE.findall(src))), None)
     if not name:

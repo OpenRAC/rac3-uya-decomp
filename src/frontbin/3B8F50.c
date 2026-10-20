@@ -274,7 +274,67 @@ void func_003B92B8(u8 *obj, V4_3B92B8 *pos, V4_3B92B8 *tgt, f32 *ang) {
 }
 /* localdecomp:end func_003B92B8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003B9730);
+/* localdecomp:start func_003B9730 */
+/* redeclared: without it the last lq/sq pair gets $v1 instead of $v0 */
+extern void func_003B92B8(u8 *obj, V4_3B92B8 *pos, V4_3B92B8 *tgt, f32 *ang);
+typedef int Q_3B9730 __attribute__((mode(TI)));
+typedef struct { V4_3B92B8 a; V4_3B92B8 b; } E_3B9730;
+typedef struct {
+    u8 pad0[0x10];
+    V4_3B92B8 v10;
+    u8 pad20[0xC];
+    f32 f2C;
+    u8 pad30[0x90];
+    u8 mC0[0x40];
+} S_3B9730;
+extern E_3B9730 D_001D8D90;
+extern V4_3B92B8 D_001DA360;
+extern V4_3B92B8 D_001DA370;
+extern f32 D_001DA358;
+extern f32 D_001DA35C;
+extern s32 func_003B8A08(void);
+extern void func_003886E8(f32 *, void *, f32);
+extern void func_003888C8(void *, void *, void *);
+void func_003B9730(void *arg) {
+    S_3B9730 *p = arg;
+    E_3B9730 e;
+    V4_3B92B8 t;
+    s32 r;
+    Q_3B9730 x, y;
+    E_3B9730 *src, *hi;
+
+    /* retail splits this address's lui/addiu around the prologue; -mno-split-addresses emits one la */
+    __asm__("lui %0, %%hi(D_001D8D90)" : "=r"(hi));
+    __asm__("addiu %0, %1, %%lo(D_001D8D90)" : "=r"(src) : "r"(hi));
+    {
+        Q_3B9730 qa = *(Q_3B9730 *)&src->a, qb = *(Q_3B9730 *)&src->b;
+        *(Q_3B9730 *)&e.b = qb;
+        *(Q_3B9730 *)&e.a = qa;
+    }
+    r = func_003B8A08() == 0;
+    func_003886E8(&t.x, &e.a, p->f2C);
+    t = e.a;
+    func_003888C8(&t, &t, p->mC0);
+    __asm__("lqc2 %0, %1" : "=j"(x) : "m"(t));
+    __asm__("lqc2 %0, %1" : "=j"(y) : "m"(p->v10));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
+    __asm__("sqc2 %1, %0" : "=m"(t) : "j"(x));
+    if (r) D_001DA360 = t;
+    func_003B92B8((u8 *)p, &t, (V4_3B92B8 *)((u8 *)&D_001DA358 + 8), &D_001DA358);
+    D_001DA360 = t;
+
+    func_003886E8(&t.x, &e.b, p->f2C);
+    t = e.b;
+    func_003888C8(&t, &t, p->mC0);
+    __asm__("lqc2 %0, %1" : "=j"(x) : "m"(t));
+    __asm__("lqc2 %0, %1" : "=j"(y) : "m"(p->v10));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
+    __asm__("sqc2 %1, %0" : "=m"(t) : "j"(x));
+    if (r) D_001DA370 = t;
+    func_003B92B8((u8 *)p, &t, (V4_3B92B8 *)((u8 *)&D_001DA358 + 0x18), &D_001DA35C);
+    D_001DA370 = t;
+}
+/* localdecomp:end func_003B9730 */
 
 /* localdecomp:start func_003B9880 */
 extern void func_003B98B8();

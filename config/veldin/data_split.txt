@@ -1,0 +1,9 @@
+# Per-file data for veldin (tools/split_data.py, docs/veldin.md "Per-file data").
+#
+# Each row links one source file's whole SECTION at ADDRESS, in place of the
+# retail bytes of the data segment there (.lit 0x1D5680.., .data 0x2A4480..).
+# SECTION: .rodata (jump tables, constant tables), .sdata / .sbss (small
+# variables and constants the code reaches through $gp), .lit4 / .lit8 (GNU as
+# float literals), .data / .bss. The size comes from the file's object.
+#
+# section   address     source file

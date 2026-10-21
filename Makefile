@@ -303,8 +303,9 @@ $(I5_OBJDIFF_B): $(I5_DEPS) include/include_asm.h
 # frontbin's layout at other addresses: one code section (.text, src/veldin/),
 # its .lit (with .bss stored as zeros), .data and lvl.* vtables, assembled from
 # asm/veldin/, which `python tools/setup_asm.py --target veldin` writes from
-# baserom/veldin.elf. Tables in config/veldin/. Not part of `make check` yet:
-# `make check-veldin`.
+# baserom/veldin.elf, with each source file's own data placed in .lit and .data
+# (tools/split_data.py). Tables in config/veldin/. Not part of `make check`
+# yet: `make check-veldin`.
 # ===========================================================================
 
 VELDIN_BUILD   := $(BUILD_DIR)/veldin
@@ -312,10 +313,14 @@ VELDIN_LD      := linker_scripts/veldin.ld
 VELDIN_TARGET  := $(VELDIN_BUILD)/veldin.elf
 VELDIN_BIN     := $(VELDIN_BUILD)/veldin.bin
 VELDIN_TABLES  := config/veldin/src_files.txt config/veldin/text_parts.txt config/veldin/divs_nops.txt config/veldin/sq_ra_funcs.txt
-VELDIN_DEPS    := $(wildcard src/veldin/*.c) $(VELDIN_TABLES) tools/build_text.py tools/ee29.py tools/srcfiles.py tools/asm_filter.py tools/targets.py
+VELDIN_DEPS    := $(wildcard src/veldin/*.c) $(VELDIN_TABLES) config/veldin/data_split.txt tools/build_text.py tools/split_data.py tools/ee29.py tools/srcfiles.py tools/asm_filter.py tools/targets.py
 VELDIN_TEXT_OBJ := $(VELDIN_BUILD)/src/text.c.o
 VELDIN_ASM_OBJS := $(VELDIN_BUILD)/asm/veldin/header.s.o $(VELDIN_BUILD)/asm/veldin/trailer.s.o \
-                   $(patsubst %,$(VELDIN_BUILD)/asm/veldin/data/%.data.s.o,lit data lvl_vtbl lvl_camvtbl lvl_sndvtbl)
+                   $(patsubst %,$(VELDIN_BUILD)/asm/veldin/data/%.data.s.o,lvl_vtbl lvl_camvtbl lvl_sndvtbl)
+# .lit and .data: the segments' retail bytes with each source file's own data
+# (config/veldin/data_split.txt) placed in between, and the linker script's
+# output sections for them (tools/split_data.py, docs/veldin.md)
+VELDIN_DATA    := $(VELDIN_BUILD)/data/lit.ld $(VELDIN_BUILD)/data/data.ld
 
 $(VELDIN_BUILD)/asm/veldin/%.s.o: asm/veldin/%.s
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
@@ -325,7 +330,10 @@ $(VELDIN_TEXT_OBJ): $(VELDIN_DEPS)
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
 	$(PYTHON) tools/build_text.py --target veldin --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
 
-$(VELDIN_TARGET): $(VELDIN_ASM_OBJS) $(VELDIN_TEXT_OBJ) $(VELDIN_LD)
+$(VELDIN_DATA): $(VELDIN_TEXT_OBJ) config/veldin/data_split.txt tools/split_data.py asm/veldin/data/lit.data.s asm/veldin/data/data.data.s
+	$(PYTHON) tools/split_data.py --target veldin --as "$(AS)"
+
+$(VELDIN_TARGET): $(VELDIN_ASM_OBJS) $(VELDIN_TEXT_OBJ) $(VELDIN_DATA) $(VELDIN_LD)
 	"$(LD)" -T "$(VELDIN_LD)" -o "$@"
 
 $(VELDIN_BIN): $(VELDIN_TARGET)

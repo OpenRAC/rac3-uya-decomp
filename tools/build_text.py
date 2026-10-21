@@ -19,6 +19,11 @@ as <workdir>/<file>.o (objdiff compares these, one unit per file; slice
 objects are kept apart in <workdir>/slices/), and all of them are linked into
 one relocatable object (ld -r) for the linker script.
 
+A file with rows in the target's per-file data table (tools/split_data.py)
+gets its placed data sections renamed (.split.rodata.STEM, ...) in its object, so they
+stay apart in the unit object and the linker script can put each at its own
+retail address.
+
 Usage (from the repo root, normally via the Makefile):
   python tools/build_text.py --cc CC --ld LD --cflags "..." -o build/src/text.c.o [--base]
 """
@@ -32,6 +37,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import asm_filter  # noqa: E402
 import ee29  # noqa: E402
+import split_data  # noqa: E402
 import srcfiles as sf  # noqa: E402
 import targets  # noqa: E402
 from srcfiles import strip_comments, declarations_only, EXTERN_HINT_RE  # noqa: E402,F401
@@ -320,6 +326,8 @@ def main():
     cflags = shlex.split(a.cflags, posix=False)
     if a.base:
         cflags.append('-DOBJDIFF_BASE')
+    # data sections placed per file (tools/split_data.py): {file: [sections]}
+    placed = split_data.sections_by_file(T)
     objs = []
     for rel, _ in files:
         text = sf.read_source(rel)
@@ -331,6 +339,8 @@ def main():
             spath = os.path.join(workdir, stem + '.s')
             opath = os.path.join(workdir, stem + '.o')
             compile_one(a.cc, slices[0][0], cflags, rel, spath, opath, rel)
+            if rel.replace(os.sep, '/') in placed:
+                split_data.rename_sections(a.ld, opath, rel, placed[rel.replace(os.sep, '/')])
             objs.append(opath)
             continue
         sobjs = []
@@ -349,6 +359,8 @@ def main():
         opath = os.path.join(workdir, stem + '.o')
         if subprocess.run([a.ld, '-r', '-o', opath] + sobjs).returncode != 0:
             sys.exit(f'build_text: ld -r of {rel} failed')
+        if rel.replace(os.sep, '/') in placed:
+            split_data.rename_sections(a.ld, opath, rel, placed[rel.replace(os.sep, '/')])
         objs.append(opath)
     # A level target that links every shared source as its own file
     # (tools/link_common_sources.py) has thousands of objects, too many for

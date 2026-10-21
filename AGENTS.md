@@ -90,7 +90,9 @@ pull request so the migration can count it.
   can be avoided. Some existing matches use inline assembly or a `$gp` register hack; a pull
   request that adds one calls it out and justifies it (docs/wiki/Pull-Requests.md).
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the
-  layout.
+  layout. The exception is a level overlay's per-file data: a file with a row in
+  `config/<level>/data_split.txt` defines its own data, which is linked at its retail address
+  (docs/veldin.md, "Per-file data").
 - **Handwritten assembly** (`ASM_FUNC`) and linker remnants (`LINKER_REMNANT`) are final source,
   marked only on evidence (VU0 / COP2 code, instructions the compiler never emits), never because a
   function resisted matching.

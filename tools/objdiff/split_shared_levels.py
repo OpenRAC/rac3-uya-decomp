@@ -300,6 +300,10 @@ def update_objdiff(path, levels, zero_fill=False):
         cats.append({"id": "zero_fill", "name": "Zero-filled data (.bss, zeroed .data)"})
     units = []
     tdir = "build/objdiff/target/levels/"
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    import targets
+    built = {os.path.basename(getattr(x, "level_overlay")) for x in targets.TARGETS.values()
+             if getattr(x, "level_overlay", None)}
     units.append({"name": "levels/common", "target_path": tdir + "common.o",
                   "metadata": {"progress_categories": ["levels", "common_level_code"]}})
     units.append({"name": "levels/common data", "target_path": tdir + "common_data.o",
@@ -314,8 +318,13 @@ def update_objdiff(path, levels, zero_fill=False):
         cid = "level_%02d" % lv.no
         cats.append({"id": cid, "name": "Level %02d: %s" % (lv.no, pretty)})
         base = os.path.basename(lv.path)
-        units.append({"name": u["name"], "target_path": tdir + base,
-                      "metadata": {"progress_categories": ["levels", "level_specific", mode, cid]}})
+        unit = {"name": u["name"], "target_path": tdir + base,
+                "metadata": {"progress_categories": ["levels", "level_specific", mode, cid]}}
+        if base[:-2] in built:
+            # a level built as its own target (tools/targets.py level_overlay):
+            # `make objdiff` writes its base, every source with INCLUDE_ASM empty
+            unit["base_path"] = "build/objdiff/base/levels/" + base
+        units.append(unit)
         units.append({"name": u["name"] + " (data)", "target_path": tdir + base[:-2] + "_data.o",
                       "metadata": {"progress_categories": ["level_data", mode]}})
     d["units"] = keep + units

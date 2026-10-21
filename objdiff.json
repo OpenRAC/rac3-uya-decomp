@@ -2585,7 +2585,8 @@
           "singleplayer",
           "level_01"
         ]
-      }
+      },
+      "base_path": "build/objdiff/base/levels/1_veldin.o"
     },
     {
       "name": "levels/singleplayer/Veldin (data)",

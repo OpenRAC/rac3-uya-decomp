@@ -85,7 +85,7 @@ HEADER_OBJ := $(BUILD_DIR)/asm/header.s.o
 # file in build/src/frontbin/) and links them into one text.c.o.
 TEXT_OBJ := $(BUILD_DIR)/src/text.c.o
 
-.PHONY: all clean check check-frontbin check-boot_elf check-i5bootn check-veldin objdiff objdiff-frontbin objdiff-boot_elf objdiff-i5bootn
+.PHONY: all clean check check-frontbin check-boot_elf check-i5bootn check-veldin objdiff objdiff-frontbin objdiff-boot_elf objdiff-i5bootn objdiff-veldin
 all: check
 
 # -I include: every splat-generated .s (data segments, per-function
@@ -148,7 +148,7 @@ OBJDIFF_COMMON := $(BUILD_DIR)/objdiff/base/common.o
 # in progress, which may be deleted mid-build) isn't part of the base
 COMMON_DEPS    := $(shell $(PYTHON) tools/objdiff/common_c_base.py --list-sources) config/levels/common_c.json tools/build_common_c.py tools/objdiff/common_c_base.py
 
-objdiff: objdiff-frontbin objdiff-boot_elf objdiff-i5bootn
+objdiff: objdiff-frontbin objdiff-boot_elf objdiff-i5bootn objdiff-veldin
 
 objdiff-frontbin: check-frontbin $(OBJDIFF_TARGET) $(OBJDIFF_BASE) $(OBJDIFF_COMMON)
 
@@ -341,3 +341,17 @@ $(VELDIN_BIN): $(VELDIN_TARGET)
 
 check-veldin: $(VELDIN_BIN)
 	python tools/check_match.py --target veldin "$(VELDIN_BIN)" baserom/veldin.elf config/splat/veldin.yaml
+
+# objdiff: the levels/singleplayer/Veldin unit in objdiff.json. Its target
+# (from C:\decomp-refs\level-targets-split) holds only Veldin's level-only
+# functions; this base is every Veldin source compiled with -DOBJDIFF_BASE, so
+# INCLUDE_ASM functions are absent and only C counts. The shared functions
+# Veldin links from src/levels/common/ are in it too, but the unit's target
+# doesn't list them (they count in levels/common).
+VELDIN_OBJDIFF_B := $(BUILD_DIR)/objdiff/base/levels/1_veldin.o
+
+objdiff-veldin: check-veldin $(VELDIN_OBJDIFF_B)
+
+$(VELDIN_OBJDIFF_B): $(VELDIN_DEPS) include/include_asm.h
+	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
+	$(PYTHON) tools/build_text.py --target veldin --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"

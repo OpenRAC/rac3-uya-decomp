@@ -24,6 +24,8 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001170B8);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011716C);
 
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00117170);
+
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001171C8);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001173F8);
@@ -33,6 +35,8 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011865C);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118660);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011866C);
+
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118670);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011871C);
 
@@ -91,6 +95,8 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00118E78);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00119258);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001192EC);
+
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001192F0);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00119308);
 
@@ -236,7 +242,11 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BB58);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BD14);
 
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BD18);
+
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BD9C);
+
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BDA0);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011BFD8);
 
@@ -263,6 +273,8 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E560);
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E720);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E7FC);
+
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E800);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011E858);
 

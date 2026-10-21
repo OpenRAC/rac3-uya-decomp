@@ -14,9 +14,39 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F2B0);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F340);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F3E8);
+/* localdecomp:start func_0011F3E8 */
+extern s32 func_001204C0(void);
+extern s32 func_00120278(s8 *, s32);
+s32 func_0011F3E8(s32 fd, s8 *buf, s32 n) {
+    if (fd == 1 || fd == 2) {
+        if (D_0013DBE8 == 0) {
+            if (func_001204C0() == 0) {
+                return -1;
+            }
+            D_0013DBE8 = 1;
+        }
+        return func_00120278(buf, n);
+    }
+    return -1;
+}
+/* localdecomp:end func_0011F3E8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0011F468);
+/* localdecomp:start func_0011F468 */
+extern s32 func_001204C0(void);
+extern s32 func_001203F0(char *, s32);
+s32 func_0011F468(s32 fd, char *buf, s32 n) {
+    if (fd == 0) {
+        if (D_0013DBE8 == 0) {
+            if (func_001204C0() == 0) {
+                return -1;
+            }
+            D_0013DBE8 = 1;
+        }
+        return func_001203F0(buf, n);
+    }
+    return -1;
+}
+/* localdecomp:end func_0011F468 */
 
 /* localdecomp:start func_0011F4E0 */
 s32 func_0011F4E0(void) {

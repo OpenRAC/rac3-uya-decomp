@@ -191,7 +191,11 @@ char *func_00124DB8(char *name, int argc, char **argv)
 }
 /* localdecomp:end func_00124DB8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00124ED0);
+/* localdecomp:start func_00124ED0 */
+void func_00124ED0() {
+    func_00124560();
+}
+/* localdecomp:end func_00124ED0 */
 
 /* localdecomp:start func_00124ED8 */
 extern void func_0011EA60(char *p, s32 argc, char *s);
@@ -266,11 +270,26 @@ void func_00124FB8(void) {
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0012508C);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125100);
+/* localdecomp:start func_00125100 */
+extern void func_00125090(u32, s32);
+void func_00125100(s32 a) {
+    func_00125090(0xB0001000, a);
+}
+/* localdecomp:end func_00125100 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125110);
+/* localdecomp:start func_00125110 */
+extern void func_00125090(u32, s32);
+void func_00125110(s32 a) {
+    func_00125090(0xB0001010, a);
+}
+/* localdecomp:end func_00125110 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125120);
+/* localdecomp:start func_00125120 */
+extern void func_00125090(u32, s32);
+void func_00125120(s32 a) {
+    func_00125090(0xB0001020, a);
+}
+/* localdecomp:end func_00125120 */
 
 /* localdecomp:start func_00125130 */
 typedef struct Alarm_125130 {

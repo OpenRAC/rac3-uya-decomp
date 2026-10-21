@@ -419,15 +419,35 @@ void func_001346E8(S_1346E8 *p) {
 }
 /* localdecomp:end func_001346E8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001347D0);
+/* localdecomp:start func_001347D0 */
+extern u8 D_00151F00[];
+void func_001347D0(s32 a) {
+    func_0013A0F8(a, D_00151F00);
+}
+/* localdecomp:end func_001347D0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001347E0);
+/* localdecomp:start func_001347E0 */
+extern u8 D_00151F30[];
+void func_001347E0(s32 a) {
+    func_0013A0F8(a, D_00151F30);
+}
+/* localdecomp:end func_001347E0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001347F0);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001349D8);
+/* localdecomp:start func_001349D8 */
+extern u8 D_00151F48[];
+void func_001349D8(s32 a) {
+    func_0013A0F8(a, D_00151F48);
+}
+/* localdecomp:end func_001349D8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001349E8);
+/* localdecomp:start func_001349E8 */
+extern u8 D_00151F80[];
+void func_001349E8(s32 a) {
+    func_0013A0F8(a, D_00151F80);
+}
+/* localdecomp:end func_001349E8 */
 
 /* localdecomp:start func_001349F8 */
 /* libmpeg: walk the extension and user data start codes (0x1B5 / 0x1B2); 2.9-ee-991111 */
@@ -472,9 +492,20 @@ void func_001349F8(S_1349F8 *p) {
 }
 /* localdecomp:end func_001349F8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00134BC8);
+/* localdecomp:start func_00134BC8 */
+void func_00134BC8(S_1346E8 *s) {
+    if ((*(volatile u32 *)0x10002010 & 0x80004000) == 0x80000000) {
+        func_001325A0(s);
+    }
+}
+/* localdecomp:end func_00134BC8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00134C00);
+/* localdecomp:start func_00134C00 */
+extern void func_00132A00();
+void func_00134C00(void *s, s32 n) {
+    func_00132A00(s, n);
+}
+/* localdecomp:end func_00134C00 */
 
 /* localdecomp:start func_00134C08 */
 typedef struct {
@@ -540,7 +571,11 @@ s32 func_00134C08(S_134C08 *p)
 }
 /* localdecomp:end func_00134C08 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00134D60);
+/* localdecomp:start func_00134D60 */
+void func_00134D60(void *s) {
+    func_00134C00(s, 0x20);
+}
+/* localdecomp:end func_00134D60 */
 
 /* localdecomp:start func_00134D68 */
 void func_00134D68(void *a) {
@@ -1748,7 +1783,13 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00139A70);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00139E50);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00139F80);
+/* localdecomp:start func_00139F80 */
+extern u8 D_00152260[];
+extern void func_00121760(void *, s32);
+void func_00139F80(s32 a) {
+    func_00121760(D_00152260, a);
+}
+/* localdecomp:end func_00139F80 */
 
 /* localdecomp:start func_00139F90 */
 extern s32 func_00124920(void);
@@ -1780,7 +1821,7 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013A030);
 /* localdecomp:start func_0013A0F8 */
 typedef struct { u8 pad[0xC]; s32 xC; u8 pad2[0x858]; s32 x868; } S_13A0F8;
 extern s32 func_00135D50(s32, s32 *);
-extern s32 func_00139F80(s32);
+extern s32 func_00139F80_0013A0F8(s32);
 s32 func_0013A0F8(S_13A0F8 *p, s32 b) {
     s32 q = p->x868;
     if (q != 0 && p != 0 && p->xC != 0) {
@@ -1789,7 +1830,7 @@ s32 func_0013A0F8(S_13A0F8 *p, s32 b) {
         buf[0] = 0;
         return func_00135D50(q, buf);
     }
-    return func_00139F80(b);
+    return func_00139F80_0013A0F8(b);
 }
 /* localdecomp:end func_0013A0F8 */
 
@@ -2148,9 +2189,26 @@ void func_0013AB10(u8 *t)
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013ABC8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013AC70);
+/* localdecomp:start func_0013AC70 */
+void func_0013AC70(u8 *t) {
+    if (++t[3] == 24) {
+        t[3] = 0;
+        func_0013AB10(t);
+    }
+}
+/* localdecomp:end func_0013AC70 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013ACA0);
+/* localdecomp:start func_0013ACA0 */
+extern void func_0013ABC8(u8 *);
+void func_0013ACA0(u8 *t) {
+    if (t[3] == 0) {
+        t[3] = 23;
+        func_0013ABC8(t);
+    } else {
+        t[3]--;
+    }
+}
+/* localdecomp:end func_0013ACA0 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013ACC8);
 
@@ -2166,7 +2224,12 @@ TEXT_PADDING(2);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0013ADA8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013AFE8);
+/* localdecomp:start func_0013AFE8 */
+extern void func_00124F20();
+void func_0013AFE8(void) {
+    func_00124F20();
+}
+/* localdecomp:end func_0013AFE8 */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0013AFF0);
 

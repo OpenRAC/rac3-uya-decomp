@@ -22,7 +22,8 @@ src/veldin/2FFC50.c 002FFC50
 src/levels/common/func_002FFEA8.c 002FFEA8
 src/veldin/2FFF90.c 002FFF90
 src/levels/common/func_00300608.c 00300608
-src/veldin/300650.c 00300650
+src/levels/common/func_00300650.c 00300650
+src/veldin/300820.c 00300820
 src/levels/common/func_003013B0.c 003013B0
 src/levels/common/func_00301508.c 00301508
 src/levels/common/func_00301530.c 00301530
@@ -1426,6 +1427,8 @@ src/veldin/4364F0.c 004364F0
 src/levels/common/func_00436500.c 00436500
 src/levels/common/func_004365E0.c 004365E0
 src/veldin/4366A8.c 004366A8
+src/levels/common/func_00436988.c 00436988
+src/veldin/4369B8.c 004369B8
 src/levels/common/func_00436BD8.c 00436BD8
 src/levels/common/func_00436C90.c 00436C90
 src/veldin/436D30.c 00436D30
@@ -1531,6 +1534,9 @@ src/levels/common/func_00445CD8.c 00445CD8
 src/veldin/445D88.c 00445D88
 src/levels/common/func_00445E80.c 00445E80
 src/veldin/445EB8.c 00445EB8
+src/levels/common/func_00445EE8.c 00445EE8
+src/levels/common/func_00445F18.c 00445F18
+src/veldin/445F48.c 00445F48
 src/levels/common/func_00447580.c 00447580
 src/levels/common/func_004475D0.c 004475D0
 src/levels/common/func_004475E8.c 004475E8
@@ -3250,7 +3256,8 @@ src/levels/common/func_00518BE8.c 00518BE8
 src/veldin/518C78.c 00518C78
 src/levels/common/func_00518D48.c 00518D48
 src/levels/common/func_00518DA0.c 00518DA0
-src/veldin/518DF0.c 00518DF0
+src/levels/common/func_00518DF0.c 00518DF0
+src/veldin/518EC0.c 00518EC0
 src/levels/common/func_005192A0.c 005192A0
 src/veldin/5193E0.c 005193E0
 src/levels/common/func_005193E8.c 005193E8

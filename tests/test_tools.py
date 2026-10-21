@@ -150,6 +150,47 @@ class EntryPointTest(unittest.TestCase):
         self.assertIn(progress.END, text)
 
 
+def _i(op, rs=0, rt=0, imm=0):
+    return (op << 26) | (rs << 21) | (rt << 16) | (imm & 0xFFFF)
+
+
+def _shift(fn, rd, rt, sa):
+    return (rt << 16) | (rd << 11) | (sa << 6) | fn
+
+
+class AsmProfileTest(unittest.TestCase):
+    """tools/asm_profile.py on hand-made instruction words."""
+    JR, NOP = 0x03E00008, 0
+
+    def profile(self, words):
+        import asm_profile
+        code = b"".join(w.to_bytes(4, "little") for w in words + [self.JR, self.NOP])
+        return asm_profile.profile_of(asm_profile.guess(code, 0x400000))
+
+    def test_inline_float_constant_is_ps2as(self):
+        mtc1 = (0x11 << 26) | (4 << 21) | (1 << 16) | (1 << 11)
+        self.assertEqual(self.profile([_i(0x0F, 0, 1, 0x3F26), _i(0x0D, 1, 1, 0x6666), mtc1])[1], "ps2as")
+
+    def test_split_address_is_s(self):
+        # lui $v1, %hi(0x321000); addiu $v0, $0, 1; lw $v0, %lo(0x321000)($v1)
+        self.assertEqual(self.profile([_i(0x0F, 0, 3, 0x32), _i(0x09, 0, 2, 1), _i(0x23, 3, 2, 0x1000)])[0], "S")
+
+    def test_at_macro_to_a_large_object_is_n(self):
+        # lui $at, %hi(0x321000); sw $a0, %lo(0x321000)($at)
+        self.assertEqual(self.profile([_i(0x0F, 0, 1, 0x32), _i(0x2B, 1, 4, 0x1000)])[0], "N")
+
+    def test_hardware_address_says_nothing(self):
+        # lui $v1, 0x1000; addiu $v0, $0, 1; lw $v0, 0x3000($v1): an EE register, split in both modes
+        self.assertEqual(self.profile([_i(0x0F, 0, 3, 0x1000), _i(0x09, 0, 2, 1), _i(0x23, 3, 2, 0x3000)]), (None, None))
+
+    def test_64_bit_constants(self):
+        # 0x3200000068: Ps2EeAs `ori 0xc800; dsll 22; ori 0x68`, GNU as `addiu 50; dsll32 0; ori 0x68`
+        ps2as = [_i(0x0D, 0, 3, 0xC800), _shift(0x38, 3, 3, 22), _i(0x0D, 3, 3, 0x68)]
+        gnu = [_i(0x09, 0, 3, 50), _shift(0x3C, 3, 3, 0), _i(0x0D, 3, 3, 0x68)]
+        self.assertEqual(self.profile(ps2as)[1], "ps2as")
+        self.assertEqual(self.profile(gnu)[1], "default")
+
+
 class RepositoryCheckTest(unittest.TestCase):
     def test_tables_check_passes(self):
         errors = []

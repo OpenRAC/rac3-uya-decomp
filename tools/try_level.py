@@ -12,6 +12,12 @@ listings side by side with the differing lines marked.
 frontbin function whose text_parts.txt flags to compile with (--mode N|S and
 --assembler default|ps2as override them, as in the catalogue). Exit status 0
 only on a full match.
+
+GCC inline asm statements inside the function (VU0 macro mode, MMI) are
+allowed and count as C, as in build_common_c.py; the printed catalogue entry
+then carries "inline_asm": true. INCLUDE_ASM, INCLUDE_RODATA, ASM_FUNC,
+LINKER_REMNANT, `.extern` and other directives, empty barrier statements and
+register pins are refused (docs/common_level_c.md).
 """
 import argparse, io, json, os, pickle, struct, subprocess, sys, tempfile
 from pathlib import Path
@@ -101,6 +107,11 @@ def main():
     asm = a.assembler or entry.get("assembler") or ("ps2as" if "@ps2as" in fl else "default")
     e = {"name": name, "source": src.relative_to(ROOT).as_posix(), "overlay": overlay, "address": name[5:] and "0x" + name[5:],
          "size": size, "flags_from": flags_from, "mode": mode, "assembler": asm}
+    try:
+        if bcc.uses_inline_asm(src.read_bytes()):
+            e["inline_asm"] = True
+    except ValueError:
+        pass  # compile_entry reports it
     opts = SimpleNamespace(no_context=True, toolchain=a.toolchain, runner=None)
     try:
         bcc.compile_entry(e, a.refs / "levels", a.refs / "level-targets", owners, common, opts)

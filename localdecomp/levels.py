@@ -300,6 +300,9 @@ class LevelProject:
         opts = SimpleNamespace(no_context=True, toolchain=str(self.toolbin.parent), runner=None)
         buf = io.StringIO()
         try:
+            # inline asm statements (VU0, MMI) count as C; the entry records it
+            if bcc.uses_inline_asm(src_path.read_bytes()):
+                entry["inline_asm"] = True
             with contextlib.redirect_stdout(buf):
                 bcc.compile_entry(entry, self.refs / "levels", self.refs / "level-targets", owners, common, opts)
             return {"ok": True, "message": "all gates pass: counts in the report once saved"}
@@ -329,6 +332,9 @@ class LevelProject:
             entry = {"name": name, "source": "src/levels/common/%s.c" % name, "overlay": overlay,
                      "address": "0x" + name[5:], "size": size, "flags_from": p["flags_from"],
                      "mode": p["mode"], "assembler": p["assembler"]}
+            _, bcc, _ = self._tools()
+            if bcc.uses_inline_asm(path.read_bytes()):
+                entry["inline_asm"] = True
             # replace in place or append: the catalogue keeps its order, so a
             # save is a one-entry diff
             cat = self.catalogue()

@@ -207,6 +207,14 @@ Most VU0 functions are pure assembly leaves: a few `lqc2` loads, vector math, an
 - **Branches inside the block** need `.set noreorder` around the part that contains the label, or the assembler re-pads the branch.
 - Functions that end by moving a value into `$f0` (`mtc1 $at, $f0`) still don't match: retail has that instruction in the delay slot and neither assembler puts it there, since gcc, not the assembler, owns the return value. Those need the value returned from C instead of from the asm block.
 
+### One statement per VU0 sequence, not barriers
+
+Write each contiguous VU0 sequence as **one** `__asm__ __volatile__` statement (the example above), not one statement per instruction with `do {} while (0)` or empty `__asm__ volatile("")` barriers between them to stop gcc's scheduler from interleaving. A volatile statement is one unit to the scheduler, so the single statement keeps retail's order by itself. God Hand's decompilation replaced 40 such barriers in 25 functions this way, with all 62 of its VU0 functions still byte-identical. Use one statement per instruction only for the [j-form](#vu0-j-form-one-asm-statement-per-instruction), where retail does interleave ordinary code. MMI instructions that produce an ordinary value are a single statement with operands: `__asm__("plzcw %0, %1" : "=r"(n) : "r"(x));`.
+
+### Inline asm in shared level code
+
+The shared level code (`src/levels/common/`, [docs/common_level_c.md](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/common_level_c.md#inline-assembly)) counts a function with GCC inline asm statements (VU0 macro mode, MMI) as C, as frontbin and boot_elf do and as kfiv-decomp, God Hand and DOTR do: ee-gcc 2.95 can't emit those instructions, and Insomniac wrote them as inline asm too. The level gates (`tools/build_common_c.py`, `tools/try_level.py`) still refuse `INCLUDE_ASM`, `INCLUDE_RODATA`, `ASM_FUNC`, `LINKER_REMNANT`, `.extern` and every other directive except `.set` options, file-scope `__asm__`, empty barrier statements, register pins and asm-label symbol aliases. The catalogue entry of such a function has `"inline_asm": true`, and the `MATCH common C` line reports those functions separately.
+
 ## Not everything is C
 
 - **Trailing padding is part of the layout.** A function's `.s` file also holds the padding words that follow it (`func_0039BD08` is 0x24 bytes with 5 `nop`s after it, because the next function starts at 0x39BD40). Converting such a function to C drops that padding and shifts everything after it, which changes every `jal` target in the build even though the function itself is byte-exact and `try_func.py` says MATCH. Before converting, check the gap to the next function's address; if there is one, the padding has to be reproduced or the function left as asm.

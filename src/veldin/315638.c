@@ -19,11 +19,3 @@ INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00316C40);
 
 LINKER_REMNANT("asm/veldin/remnants", func_00316E00);
 
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00316E08);
-
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00316F40);
-
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00316F80);
-
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00317010);
-

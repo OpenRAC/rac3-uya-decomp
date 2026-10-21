@@ -15,7 +15,3 @@ INCLUDE_ASM("asm/veldin/nonmatchings/text", func_004EEC00);
 
 INCLUDE_ASM("asm/veldin/nonmatchings/text", func_004EF060);
 
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_004EFDD8);
-
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_004F0138);
-

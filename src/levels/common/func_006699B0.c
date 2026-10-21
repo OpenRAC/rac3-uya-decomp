@@ -8,7 +8,7 @@ typedef struct Node006699B0 {
 
 extern Node006699B0 *D_0024D068;
 extern Node006699B0 *D_0024D06C;
-extern Node006699B0 *D_002517DC;
+extern Node006699B0 *D_001E17DC;
 
 Node006699B0 *func_006699B0(void) {
     Node006699B0 *n = D_0024D068;
@@ -22,7 +22,7 @@ Node006699B0 *func_006699B0(void) {
         if (h != 0) {
             h->prev = n;
         }
-        D_002517DC = n;
+        D_001E17DC = n;
         return n;
     }
     return 0;

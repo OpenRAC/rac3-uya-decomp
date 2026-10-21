@@ -3,7 +3,7 @@ typedef struct { u8 p0[6]; u8 b6; u8 p7[5]; u8 bC; u8 pD[0x3B]; s32 w48[1]; } W_
 typedef struct { u8 p0[0x24]; W_5A3010 *w24; u8 p28[0xA]; u16 h32; u16 h34; u8 p36[2]; long d38; u8 p40[2]; u8 b42; u8 b43; u8 p44[0x1E]; u8 b62; u8 b63; u8 p64[4]; s32 w68; u8 p6C[0x2C]; s32 w98; u8 p9C[0xE]; s16 hAA; u8 pAC[8]; s16 hB4; } O_5A3010;
 typedef struct { u8 p0[0x38]; s32 w38; u8 p3C[4]; s16 h40; u8 p42[2]; s16 h44; u8 p46[2]; s16 h48; u8 p4A[0xA]; s32 w54; u8 p58[0xC]; s32 w64; u8 *w68; s32 w6C; u8 p70[0xC]; s16 h7C; s16 h7E; u8 p80[0x120]; O_5A3010 *arr[1]; } G_5A3010;
 extern G_5A3010 D_0025CFC0;
-extern O_5A3010 *D_0025023C;
+extern O_5A3010 *D_001E023C;
 extern void func_001264E0(s32);
 extern void func_005A7BE0(u8 *, u32);
 extern void func_005A83A8(O_5A3010 *, s32);
@@ -39,7 +39,7 @@ void func_005A3010(void) {
         o = D_0025CFC0.arr[i];
         if (o == 0) {
             if (kind == 0) {
-                o = D_0025023C;
+                o = D_001E023C;
                 func_005A83A8(o, 0);
             } else {
                 o = func_005A8280(kind, 0);

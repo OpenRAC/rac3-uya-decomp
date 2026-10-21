@@ -1,14 +1,14 @@
 #include "common.h"
 extern s32 D_0024BC40[];
-extern u8 D_000FA120;
-extern u8 D_000FA121;
-extern s32 D_00100404;
+extern u8 D_001DA120;
+extern u8 D_001DA121;
+extern s32 D_001E0404;
 extern s32 D_0024BAC8[];
-extern s32 D_00100238;
+extern s32 D_001E0238;
 extern s32 D_00244000[];
 extern s32 D_00240408[];
-extern u8 D_000FA144;
-extern f32 D_000FA140;
+extern u8 D_001DA144;
+extern f32 D_001DA140;
 extern s32 func_00195AE8(void);
 extern void func_00609050(void);
 extern void func_00609248(void);
@@ -42,13 +42,13 @@ s32 func_00609700(void) {
     func_00195AE8();
     func_00609248();
     func_00195AE8();
-    D_000FA120 = 0;
-    D_000FA121 = 0;
+    D_001DA120 = 0;
+    D_001DA121 = 0;
     for (;;) {
         func_005FA660();
         func_005FA5E0();
         func_00596CB8();
-        if (D_000FA144 != 0) func_00609AF0();
+        if (D_001DA144 != 0) func_00609AF0();
         else func_00597030(1);
         func_00596BA0();
         func_00596C38(0);
@@ -56,21 +56,21 @@ s32 func_00609700(void) {
         func_00586CC8();
         func_005C2050();
         func_00195AE8();
-        r = func_00608DC8(D_000FA120);
-        D_00100404 = 0;
+        r = func_00608DC8(D_001DA120);
+        D_001E0404 = 0;
         func_005863C0();
         func_00608D28();
         func_005A43D8();
         func_005A33A0();
         func_005FA780(1);
         func_00139E08(0);
-        D_00100238 = D_0024BAC8[0] + 1;
-        if (D_00244000[0] == 0) D_000FA121 = func_005A23F0() != 0;
-        D_000FA120 = D_00240408[0] >= 2;
+        D_001E0238 = D_0024BAC8[0] + 1;
+        if (D_00244000[0] == 0) D_001DA121 = func_005A23F0() != 0;
+        D_001DA120 = D_00240408[0] >= 2;
     }
     func_005FA780(1);
     func_00139E08(0);
-    if (D_000FA140 > 0.0f) func_00589460(2);
+    if (D_001DA140 > 0.0f) func_00589460(2);
     func_006095C0();
     return 1;
 }

@@ -9,12 +9,12 @@ INCLUDE_ASM("asm/veldin/nonmatchings/text", func_003DFC48);
 
 /* localdecomp:start func_003DFD90 */
 typedef int u128_t __attribute__((mode(TI)));
-extern u8 *func_00435E70(s32, s32);
-extern void func_00439610(u8 *);
-extern void func_0040C658(f32 *, u8 *);
-extern s32 func_00440878(s32, s32);
-extern void func_0040CCA0(f32 *, f32 *, f32 *, f32);
-extern void func_00447748(f32 *, u8 *);
+extern u8 *func_00435E70_3DFD90(s32, s32);
+extern void func_00439610_3DFD90(u8 *);
+extern void func_0040C658_3DFD90(f32 *, u8 *);
+extern s32 func_00440878_3DFD90(s32, s32);
+extern void func_0040CCA0_3DFD90(f32 *, f32 *, f32 *, f32);
+extern void func_00447748_3DFD90(f32 *, u8 *);
 
 u8 *func_003DFD90(u8 *src, s32 id, s32 type) {
     u8 *m;
@@ -22,22 +22,22 @@ u8 *func_003DFD90(u8 *src, s32 id, s32 type) {
     f32 v[16];
     f32 r;
 
-    m = func_00435E70(id, 128);
+    m = func_00435E70_3DFD90(id, 128);
     if (m != 0) {
         *(s16 *)(m + 50) = 255;
         m[49] = 1;
         *(f32 *)(m + 44) *= *(f32 *)(src + 44) / *(f32 *)(*(u8 **)(src + 36) + 36);
         *(u128_t *)(m + 16) = *(u128_t *)(src + 16);
-        func_0040C658(v, src + 240);
-        r = (f32)func_00440878(0, 7) * 3.1415927f * 0.25f;
-        func_0040CCA0(v + 4, v + 4, v, r);
-        func_0040CCA0(v + 8, v + 8, v, r);
-        func_00447748(v, m + 240);
+        func_0040C658_3DFD90(v, src + 240);
+        r = (f32)func_00440878_3DFD90(0, 7) * 3.1415927f * 0.25f;
+        func_0040CCA0_3DFD90(v + 4, v + 4, v, r);
+        func_0040CCA0_3DFD90(v + 8, v + 8, v, r);
+        func_00447748_3DFD90(v, m + 240);
         t = *(long *)(src + 56);
         m[48] = type;
         *(s16 *)(m + 52) = 0;
         *(long *)(m + 56) = t;
-        func_00439610(m);
+        func_00439610_3DFD90(m);
         *(s32 *)(m + 0x98) = *(s32 *)(*(u8 **)(m + 36) + 16);
         return m;
     }
@@ -46,20 +46,20 @@ u8 *func_003DFD90(u8 *src, s32 id, s32 type) {
 /* localdecomp:end func_003DFD90 */
 
 /* localdecomp:start func_003DFEB8 */
-extern u8 D_001D66B0[];
-extern s32 func_00444358(void *, s32, s32);
-extern void func_004A7200(s32, s32, void *);
-extern void func_0044ED60(void *, s32, void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32, f32);
-extern void func_003DFD90(void *, s32, s32);
-extern void func_0044EBF8(void *, s32, f32);
-extern void func_00436220(void *);
+extern u8 D_001D66B0_3DFEB8[];
+extern s32 func_00444358_3DFEB8(void *, s32, s32);
+extern void func_004A7200_3DFEB8(s32, s32, void *);
+extern void func_0044ED60_3DFEB8(void *, s32, void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32, f32);
+extern void func_003DFD90_3DFEB8(void *, s32, s32);
+extern void func_0044EBF8_3DFEB8(void *, s32, f32);
+extern void func_00436220_3DFEB8(void *);
 void func_003DFEB8(void *o) {
-    if (func_00444358(o, -1, 0) != 0) {
-        func_004A7200(0, 0, o);
-        func_0044ED60(o, 15, D_001D66B0, 255, 180, 0, 0, 35, 0, 3, 3.0f, 6.0f, 3.0f, 6.0f, -1.0f, -1.0f, 1.0f, 1.0f);
-        func_003DFD90(o, 0x1e3d, 0);
-        func_0044EBF8(o, 1, 0.0f);
-        func_00436220(o);
+    if (func_00444358_3DFEB8(o, -1, 0) != 0) {
+        func_004A7200_3DFEB8(0, 0, o);
+        func_0044ED60_3DFEB8(o, 15, D_001D66B0_3DFEB8, 255, 180, 0, 0, 35, 0, 3, 3.0f, 6.0f, 3.0f, 6.0f, -1.0f, -1.0f, 1.0f, 1.0f);
+        func_003DFD90_3DFEB8(o, 0x1e3d, 0);
+        func_0044EBF8_3DFEB8(o, 1, 0.0f);
+        func_00436220_3DFEB8(o);
     }
 }
 /* localdecomp:end func_003DFEB8 */
@@ -99,7 +99,7 @@ INCLUDE_ASM("asm/veldin/nonmatchings/text", func_003E0020);
 typedef int s128 __attribute__((mode(TI)));
 extern void func_0032FE90(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
                           s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
-extern u8 *func_003AFF80(u8 *, s128 *, s128 *, s32, s32, s32, s32, f32, f32);
+extern u8 *func_003AFF80_3E0078(u8 *, s128 *, s128 *, s32, s32, s32, s32, f32, f32);
 void func_003E0078(u8 *o, s32 *p) {
     s128 v[2];
     switch (*p) {
@@ -110,7 +110,7 @@ void func_003E0078(u8 *o, s32 *p) {
     case 0x19C5:
         v[0] = *(s128 *)(o + 16);
         v[1] = *(s128 *)(o + 192);
-        func_003AFF80(o, &v[0], &v[1], 0x60FF1010, 0x60DDDDDD, 0x7F1010, 0xFF1010, 0.0f, 0.65f);
+        func_003AFF80_3E0078(o, &v[0], &v[1], 0x60FF1010, 0x60DDDDDD, 0x7F1010, 0xFF1010, 0.0f, 0.65f);
         break;
     }
 }

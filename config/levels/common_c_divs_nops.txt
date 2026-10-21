@@ -2,9 +2,11 @@
 # config/frontbin/divs_nops.txt (tools/seed_levels.py).
 func_003F0FA0 2
 func_003F1D30 1 1
+func_003F2090 2
 func_003FE7B0 2
 func_00404F68 2
 func_0041BE58 2 2 2 1 2
+func_00441C78 2
 func_00445300 2 2
 func_004459B0 2 2
 func_00447338 2 2 2 2
@@ -20,4 +22,5 @@ func_004D7408 0 2
 func_00512328 2 2
 func_00519AC0 1 0 0
 func_0051A738 2 2 0 0
+func_0051BB08 0 2 1
 func_0051D7E0 2 2 2 2 2 2

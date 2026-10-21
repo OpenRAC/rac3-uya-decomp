@@ -1212,7 +1212,13 @@ int func_0012DA60(void)
 }
 /* localdecomp:end func_0012DA60 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012DC88);
+/* localdecomp:start func_0012DC88 */
+extern s32 D_00141540;
+extern void func_0011EE50(s32);
+void func_0012DC88(void) {
+    func_0011EE50(D_00141540);
+}
+/* localdecomp:end func_0012DC88 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012DC98);
 

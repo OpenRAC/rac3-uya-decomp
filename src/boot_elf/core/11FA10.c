@@ -517,7 +517,17 @@ void func_001205B8(int c)
 }
 /* localdecomp:end func_001205B8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00120668);
+/* localdecomp:start func_00120668 */
+extern s32 func_00120580(s32);
+void func_00120668(s32 c) {
+    if (c == '\n') {
+        func_00120580('\r');
+        func_00120580('\n');
+    } else {
+        func_00120580(c);
+    }
+}
+/* localdecomp:end func_00120668 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001206A0);
 
@@ -567,7 +577,14 @@ s32 func_001216A0(s32 a, s32 b, s32 c) {
 }
 /* localdecomp:end func_001216A0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001216C8);
+/* localdecomp:start func_001216C8 */
+s32 func_001216C8(s32 a0, s32 a1, s32 *a2, s32 a3, ...) {
+    s32 n;
+    n = func_00120908(a0, a1, *a2, a3, (char *)__builtin_next_arg(a3) - 0x20);
+    *a2 -= n;
+    return n;
+}
+/* localdecomp:end func_001216C8 */
 
 /* localdecomp:start func_00121718 */
 extern s32 func_00120908_00121718(void *, void *, s32, s32, void *);
@@ -1350,7 +1367,11 @@ s32 func_001230D8(void) {
 }
 /* localdecomp:end func_001230D8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00123108);
+/* localdecomp:start func_00123108 */
+void func_00123108(void) {
+    func_0011EE40(D_0013DC8C[0]);
+}
+/* localdecomp:end func_00123108 */
 
 ASM_FUNC("asm/boot_elf/handwritten", func_00123118);
 

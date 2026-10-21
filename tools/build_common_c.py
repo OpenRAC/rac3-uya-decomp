@@ -8,6 +8,7 @@ import hashlib
 import io
 import json
 import os
+import re
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -188,6 +189,58 @@ def prove_all(catalogue, args, owners, common, options):
             yield (entry,) + result
 
 
+def target_proven(owners, common, skip):
+    """Shared functions that a level target's own files have as C.
+
+    Some shared functions only match in their owner level's full build: a
+    pair that reads a variable defined in their source file, say (the
+    variable can't live in two one-function sources). That build proves them
+    byte for byte. They count here when the owner level is a target with a
+    built object for the file, the function is that level's canonical owner,
+    and its compiled body equals the split common target's (gate 5)."""
+    import targets
+    import srcfiles as sf
+    by_name = {}
+    for level, name, offset, size in owners.values():
+        by_name.setdefault(name, []).append(Path(level.path).stem)
+    found, skipped = [], []
+    for t in targets.TARGETS.values():
+        overlay = getattr(t, "level_overlay", None)
+        if not overlay:
+            continue
+        level = Path(overlay).name
+        unit = t.units[0]
+        for rel, _ in sf.read_file_list(t.path("files")):
+            if sf.standalone(rel):
+                continue
+            text = sf.read_source(rel)
+            for m in re.finditer(r"/\* localdecomp:start (func_[0-9A-Fa-f]{8}) \*/(.*?)/\* localdecomp:end \1 \*/", text, re.S):
+                name = m.group(1)
+                if name in skip or level not in by_name.get(name, []) or name not in common:
+                    continue
+                obj = Path(t.workdir(unit)) / (Path(rel).stem + ".o")
+                if not obj.exists():
+                    skipped.append(f"{name}: {obj} not built (make check-{t.name})")
+                    continue
+                with obj.open("rb") as stream:
+                    elf = ELFFile(io.BytesIO(stream.read()))
+                    sym = [s for s in elf.get_section_by_name(".symtab").iter_symbols() if s.name == name]
+                    if len(sym) != 1 or not text_function(elf, sym[0]):
+                        skipped.append(f"{name}: not one .text function in {obj.name}")
+                        continue
+                    data = elf.get_section(sym[0]["st_shndx"]).data()
+                    raw = data[sym[0]["st_value"]:sym[0]["st_value"] + sym[0]["st_size"]]
+                if raw != common[name]:
+                    skipped.append(f"{name}: {t.name} build's body differs from the split common target")
+                    continue
+                block = pr_check.strip_comments(m.group(2))
+                proof = {"name": name, "source": rel, "via_target": t.name, "size": len(raw),
+                         "inline_asm": bool(re.search(r"\b(?:__asm__|asm)\b", block)),
+                         "object_body_sha256": digest(raw), "strict_equal": True, "canonical_owner": True}
+                found.append((name, raw, proof))
+    return found, skipped
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--levels-dir", required=True, type=Path)
@@ -221,7 +274,17 @@ def main():
         symbols.append((entry["name"], len(code), len(raw), 0x12, 1))
         code.extend(raw)
         proofs.append(proof)
-    blob = shared.build_elf(header, [(".text", shared.SHT_PROGBITS, shared.SHF_ALLOC | shared.SHF_EXEC, 8, bytes(code), len(code))], symbols)
+    # shared functions proven by their owner level's full build (target_proven)
+    extra, skipped = target_proven(owners, common, {entry["name"] for entry in catalogue})
+    for name, raw, proof in extra:
+        while len(code) % 8:
+            code.append(0)
+        symbols.append((name, len(code), len(raw), 0x12, 1))
+        code.extend(raw)
+        proofs.append(proof)
+    for line in skipped:
+        print("common C, not counted: " + line)
+    blob =shared.build_elf(header, [(".text", shared.SHT_PROGBITS, shared.SHF_ALLOC | shared.SHF_EXEC, 8, bytes(code), len(code))], symbols)
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary = output.with_suffix(".o.tmp")
     temporary.write_bytes(blob)
@@ -231,8 +294,10 @@ def main():
               "inline_asm_bytes": sum(proof["size"] for proof in asm), "inline_asm_functions": len(asm),
               "base_sha256": digest(blob), "common_target_sha256": digest(common_bytes_full), "functions": proofs}
     output.with_suffix(".proof.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    report["level_target_functions"] = len(extra)
     print(f"MATCH common C: {report['pure_c_functions']} functions, {report['pure_c_bytes']} source bytes "
-          f"({report['inline_asm_functions']} functions, {report['inline_asm_bytes']} bytes with inline asm); zero masks, canonical owners")
+          f"({report['inline_asm_functions']} functions, {report['inline_asm_bytes']} bytes with inline asm; "
+          f"{len(extra)} proven by a level target's build); zero masks, canonical owners")
 
 
 if __name__ == "__main__":

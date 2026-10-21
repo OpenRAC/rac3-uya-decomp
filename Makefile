@@ -355,3 +355,8 @@ objdiff-veldin: check-veldin $(VELDIN_OBJDIFF_B)
 $(VELDIN_OBJDIFF_B): $(VELDIN_DEPS) include/include_asm.h
 	@if not exist "$(subst /,\,$(dir $@))" mkdir "$(subst /,\,$(dir $@))"
 	$(PYTHON) tools/build_text.py --target veldin --base --cc "$(CC)" --ld "$(LD)" --cflags "$(CFLAGS)" --ee29 "$(EE29)" -o "$@"
+
+# shared functions that only Veldin's own files have as C count in the
+# levels/common base too (tools/build_common_c.py target_proven), so that
+# base needs Veldin's objects
+$(OBJDIFF_COMMON): $(VELDIN_TEXT_OBJ)

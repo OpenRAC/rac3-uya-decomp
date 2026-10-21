@@ -19,7 +19,10 @@ the same C matches there once every address it names is translated:
   4. Every candidate goes through build_common_c.py's gates (complete size,
      resolved retail bytes, raw object body equal to the split common target,
      no data sections, no assembly). Only those that pass are kept and added to
-     config/levels/common_c.json; the rest are deleted again.
+     config/levels/common_c.json; the rest are deleted again. The first build
+     uses the profile tools/asm_profile.py reads off the level's retail bytes
+     (each choice it cannot read is the donor's); if that profile differs from
+     the donor's flags and does not pass, the donor's flags are tried too.
 
 Needs a built frontbin (build/frontbin.elf, for function sizes) and the private
 level inputs (docs/common_level_c.md). Run it again whenever frontbin gains
@@ -36,6 +39,7 @@ from elftools.elf.elffile import ELFFile
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import asm_filter  # noqa: E402
+import asm_profile  # noqa: E402
 import build_common_c as bcc  # noqa: E402
 import pr_check  # noqa: E402
 import check as matching  # noqa: E402
@@ -276,15 +280,24 @@ def level_dirs(levels_dir):
 
 
 def verify(args):
+    """Write the candidate and run the gates with each of its profiles in turn
+    (entry["profiles"]: asm_profile's guess first, then the donor's flags).
+    Returns the entry with the profile that passed, or the first error."""
     entry, src, refs = args
     path = ROOT / entry["source"]
     path.write_text(src, encoding="utf-8", newline="\n")
-    try:
-        bcc.compile_entry(entry, *refs, SimpleNamespace(no_context=True, toolchain=matching.DEFAULT_TOOLCHAIN, runner=None))
-        return entry, None
-    except Exception as e:  # noqa: BLE001, a failed gate is a skip
-        path.unlink()
-        return entry, str(e)[:120]
+    profiles = entry.pop("profiles", None) or [(entry["mode"], entry["assembler"])]
+    first = None
+    for mode, asm in profiles:
+        entry.update(mode=mode, assembler=asm)
+        try:
+            bcc.compile_entry(entry, *refs, SimpleNamespace(no_context=True, toolchain=matching.DEFAULT_TOOLCHAIN, runner=None))
+            return entry, None
+        except Exception as e:  # noqa: BLE001, a failed gate is a skip
+            first = first or str(e)[:120]
+    entry.update(mode=profiles[0][0], assembler=profiles[0][1])
+    path.unlink()
+    return entry, first
 
 
 _REFS = None
@@ -375,10 +388,14 @@ def main():
         if src is None:
             continue
         fl = matching.flags_for(fb[donor][0])
+        donor_profile = ("N" if "-mno-split-addresses" in fl else "S", "ps2as" if "@ps2as" in fl else "default")
+        # first guess: the profile the level's own bytes show, the donor's where they show nothing
+        gmode, gasm = asm_profile.profile_of(asm_profile.guess(code, laddr))
+        guessed = (gmode or donor_profile[0], gasm or donor_profile[1])
         entry = {"name": oname, "source": "src/levels/common/%s.c" % oname, "overlay": dirs[name],
                  "address": "0x%08X" % laddr, "size": size, "flags_from": donor,
-                 "mode": "N" if "-mno-split-addresses" in fl else "S",
-                 "assembler": "ps2as" if "@ps2as" in fl else "default"}
+                 "mode": guessed[0], "assembler": guessed[1],
+                 "profiles": [guessed] + ([donor_profile] if donor_profile != guessed else [])}
         jobs.append((entry, src))
     jobs.sort(key=lambda j: j[0]["size"])
     if a.limit:

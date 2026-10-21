@@ -9,9 +9,13 @@ listings side by side with the differing lines marked.
     python tools/try_level.py src/levels/common/func_004D0538.c      (an entry already in config/levels/common_c.json)
 
 --overlay defaults to the function's canonical owner; --flags-from names the
-frontbin function whose text_parts.txt flags to compile with (--mode N|S and
---assembler default|ps2as override them, as in the catalogue). Exit status 0
-only on a full match.
+frontbin function whose text_parts.txt flags to compile with (default
+func_003ABC30, the plain base flags). The mode and assembler come from, in
+order: --mode N|S and --assembler default|ps2as; the catalogue entry; the
+profile tools/asm_profile.py reads off the retail bytes; the --flags-from
+function's own. When neither option is given and the first profile does not
+match, the other three combinations are tried too. Exit status 0 only on a
+full match.
 """
 import argparse, io, json, os, pickle, struct, subprocess, sys, tempfile
 from pathlib import Path
@@ -21,8 +25,14 @@ from elftools.elf.elffile import ELFFile
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
+import asm_profile  # noqa: E402
 import build_common_c as bcc  # noqa: E402
 import check as matching  # noqa: E402
+
+# the frontbin function whose flags a source compiles with when no
+# --flags-from is given: its range has the base flags and nothing else (the
+# same anchor as localdecomp's level page, tools/localdecomp/levels.py)
+DEFAULT_FLAGS_FROM = "func_003ABC30"
 
 
 def disasm(code, addr, toolchain):
@@ -93,22 +103,39 @@ def main():
     lv, off, size = owner
     dirs = {p.parent.name: p.parent.relative_to(a.refs / "levels").as_posix() for p in (a.refs / "levels").glob("*/*/overlay.elf")}
     overlay = a.overlay or entry.get("overlay") or dirs[Path(lv.path).stem]
-    flags_from = a.flags_from or entry.get("flags_from")
-    if not flags_from:
-        sys.exit("give --flags-from (a frontbin function with the right compiler flags)")
+    flags_from = a.flags_from or entry.get("flags_from") or DEFAULT_FLAGS_FROM
     fl = matching.flags_for(int(flags_from[5:], 16))
-    mode = a.mode or entry.get("mode") or ("N" if "-mno-split-addresses" in fl else "S")
-    asm = a.assembler or entry.get("assembler") or ("ps2as" if "@ps2as" in fl else "default")
-    e = {"name": name, "source": src.relative_to(ROOT).as_posix(), "overlay": overlay, "address": name[5:] and "0x" + name[5:],
-         "size": size, "flags_from": flags_from, "mode": mode, "assembler": asm}
+    donor = ("N" if "-mno-split-addresses" in fl else "S", "ps2as" if "@ps2as" in fl else "default")
+    # the profile retail shows (tools/asm_profile.py), for what neither the
+    # options nor the catalogue say
+    addr = int(name[5:], 16)
+    retail = asm_profile.retail_bytes(str(a.refs / "levels" / overlay / "overlay.elf"), addr, size)
+    ev = asm_profile.guess(retail, addr)
+    gmode, gasm = asm_profile.profile_of(ev)
+    print(asm_profile.format_report(name, gmode, gasm, ev, verbose=False))
+    mode = a.mode or entry.get("mode") or gmode or donor[0]
+    asm = a.assembler or entry.get("assembler") or gasm or donor[1]
+    profiles = [(mode, asm)]
+    if not (a.mode or a.assembler or entry):
+        # the guess first, then the donor's flags, then the rest
+        for p in [donor] + [(m, s) for m in ("S", "N") for s in ("default", "ps2as")]:
+            if p not in profiles:
+                profiles.append(p)
     opts = SimpleNamespace(no_context=True, toolchain=a.toolchain, runner=None)
-    try:
-        bcc.compile_entry(e, a.refs / "levels", a.refs / "level-targets", owners, common, opts)
-        print("MATCH %s (%d bytes)" % (name, size))
-        print("catalogue entry: " + json.dumps(e))
-        return 0
-    except ValueError as err:
-        print("NO MATCH: %s" % err)
+    base = {"name": name, "source": src.relative_to(ROOT).as_posix(), "overlay": overlay, "address": name[5:] and "0x" + name[5:],
+            "size": size, "flags_from": flags_from}
+    for m, s in profiles:
+        e = dict(base, mode=m, assembler=s)
+        try:
+            bcc.compile_entry(e, a.refs / "levels", a.refs / "level-targets", owners, common, opts)
+            print("MATCH %s (%d bytes) with %s/%s" % (name, size, m, s))
+            print("catalogue entry: " + json.dumps(e))
+            return 0
+        except ValueError as err:
+            print("NO MATCH with %s/%s: %s" % (m, s, err))
+            if "differ" not in str(err):
+                break                                   # not a matter of flags
+    mode, asm = profiles[0]
     # show where it differs
     flags = matching.apply_overrides(fl, mode, asm)
     o = matching.compile_c(str(src), flags, opts, name)

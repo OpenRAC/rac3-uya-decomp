@@ -482,16 +482,16 @@ s32 func_003B9B60(void) {
     D_001DA391 = 0;
     __asm__ volatile("" : : : "memory");
     {
-        register s32 second __asm__("$5") = 0;
+        s32 second = 0;
         func_003B6528(first, second);
     }
     func_003B6F28(4, &D_001D8E20);
     func_003B87B8(3, &D_001D8E24, D_001D8E20);
     func_003B8928(func_003B8840());
     {
-        register u8 *callback __asm__("$2") = (u8 *)0x3C0000;
-        register u8 *slot_base __asm__("$3") = (u8 *)0x300000;
-        register u8 *handler __asm__("$4");
+        u8 *callback = (u8 *)0x3C0000;
+        u8 *slot_base = (u8 *)0x300000;
+        u8 *handler;
         __asm__ volatile("" : "+r"(callback), "+r"(slot_base));
         callback -= 0x6258;
         handler = (u8 *)0x3C0000;
@@ -596,7 +596,10 @@ S_3B9C50 *func_003B9C50(V4_3B9C50 *a, V4_3B9C50 *b) {
 /* localdecomp:end func_003B9C50 */
 
 /* localdecomp:start func_003B9DA8 */
-/* PROVISIONAL, VU0 j-constraint form. One statement (the lqc2 of a) is volatile: it keeps the 0.0027f constant load from being scheduled before it, as in retail. */
+/* PROVISIONAL, VU0 j-constraint form. The contiguous run lqc2 v, lqc2 v, sqc2 d, lqc2 a is one volatile
+   statement (one statement per sequence, as God Hand writes VU0 code): it keeps the 0.0027f constant load
+   from being scheduled before it, as in retail. The vadd and sqc2 stay separate j statements so the
+   constant load can fill the vadd latency. Made non-volatile it is 10 diffs. */
 typedef int Q_3B9DA8 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3B9DA8;
 typedef struct {
@@ -619,10 +622,12 @@ void func_003B9DA8(S_3B9DA8 *p) {
     v.w = 0.0f;
     __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(Q_3B9DA8 *)&p->v20));
     __asm__("sqc2 %1, %0" : "=m"(*(Q_3B9DA8 *)&a) : "j"(x));
-    __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*(Q_3B9DA8 *)&v));
-    __asm__("lqc2 %0, %1" : "=j"(c) : "m"(*(Q_3B9DA8 *)&v));
-    __asm__("sqc2 %1, %0" : "=m"(*(Q_3B9DA8 *)&d) : "j"(y));
-    __asm__ __volatile__("lqc2 %0, %1" : "=j"(y) : "m"(*(Q_3B9DA8 *)&a));
+    __asm__ __volatile__(
+        "lqc2 %0, %3\n"
+        "lqc2 %1, %3\n"
+        "sqc2 %0, %2\n"
+        "lqc2 %0, %4\n"
+        : "=&j"(y), "=&j"(c), "=m"(*(Q_3B9DA8 *)&d) : "m"(*(Q_3B9DA8 *)&v), "m"(*(Q_3B9DA8 *)&a));
     __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(y), "j"(c));
     __asm__("sqc2 %1, %0" : "=m"(*(Q_3B9DA8 *)&p->v20) : "j"(x));
     __asm__(
@@ -2215,7 +2220,7 @@ extern void func_00388440(void *, int, int);
 
 unsigned int func_003BD428(int count, int base) {
     int size;
-    register int start __asm__("$3") = base;
+    int start = base;
     register int end __asm__("$2");
     size = count * 4;
     end = start + size;

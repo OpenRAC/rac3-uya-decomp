@@ -1128,11 +1128,11 @@ __asm__(".extern D_001DA7A8, 16");
 __asm__(".extern D_001DA7AC, 16");
 __asm__(".extern D_001DA7B4, 16");
 void func_003D4858(void) {
-    register SourceBlock_003D4858 *source_block __asm__("$3") = (SourceBlock_003D4858 *)0x220000;
+    SourceBlock_003D4858 *source_block = (SourceBlock_003D4858 *)0x220000;
     register u8 *buffer __asm__("$2") = (u8 *)0x300000;
     s32 source;
-    register u8 *entry __asm__("$5");
-    register u8 *end __asm__("$3");
+    u8 *entry;
+    u8 *end;
     __asm__ volatile("" : "+r"(source_block), "+r"(buffer));
     source = source_block->value;
     buffer -= 0x42C0;
@@ -1144,8 +1144,8 @@ void func_003D4858(void) {
     D_001DA7AC = 0;
     D_001DA7B0 = 0;
     if (entry != end) {
-        register u16 empty __asm__("$4") = 0xFFFF;
-        register u8 marker __asm__("$3") = 0xFF;
+        u16 empty = 0xFFFF;
+        u8 marker = 0xFF;
         do {
             entry[0x1F] = marker;
             *(s16 *)(entry + 0x16) = 0;

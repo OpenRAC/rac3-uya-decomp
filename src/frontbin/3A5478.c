@@ -67,19 +67,10 @@ void func_003A54A0(O_3A54A0 *o, f32 *out, f32 t) {
 /* localdecomp:start func_003A5608 */
 extern u8 D_001D8178[];
 
-void func_003A5608(void *a0) {
-    register void *dest __asm__("$2");    // $v0 ($2)
-    register s32 val __asm__("$3");       // $v1 ($3)
-
-    // Force the exact 64-bit move instruction (daddu) at offset 0.
-    // This generates the exact machine code bytes for 0x0080102d.
-    __asm__ volatile("daddu %0, %1, $0" : "=r"(dest) : "r"(a0));
-
-    val = (s32)&D_001D8178;
-
-    __asm__ volatile("" : : "r"(dest), "r"(val));
-
-    *(s32 *)dest = val;
+/* Stores D_001D8178 at *a0 and returns a0 (retail copies a0 to $v0 first). */
+void *func_003A5608(void *a0) {
+    *(u8 **)a0 = D_001D8178;
+    return a0;
 }
 /* localdecomp:end func_003A5608 */
 
@@ -348,7 +339,7 @@ extern s32 func_003ECDC0(s32, s32);
 void func_003A5CA8(Object_003A5CA8 *object) {
     s32 *allocation;
     s32 source;
-    register f32 *values __asm__("$3");
+    f32 *values;
 
     func_003A5A90(object);
     if (object->source != 0) {

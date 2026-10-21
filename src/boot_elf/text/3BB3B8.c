@@ -143,16 +143,16 @@ extern void func_0038CEA0();
 
 s32 func_003BB688(s32 mode) {
     register u32 *flags_base __asm__("$8") = D_001DA234;
-    register s32 index __asm__("$6") = 0;
-    register void **pointer __asm__("$16") = D_001DA230;
+    s32 index = 0;
+    void **pointer = D_001DA230;
     register u32 *flags __asm__("$7") = flags_base;
 
     do {
-        register u32 check_state __asm__("$2");
-        register u32 entry_state __asm__("$3");
-        register u32 updated_state __asm__("$2");
-        register u32 *selected_flags __asm__("$5");
-        register s32 offset __asm__("$3") = index << 3;
+        u32 check_state;
+        u32 entry_state;
+        u32 updated_state;
+        u32 *selected_flags;
+        s32 offset = index << 3;
 
         if (mode != 0) {
             check_state = *(u8 *)flags ^ 1;
@@ -379,10 +379,10 @@ extern void func_13C230(int, int, int);
 
 void func_003BBBD0(float volume, int index) {
     int sound;
-    register int offset __asm__("$3");
-    register int *indices __asm__("$2");
-    register int *sounds __asm__("$4");
-    register int invalid __asm__("$5");
+    int offset;
+    int *indices;
+    int *sounds;
+    int invalid;
 
     if (index >= 0 && index < D_001D8D10_003BBBD0) {
         offset = index * 4;
@@ -1401,10 +1401,10 @@ s32 func_003BE000(void) {
     do {
         r = func_00382868(D_001D8D28);
     } while (r == cur || *(u8 *)(r + (s32)used) != 0);
-    do {
+    {
         *(u8 *)(r + (s32)used) = 1;
         return D_001DA2E8_003BE000[r];
-    } while (0);
+    }
 }
 /* localdecomp:end func_003BE000 */
 

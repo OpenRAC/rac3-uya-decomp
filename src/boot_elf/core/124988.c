@@ -57,8 +57,6 @@ extern u32 D_0013E300[4];
 extern u32 D_0013E2F8;
 extern void func_00124B80(u32, u32);
 extern u32 func_00124A68(u32, u32, void *);
-extern void func_00124A28(void);
-extern void func_001249F0(void);
 
 void func_00124A80(void) {
     u32 a;
@@ -547,7 +545,6 @@ typedef struct Alarm_125D18 {
 } Alarm_125D18;
 extern Alarm_125D18 *D_159EC0;
 extern int func_001258E8(void);
-extern s32 func_00125B68(int id, int time, void *cb, void *arg);
 extern void func_001259F0(int id);
 extern void func_00125CB8();
 int func_00124920(void);
@@ -588,7 +585,7 @@ int func_00125D18(int time, void *handler, void *arg)
     p->handler = handler;
     p->arg = arg;
     p->id = id;
-    func_00125B68(id, time, func_00125CB8, p);
+    func_00125B68(id, time, (s32)func_00125CB8, (s32)p);
     func_001259F0(id);
     if (di) {
         func_00124970();

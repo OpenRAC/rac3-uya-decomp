@@ -571,7 +571,6 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_001216C8);
 
 /* localdecomp:start func_00121718 */
 extern s32 func_00120908_00121718(void *, void *, s32, s32, void *);
-extern void func_00121620(void);
 
 s32 func_00121718(s32 a0, s32 a1, s32 a2, ...) {
     return func_00120908_00121718(func_00121620, &a0, a1, a2, (char *)__builtin_next_arg(a2) - 0x28);
@@ -1511,7 +1510,6 @@ typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; } F_1236C0;
 typedef struct { s32 x0; void *x4; s32 x8; s32 xC; s32 x10; } P_1236C0;
 typedef struct { s32 count; s32 max; s32 init; s32 wait; u32 attr; void *option; } Q_1236C0;
 
-extern F_1236C0 *func_00122C58(s32);
 extern s32 func_001230D8_001236C0(s32);
 extern void func_00123108(void);
 extern s32 func_0011EE20_001236C0(Q_1236C0 *);
@@ -1531,7 +1529,7 @@ s32 func_001236C0(s32 fd) {
     s32 r;
     P_1236C0 *p = &D_154C00_001236C0;
 
-    f = func_00122C58(fd);
+    f = (F_1236C0 *)func_00122C58(fd);
     func_001230D8_001236C0(1);
     if (D_0013DC84[0] == 0 || f == 0 || f->x4 == 0) {
         func_00123108();
@@ -1650,7 +1648,6 @@ extern s32 D_0013DCA0[];
 extern u8 D_1567C0[];
 extern u8 D_1567E8[];
 extern u8 D_1565C0_123D10[];
-extern s32 func_00122630(void *, u32, s32);
 extern s32 func_00122810();
 
 s32 func_00123D10(void)
@@ -1659,7 +1656,7 @@ s32 func_00123D10(void)
 
     if (D_0013DCA0[0] < 0) {
         for (;;) {
-            if (func_00122630(D_1567C0, 0x80000006, 0) < 0) {
+            if (func_00122630((Cd_122630 *)D_1567C0, 0x80000006, 0) < 0) {
                 return -1;
             }
             if (*(s32 *)(D_1567C0 + 0x24) != 0) {

@@ -417,7 +417,6 @@ extern int func_0011EE40();
 extern int func_0011EE70();
 extern int func_00121FE8_0012B800();
 extern void func_00121F38();
-extern int func_0012AC40();
 extern int func_0012B5E8();
 extern int func_00124920();
 extern int func_00124970_0012B800();

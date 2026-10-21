@@ -64,7 +64,34 @@ void func_003DFEB8(void *o) {
 }
 /* localdecomp:end func_003DFEB8 */
 
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_003DFF88);
+/* localdecomp:start func_003DFF88 */
+extern void func_003E0020(void *);
+extern s32 func_0040BA90(void *);
+extern void func_003E01C0(void *);
+extern void func_003E0078();
+void func_003DFF88(u8 *m) {
+    u8 *v = *(u8 **)(m + 0x68);
+
+    switch (m[0x20]) {
+    case 0:
+        func_003E0020(m);
+        break;
+    case 1:
+        break;
+    case 2:
+        if (func_0040BA90(v + 8)) {
+            func_003E01C0(m);
+        }
+        break;
+    case 3:
+        func_003E0078(m);
+        break;
+    case 4:
+        func_00436220(m);
+        break;
+    }
+}
+/* localdecomp:end func_003DFF88 */
 
 INCLUDE_ASM("asm/veldin/nonmatchings/text", func_003E0020);
 

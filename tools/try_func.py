@@ -21,6 +21,13 @@ Options:
   --mode S|N         force split addresses (S) or -mno-split-addresses (N)
   --as default|ps2as|newas
                      assembler: bin/ee-as.exe (default), SN Ps2EeAs, ee/bin/as.exe
+                     Without --mode and --as, a function that has no flags of
+                     its own (no single-function or common-source line in
+                     text_parts.txt, no localdecomp_flags.txt line) is built
+                     first with the profile tools/asm_profile.py reads off its
+                     retail bytes, then, if that does not match, with its
+                     range's flags; the closer of the two is shown in full
+  --no-guess         just the range's flags
   --flags "..."      extra compiler flags (appended)
   --early-extern-size SYMBOL=SIZE
                      expose a matching compiler-emitted size before first use
@@ -425,6 +432,42 @@ def diff_object(o_path, names, retail, quiet):
     return results
 
 
+def own_flags(addr):
+    """True if the function at addr has flags chosen for it: a localdecomp_flags
+    line, or a text_parts.txt line that starts at it and is a single-function
+    override or a linked common-level source (tools/link_common_sources.py)."""
+    t = targets.get()
+    if any(name == "func_%08x" % addr for name, _ in read_table(t.path("localdecomp_flags"), True)):
+        return True
+    if os.path.exists(t.path("parts")):
+        for line in open(t.path("parts")):
+            fields = line.split()
+            if fields and re.fullmatch(r"(0x)?[0-9A-Fa-f]+", fields[0]) and int(fields[0], 16) == addr:
+                return "single-function override" in line or "override for" in line or "common source" in line
+    return False
+
+
+def profile_guess(name, base, retail):
+    """(mode, assembler) to try first, from tools/asm_profile.py, or None when
+    it says nothing new: the function has flags of its own, its range is
+    another compiler or assembler (@ee29, @newas) or has no small data (-G0),
+    or retail shows neither choice."""
+    addr = int(name[5:], 16)
+    if own_flags(addr) or "@ee29" in base or "@newas" in base or "-G8" not in base:
+        return None
+    size = retail_size(name, None)
+    code = retail.read(addr, size) if size else b""
+    if not code:
+        return None
+    import asm_profile
+    ev = asm_profile.guess(code, addr, targets.get().gp)
+    mode, asm = asm_profile.profile_of(ev)
+    if apply_overrides(base, mode, asm) == list(base):
+        return None
+    print(asm_profile.format_report(name, mode, asm, ev, verbose=False))
+    return mode, asm
+
+
 def main():
     t = targets.from_argv()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -436,6 +479,7 @@ def main():
     ap.add_argument("--early-extern-size", action="append", type=parse_extern_size, default=[],
                     help="promote a matching compiler-emitted extern size before its first use (SYMBOL=SIZE)")
     ap.add_argument("--all-modes", action="store_true")
+    ap.add_argument("--no-guess", action="store_true", help="do not try tools/asm_profile.py's profile first")
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--no-context", action="store_true",
                     help="compile the file alone, without the declarations its source file (src/frontbin/) puts in front of it")
@@ -461,6 +505,10 @@ def main():
     combos = [(args.mode, args.asm)]
     if args.all_modes:
         combos = [("S", "default"), ("S", "ps2as"), ("N", "default"), ("N", "ps2as")]
+    elif not (args.mode or args.asm or args.no_guess):
+        guessed = profile_guess(names[0], base, retail)
+        if guessed:
+            return try_guess_first(args, names, base, retail, guessed)
     for mode, asm in combos:
         flags = apply_overrides(base, mode, asm) + args.flags.split()
         if args.all_modes:
@@ -468,6 +516,30 @@ def main():
         o = compile_c(args.file, flags, args, names[0])
         if o:
             diff_object(o, names, retail, args.quiet or args.all_modes)
+
+
+def try_guess_first(args, names, base, retail, guessed):
+    """Build with the guessed profile; if that is not a match, also with the
+    range's flags, and show the closer of the two in full."""
+    import contextlib, io
+    tries = []
+    for label, (mode, asm) in (("asm_profile's guess", guessed), ("the range's flags", (None, None))):
+        flags = apply_overrides(base, mode, asm) + args.flags.split()
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            o = compile_c(args.file, flags, args, names[0])
+            res = diff_object(o, names, retail, args.quiet) if o else None
+        total = sum(v for v in res.values() if v) + sum(1 for v in res.values() if v is None) * 1000 if res else 10 ** 6
+        tries.append((total, label, flags, out.getvalue()))
+        if total == 0:
+            break
+    best = min(tries, key=lambda x: x[0])
+    for total, label, flags, text in tries:
+        mark = "(shown below)" if len(tries) > 1 and (total, label) == best[:2] else ""
+        profile = "%s/%s" % ("N" if "-mno-split-addresses" in flags else "S", "ps2as" if "@ps2as" in flags else "default")
+        print("--- %s (%s): %s %s" % (label, profile, "MATCH" if total == 0 else
+                                     "%d diff" % total if total < 1000 else "no result", mark))
+    print(best[3], end="")
 
 
 if __name__ == "__main__":

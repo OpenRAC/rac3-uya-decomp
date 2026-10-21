@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00417F60 */
 typedef struct {
     s32 f0;
     u8 pad[32];
@@ -54,3 +55,4 @@ s32 func_00417F60(s32 id, s32 idx) {
     }
     return 0;
 }
+/* localdecomp:end func_00417F60 */

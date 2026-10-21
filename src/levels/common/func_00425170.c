@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00425170 */
 typedef struct {
     f32 x;
     f32 y;
@@ -48,3 +49,4 @@ void func_00425170(s32 *a0, s32 n, s32 *a2) {
     for (k = 0; k < cnt; k++) {
     }
 }
+/* localdecomp:end func_00425170 */

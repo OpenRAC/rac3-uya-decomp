@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00495F40 */
 extern void func_00495F40(s32 *arg0, float float1, float float2, float float3, float float4, float float5);
 
 void func_00495F40(s32 *arg0, float float1, float float2, float float3, float float4, float float5) {
@@ -13,3 +14,4 @@ void func_00495F40(s32 *arg0, float float1, float float2, float float3, float fl
     
     arg0[30] = 0;          // $zero -> 0x78
 }
+/* localdecomp:end func_00495F40 */

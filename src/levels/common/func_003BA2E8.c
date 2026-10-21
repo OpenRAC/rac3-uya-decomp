@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003BA2E8 */
 typedef struct {
     u8 pad0[0x1C];
     f32 f1C;
@@ -80,3 +81,4 @@ void func_003BA2E8(M_3BA2E8 *a0) {
         func_00408090(m, v->bB0, 2, 0x60804040, 0x204090, 23, v->f88 * 0.3f, v->f88 * 7.0f * 0.3f, v->f1C);
     }
 }
+/* localdecomp:end func_003BA2E8 */

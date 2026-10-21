@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045BB60 */
 extern void func_0013CB20(long,long,s32,s32,s16,s32,s32,s32,s32,s32,void*,unsigned long);
 
 typedef struct { u8 p0[0x44]; u32 f44; s16 f48; s16 f4A; s16 f4C; s16 f4E; u8 p50[4]; s16 f54; u8 p56[2]; s32 f58; s32 f5C; } S_CFD0_8A8;
@@ -23,3 +24,4 @@ D_001CCFD0_0039C8A8.f54 = 0;
 y = D_00160C40_0039C8A8.t[(a+1)*2] + D_00160C40_0039C8A8.f7A04;
 func_0013CB20((s32)x, (s32)y, 0, 0, c, 0, 1, 0, 0, 0, func_0045CD60, (unsigned long)((long)&D_001CCFD0_0039C8A8.f44 << 0x20) >> 0x20);
 }}}}
+/* localdecomp:end func_0045BB60 */

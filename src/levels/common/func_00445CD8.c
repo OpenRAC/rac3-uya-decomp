@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00445CD8 */
 extern void func_0040C0F0(f32 *, f32 *, f32);
 void func_00445CD8(f32 (*m)[4]) {
     f32 v[4] __attribute__((aligned(16)));
@@ -15,3 +17,4 @@ void func_00445CD8(f32 (*m)[4]) {
         }
     }
 }
+/* localdecomp:end func_00445CD8 */

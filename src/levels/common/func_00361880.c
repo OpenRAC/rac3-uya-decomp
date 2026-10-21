@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00361880 */
 typedef int u128_361880 __attribute__((mode(TI)));
 typedef struct { u8 p0[0x24]; f32 f24; } C_361880;
 typedef struct { u128_361880 v0; u8 p10[0x30]; s32 w40; u8 p44[4]; s32 w48; u8 p4C[4]; s32 w50; s32 w54; s32 w58; } V_361880;
@@ -39,3 +40,4 @@ M_361880 *func_00361880(u128_361880 *a, u128_361880 *b, s32 c, s32 d, s32 e) {
     }
     return m;
 }
+/* localdecomp:end func_00361880 */

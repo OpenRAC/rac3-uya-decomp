@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00445BF0 */
 void func_00445BF0(s32 *a0, s32 *a1, s32 *a2, s32 a3) {
     s32 t;
     if (a3 & 1) {
@@ -18,3 +19,4 @@ void func_00445BF0(s32 *a0, s32 *a1, s32 *a2, s32 a3) {
         *a0 = t;
     }
 }
+/* localdecomp:end func_00445BF0 */

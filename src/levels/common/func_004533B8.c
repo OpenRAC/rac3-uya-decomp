@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004533B8 */
 extern u8 *D_001DFCC8[];
 void func_004533B8(void *a0, s32 a1, s32 a2) {
     if (a0 != 0) {
@@ -11,3 +13,4 @@ void func_004533B8(void *a0, s32 a1, s32 a2) {
         *(s16 *)(e + 6) = 0;
     }
 }
+/* localdecomp:end func_004533B8 */

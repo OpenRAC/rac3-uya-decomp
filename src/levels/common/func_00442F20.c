@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00442F20 */
 typedef struct { u8 p0[0x6]; u8 b6; u8 p7[7]; u8 bE; u8 bF; s32 w10; u8 p14[0x2C]; s32 w40; } S_442F20;
 typedef struct {
     u8 p0[0x22]; u8 b22; u8 p23; S_442F20 *w24; u8 p28[0xC]; u16 h34; u8 p36[0x2B]; u8 b61; u8 b62; u8 b63;
@@ -56,3 +57,4 @@ s32 func_00442F20(P_442F20 *p, s32 b, s32 c) {
     func_00439610(p);
     return 1;
 }
+/* localdecomp:end func_00442F20 */

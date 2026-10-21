@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00419A68 */
 extern u8 *D_001DFD98;
 extern s32 D_001DFDC0[];
 #define D_001DFDC0 (D_001DFDC0[0])
@@ -47,3 +48,4 @@ void func_00419A68(s32 arg0, u8 *arg1, void *arg2) {
         }
     }
 }
+/* localdecomp:end func_00419A68 */

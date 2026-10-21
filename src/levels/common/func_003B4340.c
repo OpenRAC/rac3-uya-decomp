@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003B4340 */
 s32 func_003B4340(u8 *obj) {
     u8 *p = *(u8 **)(obj + 104);
     if (*(s32 *)(p + 68) != 0) {
@@ -7,3 +8,4 @@ s32 func_003B4340(u8 *obj) {
     }
     return *(s32 *)(p + 64) == 0;
 }
+/* localdecomp:end func_003B4340 */

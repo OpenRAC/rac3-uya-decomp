@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CD110 */
 extern void func_004C8B28(void *, s32);
 
 typedef struct { u8 p0[0x1C4]; u32 f1C4; } S_3A9698;
@@ -22,3 +23,4 @@ void func_004CD110(u8 *base, s32 b, f32 f) {
     *q = f;
     func_004C8B28(p, b);
 }
+/* localdecomp:end func_004CD110 */

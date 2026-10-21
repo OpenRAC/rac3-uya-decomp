@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00490968 */
 typedef struct { u8 b[32]; } E_00490968;
 extern s32 D_001E0B70;
 extern E_00490968 D_00236798[];
@@ -16,3 +18,4 @@ E_00490968 *func_00490968(s32 i) {
     }
     return &D_00236798[i];
 }
+/* localdecomp:end func_00490968 */

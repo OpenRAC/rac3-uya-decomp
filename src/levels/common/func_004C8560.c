@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C8560 */
 extern char D_001DB110[];
 extern char D_001DB128[];
 extern void func_00116F98(char *, s32, char *);
@@ -10,3 +11,4 @@ void func_004C8560(void *unused, f32 *out, f32 t) {
     out[2] = 1.0f - t;
     out[3] = (1.0f - t) * 0.5f;
 }
+/* localdecomp:end func_004C8560 */

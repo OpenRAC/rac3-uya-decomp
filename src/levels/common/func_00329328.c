@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00329328 */
 extern void func_003B2F18(s32);
 s32 func_00329328(u8 *a0) {
     if (a0[32] == 7) {
@@ -7,3 +9,4 @@ s32 func_00329328(u8 *a0) {
     }
     return 0;
 }
+/* localdecomp:end func_00329328 */

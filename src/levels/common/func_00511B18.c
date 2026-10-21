@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00511B18 */
 extern void func_00511B18(void *);
 typedef struct O { struct VT *vt; u8 pad[0x18]; } O;
 struct VT { u8 pad[0x10]; void (*fn)(O *, s32); };
@@ -18,3 +19,4 @@ void func_00511B18(void *arg0) {
     }
     p->q->count = 0;
 }
+/* localdecomp:end func_00511B18 */

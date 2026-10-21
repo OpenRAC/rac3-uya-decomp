@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003FF970 */
 extern void func_003FF970(void);
 
 typedef struct { u8 p0[0x150]; u16 f150, f152; } C_00382F90;
@@ -42,3 +43,4 @@ void func_003FF970(void) {
     D_001E7600_00382F90.f248 = 0;
     D_001E7600_00382F90.f268 = 0;
 }
+/* localdecomp:end func_003FF970 */

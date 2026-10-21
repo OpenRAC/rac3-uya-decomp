@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003F6DF0 */
 extern void func_0040C260(f32 *, f32 *, f32 *);
 extern f32 func_0040BF38(f32 *);
 extern f32 func_0040BEF8(f32 *, f32 *);
@@ -19,3 +21,4 @@ s32 func_003F6DF0(f32 *v, f32 *a, f32 *b, f32 scale, f32 min) {
     }
     return len != 0.0f;
 }
+/* localdecomp:end func_003F6DF0 */

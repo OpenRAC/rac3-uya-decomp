@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00437500 */
 extern void func_00437500(void);
 extern void func_00437500();
 
@@ -32,3 +33,4 @@ z:
         i++;
     } while (i < 16);
 }
+/* localdecomp:end func_00437500 */

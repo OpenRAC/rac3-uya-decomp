@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00503760 */
 typedef struct {
     u8 pad0[0x10];
     s32 arr[1];
@@ -19,3 +20,4 @@ void func_00503760(s32 n) {
     }
     D_00142660.arr[last] = first;
 }
+/* localdecomp:end func_00503760 */

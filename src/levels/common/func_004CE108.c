@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CE108 */
 u8 *func_004CE108(u8 *p) {
     u8 *q; u8 *base; s32 i, j, k;
     base = p;
@@ -17,3 +18,4 @@ u8 *func_004CE108(u8 *p) {
     func_004C9CB0(p + 0x4ED0);
     return p;
 }
+/* localdecomp:end func_004CE108 */

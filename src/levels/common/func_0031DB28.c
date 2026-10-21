@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0031DB28 */
 typedef struct {
     u8 pad0[0x24];
     u8 *x24;
@@ -61,3 +62,4 @@ void func_0031DB28(u8 *obj, void *a1) {
     func_0031DF08(obj + 16, 15, 0, obj);
     obj[32] = 2;
 }
+/* localdecomp:end func_0031DB28 */

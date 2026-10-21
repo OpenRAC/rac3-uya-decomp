@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003A4B78 */
 #define B(p, o) (*(u8 *)((u8 *)(p) + (o)))
 #define H(p, o) (*(s16 *)((u8 *)(p) + (o)))
 #define W(p, o) (*(s32 *)((u8 *)(p) + (o)))
@@ -75,3 +76,4 @@ rest:
     }
     return 0;
 }
+/* localdecomp:end func_003A4B78 */

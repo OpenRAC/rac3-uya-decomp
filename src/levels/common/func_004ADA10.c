@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004ADA10 */
 extern u32 *D_001E10E8;
 extern u32 *D_001E0F3C;
 extern s32 D_001E0F44;
@@ -29,3 +30,4 @@ void func_004ADA10(void) {
     save[2] = 0;
     save[3] = 0;
 }
+/* localdecomp:end func_004ADA10 */

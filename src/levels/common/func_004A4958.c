@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004A4958 */
 typedef struct { u16 pad; u16 flags; } Q_3C8E70;
 extern void func_004A4958(Q_3C8E70 *);
 
@@ -49,3 +50,4 @@ void func_004A4958(Q_3C8E70 *arg) {
         if (alt && drawn) D_001DBCE0 |= 4;
     }
 }
+/* localdecomp:end func_004A4958 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004E8770 */
 typedef struct {
     u8 pad0[508];
     s16 h1FC;
@@ -17,3 +19,4 @@ void func_004E8770(s32 a0) {
         break;
     }
 }
+/* localdecomp:end func_004E8770 */

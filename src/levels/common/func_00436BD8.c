@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00436BD8 */
 typedef struct Slot_00436BD8 {
     s16 id;
     u16 count;
@@ -37,3 +38,4 @@ Slot_00436BD8 *func_00436BD8(u8 *self, s32 id, s32 arg) {
     *(Slot_00436BD8 **)(self + 80) = e;
     return e;
 }
+/* localdecomp:end func_00436BD8 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004E5630 */
 typedef struct {
     u8 pad0[9836];
     f32 arr[32];
@@ -16,3 +18,4 @@ f32 func_004E5630(s32 a0) {
     }
     return D_001A4BE0.arr[(D_001A4BE0.f26EC - n + 31) % 32];
 }
+/* localdecomp:end func_004E5630 */

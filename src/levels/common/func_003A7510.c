@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003A7510 */
 typedef struct {
     u8 pad0[150];
     u16 timer;
@@ -16,3 +17,4 @@ void func_003A7510(Obj003A7510 *obj) {
         func_00436220(obj);
     }
 }
+/* localdecomp:end func_003A7510 */

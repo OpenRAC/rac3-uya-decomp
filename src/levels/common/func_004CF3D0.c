@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CF3D0 */
 extern s32 func_0013D080();
 typedef struct { s32 f0; s32 f4; u8 pad8[0x28]; s32 f30; s32 f34; s32 f38; s32 f3C; s32 f40; s32 f44; s32 f48; s32 f4C; s32 f50; u8 pad54[4]; s32 f58; s32 f5C; } S_3AAAC8;
 s32 func_004CF3D0(S_3AAAC8 *p, s32 a, s32 b, s32 c) {
@@ -23,3 +24,4 @@ s32 func_004CF3D0(S_3AAAC8 *p, s32 a, s32 b, s32 c) {
     if (r < 0) return 0;
     return 1;
 }
+/* localdecomp:end func_004CF3D0 */

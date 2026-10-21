@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C2488 */
 extern u32 *D_001E10E8;
 extern void func_0012C9A0(void *, s16, s16, s16, s32, s32, s16, s16);
 void func_004C2488(s32 a0, s32 a1, s32 size) {
@@ -25,3 +26,4 @@ void func_004C2488(s32 a0, s32 a1, s32 size) {
         src += 0x3000;
     }
 }
+/* localdecomp:end func_004C2488 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004DB390 */
 extern void func_004D9680(u8 **, s32, s32, s32, s32, s32, s32);
 extern void func_004D9C20(s32, s32, s32);
 extern void func_004D9C20();
@@ -34,3 +35,4 @@ void func_004DB390(void) {
     func_004D9C20(&p, D_001D5628_003D3A50, D_001D5634_003D3A50);
     D_001D55F8_003D3A50 = p - D_001D3650_003D3A50;
 }
+/* localdecomp:end func_004DB390 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003DF848 */
 extern void func_004C4AB8(int);
 extern void func_00436220(void *);
 void func_003DF848(char *m)
@@ -9,3 +11,4 @@ void func_003DF848(char *m)
     }
     func_00436220(m);
 }
+/* localdecomp:end func_003DF848 */

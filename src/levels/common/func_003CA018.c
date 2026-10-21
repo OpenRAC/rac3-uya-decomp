@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003CA018 */
 s32 func_003CA018(u8 *a) {
     u8 t = a[32];
     s32 r = 0;
@@ -8,3 +9,4 @@ s32 func_003CA018(u8 *a) {
     }
     return r;
 }
+/* localdecomp:end func_003CA018 */

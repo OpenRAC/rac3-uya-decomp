@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0051D7E0 */
 extern s32 func_00519410();
 extern void func_00519458();
 typedef struct S_3E7EC8 S_3E7EC8;
@@ -68,3 +69,4 @@ void func_0051D7E0(O_3EC960 *a, f32 *b, f32 *out) {
     out[2] = out[0] + w0;
     out[3] = out[1] + w1;
 }
+/* localdecomp:end func_0051D7E0 */

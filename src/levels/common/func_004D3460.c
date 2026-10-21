@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D3460 */
 extern s32 D_001DBCE0[4] __attribute__((section(".sdata")));
 extern s32 D_001DBCE0_004D3460[4] __attribute__((section(".sdata")));
 extern s32 D_001DB904;
@@ -105,3 +106,4 @@ void func_004D3460(void) {
         D_001DBCFC_004D3460[0] = 0;
     }
 }
+/* localdecomp:end func_004D3460 */

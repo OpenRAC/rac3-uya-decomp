@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0050B850 */
 typedef struct {
     s16 key;
     s16 val;
@@ -22,3 +23,4 @@ s32 func_0050B850(s32 key, s32 *out) {
     *out = 0;
     return 0;
 }
+/* localdecomp:end func_0050B850 */

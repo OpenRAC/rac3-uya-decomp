@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003A5118 */
 typedef struct {
     void (*f0)(void *);
     void (*f4)(void *);
@@ -44,3 +46,4 @@ void func_003A5118(Obj_003A5118 *o, s32 flag) {
         func_00436220(o);
     }
 }
+/* localdecomp:end func_003A5118 */

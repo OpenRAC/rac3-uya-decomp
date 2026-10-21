@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00410AA0 */
 extern f32 func_0040BF68(void *v);
 extern f32 func_0040C490(f32 a, f32 b);
 
@@ -11,3 +12,4 @@ void func_00410AA0(u8 *a0)
         *(f32 *)(a0 + 64) = func_0040C490(*(f32 *)(a0 + 240), *(f32 *)(a0 + 244));
     }
 }
+/* localdecomp:end func_00410AA0 */

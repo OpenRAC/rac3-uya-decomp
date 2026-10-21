@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0042EFF8 */
 extern void func_0042EFF8(void);
 
 typedef struct { u8 p0[8]; s32 f8; u8 pC[4]; s32 f10; u8 p14[0x10]; s32 f24; u8 p28[0x144]; s32 f16C; } S_395FF0;
@@ -35,3 +36,4 @@ void func_0042EFF8(void) {
         D_001DFF9C = 0;
     }
 }
+/* localdecomp:end func_0042EFF8 */

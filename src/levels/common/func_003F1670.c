@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003F1670 */
 typedef int u128_37EB68 __attribute__((mode(TI)));
 typedef struct { u8 p0[0x2B8]; f32 f2B8; u8 p2BC[0xC]; f32 f2C8; u8 p2CC[0x58]; s32 f324; u8 p328[0x138]; } E_37EB68;
 extern E_37EB68 D_001E2AC0[];
@@ -91,3 +93,4 @@ void func_003F1670(u8 *o, s32 a1) {
         dst[2] = src[2];
     }
 }
+/* localdecomp:end func_003F1670 */

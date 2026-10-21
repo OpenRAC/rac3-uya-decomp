@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00420D88 */
 typedef struct {
     s16 id;
     s16 arg;
@@ -66,3 +67,4 @@ void func_00420D88(void) {
         }
     }
 }
+/* localdecomp:end func_00420D88 */

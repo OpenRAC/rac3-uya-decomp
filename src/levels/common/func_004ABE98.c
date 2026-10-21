@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004ABE98 */
 extern void func_0045C8A8(s32, s32, s32);
 extern void func_0045CA60(s32);
 typedef struct {
@@ -104,3 +106,4 @@ s32 func_004ABE98(s32 lvl) {
     for (i = 0; D_001E6E00.f48 < i; i--) func_0012C908(0);
     return 1;
 }
+/* localdecomp:end func_004ABE98 */

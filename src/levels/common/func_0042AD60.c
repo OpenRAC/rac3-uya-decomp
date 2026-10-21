@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0042AD60 */
 typedef struct {
     s32 a;
     s32 b;
@@ -143,3 +144,4 @@ void func_0042AD60(void) {
         D_001F4020.w40 = 0;
     }
 }
+/* localdecomp:end func_0042AD60 */

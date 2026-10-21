@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0030CD20 */
 typedef struct {
     f32 v[4];
     s32 w16;
@@ -39,3 +41,4 @@ void func_0030CD20(s32 a0) {
         }
     }
 }
+/* localdecomp:end func_0030CD20 */

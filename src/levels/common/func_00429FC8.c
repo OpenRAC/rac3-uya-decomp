@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00429FC8 */
 extern s32 func_00429FC8(s32);
 
 typedef struct { s32 id; s32 pad[4]; } E_395E18;
@@ -14,3 +15,4 @@ s32 func_00429FC8(s32 id) {
     for (j = 0; j < 3; j++) if (D_0016C690[0].v[j] == i) break;
     return j != 3;
 }
+/* localdecomp:end func_00429FC8 */

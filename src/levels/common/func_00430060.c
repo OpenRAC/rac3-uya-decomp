@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00430060 */
 extern s32 D_001D4CEC_g;
 extern s32 func_00430060();
 
@@ -11,3 +12,4 @@ s32 func_00430060(u32 a) {
     D_001D4CEC_g |= 0x1000;
     return 1;
 }
+/* localdecomp:end func_00430060 */

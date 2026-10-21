@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004E1E40 */
 typedef int s128 __attribute__((mode(TI)));
 
 typedef union {
@@ -57,3 +58,4 @@ void func_004E1E40(s32 count, s32 mode, s32 flag) {
         }
     }
 }
+/* localdecomp:end func_004E1E40 */

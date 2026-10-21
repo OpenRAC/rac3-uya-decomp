@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CEBF0 */
 extern s32 func_004CEBF0(s32, s32, s32 (*)(s32, s32), s32, s32);
 
 extern s32 D_001E123C;
@@ -49,3 +50,4 @@ s32 func_004CEBF0(s32 a, s32 b, s32 (*alloc)(s32, s32), s32 c, s32 flag) {
     D_001D4D40 = D_001D4D40 & ~0x80;
     return r;
 }
+/* localdecomp:end func_004CEBF0 */

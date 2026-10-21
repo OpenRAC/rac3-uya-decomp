@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00435C80 */
 typedef struct {
     unsigned char id;
     unsigned char pad;
@@ -25,3 +26,4 @@ Slot00435C80 *func_00435C80(int id)
     }
     return r;
 }
+/* localdecomp:end func_00435C80 */

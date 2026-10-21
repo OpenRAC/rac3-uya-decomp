@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CEDB8 */
 extern s32 D_001E1238_003AA2E8;
 extern s32 D_001E1264_003AA2E8;
 extern s32 D_001E1268_003AA2E8;
@@ -115,3 +116,4 @@ s32 func_004CEDB8(void *a, u8 *b, s32 *c) {
     func_004CF530((s32 *)D_001E1268_003AA2E8);
     return started;
 }
+/* localdecomp:end func_004CEDB8 */

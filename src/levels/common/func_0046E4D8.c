@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0046E4D8 */
 typedef int u128_46E4D8 __attribute__((mode(TI)));
 typedef struct {
     u8 pad0[0xC];
@@ -52,3 +53,4 @@ P_46E4D8 *func_0046E4D8(u128_46E4D8 *a, u128_46E4D8 *b, s32 n) {
     }
     return p;
 }
+/* localdecomp:end func_0046E4D8 */

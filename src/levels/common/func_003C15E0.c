@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003C15E0 */
 extern int D_001E2280[];
 int func_003C15E0(int a)
 {
@@ -11,3 +13,4 @@ int func_003C15E0(int a)
     }
     return -1;
 }
+/* localdecomp:end func_003C15E0 */

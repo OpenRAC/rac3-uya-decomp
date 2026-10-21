@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CF7D0 */
 void func_004CF7D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3, void *arg4, s32 arg5) {
     s32 temp_11;
     s32 temp_12;
@@ -27,3 +28,4 @@ void func_004CF7D0(s32 *arg0, s32 *arg1, s32 *arg2, s32 *arg3, void *arg4, s32 a
     *arg2 = (*(s32 *)((u8 *)arg4 + 0x48));
     *arg3 = temp_hi - ((*(s32 *)((u8 *)arg4 + 0x4C)) - (*(s32 *)((u8 *)arg4 + 0x58)));
 }
+/* localdecomp:end func_004CF7D0 */

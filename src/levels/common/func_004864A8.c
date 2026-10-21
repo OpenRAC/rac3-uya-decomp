@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004864A8 */
 extern int D_001D8910;
 extern int D_001D8914;
 extern int D_001D8918;
@@ -76,3 +77,4 @@ void func_004864A8(void *a0) {
         }
     }
 }
+/* localdecomp:end func_004864A8 */

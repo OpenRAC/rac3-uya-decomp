@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00495868 */
 typedef struct Motion_004957A0 Motion_004957A0;
 extern void func_00495760_00495868(u8 *);
 extern void func_00495980_00495868(void *);
@@ -34,3 +35,4 @@ void func_00495868(void *arg0, s32 arg1) {
     func_005129D8_00495868(0x4F00B1, (*(f32 *)((u8 *)(arg0) + 0x6C)));
     func_00513548_00495868(0x4F00AF, (*(f32 *)((u8 *)(arg0) + 0x60)), (*(f32 *)((u8 *)(arg0) + 0x64)));
 }
+/* localdecomp:end func_00495868 */

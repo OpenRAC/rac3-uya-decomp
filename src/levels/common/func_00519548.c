@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00519548 */
 extern s32 func_00519410();
 typedef struct V_3E6C80 { u8 pad[0x10]; s32 (*fn)(void *, s32); } V_3E6C80;
 typedef struct S_3E6CE8 S_3E6CE8;
@@ -15,3 +16,4 @@ extern s32 func_00519410();
 void func_00519548(S_3E86C8 *a, s32 b) {
     if (func_00519410(a, 1)) a->vt->fn(a, b);
 }
+/* localdecomp:end func_00519548 */

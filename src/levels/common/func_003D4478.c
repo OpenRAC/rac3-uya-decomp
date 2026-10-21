@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003D4478 */
 typedef struct {
     u8 pad0[0x40];
     u8 mtx[0x15];
@@ -92,3 +93,4 @@ void func_003D4478(Moby_003D4478 *moby) {
         func_00405A58(&q, 0, 0);
     }
 }
+/* localdecomp:end func_003D4478 */

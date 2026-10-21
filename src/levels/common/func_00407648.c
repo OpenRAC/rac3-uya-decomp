@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00407648 */
 extern void func_00407648();
 
 typedef int u128_3D3EE0 __attribute__((mode(TI)));
@@ -18,3 +19,4 @@ void func_00407648(u8 *p, s32 a1, s32 a2, f32 *src, u128_3D3EE0 *q, s32 a5) {
         ((u128_3D3EE0 *)p)[i] = q[i];
     }
 }
+/* localdecomp:end func_00407648 */

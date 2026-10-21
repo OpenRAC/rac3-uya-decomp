@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003B5368 */
 typedef struct {
     u8 p0[0x10];
     s32 w10;
@@ -125,3 +126,4 @@ s32 func_003B5368(s32 a0, S_3B5368 *s, s32 a2, s32 n, f32 f, s32 flag) {
     s->w68 = res;
     return res;
 }
+/* localdecomp:end func_003B5368 */

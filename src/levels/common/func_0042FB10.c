@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0042FB10 */
 extern s32 D_001D4CE8[];
 extern s32 D_001D4CEC[];
 
@@ -13,3 +14,4 @@ void func_0042FB10(void) {
     }
     if (!(D_001D4CEC[0] & 0x40)) D_001D4CE8[0] = 4;
 }
+/* localdecomp:end func_0042FB10 */

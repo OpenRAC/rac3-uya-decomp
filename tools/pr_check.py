@@ -149,6 +149,8 @@ def is_variable_definition(stmt):
         return False
     if re.match(r"(struct|union|enum) \w+ ?\{\}$", s):  # tag declaration only
         return False
+    if re.match(r"(struct|union|enum) \w+$", s):          # forward declaration of a tag
+        return False
     if re.search(r"\bregister\b.*\basm\b", s) or re.search(r"\bregister\b.*__asm__", s):
         return False                            # global register variable: no storage
     head = s.split("=", 1)[0]

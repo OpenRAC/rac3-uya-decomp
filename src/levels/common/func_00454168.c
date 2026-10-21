@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00454168 */
 typedef struct {
     int f0;
     int f4;
@@ -11,3 +12,4 @@ int func_00454168(int a0, int a1)
 {
     return D_002D1710[a1].f4 == a0;
 }
+/* localdecomp:end func_00454168 */

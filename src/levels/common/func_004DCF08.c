@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004DCF08 */
 typedef struct S_4DCF08_Obj {
     u8 pad0[0x64];
     void (*fn)(struct S_4DCF08_Obj *);
@@ -41,3 +42,4 @@ void func_004DCF08(void) {
 end:
     func_004E5E40(D_001A65F0, 1);
 }
+/* localdecomp:end func_004DCF08 */

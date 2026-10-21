@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003AFF80 */
 typedef int s128 __attribute__((mode(TI)));
 typedef int s64_003AFF80 __attribute__((mode(DI)));
 
@@ -38,3 +39,4 @@ u8 *func_003AFF80(u8 *parent, s128 *a, s128 *b, s32 a3, s32 t0, s32 t1, s32 t2, 
     }
     return p;
 }
+/* localdecomp:end func_003AFF80 */

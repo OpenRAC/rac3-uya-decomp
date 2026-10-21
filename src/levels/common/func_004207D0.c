@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004207D0 */
 typedef int u128_4207D0 __attribute__((mode(TI)));
 typedef union { u128_4207D0 q; f32 f[4]; } V_4207D0;
 extern V_4207D0 D_001DFE50[4];
@@ -16,3 +17,4 @@ void func_004207D0(u128_4207D0 *src, s32 v) {
         d++;
     }
 }
+/* localdecomp:end func_004207D0 */

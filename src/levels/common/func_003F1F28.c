@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F1F28 */
 extern void func_0040C0F0(s32 a, s32 b, f32 x);
 
 typedef int u128_37F420 __attribute__((mode(TI)));
@@ -18,3 +19,4 @@ void func_003F1F28(s32 idx) {
     func_003F1D30(p + 0x310, p + 0x360, p + 0x190, &v[0], &v[1], &v[2]);
     *(u128_37F420 *)(p + 0x350) = *(u128_37F420 *)(p + 0x370);
 }
+/* localdecomp:end func_003F1F28 */

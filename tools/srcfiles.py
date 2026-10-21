@@ -64,6 +64,18 @@ def file_for_address(files, addr):
     return best
 
 
+# Standalone sources: one function each, complete on their own. The shared
+# level code (src/levels/common/) is compiled with no context by
+# tools/build_common_c.py, so a level target that links those files
+# (tools/link_common_sources.py) neither gives them declarations from other
+# files nor takes declarations from them (tools/split_text.py).
+STANDALONE_DIRS = ("src/levels/common/",)
+
+
+def standalone(rel):
+    return rel.replace("\\", "/").startswith(STANDALONE_DIRS)
+
+
 def read_source(rel, root=ROOT):
     return open(os.path.join(root, rel), errors="replace").read().replace("\r\n", "\n")
 

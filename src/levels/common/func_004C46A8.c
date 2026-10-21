@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C46A8 */
 typedef struct {
     s32 w0;
     s32 w4;
@@ -19,3 +20,4 @@ s32 func_004C46A8(s32 a0, s32 a1) {
     }
     return r;
 }
+/* localdecomp:end func_004C46A8 */

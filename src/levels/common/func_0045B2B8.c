@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045B2B8 */
 extern void func_0045B2B8();
 
 typedef struct N_3C7AE8 { u8 p0[0x20]; s8 f20; u8 p21[0x7]; struct N_3C7AE8 *f28; u8 p2C[0x8]; u16 h34; u8 p36[0x2E]; void (*f64)(struct N_3C7AE8 *); } N_3C7AE8;
@@ -26,3 +27,4 @@ void func_0045B2B8(void) {
         n = n->f28;
     }
 }
+/* localdecomp:end func_0045B2B8 */

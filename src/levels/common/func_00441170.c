@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00441170 */
 typedef struct {
     s16 ids[12];
 } Entry_00441170;
@@ -38,3 +39,4 @@ void func_00441170(u8 *a0, s32 a1) {
         *p = *p + 1;
     }
 }
+/* localdecomp:end func_00441170 */

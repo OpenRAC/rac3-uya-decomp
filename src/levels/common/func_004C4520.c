@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C4520 */
 typedef struct {
     u8 pad[80];
 } Ent_4C4520;
@@ -13,3 +14,4 @@ Ent_4C4520 *func_004C4520(u32 a0) {
     }
     return r;
 }
+/* localdecomp:end func_004C4520 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003E8D18 */
 typedef int u128_3E8D18 __attribute__((mode(TI)));
 typedef struct { u8 pad[0x200]; u8 x200[0x30]; u128_3E8D18 x230; u8 pad240[0x2A0 - 0x240]; s16 x2A0; u8 pad2A2[0x2C0 - 0x2A2]; f32 x2C0; u8 pad2C4[1120 - 0x2C4]; } E_3E8D18;
 typedef struct { u8 pad[0x25E5]; u8 x25E5; } G_3E8D18;
@@ -21,3 +23,4 @@ void func_003E8D18(O_3E8D18 *a0) {
         D_001A71C5[0] = 1;
     }
 }
+/* localdecomp:end func_003E8D18 */

@@ -116,6 +116,11 @@ def write_files(per_file, root, default_nl="\n"):
     stmts_before = []
     results = []
     for rel, chunks, prelude in per_file:
+        if sf.standalone(rel):
+            # complete on its own: left as it is, and its declarations
+            # aren't offered to later files (srcfiles.standalone)
+            results.append((rel, sf.read_source(rel, root)))
+            continue
         ext = external_declarations(stmts_before, file_needs(chunks))
         results.append((rel, render(ext, chunks, prelude)))
         stmts_before += statements_of(chunks)
@@ -161,6 +166,8 @@ def earlier_statements(rel, files=None, root=sf.ROOT):
     for r, _ in (files or sf.read_file_list()):
         if r == rel:
             break
+        if sf.standalone(r):
+            continue
         _, _, chunks = sf.split_file(sf.read_source(r, root))
         out += statements_of(chunks)
     return out
@@ -185,6 +192,8 @@ def extra_declarations(rel, src, files=None, root=sf.ROOT):
 def refresh_one(rel, files=None, root=sf.ROOT):
     """Recompute one file's declarations from other files. True if it changed."""
     files = files or sf.read_file_list()
+    if sf.standalone(rel):
+        return False
     text = sf.read_source(rel, root)
     prelude, _, chunks = sf.split_file(text)
     ext = external_declarations(earlier_statements(rel, files, root), file_needs(chunks))

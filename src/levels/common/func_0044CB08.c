@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0044CB08 */
 typedef int s128_44CB08 __attribute__((mode(TI)));
 
 extern void func_00437600(u8 *, int, s128_44CB08 *);
@@ -38,3 +39,4 @@ void func_0044CB08(u8 *src, u8 *m, int arg, int flags) {
     }
     *(u16 *)(m + 0x34) |= 6;
 }
+/* localdecomp:end func_0044CB08 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_002F7888 */
 typedef struct {
     float a[4];
     float b[4];
@@ -22,3 +24,4 @@ void func_002F7888(void) {
         D_001DC300 = 1;
     }
 }
+/* localdecomp:end func_002F7888 */

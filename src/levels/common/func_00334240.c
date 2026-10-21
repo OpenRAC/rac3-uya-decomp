@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00334240 */
 typedef struct { u8 p0[0x20]; u8 b20; } M_334240;
 typedef struct { u8 p0[0x10]; f32 pos[4]; u8 p20[0xE0]; } O_334240;
 typedef struct { u8 p0[0x30]; f32 pos[4]; u8 p40[0x40]; } P_334240;
@@ -272,3 +273,4 @@ s32 func_00334240(M_334240 *m, A_334240 *a, B_334240 *b, s32 unused, void *t, C_
     }
     return 0;
 }
+/* localdecomp:end func_00334240 */

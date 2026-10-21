@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0045D488 */
 typedef struct {
     u8 pad[398];
     s16 x18E;
@@ -13,3 +15,4 @@ f32 func_0045D488(s32 a0, Struct001CD0C0 *a1) {
     if (p->x190 < a0) a0 = p->x190;
     return p->x258[(p->x18E - a0 + 30) % 30];
 }
+/* localdecomp:end func_0045D488 */

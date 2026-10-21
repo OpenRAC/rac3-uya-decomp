@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003EAB30 */
 extern u8 *D_001DF884[];
 
 void func_003EAB30(s32 i) {
@@ -7,3 +8,4 @@ void func_003EAB30(s32 i) {
     q[56] = 1;
     q[57] = 0;
 }
+/* localdecomp:end func_003EAB30 */

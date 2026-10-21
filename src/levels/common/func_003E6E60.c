@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003E6E60 */
 typedef struct {
     u8 pad0[0x50];
     u8 *p50;
@@ -19,3 +20,4 @@ void func_003E6E60(s32 i, f32 a, f32 b, f32 c) {
         *(f32 *)(q + 56) = c * 0.017453292f * 0.00027777778f;
     }
 }
+/* localdecomp:end func_003E6E60 */

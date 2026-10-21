@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00441FB8 */
 void func_00441FB8(u8 *p, s32 a1, s32 a2) {
     u8 f = p[190];
     p[148] = p[32];
@@ -12,3 +13,4 @@ void func_00441FB8(u8 *p, s32 a1, s32 a2) {
         p[190] = f & 0xFD;
     }
 }
+/* localdecomp:end func_00441FB8 */

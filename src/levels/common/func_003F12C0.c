@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F12C0 */
 extern s32 D_001DF880[2];
 extern void (*D_001DF840[2])(s32);
 void func_003F12C0(s32 a) {
@@ -8,3 +9,4 @@ void func_003F12C0(s32 a) {
     for (i = 0; i < c[a]; i++) D_001DF840[a * 16 + i](a);
     D_001DF880[a] = 0;
 }
+/* localdecomp:end func_003F12C0 */

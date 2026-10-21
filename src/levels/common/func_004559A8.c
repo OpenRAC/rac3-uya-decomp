@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004559A8 */
 typedef int u128_t __attribute__((mode(TI)));
 typedef union {
     u128_t q;
@@ -42,3 +43,4 @@ void func_004559A8(Moby_4559A8 *moby, Moby_4559A8 *other) {
     other->v0.q = other->pos.q;
     other->v32.q = other->pos.q;
 }
+/* localdecomp:end func_004559A8 */

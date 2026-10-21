@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004B7420 */
 typedef struct {
     s32 id;
     s32 val;
@@ -44,3 +45,4 @@ void func_004B7420(void) {
         }
     }
 }
+/* localdecomp:end func_004B7420 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003DCF00 */
 extern s32 func_00440848(s32 a0);
 
 void func_003DCF00(u8 *m) {
@@ -22,3 +23,4 @@ void func_003DCF00(u8 *m) {
     *(f32 *)(v + 60) = 2.5f;
     *(f32 *)(v + 56) = 3.0f;
 }
+/* localdecomp:end func_003DCF00 */

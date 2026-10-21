@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004BD430 */
 extern void func_005130C8(int a, int b);
 
 void func_004BD430(int *a0, int a1, int a2)
@@ -13,3 +14,4 @@ void func_004BD430(int *a0, int a1, int a2)
         a0 += 12;
     }
 }
+/* localdecomp:end func_004BD430 */

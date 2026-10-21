@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F5678 */
 extern void func_003F5678();
 
 /* func_003F5678: blend the fog colour / depth of a camera region (0x80-byte entries of D_001F07C0) by the
@@ -61,3 +62,4 @@ void func_003F5678(void *pos) {
     D_001DFA70 = 255.0f - (r->f70 * t + r->f60 * u) * 255.0f;
     D_001DFA74 = 255.0f - (r->f78 * t + r->f68 * u) * 255.0f;
 }
+/* localdecomp:end func_003F5678 */

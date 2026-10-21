@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0051DB20 */
 typedef struct { s32 f0; u8 *base; u32 size; s32 elem; u32 used; s32 count; void **freelist; } P_3ECCA0;
 void *func_0051DB20(P_3ECCA0 *p) {
     void **n = p->freelist;
@@ -14,3 +15,4 @@ void *func_0051DB20(P_3ECCA0 *p) {
     if (p->size < end) return 0;
     { u8 *r = p->base + off; p->used = end; p->count++; return r; }
 }
+/* localdecomp:end func_0051DB20 */

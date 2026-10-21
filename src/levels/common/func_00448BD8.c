@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00448BD8 */
 extern u8 *D_001E009C[];
 void func_00448BD8(u8 *a0, s16 *list, s16 max) {
     s16 id = (a0 - D_001E009C[0]) >> 8;
@@ -14,3 +16,4 @@ void func_00448BD8(u8 *a0, s16 *list, s16 max) {
         list[list[0]] = id;
     }
 }
+/* localdecomp:end func_00448BD8 */

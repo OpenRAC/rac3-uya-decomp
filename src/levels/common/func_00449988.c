@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00449988 */
 typedef int u128_3BF838 __attribute__((mode(TI)));
 typedef struct { u128_3BF838 r[4]; } M_3BF838;
 extern void func_0040C658();
@@ -18,3 +19,4 @@ void func_00449988(u8 *p, u128_3BF838 *a1, u128_3BF838 *a2, void *a3) {
     }
     *(u128_3BF838 *)(p + 0x10) = *a1;
 }
+/* localdecomp:end func_00449988 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00443FD8 */
 typedef struct { f32 elements[4]; } __attribute__((aligned(16))) Quaternion_00443FD8;
 extern void func_0040C9F8_00443FD8(Quaternion_00443FD8 *, const Quaternion_00443FD8 *, const Quaternion_00443FD8 *);
 extern void func_0040CAC0_00443FD8(void *, s32, f32);
@@ -10,3 +12,4 @@ void func_00443FD8(Quaternion_00443FD8 *output, void *angles) {
     func_0040C9F8_00443FD8(output, &rotations[2], &rotations[1]);
     func_0040C9F8_00443FD8(output, output, rotations);
 }
+/* localdecomp:end func_00443FD8 */

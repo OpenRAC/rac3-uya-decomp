@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004A2090 */
 extern void func_004A2090(void);
 
 typedef struct { s16 h0; s16 h2; } S_98T;
@@ -35,3 +36,4 @@ void func_004A2090(void) {
         ip++;
     }
 }
+/* localdecomp:end func_004A2090 */

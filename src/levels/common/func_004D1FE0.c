@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D1FE0 */
 extern void func_004D1FE0();
 
 typedef struct { s32 x0; s32 x4; volatile s32 x8; volatile s32 xC; s32 x10; } S_3AD6D8;
@@ -12,3 +13,4 @@ void func_004D1FE0(S_3AD6D8 *p) {
     p->x8 = (p->x8 + 1) % p->x10;
     func_00124970();
 }
+/* localdecomp:end func_004D1FE0 */

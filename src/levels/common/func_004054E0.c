@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004054E0 */
 typedef struct {
     u8 pad0[16];
     f32 *w16;
@@ -28,3 +29,4 @@ void func_004054E0(u32 *buf, s32 idx) {
     }
     *(&D_001E6FE0[idx])->w16 = (f32)(n - count) / (f32)n;
 }
+/* localdecomp:end func_004054E0 */

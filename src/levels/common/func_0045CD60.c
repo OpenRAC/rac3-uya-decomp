@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045CD60 */
 extern void func_0045CD60();
 
 void func_0045CD60(s32 a, long l) {
@@ -12,3 +13,4 @@ void func_0045CD60(s32 a, long l) {
         *(s16 *)(p + 0xA) = 0;
     }
 }
+/* localdecomp:end func_0045CD60 */

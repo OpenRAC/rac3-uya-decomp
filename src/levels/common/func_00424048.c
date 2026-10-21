@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00424048 */
 extern unsigned long D_001F3E40[3];
 extern s32 D_00200E70[];
 extern void func_00424048(s32, s32, void *, s32);
@@ -192,3 +193,4 @@ void func_00424048(s32 a, s32 b, void *cv, s32 d)
     p->b47 = 0;
   }
 }
+/* localdecomp:end func_00424048 */

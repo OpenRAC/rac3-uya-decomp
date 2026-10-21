@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00438760 */
 typedef struct { s16 v[24]; } Ent_00438760;
 extern Ent_00438760 D_0021E2E0[];
 extern Ent_00438760 *D_0021DEA0[];
@@ -32,3 +34,4 @@ s32 func_00438760(s32 idx, u8 *obj) {
     }
     return 0;
 }
+/* localdecomp:end func_00438760 */

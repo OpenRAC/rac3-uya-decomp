@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00403708 */
 typedef int u128_t __attribute__((mode(TI)));
 
 extern s32 D_001E10E8;
@@ -43,3 +45,4 @@ void func_00403708(s32 y0, s32 y1, s32 x0, s32 x1, unsigned long c) {
     *(long *)(q + 0x18) = ((x1 << 4) + D_001D4BD0_003867F8 - 8) | ((long)((y1 << 4) + D_001D4BD4_003867F8 - 8) << 16) | 0xFFFFF000000000UL;
     D_001E10E8 = D_001E10E8 + 0x20;
 }
+/* localdecomp:end func_00403708 */

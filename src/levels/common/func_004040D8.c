@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004040D8 */
 extern s32 D_001E10E8;
 
 extern s32 D_001D4BD0_00386F38, D_001D4BD4_00386F38;
@@ -37,3 +38,4 @@ s32 func_004040D8(s32 u, s32 v, s32 w, s32 h, long t0, long t1, s32 flag, f32 x,
     D_001E10E8 += 0x60;
     return 1;
 }
+/* localdecomp:end func_004040D8 */

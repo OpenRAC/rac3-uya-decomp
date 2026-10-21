@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00333C28 */
 typedef int s128 __attribute__((mode(TI)));
 
 extern void func_004539A8(u8 *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
@@ -19,3 +20,4 @@ s32 func_00333C28(u8 *a0, u8 *obj, u8 *who, u8 *m, s32 t0, u8 *cfg) {
     *(s128 *)(m + 1184) = *(s128 *)(m + 176);
     return 1;
 }
+/* localdecomp:end func_00333C28 */

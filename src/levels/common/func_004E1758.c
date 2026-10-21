@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004E1758 */
 typedef unsigned long u64l;
 
 typedef struct {
@@ -77,3 +78,4 @@ void func_004E1758(s32 *list, H_4E1758 *out, u8 *src, s32 pad) {
     out->hC = tot * 8;
     out->hE = nc;
 }
+/* localdecomp:end func_004E1758 */

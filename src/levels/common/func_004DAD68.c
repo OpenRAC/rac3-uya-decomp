@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004DAD68 */
 extern s32 D_001A1ED0[];
 
 extern s32 D_001A1ED0[];
@@ -53,3 +54,4 @@ void func_004DAD68(unsigned long **pp, s32 a1) {
         x1 += step1;
     }
 }
+/* localdecomp:end func_004DAD68 */

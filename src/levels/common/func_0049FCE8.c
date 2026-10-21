@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0049FCE8 */
 extern u8 D_001E7600[];
 extern u8 *D_001E009C[];
 extern u8 *D_001E00A4[];
@@ -17,3 +18,4 @@ void func_0049FCE8(void) {
         *(u16 *)(p + 52) &= ~0x80;
     }
 }
+/* localdecomp:end func_0049FCE8 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045CDA0 */
 extern void func_0045CDA0(s32, long);
 
 void func_0045CDA0(s32 a, long l) {
@@ -10,3 +11,4 @@ void func_0045CDA0(s32 a, long l) {
         if (a == 0) *(s16 *)(p + 0xA) = 7;
     }
 }
+/* localdecomp:end func_0045CDA0 */

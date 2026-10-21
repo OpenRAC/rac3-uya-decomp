@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0047B880 */
 extern s32 func_0047B880(s32);
 
 extern s32 D_001E06B0_003B6050[];
@@ -17,3 +18,4 @@ s32 func_0047B880(s32 arg0) {
     } while (i < 7);
     return -1;
 }
+/* localdecomp:end func_0047B880 */

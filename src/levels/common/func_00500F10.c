@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00500F10 */
 extern u8 D_001A71C4[];
 extern void func_004FC518(s32, s32);
 
@@ -23,3 +24,4 @@ void func_00500F10(s32 arg0)
         break;
     }
 }
+/* localdecomp:end func_00500F10 */

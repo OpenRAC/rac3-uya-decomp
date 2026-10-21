@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045FD70 */
 typedef int u128_t __attribute__((mode(TI)));
 
 extern u8 *D_0022111C[];
@@ -24,3 +25,4 @@ void func_0045FD70(f32 *pos, s32 color) {
     *(s16 *)(r + 10) = 27;
     *(s32 *)(r + 32) = color;
 }
+/* localdecomp:end func_0045FD70 */

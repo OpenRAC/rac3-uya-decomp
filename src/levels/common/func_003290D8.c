@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003290D8 */
 typedef struct Node_003290D8 {
     u8 pad[104];
     struct Node_003290D8 *link;
@@ -43,3 +45,4 @@ check:
 fail:
     func_00328FE0(a, l);
 }
+/* localdecomp:end func_003290D8 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00444F70 */
 typedef struct {
     f32 first;
     f32 second;
@@ -12,3 +14,4 @@ void func_00444F70(Vector_00444F70 *output, Vector_00444F70 first, Vector_00444F
     output->third = func_00444F60_00444F70(first.third, second.third, fraction);
     output->fourth = func_00444F60_00444F70(first.fourth, second.fourth, fraction);
 }
+/* localdecomp:end func_00444F70 */

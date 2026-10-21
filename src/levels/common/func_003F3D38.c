@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003F3D38 */
 extern int D_001DF940[];
 void func_003F3D38(int v) {
     int *p = D_001DF940;
@@ -10,3 +12,4 @@ void func_003F3D38(int v) {
         p++;
     }
 }
+/* localdecomp:end func_003F3D38 */

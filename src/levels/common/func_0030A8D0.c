@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0030A8D0 */
 void func_0030A8D0(u8 *p)
 {
     *(unsigned long *)(p + 128) = 0xFF9000000260;
@@ -29,3 +30,4 @@ void func_0030A8D0(u8 *p)
     *(f32 *)(p + 44) = 1.0f;
     *(f32 *)(p + 60) = 1.0f;
 }
+/* localdecomp:end func_0030A8D0 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00455C88 */
 typedef int s128_455C88 __attribute__((mode(TI)));
 
 typedef union {
@@ -72,3 +73,4 @@ void func_00455C88(P_455C88 *a0, S_455C88 *s, s32 a2, s32 a3) {
         RESET_455C88()
     }
 }
+/* localdecomp:end func_00455C88 */

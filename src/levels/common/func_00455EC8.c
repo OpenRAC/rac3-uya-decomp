@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00455EC8 */
 typedef unsigned int Q __attribute__((mode(TI)));
 extern void func_00454C30(u8 *a0, u8 *a1, s32 a2, s32 a3, f32 f12);
 void func_00455EC8(u8 *a0, Q *a1, u8 *a2) {
@@ -13,3 +15,4 @@ void func_00455EC8(u8 *a0, Q *a1, u8 *a2) {
     func_00454C30(a0, a2, 0, 0, 12.0f);
     *(s32 *)(a2 + 64) = 0;
 }
+/* localdecomp:end func_00455EC8 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0044B9F8 */
 typedef int s128_44B9F8 __attribute__((mode(TI)));
 
 extern f32 func_0040BFB0(void *, void *);
@@ -31,3 +32,4 @@ int func_0044B9F8(int unused, u8 *list, int n, s128_44B9F8 *a, s128_44B9F8 *b, s
     *outPos = *(s128_44B9F8 *)(p + 48);
     return bestIdx;
 }
+/* localdecomp:end func_0044B9F8 */

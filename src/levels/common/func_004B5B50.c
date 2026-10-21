@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004B5B50 */
 typedef struct Iface Iface;
 struct Iface {
     char pad0[0x64];
@@ -39,3 +40,4 @@ void func_004B5B50(void) {
     func_004B5258();
     func_00418478();
 }
+/* localdecomp:end func_004B5B50 */

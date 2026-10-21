@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00454120 */
 s32 func_00454120(s32 n) {
     s32 a = 16;
     if (n % a != 0) {
@@ -7,3 +8,4 @@ s32 func_00454120(s32 n) {
     }
     return n;
 }
+/* localdecomp:end func_00454120 */

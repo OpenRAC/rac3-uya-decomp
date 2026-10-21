@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00411D38 */
 extern s32 D_00143950[];
 extern s32 D_001D5520;
 extern void func_0012A950(void);
@@ -10,3 +11,4 @@ void func_00411D38(void) {
     if (D_001D5520) func_0012BEE8(0, 0, 0x50, 1);
     else func_0012BEE8(0, 1, D_00143950[0] ? 3 : 2, 0);
 }
+/* localdecomp:end func_00411D38 */

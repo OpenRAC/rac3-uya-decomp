@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0048DA70 */
 typedef struct {
     s32 pad[3];
     s32 val;
@@ -18,3 +20,4 @@ void func_0048DA70(s32 buttons) {
     }
     func_004A7368(3, 0, 0);
 }
+/* localdecomp:end func_0048DA70 */

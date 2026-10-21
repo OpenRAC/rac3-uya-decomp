@@ -76,6 +76,51 @@ def add_markers(path, name):
     return True
 
 
+NAME_RE = re.compile(r"\b((?:func|D|jtbl)_([0-9A-Fa-f]{6,8})(?:_\w+)?)\b")
+LABEL_RE = re.compile(r"^\s*(?:glabel|dlabel|alabel|jlabel)\s+(\w+)", re.M)
+
+
+def add_symbols(T, sources, defined_here):
+    """Every func_/D_/jtbl_ name the linked sources use gets an address in the
+    target's symbol file (build_common_c.py read it off the name), unless the
+    build defines it: a label in the target's assembly or a linked function."""
+    path = T.path("symbols_resolved")
+    text = open(path, encoding="utf-8").read()
+    have = set(re.findall(r"^\s*(\w+)\s*=", text, re.M))
+    for d, _, fs in os.walk(T.path("asm_root")):
+        for f in fs:
+            if f.endswith(".s"):
+                have |= set(LABEL_RE.findall(open(os.path.join(d, f), errors="replace").read()))
+    have |= defined_here
+    new = {}
+    for rel in sources:
+        for name, hexaddr in NAME_RE.findall(open(os.path.join(ROOT, rel), encoding="utf-8").read()):
+            if name not in have:
+                new[name] = int(hexaddr, 16)
+    if new:
+        nl = "\r\n" if "\r\n" in text else "\n"
+        add = "".join("%s = 0x%08X;%s" % (n, new[n], nl) for n in sorted(new))
+        open(path, "w", encoding="utf-8", newline="").write(text.rstrip("\r\n") + nl + add)
+    return len(new)
+
+
+def drop_table_entries(T, names):
+    """A linked function's div.s nops and sq saves come from the common-level
+    tables (config/levels/), which build_common_c.py proved its bytes with.
+    The target's own tables (generated from its assembly) would add them a
+    second time where the C already produces them, so its entries go."""
+    n = 0
+    for attr in ("divs_nops", "sq_ra_funcs"):
+        path = T.path(attr)
+        if not os.path.exists(path):
+            continue
+        lines = open(path, encoding="utf-8").read().split("\n")
+        keep = [l for l in lines if l.split("#", 1)[0].split()[:1] not in [[x] for x in names]]
+        n += len(lines) - len(keep)
+        open(path, "w", encoding="utf-8", newline="").write("\n".join(keep))
+    return n
+
+
 def main():
     T = targets.from_argv()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -117,7 +162,8 @@ def main():
         prelude, _, chunks = sf.split_file(text)
         seg = None  # (rel, start, [chunk bodies])
         def flush():
-            if seg and seg[2]:
+            # a piece with no entry left (only blank text after a cut) isn't a file
+            if seg and any(ENTRY_RE.search(b) for b in seg[2]):
                 new_files.append((seg[0], seg[1], seg[3], seg[2]))
         seg = [rel, start, [], prelude]
         for caddr, _, body in chunks:
@@ -171,8 +217,13 @@ def main():
         body[addr] = "0x%08X     %s%s" % (addr, " ".join(fl), tag)
     open(T.path("parts"), "w", newline="").write("\r\n".join(head + [body[k] for k in sorted(body)]) + "\r\n")
 
-    print("%d common functions linked from %s/ (%d sources given markers), %d left INCLUDE_ASM"
-          % (len(standalone), COMMON, marked, len(skipped)))
+    linked = [rel for rel, _, _, b in new_files if b is None]
+    nsym = add_symbols(T, linked, {os.path.basename(r)[:-2] for r in linked})
+    ntab = drop_table_entries(T, {os.path.basename(r)[:-2] for r in linked})
+
+    print("%d common functions linked from %s/ (%d sources given markers, %d symbol addresses added, "
+          "%d target table entries dropped), %d left INCLUDE_ASM"
+          % (len(standalone), COMMON, marked, nsym, ntab, len(skipped)))
     why = {}
     for n, r in skipped.items():
         why.setdefault(r.split(" (")[0], []).append(n)

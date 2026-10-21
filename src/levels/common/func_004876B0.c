@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004876B0 */
 typedef struct {
     s32 id;
     u8 flag;
@@ -22,3 +23,4 @@ void func_004876B0(void) {
         break;
     }
 }
+/* localdecomp:end func_004876B0 */

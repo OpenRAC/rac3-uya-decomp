@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003C1AB8 */
 typedef int s128_3C1AB8 __attribute__((mode(TI)));
 typedef union { s128_3C1AB8 q; f32 f[4]; } V_3C1AB8;
 typedef struct {
@@ -44,3 +46,4 @@ void func_003C1AB8(M_3C1AB8 *m) {
     p->v180 = p->v190;
     p->v1A0 = p->v190;
 }
+/* localdecomp:end func_003C1AB8 */

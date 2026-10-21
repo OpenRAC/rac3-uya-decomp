@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0051B8B8 */
 extern void func_0051B8B8(u8 *p, u8, s32);
 
 void func_0051B8B8(u8 *p, u8 m, s32 set) {
@@ -9,3 +10,4 @@ void func_0051B8B8(u8 *p, u8 m, s32 set) {
         p[0x44] &= ~m;
     }
 }
+/* localdecomp:end func_0051B8B8 */

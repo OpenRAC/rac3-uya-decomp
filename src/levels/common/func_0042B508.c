@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0042B508 */
 typedef struct {
     char pad[1128];
     int active[5];
@@ -19,3 +20,4 @@ int func_0042B508(int id)
     }
     return -1;
 }
+/* localdecomp:end func_0042B508 */

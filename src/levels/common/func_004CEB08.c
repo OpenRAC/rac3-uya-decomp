@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CEB08 */
 extern f32 func_004CEB08(f32, f32, f32, f32, f32);
 
 extern u8 D_001DB7F8[];
@@ -18,3 +19,4 @@ f32 func_004CEB08(f32 t, f32 p0, f32 m0, f32 m1, f32 p1) {
     p1 *= -(2.0f * t3) + 3.0f * t2;
     return p0 + m0 + m1 + p1;
 }
+/* localdecomp:end func_004CEB08 */

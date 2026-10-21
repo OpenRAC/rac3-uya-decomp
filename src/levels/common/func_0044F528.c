@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0044F528 */
 extern u8 D_001BBB18[][8];
 s32 func_0044F528(s32 a0) {
     u8 *p = D_001BBB18[a0];
@@ -11,3 +13,4 @@ s32 func_0044F528(s32 a0) {
     if (n > 40) n = 40;
     return n;
 }
+/* localdecomp:end func_0044F528 */

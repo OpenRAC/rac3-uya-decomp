@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0047A2D8 */
 extern s32 func_0047A2D8(u32);
 typedef struct {
     char pad_0[0x74];
@@ -14,3 +15,4 @@ s32 func_0047A2D8(u32 i) {
     }
     return 0;
 }
+/* localdecomp:end func_0047A2D8 */

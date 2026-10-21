@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00474368 */
 typedef struct {
     f32 v[4];
 } Vec4;
@@ -27,3 +28,4 @@ void func_00474368(s32 idx, s32 force) {
     }
     p->ready = 1;
 }
+/* localdecomp:end func_00474368 */

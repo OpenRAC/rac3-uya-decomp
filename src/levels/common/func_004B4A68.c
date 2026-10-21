@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004B4A68 */
 extern u32 func_004B4A68(s32, u32);
 extern s32 D_001DAB50;
 extern s32 D_001DAB58;
@@ -40,3 +41,4 @@ done:
     D_001DAB60_003A32E0 = (u32) (D_001DAB60_003A32E0 + (temp_4 + var_3));
     return var_2;
 }
+/* localdecomp:end func_004B4A68 */

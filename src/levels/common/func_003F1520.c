@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F1520 */
 typedef struct {
     u8 pad[80];
     u8 *obj;
@@ -13,3 +14,4 @@ void func_003F1520(s32 i) {
     *(s16 *)(s->obj + 126) = 1;
     *(s->obj + 125) = 0;
 }
+/* localdecomp:end func_003F1520 */

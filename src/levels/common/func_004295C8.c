@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004295C8 */
 typedef struct {
     u8 pad[92];
     s16 count;
@@ -14,3 +15,4 @@ void func_004295C8(void) {
         D_001E6E00[0].count--;
     }
 }
+/* localdecomp:end func_004295C8 */

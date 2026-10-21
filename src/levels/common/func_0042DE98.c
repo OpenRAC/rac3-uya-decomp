@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0042DE98 */
 extern void func_0040BD58(u8 *, u32 *, s32);
 
 void func_0042DE98(u8 *dst, u8 *src) {
@@ -35,3 +36,4 @@ void func_0042DE98(u8 *dst, u8 *src) {
         dst += 64;
     }
 }
+/* localdecomp:end func_0042DE98 */

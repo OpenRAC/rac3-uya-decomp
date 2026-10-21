@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004C8E78 */
 typedef struct {
     s32 pad0;
     f32 *scale;
@@ -43,3 +45,4 @@ void func_004C8E78(Obj_004C8E78 *p) {
     p->b57 = 0;
     p->b58 = 0;
 }
+/* localdecomp:end func_004C8E78 */

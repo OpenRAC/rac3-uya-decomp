@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004EAF40 */
 typedef int u128_t __attribute__((mode(TI)));
 typedef union {
     u128_t q;
@@ -25,3 +26,4 @@ void func_004EAF40(void *arg, f32 a, f32 b, f32 c) {
     *(f32 *)(base + 24) = func_004455F0(&out, base + 20, arg, angle, a, b, c);
     func_004EAEC0(zero, zero, out);
 }
+/* localdecomp:end func_004EAF40 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0030BC80 */
 typedef int s128 __attribute__((mode(TI)));
 
 typedef struct {
@@ -72,3 +73,4 @@ void func_0030BC80(Vec_30BC80 *pos, void *dir_in, s32 n, u32 col) {
         }
     }
 }
+/* localdecomp:end func_0030BC80 */

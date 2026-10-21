@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D7838 */
 extern void func_004D7838();
 
 extern void func_004D7BB8();
@@ -19,3 +20,4 @@ void func_004D7838(u8 *p) {
     if (ok) *(u16 *)(p + 0x34) &= ~2;
     else *(u16 *)(p + 0x34) |= 2;
 }
+/* localdecomp:end func_004D7838 */

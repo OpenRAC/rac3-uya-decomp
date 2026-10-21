@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0044F290 */
 typedef struct {
     s32 active;
     s32 f4;
@@ -26,3 +27,4 @@ void func_0044F290(void) {
         }
     }
 }
+/* localdecomp:end func_0044F290 */

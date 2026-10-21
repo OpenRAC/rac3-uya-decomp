@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00461F70 */
 typedef struct {
     u8 p0[4];
     s32 w4;
@@ -38,3 +39,4 @@ void func_00461F70(P_461F70 *p) {
         p->w4 = ((s32)(p->h10 * 4.2333331f) << 24) | q->w20;
     }
 }
+/* localdecomp:end func_00461F70 */

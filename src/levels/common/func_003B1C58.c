@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003B1C58 */
 extern s32 D_001DE674;
 
 void func_003B1C58(s32 a0) {
@@ -10,3 +11,4 @@ void func_003B1C58(s32 a0) {
     D_001DE674 = a0;
     *(s32 *)(p + 84) = w;
 }
+/* localdecomp:end func_003B1C58 */

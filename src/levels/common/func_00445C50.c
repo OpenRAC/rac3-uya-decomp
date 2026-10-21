@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00445C50 */
 extern void func_00445BF0(s32 *r, s32 *g, s32 *b, s32 a3);
 u32 func_00445C50(u32 c, s32 a1) {
     s32 r;
@@ -15,3 +17,4 @@ u32 func_00445C50(u32 c, s32 a1) {
     func_00445BF0(&r, &g, &b, a1);
     return (a << 24) | (b << 16) | (g << 8) | r;
 }
+/* localdecomp:end func_00445C50 */

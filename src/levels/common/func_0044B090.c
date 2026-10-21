@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0044B090 */
 void func_0044B090(s32 a0, u8 *a1) {
     if (*(s32 *)(a1 + 332) == 0) {
         *(s32 *)(a1 + 324) = a0;
@@ -9,3 +10,4 @@ void func_0044B090(s32 a0, u8 *a1) {
         *(s16 *)(a1 + 320) = 0;
     }
 }
+/* localdecomp:end func_0044B090 */

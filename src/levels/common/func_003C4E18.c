@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003C4E18 */
 extern int func_003C3E18(char *, char *);
 int func_003C4E18(char *m)
 {
@@ -10,3 +12,4 @@ int func_003C4E18(char *m)
     }
     return r;
 }
+/* localdecomp:end func_003C4E18 */

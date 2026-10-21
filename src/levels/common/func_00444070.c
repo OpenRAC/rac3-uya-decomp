@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00444070 */
 typedef int s128 __attribute__((mode(TI)));
 
 typedef struct {
@@ -45,3 +46,4 @@ void func_00444070(u8 *a0, f32 scale)
     D_001DFA60 = n + 1;
     e->pos.f[3] = scale * t;
 }
+/* localdecomp:end func_00444070 */

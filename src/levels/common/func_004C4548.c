@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C4548 */
 typedef struct {
     u8 b0;
     u8 b1;
@@ -61,3 +62,4 @@ s32 func_004C4548(s32 owner, s32 arg1) {
 out:
     return i;
 }
+/* localdecomp:end func_004C4548 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045CDF8 */
 extern void func_0045CDF8(s32, long);
 
 typedef struct { u8 pad[0x10]; s16 h10; u8 pad2[6]; s32 x18; } S_39DA60;
@@ -19,3 +20,4 @@ void func_0045CDF8(s32 a, long b) {
         }
     }
 }
+/* localdecomp:end func_0045CDF8 */

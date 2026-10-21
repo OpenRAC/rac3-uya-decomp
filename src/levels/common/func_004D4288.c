@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D4288 */
 extern f32 func_0040C3E0(f32);
 
 /* MATCH */
@@ -34,3 +35,4 @@ void func_004D4288(u8 *p) {
     D_001E1360_003B8440 = (((s32)f + 0x17) << 24) | 0xC0;
     func_00402498(func_004D40C8, (s32)p);
 }
+/* localdecomp:end func_004D4288 */

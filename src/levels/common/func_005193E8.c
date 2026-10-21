@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_005193E8 */
 extern void func_005193E8(void *, s32, s32);
 
 void func_005193E8(void *p, s32 mask, s32 set) {
@@ -9,3 +10,4 @@ void func_005193E8(void *p, s32 mask, s32 set) {
         *(s32 *)((u8 *)p + 0xC) &= ~mask;
     }
 }
+/* localdecomp:end func_005193E8 */

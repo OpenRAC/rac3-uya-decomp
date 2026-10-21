@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003AC638 */
 typedef int s128_3AC638 __attribute__((mode(TI)));
 
 #define W(p, o) (*(int *)((p) + (o)))
@@ -44,3 +45,4 @@ void func_003AC638(u8 *a, u8 *b) {
     F(dst, 3312) = F(src, 3312);
     W(dst, 3148) = W(src, 3148);
 }
+/* localdecomp:end func_003AC638 */

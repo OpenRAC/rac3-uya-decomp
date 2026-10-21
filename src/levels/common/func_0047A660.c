@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0047A660 */
 typedef struct { s32 x0; s32 x4; s32 next; s32 arr[4]; } Struct002E9FD8;
 extern Struct002E9FD8 D_002E9FD8;
 extern void func_0047A608(void);
@@ -10,3 +12,4 @@ void func_0047A660(void) {
     }
     func_0047A608();
 }
+/* localdecomp:end func_0047A660 */

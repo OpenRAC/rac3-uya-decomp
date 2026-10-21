@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0042FA30 */
 typedef struct { u8 pad[8]; s32 f8; u8 pad2[0x170]; s32 f17C; } S_142430_396A28;
 extern S_142430_396A28 D_00142430_00396A28;
 extern s32 D_001D4CE8_00396A28;
@@ -25,3 +26,4 @@ void func_0042FA30(void) {
     }
     if (D_00142430_00396A28.f17C) D_001D4CE8_00396A28 = 1;
 }
+/* localdecomp:end func_0042FA30 */

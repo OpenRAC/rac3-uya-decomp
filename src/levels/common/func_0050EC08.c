@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0050EC08 */
 typedef int u128_t __attribute__((mode(TI)));
 
 extern void func_004E1518(s32);
@@ -48,3 +49,4 @@ void func_0050EC08(s32 arg0, u8 *arg1, u8 *arg2, u8 *arg3) {
         *(s32 *)(arg3 + 64) = 0;
     }
 }
+/* localdecomp:end func_0050EC08 */

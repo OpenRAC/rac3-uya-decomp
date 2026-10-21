@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003626E0 */
 extern s32 D_001D66B0;
 extern void func_00467DA8(void *, s32, u32, s32, s32, void *, s32, f32, f32, f32);
 extern void func_0046D570(void *, s32, u32, s32, s32, void *, s32, s32, s32, s32, f32, f32);
@@ -15,3 +16,4 @@ void func_003626E0(u8 *a0) {
     func_0046D570(p, 20, 0x46787878, 2, -2, &D_001D66B0, 1, 2, 6, 1, 2.0400002f, 0.84000003f);
     func_0046D570(p, 20, 0x2D787878, 2, 2, &D_001D66B0, 1, 2, 6, 1, 2.4f, 1.8000001f);
 }
+/* localdecomp:end func_003626E0 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00436220 */
 typedef struct {
     u8 pad[32];
     u8 b20;
@@ -37,3 +38,4 @@ void func_00436220(Obj_00436220 *obj) {
     obj->fA0 = D_001DFBC0 + 2;
     func_00439330(obj, 0x80807F7F);
 }
+/* localdecomp:end func_00436220 */

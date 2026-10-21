@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00412E30 */
 typedef struct {
     u8 pad0[352];
     s16 unk160;
@@ -78,3 +79,4 @@ void func_00412E30(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     q[9] = (long)((D_001CFEC0[0].unk160 << 3) + 0x8000) | ((long)((D_001CFEC0[0].unk162 << 3) + 0x7FF0) << 16);
     D_001E10E8 += 80;
 }
+/* localdecomp:end func_00412E30 */

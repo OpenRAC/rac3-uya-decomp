@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D8E10 */
 void func_004D8E10(long **pp, s32 x0, s32 y0, s32 x1, s32 y1, s32 z) {
     s32 n, step, i, d;
     unsigned long *p, *q;
@@ -24,3 +25,4 @@ void func_004D8E10(long **pp, s32 x0, s32 y0, s32 x1, s32 y1, s32 z) {
         *pp = (long *)(q + 1);
     }
 }
+/* localdecomp:end func_004D8E10 */

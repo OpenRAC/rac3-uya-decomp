@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003E0480 */
 typedef int s128_3E0480 __attribute__((mode(TI)));
 
 typedef struct M_003E0480 {
@@ -102,3 +103,4 @@ s32 func_003E0480(M_003E0480 *m, s128_3E0480 *pos, s128_3E0480 *rot, M_003E0480 
     m->x34 &= ~1;
     return 0;
 }
+/* localdecomp:end func_003E0480 */

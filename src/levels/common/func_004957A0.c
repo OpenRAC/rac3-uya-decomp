@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004957A0 */
 typedef struct {
     u8 padding[0x10];
     s32 count;
@@ -22,3 +24,4 @@ void func_004957A0(State_004957A0 *state) {
         func_00512D70_004957A0(func_004950E8_004957A0((s32)state, index), state->flag);
     }
 }
+/* localdecomp:end func_004957A0 */

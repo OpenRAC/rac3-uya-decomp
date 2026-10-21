@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00511E08 */
 s32 func_00511E08(u8 *p) {
     u8 *q = *(u8 **)(p + 4);
     if (q != 0) {
@@ -7,3 +8,4 @@ s32 func_00511E08(u8 *p) {
     }
     return -1;
 }
+/* localdecomp:end func_00511E08 */

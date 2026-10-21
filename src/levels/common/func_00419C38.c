@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00419C38 */
 typedef struct { u8 p0[0x14]; s32 a[8]; s32 b[16]; s32 c[1]; } S_0038E798;
 typedef struct { u32 w; u32 x; } E_0038E798;
 extern S_0038E798 *D_001DFD98_0038E798[];
@@ -26,3 +27,4 @@ void func_00419C38(s32 n, s32 size) {
         }
     }
 }
+/* localdecomp:end func_00419C38 */

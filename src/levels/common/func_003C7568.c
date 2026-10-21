@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003C7568 */
 typedef struct {
     u8 pad0[32];
     u8 state;
@@ -32,3 +33,4 @@ void func_003C7568(M3C7568 *m) {
         break;
     }
 }
+/* localdecomp:end func_003C7568 */

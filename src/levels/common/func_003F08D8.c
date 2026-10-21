@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F08D8 */
 typedef struct {
     float f0, f4, f8, fC, f10, f14;
     unsigned char b18, b19;
@@ -43,3 +44,4 @@ Unk3F08D8 *func_003F08D8(int group, int type) {
     }
     return 0;
 }
+/* localdecomp:end func_003F08D8 */

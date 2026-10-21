@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045FE28 */
 typedef struct {
     u8 pad0[2];
     u8 b2;
@@ -23,3 +24,4 @@ void func_0045FE28(S45FE28 *a0) {
     }
     a0->b2 = D_0022111C[0][(27 - a0->h10) / 3];
 }
+/* localdecomp:end func_0045FE28 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_002FE070 */
 typedef struct {
     u8 b0;
     u8 b1;
@@ -40,3 +41,4 @@ void func_002FE070(f32 *pos, f32 scale) {
         }
     }
 }
+/* localdecomp:end func_002FE070 */

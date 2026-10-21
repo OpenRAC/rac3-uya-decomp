@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00432A20 */
 extern s32 func_00432730();
 extern s32 func_00432A20();
 extern void func_0040BCB8();
@@ -69,3 +70,4 @@ s32 func_00432A20(u8 *p, u8 *end, s32 idx, E_399A00 *tab) {
     D_00142430_00397490.c[D_00142430_00397490.f14C].f24 += fail;
     return fail;
 }
+/* localdecomp:end func_00432A20 */

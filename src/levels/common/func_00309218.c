@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00309218 */
 typedef int s128 __attribute__((mode(TI)));
 
 typedef struct {
@@ -75,3 +76,4 @@ void func_00309218(u8 *moby) {
         p->dst->q = p->q;
     }
 }
+/* localdecomp:end func_00309218 */

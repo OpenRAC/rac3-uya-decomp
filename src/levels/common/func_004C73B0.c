@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C73B0 */
 int func_004C73B0(int a0)
 {
     int r = 0;
@@ -10,3 +11,4 @@ int func_004C73B0(int a0)
     }
     return r;
 }
+/* localdecomp:end func_004C73B0 */

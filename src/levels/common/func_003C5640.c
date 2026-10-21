@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003C5640 */
 typedef struct {
     u8 reserved[0xA4];
     s32 field_A4;
@@ -16,3 +17,4 @@ void func_003C5640(s32 unused, LeafState *state) {
     state->field_B0 = 3;
     state->field_A4 = D_001DFBC0;
 }
+/* localdecomp:end func_003C5640 */

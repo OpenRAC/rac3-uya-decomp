@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003CC220 */
 typedef struct M_3CC220 M_3CC220;
 
 typedef struct {
@@ -88,3 +89,4 @@ void func_003CC220(M_3CC220 *m, int a1) {
     func_003CC4F0(m->pos, 20, 5, 0, m, v->tgt != 0);
     m->b20 = 2;
 }
+/* localdecomp:end func_003CC220 */

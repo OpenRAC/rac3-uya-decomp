@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003EC730 */
 typedef int u128_t __attribute__((mode(TI)));
 
 typedef struct {
@@ -29,3 +30,4 @@ void func_003EC730(u8 *obj)
     D_001E2AC0[*(s32 *)(obj + 148)].f2C8 = 0.075f;
     D_001E2AC0[*(s32 *)(obj + 148)].f2B8 = 0.075f;
 }
+/* localdecomp:end func_003EC730 */

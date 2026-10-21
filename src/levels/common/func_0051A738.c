@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0051A738 */
 extern s32 func_00519410();
 extern void func_00519458();
 typedef struct S_3E7EC8 S_3E7EC8;
@@ -77,3 +78,4 @@ void func_0051A738(O_3EA648 *o, f32 *p, f32 *out, s32 flag) {
         out[1] = (t[1] < out[1]) ? t[1] : out[1];
     }
 }
+/* localdecomp:end func_0051A738 */

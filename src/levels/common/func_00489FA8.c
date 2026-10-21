@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00489FA8 */
 typedef struct VT_00489FA8 { u8 p0[12]; void (*f12)(void *); } VT_00489FA8;
 typedef struct O_00489FA8 { u8 p0[4]; VT_00489FA8 *vt; } O_00489FA8;
 
@@ -22,3 +23,4 @@ void func_00489FA8(void) {
     func_00513928(19);
     func_00513928(20);
 }
+/* localdecomp:end func_00489FA8 */

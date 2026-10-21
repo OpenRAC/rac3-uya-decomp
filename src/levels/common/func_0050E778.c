@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0050E778 */
 extern s32 D_001D6694;
 extern u8 D_001A4BE0[];
 extern u8 D_001E6E00[];
@@ -43,3 +44,4 @@ void func_0050E778(s32 arg) {
     if (*(u8 **)(h + 4936) != 0) MOBY_FLAGS(*(u8 **)(h + 4936)) &= ~1;
     if (*(u8 **)(h + 5008) != 0) MOBY_FLAGS(*(u8 **)(h + 5008)) &= ~1;
 }
+/* localdecomp:end func_0050E778 */

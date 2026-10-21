@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00514C58 */
 extern s32 func_00516090_00514C58(s32);
 extern s32 func_00512480_00514C58(s32, f32, f32);
 extern s32 func_005130C8_00514C58(s32, s32);
@@ -21,3 +22,4 @@ s32 func_00514C58(s32 identifier, s32 mode, s32 subtype, f32 first, f32 second, 
     result = func_00512828_00514C58(identifier, fifth) != 0;
     return all_ok & result;
 }
+/* localdecomp:end func_00514C58 */

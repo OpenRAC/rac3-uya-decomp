@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CF530 */
 extern void func_004CF530(s32 *);
 
 extern void func_0013D0C0(s32 *);
@@ -14,3 +15,4 @@ void func_004CF530(s32 *p) {
     p[0x58 / 4] = 0;
     p[0x5C / 4] = 0;
 }
+/* localdecomp:end func_004CF530 */

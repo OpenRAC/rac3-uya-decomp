@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004E5DE8 */
 s32 func_004E5DE8(s32 a0) {
     switch (a0) {
     case 1:
@@ -10,3 +12,4 @@ s32 func_004E5DE8(s32 a0) {
     }
     return 0;
 }
+/* localdecomp:end func_004E5DE8 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003B4B70 */
 typedef struct M_3B4B70 M_3B4B70;
 typedef struct {
     s32 w0;
@@ -46,3 +48,4 @@ void func_003B4B70(M_3B4B70 *m, M_3B4B70 *o) {
     }
     func_00326878(o->hAA)->fn(o);
 }
+/* localdecomp:end func_003B4B70 */

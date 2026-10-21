@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D1A10 */
 extern s32 func_004D1A10();
 
 typedef struct { char c[4]; } S4_3AD108;
@@ -28,3 +29,4 @@ s32 func_004D1A10(S_3AD108 *a) {
     }
     return 1;
 }
+/* localdecomp:end func_004D1A10 */

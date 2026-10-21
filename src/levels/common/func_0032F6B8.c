@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0032F6B8 */
 typedef struct {
     float m[16];
     float f64[4];
@@ -37,3 +38,4 @@ void func_0032F6B8(Cam *c) {
     c->m[13] = 2.0f;
     c->m[15] = 1.0f;
 }
+/* localdecomp:end func_0032F6B8 */

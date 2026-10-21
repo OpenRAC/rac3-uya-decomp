@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00452E70 */
 typedef int u128_452E70 __attribute__((mode(TI)));
 typedef struct Obj_452E70 {
     u8 pad0[16];
@@ -27,3 +29,4 @@ void func_00452E70(Obj_452E70 *a0, Obj_452E70 *a1) {
         func_00439610(a0);
     }
 }
+/* localdecomp:end func_00452E70 */

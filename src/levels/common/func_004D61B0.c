@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D61B0 */
 extern void func_004D61B0();
 
 typedef struct { u8 pad[0x34]; u16 h34; u8 pad2[0x2E]; void *x64; u8 pad3[0x42]; s16 hAA; } S_3BA368;
@@ -15,3 +16,4 @@ void func_004D61B0(S_3BA368 *p) {
     if (r) p->h34 &= ~2;
     else p->h34 |= 2;
 }
+/* localdecomp:end func_004D61B0 */

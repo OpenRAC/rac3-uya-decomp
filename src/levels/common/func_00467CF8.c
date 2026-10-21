@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00467CF8 */
 typedef struct {
     f32 target;
     f32 base;
@@ -37,3 +38,4 @@ void func_00467CF8(Obj *o) {
     o->result = func_0040D020(s->a, s->b, t);
     o->out = ((o->sub.target - s->base) * t + s->base) * 210000.0f;
 }
+/* localdecomp:end func_00467CF8 */

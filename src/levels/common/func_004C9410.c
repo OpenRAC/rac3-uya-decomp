@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C9410 */
 extern void func_004C8C60();
 extern void *func_004C9B50();
 extern void *func_0051DC40(s32, void *);
@@ -24,3 +25,4 @@ void func_004C9410(void *arg0, s32 arg1, s32 arg2) {
     (*(f32 *)((u8 *)((*(void **)((u8 *)(arg0) + 4))) + 4)) = 64.0f;
     (*(s8 *)((u8 *)(arg0) + 0x2C)) = 0;
 }
+/* localdecomp:end func_004C9410 */

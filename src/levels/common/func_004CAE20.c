@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CAE20 */
 typedef struct { f32 x, y; } V2_003A7690;
 typedef struct { s32 a, b, c, d, e, f; } T6_003A7690;
 typedef struct {
@@ -103,3 +104,4 @@ void func_004CAE20(void *arg0) {
         break;
     }
 }
+/* localdecomp:end func_004CAE20 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00511E28 */
 extern s32 func_00511E28();
 
 typedef struct 
@@ -25,3 +26,4 @@ s32 func_00511E28(MainStruct *p)
   }
   return 0;
 }
+/* localdecomp:end func_00511E28 */

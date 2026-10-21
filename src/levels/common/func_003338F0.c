@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003338F0 */
 typedef int s128_t __attribute__((mode(TI)));
 typedef void (*Fn003338F0)(u8 *);
 typedef u8 *(*FnR003338F0)(u8 *);
@@ -64,3 +65,4 @@ void func_003338F0(u8 *obj) {
         (*(Fn003338F0 *)(vt + 140))(D_001E009C + *(s32 *)(d + 80) * 256);
     }
 }
+/* localdecomp:end func_003338F0 */

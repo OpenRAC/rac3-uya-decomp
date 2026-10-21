@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003B4710 */
 s32 func_003B4710(u8 *a0) {
     u8 *p = *(u8 **)(a0 + 104);
     s32 r = 0;
@@ -7,3 +9,4 @@ s32 func_003B4710(u8 *a0) {
     }
     return r;
 }
+/* localdecomp:end func_003B4710 */

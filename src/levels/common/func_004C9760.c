@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C9760 */
 typedef struct { f32 x, y; } V2_A6520;
 typedef struct { V2_A6520 *f0; V2_A6520 *f4; u8 p8[4]; s32 *fC; f32 *f10; u8 p14[0x14]; s32 f28; u8 p2C[4]; s32 f30; u8 p34[4]; s32 f38; s32 f3C; } O_A6520;
 extern s32 func_004C9728_A6520();
@@ -31,3 +32,4 @@ void func_004C9760(O_A6520 *o) {
         func_00410590_A6520(x, p0->y, p4->x, a, o->f38, t, ((s32 (*)(s32))func_00401CD0)(o->f30), o->f28);
     }
 }
+/* localdecomp:end func_004C9760 */

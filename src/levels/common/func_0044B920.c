@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0044B920 */
 extern f32 func_0040C3E0(f32);
 extern f32 func_0040C3C8(f32);
 extern f32 func_0040CEC8(f32, f32);
@@ -10,3 +11,4 @@ void func_0044B920(u8 *obj, f32 *a, f32 *b, f32 scale, f32 da, f32 db) {
     *a = func_0040CEC8(*a, da);
     *b = func_0040CEC8(*b, db);
 }
+/* localdecomp:end func_0044B920 */

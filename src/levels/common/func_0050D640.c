@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0050D640 */
 typedef struct {
     f32 v[4];
 } __attribute__((aligned(16))) Vec4;
@@ -24,3 +25,4 @@ void func_0050D640(Vec4 *out, Vec4 *in, f32 scale)
         break;
     }
 }
+/* localdecomp:end func_0050D640 */

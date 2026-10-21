@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003EF880 */
 extern float D_001DF808[];
 
 void func_003EF880(void *unused, int *out) {
@@ -19,3 +20,4 @@ void func_003EF880(void *unused, int *out) {
         D_001DF808[best] = 1000000.0f;
     }
 }
+/* localdecomp:end func_003EF880 */

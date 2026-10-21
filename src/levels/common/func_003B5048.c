@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003B5048 */
 typedef int u128_3B5048 __attribute__((mode(TI)));
 typedef struct { u8 p0[0x10]; s32 w10; u8 p14[0x30]; u16 h44; } C_3B5048;
 typedef struct { u8 p0[0x81]; u8 b81; u16 h82; } V_3B5048;
@@ -65,3 +66,4 @@ void func_003B5048(void *owner, M_3B5048 *m, M_3B5048 *src) {
         }
     }
 }
+/* localdecomp:end func_003B5048 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003C48A8 */
 typedef struct M3C48A8 M3C48A8;
 typedef struct {
     u8 pad0[80];
@@ -69,3 +71,4 @@ next:
     }
     obj->active = 0;
 }
+/* localdecomp:end func_003C48A8 */

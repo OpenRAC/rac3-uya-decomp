@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00326510 */
 typedef struct S_326510n {
     s32 w0;
     struct S_326510n *next;
@@ -46,3 +47,4 @@ S_326510n *func_00326510(s32 a0) {
     t->a2A0[k] = x;
     return x;
 }
+/* localdecomp:end func_00326510 */

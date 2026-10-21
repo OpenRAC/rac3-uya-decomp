@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00510B80 */
 extern void func_00512020_00510B80(void *);
 void func_00510B80(s32 *owner) {
     s32 offset;
@@ -21,3 +23,4 @@ void func_00510B80(s32 *owner) {
         *(s8 *)((u8 *)entry + 0x19C) = 0;
     } while (index < 0x10);
 }
+/* localdecomp:end func_00510B80 */

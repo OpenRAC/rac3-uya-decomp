@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004AD500 */
 extern s32 func_004AD500();
 extern s32 D_001D4B00;
 extern s32 D_001D4B34;
@@ -30,3 +31,4 @@ s32 func_004AD500(s32 a0, s32 a1, s32 a2, s32 a3) {
     *(volatile s32 *)&D_001D4B30 = D_001D4B30 + a2 * 16;
     return r;
 }
+/* localdecomp:end func_004AD500 */

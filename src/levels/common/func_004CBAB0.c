@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CBAB0 */
 extern s32 D_001DB178[];
 extern s32 D_001DB178[2];
 extern s32 D_001DB160[];
@@ -45,3 +46,4 @@ u8 *func_004CBAB0(u8 *p) {
     *(u8 **)(p + 0xB1C) = (u8 *)D_001DB160;
     return p;
 }
+/* localdecomp:end func_004CBAB0 */

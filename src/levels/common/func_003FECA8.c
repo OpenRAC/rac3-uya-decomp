@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003FECA8 */
 extern u8 *D_001DFC00[];
 s32 func_003FECA8(s32 a0, s32 a1, s32 a2) {
     u8 *b = D_001DFC00[0];
@@ -19,3 +20,4 @@ s32 func_003FECA8(s32 a0, s32 a1, s32 a2) {
     if (p[2 + z] == 0xFFFF) return 0;
     return (s32)(res + (p[2 + z] << 7));
 }
+/* localdecomp:end func_003FECA8 */

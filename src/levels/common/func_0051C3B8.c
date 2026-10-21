@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0051C3B8 */
 extern void func_0051C3B8(u8 *, s32, f32, f32);
 
 void func_0051C3B8(u8 *p, s32 a, f32 x, f32 y) {
@@ -14,3 +15,4 @@ void func_0051C3B8(u8 *p, s32 a, f32 x, f32 y) {
     p[0x30] = 0;
     *(s32 *)(p + 0x34) = 0;
 }
+/* localdecomp:end func_0051C3B8 */

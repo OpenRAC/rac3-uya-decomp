@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00321C80 */
 extern int D_001E1838[];
 
 int func_00321C80(void) {
@@ -11,3 +12,4 @@ int func_00321C80(void) {
     }
     return 0;
 }
+/* localdecomp:end func_00321C80 */

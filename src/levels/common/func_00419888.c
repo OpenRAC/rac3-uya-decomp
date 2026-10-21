@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00419888 */
 typedef struct LookupEntry_38E730 {
     u16 key;
     u8 reserved[6];
@@ -20,3 +21,4 @@ s32 func_00419888(s32 key) {
     }
     return index <= 0x3FF ? index : -1;
 }
+/* localdecomp:end func_00419888 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003C4008 */
 typedef struct { u8 pad[0x25C4]; s32 w25C4; u8 pad25C8[0x283C - 0x25C8]; f32 f283C; } G_3C4008;
 typedef struct { u8 pad[0x98]; s32 w98; } P_3C4008;
 typedef struct { u8 pad[0x54]; P_3C4008 *p54; u8 pad58[0x100 - 0x58]; u8 b100; } B_3C4008;
@@ -39,3 +41,4 @@ void func_003C4008(M_3C4008 *m, B_3C4008 *b) {
         b->b100 = 0;
     }
 }
+/* localdecomp:end func_003C4008 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0050D430 */
 typedef struct {
     f32 m[16];
 } M_0050D430;
@@ -26,3 +28,4 @@ f32 func_0050D430(V_0050D430 *a0) {
     }
     return 0.0f;
 }
+/* localdecomp:end func_0050D430 */

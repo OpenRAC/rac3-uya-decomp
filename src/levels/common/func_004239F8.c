@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004239F8 */
 extern unsigned long D_001F3E40[3];
 
 extern unsigned long D_001DFF10[];
@@ -35,3 +36,4 @@ void func_004239F8(unsigned long *p, s32 a, s32 b, s32 c, s32 d, s32 idx) {
         p[2] = 0;
     }
 }
+/* localdecomp:end func_004239F8 */

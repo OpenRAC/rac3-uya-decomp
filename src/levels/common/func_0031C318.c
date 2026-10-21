@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0031C318 */
 void func_0031C318_self(u8 *a0, u8 *a1, s8 *a2, s32 a3);
 
 #define CHK(m) ((m) != 0 && *(u8 **)((m) + 36) != 0 && (*(u8 **)((m) + 36))[70] == 18)
@@ -52,3 +53,4 @@ void func_0031C318(u8 *a0, u8 *a1, s8 *a2, s32 a3) {
         }
     }
 }
+/* localdecomp:end func_0031C318 */

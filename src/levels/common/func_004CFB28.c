@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CFB28 */
 extern void func_004CFB28(s32 *);
 
 typedef struct { s32 x0; u8 p4[0x30]; s32 x34; s32 x38; s32 x3C; s32 x40; s32 x44; s32 x48; s32 x4C; s32 x50; s32 x54; s32 x58; } S_3AB220;
@@ -40,3 +41,4 @@ void func_004CFB28(s32 *arg0) {
     o->x50 += n;
     o->x58 = (o->x58 + n) % o->x4C;
 }
+/* localdecomp:end func_004CFB28 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00490B98 */
 typedef struct {
     s32 type;
     s8 padding[8];
@@ -18,3 +19,4 @@ s32 func_00490B98(State_00490B98 *state, s32 first, s32 second, s32 third, s32 f
     }
     return result;
 }
+/* localdecomp:end func_00490B98 */

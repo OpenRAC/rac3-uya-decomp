@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F15C8 */
 extern u8 D_001E2AC0[];
 
 void func_003F15C8(s32 i) {
@@ -9,3 +10,4 @@ void func_003F15C8(s32 i) {
         *(s32 *)(p + 152) = 0;
     }
 }
+/* localdecomp:end func_003F15C8 */

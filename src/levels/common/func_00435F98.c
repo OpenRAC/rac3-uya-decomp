@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00435F98 */
 extern void func_00436350();
 extern u32 D_001E009C;
 extern void func_00435F98();
@@ -83,3 +84,4 @@ void func_00435F98(P_3BD0D8 *p, s32 b) {
         p->b7E |= p->w24->b47;
     }
 }
+/* localdecomp:end func_00435F98 */

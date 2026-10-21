@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0050E500 */
 typedef struct S_50E500o {
     u8 pad0[0x78];
     s32 x78;
@@ -66,3 +68,4 @@ void func_0050E500(void) {
         o->x78 = func_0040D020(o->x78, c, 0.15f);
     }
 }
+/* localdecomp:end func_0050E500 */

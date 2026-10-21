@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003CA1D8 */
 extern void func_004A6DF8(u8 *, s32);
 
 void func_003CA1D8(u8 *a0) {
@@ -18,3 +19,4 @@ void func_003CA1D8(u8 *a0) {
         *(u16 *)(*(u8 **)(s1 + 1360) + 52) |= 2;
     }
 }
+/* localdecomp:end func_003CA1D8 */

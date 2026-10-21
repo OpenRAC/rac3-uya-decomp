@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00487AC0 */
 typedef struct VObj_487AC0 VObj_487AC0;
 typedef struct {
     u8 pad[12];
@@ -39,3 +40,4 @@ void func_00487AC0(void) {
     o->vtbl->fn(o);
     func_0045CA60(1);
 }
+/* localdecomp:end func_00487AC0 */

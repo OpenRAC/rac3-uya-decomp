@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00462578 */
 typedef int s128 __attribute__((mode(TI)));
 
 typedef struct {
@@ -68,3 +69,4 @@ u8 *func_00462578(s128 *a0, s128 *a1, s32 a2, s32 a3, s32 t0, s32 t1, f32 f12) {
     }
     return o;
 }
+/* localdecomp:end func_00462578 */

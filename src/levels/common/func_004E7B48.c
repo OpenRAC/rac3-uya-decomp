@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004E7B48 */
 f32 func_004E7B48(f32 a[][4], f32 b[][4]) {
     s32 i, j;
     f32 sum = 0.0f;
@@ -10,3 +11,4 @@ f32 func_004E7B48(f32 a[][4], f32 b[][4]) {
     }
     return sum;
 }
+/* localdecomp:end func_004E7B48 */

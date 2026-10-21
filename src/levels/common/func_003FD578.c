@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003FD578 */
 typedef struct {
     s32 f[10];
 } Ent40;
@@ -17,3 +19,4 @@ void func_003FD578(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0, s32 t1, s32 t2, s32 t
         D_001E68D0[idx].f[9] = s8 * 45 + 240;
     }
 }
+/* localdecomp:end func_003FD578 */

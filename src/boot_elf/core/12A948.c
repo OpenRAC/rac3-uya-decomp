@@ -1101,7 +1101,19 @@ s32 func_0012D758(Env_12D758 *env)
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012D930);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D938);
+/* localdecomp:start func_0012D938 */
+typedef struct { s32 x0; u8 pad4[0x1C]; s32 x20; u8 pad24[0xC]; u32 x30; } S_12D938;
+extern void func_0012D578(S_12D938 *);
+void func_0012D938(S_12D938 *p, s32 a) {
+    s32 v = func_0012D5F0(a);
+    func_0012D578(p);
+    if (p->x30 != 0xFFFFFFFF) {
+        p->x30 = v;
+    }
+    p->x20 = 0;
+    p->x0 = (p->x0 & ~0xC) | 0x105;
+}
+/* localdecomp:end func_0012D938 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012D9A0);
 
@@ -1488,7 +1500,19 @@ s32 func_0012E2E0(s32 mode, s32 *cmd, s32 *result) {
 }
 /* localdecomp:end func_0012E2E0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012E3A8);
+/* localdecomp:start func_0012E3A8 */
+extern s32 *D_15A428;
+extern s32 *D_15A42C;
+extern s32 *D_15A430;
+extern s32 D_00141540;
+void func_0012E3A8(u32 a) {
+    s32 *q = (s32 *)(a | 0x20000000);
+    if (D_15A428) *D_15A428 = q[0];
+    if (D_15A42C) *D_15A42C = q[1];
+    if (D_15A430) *D_15A430 = q[0x24];
+    func_0011EE50(D_00141540);
+}
+/* localdecomp:end func_0012E3A8 */
 
 /* localdecomp:start func_0012E400 */
 typedef struct {
@@ -1970,7 +1994,24 @@ Pd_12F2A0 *func_0012F2A0(s32 port, s32 slot, Pd_12F2A0 *out)
 }
 /* localdecomp:end func_0012F2A0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012F3F8);
+/* localdecomp:start func_0012F3F8 */
+typedef struct {
+    u8 pad0[0x10];
+    s32 open;
+    u8 pad14[0x1C - 0x14];
+} St_12F3F8;
+extern St_12F3F8 D_15BB90_0012F3F8[2][4];
+extern void func_0011A0B0(void *, void *, s32);
+s32 func_0012F3F8(s32 port, s32 slot, void *dst) {
+    Pd_12F2A0 out;
+    if (D_15BB90_0012F3F8[port][slot].open == 0) {
+        return 0;
+    }
+    func_0012F2A0(port, slot, &out);
+    func_0011A0B0(dst, &out, ((s32 *)&out)[0x18]);
+    return ((s32 *)&out)[0x18];
+}
+/* localdecomp:end func_0012F3F8 */
 
 /* localdecomp:start func_0012F470 */
 typedef struct {
@@ -2031,7 +2072,14 @@ s32 func_0012F4F0(s32 port, s32 slot, s32 state)
 }
 /* localdecomp:end func_0012F4F0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012F5A8);
+/* localdecomp:start func_0012F5A8 */
+s32 func_0012F5A8(s32 port, s32 slot) {
+    if (D_15BB90_0012F470[port][slot].open == 0) {
+        return 0;
+    }
+    return ((u8 *)func_0012F2A0(port, slot, 0))[0x71];
+}
+/* localdecomp:end func_0012F5A8 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012F600);
 
@@ -2330,7 +2378,14 @@ s32 func_0012FC18(s32 port, s32 slot)
 }
 /* localdecomp:end func_0012FC18 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012FC78);
+/* localdecomp:start func_0012FC78 */
+s32 func_0012FC78(s32 port, s32 slot) {
+    if (D_15BB90_12FAB8[port][slot].open == 0) {
+        return 0;
+    }
+    return func_0012FB68(port, slot, 0xFFF);
+}
+/* localdecomp:end func_0012FC78 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012FCD0);
 

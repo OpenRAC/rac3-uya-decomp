@@ -1131,7 +1131,37 @@ s32 func_00122630(Cd_122630 *cd, s32 rno, s32 mode) {
 }
 /* localdecomp:end func_00122630 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00122780);
+/* localdecomp:start func_00122780 */
+typedef struct B_122780 {
+    s32 x0, x4, x8, xC, x10, x14, x18, x1C; void *x20; s32 x24, x28, x2C, x30, x34, x38;
+    struct B_122780 *x3C;
+    struct Q_122780 *x40;
+} B_122780;
+typedef struct Q_122780 { s32 f0; s32 f4; s32 f8; s32 fC; s32 f10; } Q_122780;
+typedef struct { s32 x0, x4, x8, xC, x10; void *x14; s32 x18, x1C, x20, x24, x28, x2C, x30; B_122780 *x34; } A_122780;
+extern void func_0011FBD8(s32);
+void func_00122780(A_122780 *a) {
+    B_122780 *b = a->x34;
+    Q_122780 *q = b->x40;
+    if (q->fC == 0) {
+        q->fC = (s32)b;
+    } else {
+        ((B_122780 *)q->f10)->x3C = b;
+    }
+    q->f10 = (s32)b;
+    b->x20 = a->x14;
+    b->x1C = a->x1C;
+    b->x24 = a->x20;
+    b->xC = a->x24;
+    b->x28 = a->x28;
+    b->x2C = a->x2C;
+    b->x30 = a->x30;
+    b->x34 = a->x10;
+    if (q->f0 >= 0 && q->f4 == 0) {
+        func_0011FBD8(q->f0);
+    }
+}
+/* localdecomp:end func_00122780 */
 
 /* localdecomp:start func_00122810 */
 typedef struct {
@@ -1281,7 +1311,26 @@ void func_00122A68(void) {
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00122AD8);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00122AE0);
+/* localdecomp:start func_00122AE0 */
+extern s32 D_0013DC90;
+extern s32 func_0011EE60_00122AE0(s32);
+typedef struct { s32 x0; s32 x4; s32 x8; s32 xC; } F_122AE0;
+extern F_122AE0 D_156100_00122AE0[32];
+void *func_00122AE0(void) {
+    F_122AE0 *p;
+    func_00122A68();
+    func_0011EE60_00122AE0(D_0013DC90);
+    for (p = D_156100_00122AE0; p < &D_156100_00122AE0[32]; p++) {
+        if (p->x4 == 0) {
+            p->x4 = 0x10000000;
+            func_0011EE40(D_0013DC90);
+            return p;
+        }
+    }
+    func_0011EE40(D_0013DC90);
+    return 0;
+}
+/* localdecomp:end func_00122AE0 */
 
 /* localdecomp:start func_00122B68 */
 extern s32 func_0011FC78(s32);
@@ -1441,7 +1490,7 @@ extern s32 func_001230D8(void);
 extern void func_00123160(void);
 extern s32 func_00123368(void);
 extern void func_00123108(void);
-extern Fd_123430 *func_00122AE0(void);
+extern void *func_00122AE0(void);
 extern s32 func_0011EE20_00123430(Sema_123430 *);
 extern s32 func_0011EE30(s32);
 extern s32 func_0011EE40(s32);

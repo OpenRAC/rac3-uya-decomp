@@ -46,11 +46,3 @@ void func_004212E0(O_4212E0 *o, V4 *p) {
 }
 /* localdecomp:end func_004212E0 */
 
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00421438);
-
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_004214C0);
-
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00421DD0);
-
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00421DD8);
-

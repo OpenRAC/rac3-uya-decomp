@@ -213,6 +213,90 @@ value and `$a2` for no visible reason, and several newlib functions
 (`func_0011A718`, `func_0011B018`, `func_0011B060`, `func_0011ABB8`,
 `func_0011A328`) that look like library code too.
 
+## Compiler ranges in text_parts.txt (2026-10-20)
+
+`config/boot_elf/text_parts.txt` now gives the core's flags by range, one
+line per compiler, instead of one override per function:
+
+| Range | Compiler | text_parts.txt |
+|---|---|---|
+| 0x116F80-0x11EA10 | newlib, Sony ee-gcc **2.96-ee-001003-1** | SN's flags (2.96 has no Windows build; see below) |
+| 0x11EA10-0x11F2A0 | hand-written kernel stubs (`ASM_FUNC`) | SN's flags (unused) |
+| 0x11F2A0-0x13B330 | Sony's libraries and libgcc, ee-gcc **2.9-ee-991111** | `@ee29 -O2 -G0` (libgcc keeps its lines; `_eh.c` adds `-fexceptions`) |
+| 0x13B330-0x13D420 | 989snd's EE side, **SN** ee-gcc 2.95.3 | SN's flags, as before |
+
+How the verdicts were checked:
+
+- **2.9-ee.** Every C function of 0x11F2A0-0x13B330 was compiled again with
+  `@ee29 -O2 -G0`: 225 of 231 match that way too, so the old SN lines and
+  one-function `@ee29` overrides (162) went. Six match only with SN and keep
+  a single-function override (`func_00124560`, `func_0012D650`,
+  `func_00135C10`, `func_00135E40`, `func_00136010`, `func_0013A8E8`). The
+  2.9-ee fingerprint (16-byte `sd` slots, `$ra` highest and restored first,
+  no `$gp`, sibling calls) holds in every object of the range.
+- **2.96.** newlib's `isinf` and `isnan` (`func_0011B018`, `func_0011B060`)
+  compile byte for byte with 2.96-ee-001003-1 at `-O2 -G0` from fdlibm's own
+  text, and with neither SN nor 2.9-ee (12 and 14 instructions differ). The
+  drafts are in `nonmatching/boot_elf/`. To run the Linux 2.96 under WSL,
+  copy the compiler and the source into WSL's own file system (`/tmp`): its
+  32-bit `cc1` can't open files on `/mnt/c` ("Value too large for defined
+  data type", then an internal error in `init_c_lex`).
+- **SN.** 989snd uses `$gp`, 8-byte slots and no sibling calls, as the game
+  does; its remaining `func_0013CB20` is a 2-instruction near miss
+  (`nonmatching/boot_elf/`), and `func_0013D3D0` is hand-written: it is the
+  `srand` of the hand-written `rand` that follows it (same seed, same `$8`).
+
+**Object boundaries.** The original linker filled the gap between two
+objects' `.text` with `0xCDCDCDCD`; inside an object the padding is `nop`.
+So every `CDCDCDCD` word in the core is the end of an object (82 of them),
+which gives most of the real source-file split (a file that ends 8-aligned
+leaves no fill word). splat had glued nine of these words onto the front of
+the next function; each is now its own 4-byte `INCLUDE_ASM` piece in front
+of the real function (`func_00117170`, `func_00118670`, `func_001192F0`,
+`func_0011BD18`, `func_0011BDA0`, `func_0011E800`, `func_0012CB88`,
+`func_0012CE48`, and `func_00137448`, a remnant). The VU0 helpers at
+0x12FE78, 0x12FED8 and 0x12FF08 began with linker remnants; the remnants
+are `LINKER_REMNANT`s now and the functions start at 0x12FE98, 0x12FEF0
+and 0x12FF10. After pulling this, run `python tools/setup_asm.py --target
+boot_elf` (and refresh `C:\decomp-refs\asm\boot_elf` for CI).
+
+**Veldin's calls into the core.** Ten call targets in Veldin were not a
+`func_` start in boot_elf: 0x11BD18, 0x12CB88, 0x12CE48, 0x12FE98 and
+0x12FF10 were the glued functions above (now split); 0x128F28, 0x128F90,
+0x1294B8, 0x1295C0 and 0x129A18 were already function starts, libgcc's
+`dpsub`, `dpmul`, `dpcmp`, `dptoli` and `fptodp` (C under those names in
+`src/boot_elf/core/libgcc/`).
+
+**Matching with 2.9-ee: what helped.**
+
+- 2.9-ee makes a sibling call only when the call's value is not returned:
+  `return f(x);` in an `int` function is `jal` and an epilogue, `f(x);` in a
+  `void` one is `j f`. A wrapper that ends in `j` is a `void` function (a
+  caller that uses the value gets an alias with the other type, e.g.
+  `func_00139F80_0013A0F8`).
+- One 2.9-ee slice now holds a whole library file, so every declaration in
+  the file has to agree with the definitions: an earlier block's
+  `extern void f(void);` for a function defined later as `int f(int)` is an
+  error, not a warning. Make the extern follow the definition (callers that
+  ignore the value compile the same), or give the block an alias.
+- Store/load order follows the types: a pointer field and an `int` field are
+  in different alias sets, so 2.9-ee moves a load across the store
+  (`func_00122780` needed `void *` fields where retail moves the load).
+- Whether a callee returns a value changes register choice in the caller
+  (`func_00122AE0` needs `func_0011EE60` as `s32`, through
+  `func_0011EE60_00122AE0`).
+- Busy-wait loops: retail's `lui` before the loop label and `addiu -1`
+  inside is `i = 0x100000; while (--i != -1);`.
+- `$gp`-switching callbacks (`func_0012ADC8`, `func_00135D50`,
+  `func_00135DC8`) and the handler tables that store `$gp`
+  (`func_00121B70`, `func_00135D08`) read or write `$gp`, which C can only
+  do with inline assembly; they are still assembly.
+
+Status (`tests/check_repository.py`, 2026-10-20): boot_elf 1867 functions in
+C and 245 INCLUDE_ASM (1826 and 279 before this work). 41 of the new ones are
+2.9-ee library functions (231 C functions in that range before, 272 after);
+near misses are in `nonmatching/boot_elf/`.
+
 ## Seeding from frontbin
 
 ```

@@ -61,6 +61,13 @@ def entry_flags(e):
         fl = [f for f in fl if f not in ("@ps2as", "@newas")]
         if e["assembler"] != "default":
             fl.append("@" + e["assembler"])
+    for sym, size in (e.get("early_extern_sizes") or {}).items():
+        fl.append("@extern:%s=%d" % (sym, size))
+    if e.get("gp_size") is not None:
+        g = "-G%d" % e["gp_size"]
+        fl = [g if re.fullmatch(r"-G\d+", f) else f for f in fl]
+        if g not in fl:
+            fl.append(g)
     return fl
 
 

@@ -14,8 +14,12 @@ func_003ABC30, the plain base flags). The mode and assembler come from, in
 order: --mode N|S and --assembler default|ps2as; the catalogue entry; the
 profile tools/asm_profile.py reads off the retail bytes; the --flags-from
 function's own. When neither option is given and the first profile does not
-match, the other three combinations are tried too. Exit status 0 only on a
-full match.
+match, the other three combinations are tried too. --gp-size N (or the
+entry's "gp_size") replaces the flags' -G small-data threshold, e.g. 64 for
+code built with -G64. --early-extern-size NAME=SIZE (repeatable, or the
+entry's "early_extern_sizes") moves gcc's own `.extern NAME, SIZE` line in
+front of the function, so Ps2EeAs knows the symbol is small there (ps2as
+only). Exit status 0 only on a full match.
 
 GCC inline asm statements inside the function (VU0 macro mode, MMI) are
 allowed and count as C, as in build_common_c.py; the printed catalogue entry
@@ -96,6 +100,9 @@ def main():
     ap.add_argument("--flags-from")
     ap.add_argument("--mode", choices=["N", "S"])
     ap.add_argument("--assembler", choices=["default", "ps2as"])
+    ap.add_argument("--gp-size", type=int, help="the -G small-data threshold (default: the flags')")
+    ap.add_argument("--early-extern-size", action="append", default=[], metavar="NAME=SIZE",
+                    help="move gcc's .extern NAME, SIZE in front of the function (repeatable)")
     ap.add_argument("--refs", type=Path, default=Path(os.environ.get("UYA_REFS", r"C:\decomp-refs")))
     ap.add_argument("--toolchain", default=matching.DEFAULT_TOOLCHAIN)
     a = ap.parse_args()
@@ -110,6 +117,11 @@ def main():
     dirs = {p.parent.name: p.parent.relative_to(a.refs / "levels").as_posix() for p in (a.refs / "levels").glob("*/*/overlay.elf")}
     overlay = a.overlay or entry.get("overlay") or dirs[Path(lv.path).stem]
     flags_from = a.flags_from or entry.get("flags_from") or DEFAULT_FLAGS_FROM
+    gp_size = a.gp_size if a.gp_size is not None else entry.get("gp_size")
+    early = dict(entry.get("early_extern_sizes") or {})
+    for item in a.early_extern_size:
+        sym, _, sz = item.partition("=")
+        early[sym] = int(sz, 0)
     fl = matching.flags_for(int(flags_from[5:], 16))
     donor = ("N" if "-mno-split-addresses" in fl else "S", "ps2as" if "@ps2as" in fl else "default")
     # the profile retail shows (tools/asm_profile.py), for what neither the
@@ -130,6 +142,10 @@ def main():
     opts = SimpleNamespace(no_context=True, toolchain=a.toolchain, runner=None)
     base = {"name": name, "source": src.relative_to(ROOT).as_posix(), "overlay": overlay, "address": name[5:] and "0x" + name[5:],
             "size": size, "flags_from": flags_from}
+    if gp_size is not None:
+        base["gp_size"] = gp_size
+    if early:
+        base["early_extern_sizes"] = early
     try:
         if bcc.uses_inline_asm(src.read_bytes()):
             base["inline_asm"] = True
@@ -148,8 +164,8 @@ def main():
                 break                                   # not a matter of flags
     mode, asm = profiles[0]
     # show where it differs
-    flags = matching.apply_overrides(fl, mode, asm)
-    o = matching.compile_c(str(src), flags, opts, name)
+    flags = matching.apply_overrides(fl, mode, asm, gp_size)
+    o = matching.compile_c(str(src), flags, SimpleNamespace(**dict(vars(opts), early_extern_sizes=early)), name)
     if o is None:
         return 1
     el = ELFFile(open(o, "rb"))

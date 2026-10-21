@@ -67,7 +67,7 @@ python tools/try_func.py scratch/f.c func_0039BEC0 --mode S --as ps2as
 - `--flags "..."` appends extra compiler flags to the range's flags, for experiments. It can't remove one; to try a function without `-fopt-stack`, append `--flags=-fno-opt-stack`. Write it with `=` when the value starts with `-` (`--flags=-mvu0-use-vf0-vf2`).
 - `try_func.py` doesn't show compiler warnings, so a callee with no prototype silently becomes `int f()` (floats passed as doubles, `$v0` kept busy). `--flags=-Werror-implicit-function-declaration` turns those into errors that name the callee. Check every draft this way, especially one that needs its own override slice: a slice doesn't see the definitions in its file's other slices.
 - Its `flags:` line prints the range's flags even when `--mode` / `--as` are given; the overrides are applied anyway.
-- `--early-extern-size SYMBOL=SIZE` (repeatable) is an experiment for Ps2EeAs `$gp` selection; the full build doesn't do this, so a function that only matches with it is not done. See [Matching patterns](Matching-Patterns#early-extern-sizes-for-ps2eeas).
+- `--early-extern-size SYMBOL=SIZE` (repeatable) is an experiment for Ps2EeAs `$gp` selection; the frontbin build doesn't do this, so a frontbin function that only matches with it is not done. Common-level entries can carry it as `"early_extern_sizes"` (`try_level.py --early-extern-size`). See [Matching patterns](Matching-Patterns#early-extern-sizes-for-ps2eeas).
 - On Linux, pass `--toolchain` and `--runner` (the path to wibo), or set `UYA_TOOLCHAIN` and `UYA_RUNNER`.
 
 Output is `func_X: MATCH` or `func_X: N diff` plus a side-by-side listing.

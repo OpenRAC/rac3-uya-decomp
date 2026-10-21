@@ -70,11 +70,15 @@ def expand_flags(flags, cc):
             the Makefile's CFLAGS.
     @newas  use ee/bin/as.exe (May 2001), the one gcc picks without any -B.
     @ee29   compile with Sony's ee-gcc 2.9-ee-991111 instead of SN's compiler
-            (tools/ee29.py); it is dropped here, compile_one() handles it."""
+            (tools/ee29.py); it is dropped here, compile_one() handles it.
+    @extern:NAME=SIZE
+            move gcc's own `.extern NAME, SIZE` in front of the function, so
+            Ps2EeAs knows NAME is small there (a common source's
+            early_extern_sizes); dropped here, compile_one() handles it."""
     root = os.path.dirname(os.path.dirname(os.path.abspath(cc)))
     out = []
     for f in flags:
-        if f == ee29.FLAG:
+        if f == ee29.FLAG or f.startswith('@extern:'):
             continue
         if f == '@ps2as':
             out.append('-B' + os.path.join(root, 'ee', 'bin', 'Ps2Ee'))
@@ -262,6 +266,14 @@ def compile_one(cc, flags, cflags, cpath, spath, opath, label):
             sys.exit(f'build_text: {label} failed to compile')
     with open(spath, newline='') as f:
         stext = f.read()
+    early = [f for f in flags if f.startswith('@extern:')]
+    if early:
+        import try_func as check  # only here: try_func.py loads this module, and needs pyelftools
+        early = check.extern_flags(early)
+        try:
+            stext = check.early_extern_metadata(stext, early)
+        except ValueError as e:
+            sys.exit(f'build_text: {label}: {e}')
     with open(spath, 'w', newline='') as f:
         # retail's short-loop padding is SN's assembler's; Sony's 2.9-ee
         # library objects (@ee29) don't have it (tools/ee29.py)

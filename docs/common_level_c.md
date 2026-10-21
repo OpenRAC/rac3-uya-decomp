@@ -120,9 +120,11 @@ that is already C, apart from addresses. `tools/seed_levels.py` copies those:
 3. The frontbin block becomes a standalone source: the declarations it needs
    (followed through typedefs and prototypes), then the block, with every
    `func_`/`D_`/`jtbl_` name renamed. `.extern` size hints are dropped, since
-   the gates allow no assembler directives; a function that needed them fails
-   the byte gates. Inline asm statements in the function (VU0, MMI) stay, and
-   the entry gets `"inline_asm": true` ([Inline assembly](#inline-assembly)).
+   the gates allow no assembler directives in a source (a catalogue entry can
+   carry them, [Early extern sizes](#early-extern-sizes-early_extern_sizes));
+   a function that needed them fails the byte gates. Inline asm statements in
+   the function (VU0, MMI) stay, and the entry gets `"inline_asm": true`
+   ([Inline assembly](#inline-assembly)).
 4. Every candidate goes through `build_common_c.py`'s gates. The first build
    uses the profile `tools/asm_profile.py` reads off the owner's retail bytes,
    with the donor's mode or assembler wherever retail shows nothing; if that
@@ -282,6 +284,50 @@ the guessed mode as well), and decides the assembler for 639, agreeing on
 in a mode-specific way; 89% of those pass the gates in either mode. Reading an
 undecided assembler as the default one agrees with 94.2% of the catalogue.
 `try_level.py` and `seed_levels.py` use it for their first build.
+
+## Small-data threshold (`gp_size`)
+
+`flags_from` borrows a frontbin function's flags, and every frontbin function
+is built with `-G8`. A catalogue entry can replace that threshold with
+`"gp_size": N` (the flags' `-G8` becomes `-GN`); `build_common_c.py`,
+`try_level.py --gp-size N`, `link_common_sources.py` and localdecomp's level
+editor all apply it.
+
+The multiplayer menu's code was built with `-G64`. gcc treats an object of up
+to 64 bytes as small data and leaves its address to the assembler as one
+macro, which Ps2EeAs, not knowing the size, expands with `lui`: an adjacent
+same-register `lui r`/`lw r, %lo(D)(r)` or `lui r`/`addiu r, r, %lo(D)` pair
+on a 16- to 64-byte table. At `-G8` those functions only match with tables
+declared at 8 bytes or less. Checked on 2026-10-21 against
+`39_multiplayer_menu`: 14 functions with such tables match at `-G64` with each
+table sized to the gap before the next symbol (1 of 14 at `-G8`, 12 at
+`-G32`), and 312 of the 317 multiplayer-menu entries then in the catalogue
+built on the base flags also match unchanged at `-G64` (most never touch an
+object between 9 and 64 bytes, so the threshold makes no difference to them).
+
+## Early extern sizes (`early_extern_sizes`)
+
+Ps2EeAs is single-pass: it uses `$gp` for a symbol only if it already knows
+the symbol is small, and gcc writes its `.extern NAME, SIZE` lines at the end
+of the file. A retail Ps2EeAs function that reaches a global through `$gp`
+outside a branch delay slot was therefore compiled in a file that gave that
+size earlier (a definition or declaration before the function). A ps2as
+catalogue entry can say so:
+
+    "early_extern_sizes": {"D_001DAAE4": 4}
+
+`build_common_c.py` then moves gcc's own `.extern D_001DAAE4, 4` in front of
+the function (`try_func.early_extern_metadata`). It adds nothing gcc didn't
+compute: a symbol or size gcc did not emit is refused, and the source still
+has no assembly. `try_level.py --early-extern-size NAME=SIZE` tries it.
+`link_common_sources.py` writes it into the linked function's `text_parts.txt`
+line as `@extern:NAME=SIZE` pseudo-flags, which `build_text.py` (and
+`try_func.py`) apply the same way.
+
+In the multiplayer menu (`-G64`), the symbols that need it are frontbin
+globals in `$gp` range, reached through `$gp` next to level globals that the
+same function reaches through Ps2EeAs's `lui` expansion (`func_0054A238`,
+`func_005992A8`, `func_0065FE70`, `func_0065FF58`, `func_00676910`).
 
 ## Private inputs
 

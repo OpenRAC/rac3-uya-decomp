@@ -162,10 +162,11 @@ constraint, storage or instruction substitution is introduced.
 
 This is an opt-in compiler-metadata experiment, not a matching result. Recheck
 the full function's symbol type/size, payload, all resolved retail bytes and
-raw object encoding. The current full-project builder does not automatically
-enable this command-line option; successful candidates need a reproducible
-build integration before promotion. Never guess a different data width merely
-to influence GP selection.
+raw object encoding. The frontbin builder does not enable this option, so a
+frontbin function that only matches with it is not done. A common-level
+catalogue entry can carry it (`"early_extern_sizes"`, docs/common_level_c.md),
+which `build_common_c.py` applies reproducibly. Never guess a different data
+width merely to influence GP selection.
 
 - `li.s` constants: retail usually builds them inline (`lui $at, 0x3f80` / `ori` / `mtc1`). Only Ps2EeAs does that. With the default assembler, the constant goes to a `.lit4` pool and the link fails with `R_MIPS_LITERAL lit4`. Use `@ps2as`.
 - Read the constant's value from the asm: `lui $at, 0x3f46` + `ori $at, $at, 0x6666` is `0x3F466666`, which is `0.775f`. Write it with enough digits that it rounds to the same bits.

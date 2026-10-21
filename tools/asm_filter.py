@@ -87,7 +87,8 @@ def insn_count(lines, noreorder=True, small=frozenset(), ps2as=False, defined=fr
     With `ps2as`, a reorder-mode load or store of a global that is neither
     `.extern`ed small (`small`) nor defined (`defined`) earlier counts as two
     words: single-pass Ps2EeAs doesn't know it is small yet, so it expands the
-    macro to `lui` and the access (docs/compiler_matrix_findings.md)."""
+    macro to `lui` and the access (docs/compiler_matrix_findings.md). In a
+    noreorder block (a branch delay slot) it is one: Ps2EeAs uses `$gp` there."""
     n = 0
     for l in lines:
         s = l.split("#", 1)[0].strip()
@@ -128,10 +129,12 @@ def insn_count(lines, noreorder=True, small=frozenset(), ps2as=False, defined=fr
             if not (sm and re.match(r"^(l[bhwd]u?|s[bhwd]|lwc1|swc1|l\.s|s\.s)$", m.group(1))):
                 return None
             if sm.group(1) not in small:
-                if not (ps2as and not noreorder and re.match(r"^[A-Za-z_]", sm.group(1))
-                        and sm.group(1) not in defined):
+                if not (ps2as and re.match(r"^[A-Za-z_]", sm.group(1)) and sm.group(1) not in defined):
                     return None
-                n += 1  # Ps2EeAs's lui (the access itself is counted below)
+                if not noreorder:
+                    n += 1  # Ps2EeAs's lui (the access itself is counted below)
+                # in a noreorder block it is a branch delay slot, where Ps2EeAs
+                # can't expand a macro and uses $gp regardless: one word
         if m.group(1) in ("li",):
             return None
         if m.group(1) in ("div", "divu"):

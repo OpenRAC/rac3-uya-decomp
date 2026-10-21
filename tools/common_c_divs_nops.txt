@@ -1,10 +1,26 @@
 # Common-level div.s/sqrt.s nop counts, copied from the frontbin donor's line in
 # tools/divs_nops.txt (tools/seed_levels.py).
+func_003103F8 2
+func_003104A0 2
+func_0031DE60 1
+func_00325FE8 2
+func_00327030 2 2
+func_0039E730 2 2
+func_003A0BF0 2 2 2
+func_003A8330 2
+func_003B2F10 2
+func_003B6A98 2
+func_003B8AE8 2
+func_003B8E88 2
+func_003B8FE0 2
+func_003E19F0 2
 func_003F0FA0 2
 func_003F1D30 1 1
+func_003F3B50 2
 func_003FE7B0 2
 func_00404F68 2
 func_0041BE58 2 2 2 1 2
+func_00441C78 2
 func_00445300 2 2
 func_004459B0 2 2
 func_00447338 2 2 2 2
@@ -20,6 +36,7 @@ func_004D7408 0 2
 func_00512328 2 2
 func_00519AC0 1 0 0
 func_0051A738 2 2 0 0
+func_0051BB08 0 2 1
 func_0051D7E0 2 2 2 2 2 2
 func_004366B0 2
 func_004730C8 2 2
@@ -106,3 +123,6 @@ func_00319AA8 1
 func_004ED860 0 2
 func_003E39E0 2
 func_004F09E8 0 0 2 0 2 2 0
+func_0055A9A0 2
+func_00572798 1
+func_0061DE10 2 2

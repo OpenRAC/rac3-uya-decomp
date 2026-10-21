@@ -217,11 +217,18 @@ class LevelProject:
         out = [(ent["flags_from"], ent["mode"], ent["assembler"])] if ent else []
         return out + [(DEFAULT_FLAGS_FROM, m, a) for m, a in PROFILES if (DEFAULT_FLAGS_FROM, m, a) not in out]
 
+    def _gp_size(self, name):
+        """The catalogue entry's -G threshold (gp_size), or None for the flags' own."""
+        ent = next((e for e in self.catalogue() if e["name"] == name), None)
+        return ent.get("gp_size") if ent else None
+
     def _compile(self, src_path, name, flags_from, mode, asm):
         """Linked bytes of `name` compiled from src_path, or raise BuildError."""
         tf, _, _ = self._tools()
-        flags = tf.apply_overrides(tf.flags_for(int(flags_from[5:], 16)), mode, asm)
-        opts = SimpleNamespace(no_context=True, toolchain=str(self.toolbin.parent), runner=None)
+        flags = tf.apply_overrides(tf.flags_for(int(flags_from[5:], 16)), mode, asm, self._gp_size(name))
+        ent = next((e for e in self.catalogue() if e["name"] == name), None) or {}
+        opts = SimpleNamespace(no_context=True, toolchain=str(self.toolbin.parent), runner=None,
+                               early_extern_sizes=ent.get("early_extern_sizes") if asm == "ps2as" else None)
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             o = tf.compile_c(str(src_path), flags, opts, name)
@@ -297,6 +304,11 @@ class LevelProject:
         entry = {"name": name, "source": src_path.relative_to(self.root).as_posix(), "overlay": overlay,
                  "address": "0x" + name[5:], "size": size, "flags_from": profile["flags_from"],
                  "mode": profile["mode"], "assembler": profile["assembler"]}
+        if self._gp_size(name) is not None:
+            entry["gp_size"] = self._gp_size(name)
+        ent = next((e for e in self.catalogue() if e["name"] == name), None) or {}
+        if ent.get("early_extern_sizes") and profile["assembler"] == "ps2as":
+            entry["early_extern_sizes"] = ent["early_extern_sizes"]
         opts = SimpleNamespace(no_context=True, toolchain=str(self.toolbin.parent), runner=None)
         buf = io.StringIO()
         try:

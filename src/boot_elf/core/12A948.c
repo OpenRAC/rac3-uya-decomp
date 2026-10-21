@@ -224,7 +224,26 @@ s32 func_0012B000(void) {
 }
 /* localdecomp:end func_0012B000 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012B098);
+/* localdecomp:start func_0012B098 */
+extern u8 D_001513F8[];
+extern s32 func_00122A10(void *);
+extern s32 func_0011FC78(s32);
+s32 func_0012B098(s32 mode) {
+    if (mode == 0) {
+        if (D_0013F910 > 0) {
+            func_00121760(D_001513F8);
+        }
+        while (D_0013F934 != 0 || func_00122A10(&D_00140AD0) != 0) {
+            func_0011FC78(0xFA0);
+        }
+        return 0;
+    }
+    if (D_0013F934 != 0 || func_00122A10(&D_00140AD0) != 0) {
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_0012B098 */
 
 /* localdecomp:start func_0012B138 */
 extern s32 D_0013F910_0012B138[];
@@ -1951,7 +1970,27 @@ ASM_FUNC("asm/boot_elf/handwritten", func_0012EDD0);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012EE18);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012EF10);
+/* localdecomp:start func_0012EF10 */
+extern s32 D_15BD80_0012EF10[];
+extern u8 D_15BB40_0012EF10[];
+extern s32 D_00141558;
+extern s32 func_0012FD50(s32);
+extern void func_00121BE8(u32);
+s32 func_0012EF10(void) {
+    s32 r;
+    func_0012FD50(0);
+    D_15BD80_0012EF10[0] = 0xF;
+    if (func_00122810(D_15BB40_0012EF10, 1, 0, D_15BD80_0012EF10, 0x80, D_15BD80_0012EF10, 0x80, 0, 0) < 0) {
+        return 0;
+    }
+    func_00121BE8(0x80000019);
+    r = D_15BD80_0012EF10[3];
+    if (r == 1) {
+        D_00141558 = 0;
+    }
+    return r;
+}
+/* localdecomp:end func_0012EF10 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012EFA0);
 

@@ -198,10 +198,15 @@ TARGETS = {
         # section header table
         raw_blobs=[("header", 0x0, 0x1000), ("trailer", 0x3495F8, 0x3497A4)],
         splat_src="src/veldin",
-        # The jump tables sit among other data all through .data (each source
-        # file's .rodata between the data, not one block as in frontbin), so
-        # .data stays whole and switch functions stay INCLUDE_ASM for now.
+        # The data segments are assembled whole (no jtbl split as in frontbin):
+        # every source file's read-only data and small data sits at its own
+        # place in them. A file that emits data of its own (a switch's jump
+        # table, a variable) gets it linked at its retail address through the
+        # per-file data table (tools/split_data.py, docs/veldin.md).
         jtbl_segments={},
+        data_split="config/veldin/data_split.txt",
+        # the segments that table can place into: (file start, file end, address)
+        data_segments={"lit": (0x1000, 0xCFE00, 0x1D5680), "data": (0xCFE00, 0x122200, 0x2A4480)},
         # the catalogue's overlay name (config/levels/common_c.json): Veldin owns
         # every shared function it has, so tools/link_common_sources.py links
         # those sources into this build as they are

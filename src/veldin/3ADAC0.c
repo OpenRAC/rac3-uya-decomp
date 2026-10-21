@@ -11,7 +11,31 @@ INCLUDE_ASM("asm/veldin/nonmatchings/text", func_003AF0D0);
 
 INCLUDE_ASM("asm/veldin/nonmatchings/text", func_003AF408);
 
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_003AF490);
+/* localdecomp:start func_003AF490 */
+/* This file's small data (.sdata, config/veldin/data_split.txt): retail reads
+   these through $gp, so they are defined here, not in another file. */
+f32 D_001DE57C = 10.0f;
+f32 D_001DE580 = 50.0f;
+f32 D_001DE584 = 9.0f;
+extern void func_0044B5C8(void *, void *, s32, f32, f32);
+extern void func_0044B920(void *, void *, void *, f32, f32, f32);
+extern void func_00402498(void *, void *);
+extern void func_003AF748();
+extern s32 D_001D6694;
+void func_003AF490(u8 *o) {
+    u8 *pv = *(u8 **)(o + 0x68);
+
+    func_0044B5C8(o, pv + 0x240, 0, 0.03f, 0.3f);
+    if (*(u16 *)(o + 0x96) < 0xFFFF) {
+        *(u16 *)(o + 0x96) += 1;
+    }
+    func_0044B920(o, pv + 0x2D8, pv + 0x2DC, D_001DE584 * 0.017453292f,
+                  D_001DE57C * 0.017453292f * 0.016666668f, D_001DE580 * 0.017453292f * 0.016666668f);
+    if (D_001D6694 == 0 && o[0x31] != 0 && o[0x95] != 0) {
+        func_00402498(func_003AF748, o);
+    }
+}
+/* localdecomp:end func_003AF490 */
 
 INCLUDE_ASM("asm/veldin/nonmatchings/text", func_003AF578);
 

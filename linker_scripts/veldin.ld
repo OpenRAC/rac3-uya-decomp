@@ -15,22 +15,19 @@ SECTIONS
     {
         build/veldin/asm/veldin/header.s.o(.data);
     }
+}
 
-    /* .lit, then .bss, which the file stores as zeros (as frontbin's does). */
-    .lit 0x1D5680 : AT(0x1000)
-    {
-        build/veldin/asm/veldin/data/lit.data.s.o(.data);
-    }
-    _gp = 0x001DC8B0;
+/* .lit, then .bss, which the file stores as zeros (as frontbin's does), and
+   .data: each is its segment's retail bytes with the source files' own data
+   (jump tables, small data, literals: config/veldin/data_split.txt) linked at
+   its retail address in between. tools/split_data.py writes these two output
+   sections; see docs/veldin.md, "Per-file data". */
+INCLUDE build/veldin/data/lit.ld
+_gp = 0x001DC8B0;
+INCLUDE build/veldin/data/data.ld
 
-    /* .data, whole: its jump tables are spread among the other data, so it
-       isn't split around them as frontbin's is (switch functions stay
-       INCLUDE_ASM for now, see tools/targets.py). */
-    .data 0x2A4480 : AT(0xCFE00)
-    {
-        build/veldin/asm/veldin/data/data.data.s.o(.data);
-    }
-
+SECTIONS
+{
     .lvl_vtbl 0x2F6880 : AT(0x122200)
     {
         build/veldin/asm/veldin/data/lvl_vtbl.data.s.o(.data);

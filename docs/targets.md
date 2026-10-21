@@ -63,8 +63,10 @@ In localdecomp, the dropdown above the function list picks the target.
    file is a straight memory image.
 2. Add it to `tools/targets.py`: copy i5bootn's entry and change the paths,
    sha1, `gp`, `base_flags`, units, `raw_blobs` (the header and anything after
-   the last section), `jtbl_segments` (the data segment the jump tables are in)
-   and the objdiff names. Set `flatten="elf2bin"` if ee-objcopy doesn't
+   the last section), `jtbl_segments` (the data segment the jump tables are in,
+   when they form one block as in frontbin) or, for a level overlay whose data
+   is per file, `data_split` and `data_segments` (tools/split_data.py,
+   docs/veldin.md "Per-file data"), and the objdiff names. Set `flatten="elf2bin"` if ee-objcopy doesn't
    reproduce the file.
 3. Write `<t>.splat.yaml` (segments: `bin` for raw ranges and gaps, `data` for
    data sections, one `code` segment with a `c` subsegment per unit;

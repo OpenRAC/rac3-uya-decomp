@@ -482,16 +482,16 @@ s32 func_003B9B60(void) {
     D_001DA391 = 0;
     __asm__ volatile("" : : : "memory");
     {
-        register s32 second __asm__("$5") = 0;
+        s32 second = 0;
         func_003B6528(first, second);
     }
     func_003B6F28(4, &D_001D8E20);
     func_003B87B8(3, &D_001D8E24, D_001D8E20);
     func_003B8928(func_003B8840());
     {
-        register u8 *callback __asm__("$2") = (u8 *)0x3C0000;
-        register u8 *slot_base __asm__("$3") = (u8 *)0x300000;
-        register u8 *handler __asm__("$4");
+        u8 *callback = (u8 *)0x3C0000;
+        u8 *slot_base = (u8 *)0x300000;
+        u8 *handler;
         __asm__ volatile("" : "+r"(callback), "+r"(slot_base));
         callback -= 0x6258;
         handler = (u8 *)0x3C0000;
@@ -2215,7 +2215,7 @@ extern void func_00388440(void *, int, int);
 
 unsigned int func_003BD428(int count, int base) {
     int size;
-    register int start __asm__("$3") = base;
+    int start = base;
     register int end __asm__("$2");
     size = count * 4;
     end = start + size;

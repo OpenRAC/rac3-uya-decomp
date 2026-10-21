@@ -2268,7 +2268,7 @@ void func_0013B3F8(s32 flags) {
         }
         i = 9999;
         sv = *(s32 *)0x1D4924;
-        do { for (; i != -1; i--) ; } while (0);
+        { for (; i != -1; i--) ; }
     } while (sv == 0);
     D_001D4DE8 = 0;
     D_001D4DF0 = 0;

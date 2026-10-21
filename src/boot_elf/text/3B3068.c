@@ -99,8 +99,8 @@ extern void func_003E6CD0();
 extern s32 func_003E6788();
 extern s32 func_003E7188();
 void func_003B32A0(void) {
-    register void *object __asm__("$2");
-    register void *base __asm__("$4");
+    void *object;
+    void *base;
     register u8 *page __asm__("$3");
     if (D_001D8880 == 0) {
         func_003E8550();
@@ -444,7 +444,6 @@ void func_003B3968(void)
 
     case 1:
       func_003A1180(4, 1, 1, 0, 0);
- do { } while (0);
       temp_3 = *new_var2;
       temp_3 = (s32) (temp_3 + 1);
       D_001D888C = temp_3;
@@ -867,7 +866,7 @@ void *func_003B4500(s32 arg0) {
     if (D_001DA198 == 0) {
         p = D_00240AA0;
         i = 3;
-        do { func_003B4640(p); i--; __asm__ volatile("nop"); p += 0x20; } while (i != -1);
+        do { func_003B4640(p); i--; p += 0x20; } while (i != -1);
         D_001DA198 = 1;
     }
     return (arg0 << 5) + D_00240AA0;
@@ -899,7 +898,6 @@ s32 *func_003B45B8(s32 idx) {
         do {
             func_003B4860((void **)p);
             i--;
-            __asm__ volatile("nop");
             p++;
         } while (i != -1);
         D_001DA1B0 = 1;
@@ -945,7 +943,7 @@ s32 func_003B4688(void *arg0, s32 arg1)
         if (D_001CCFD4[0] == 0)
         {
           new_var = 8;
- do { temp_6_2 = (arg1 * new_var) + temp_6; if ((*((s32 *) (((u8 *) temp_6_2) + 4))) > 0) { new_var2 = (u8 *) arg0; *((s32 *) (new_var2 + 0x1C)) = arg1; ((s32 (*)(s32, s32, s32, s32))func_003A2858)(temp_4, (*((s32 *) (((u8 *) temp_6_2) + 0))) + (*((s32 *) (((u8 *) arg0) + 0x18))), *((s32 *) (((u8 *) temp_6_2) + 4)), 0); var_7 = 1; *((s32 *) (((u8 *) arg0) + 0)) = 4; } } while (0);
+ { temp_6_2 = (arg1 * new_var) + temp_6; if ((*((s32 *) (((u8 *) temp_6_2) + 4))) > 0) { new_var2 = (u8 *) arg0; *((s32 *) (new_var2 + 0x1C)) = arg1; ((s32 (*)(s32, s32, s32, s32))func_003A2858)(temp_4, (*((s32 *) (((u8 *) temp_6_2) + 0))) + (*((s32 *) (((u8 *) arg0) + 0x18))), *((s32 *) (((u8 *) temp_6_2) + 4)), 0); var_7 = 1; *((s32 *) (((u8 *) arg0) + 0)) = 4; } }
         }
         else
         {

@@ -190,7 +190,6 @@ s32 *func_003B2FE0(s32 idx) {
         do {
             func_003E5B88(p);
             i--;
-            __asm__ volatile("nop");
             p++;
         } while (i != -1);
         D_001DA17C = 1;

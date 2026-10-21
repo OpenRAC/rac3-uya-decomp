@@ -477,7 +477,7 @@ __asm__(".extern D_001DA391, 16");
 __asm__(".extern D_001D8E24, 16");
 /* Inline-asm form (same as the frontbin twin at 0x3B9B60): retail sets $a0 before the two byte stores and
  * $a1 in the jal delay slot; no plain-C form found keeps $a1 after the stores (sched1 issues both argument
- * moves first). The $a0/$a1 pins and the empty memory barrier reproduce it. Mode S (frontbin's N-mode
+ * moves first). The $a0 pin and the empty memory barrier reproduce it ($a1 needs no pin). Mode S (frontbin's N-mode
  * constant-address workaround is not needed here). */
 s32 func_003BF320(void) {
     register s32 first __asm__("$4") = 0;
@@ -485,7 +485,7 @@ s32 func_003BF320(void) {
     D_001DA391 = 0;
     __asm__ volatile("" : : : "memory");
     {
-        register s32 second __asm__("$5") = 0;
+        s32 second = 0;
         func_003BBCE8(first, second);
     }
     func_003BC6E8(4, &D_001D8E20);
@@ -2208,7 +2208,7 @@ extern void func_0038CEA0(void *, int, int);
 
 unsigned int func_003C2BE8(int count, int base) {
     int size;
-    register int start __asm__("$3") = base;
+    int start = base;
     register int end __asm__("$2");
     size = count * 4;
     end = start + size;

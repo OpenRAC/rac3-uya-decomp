@@ -99,6 +99,83 @@ def strip_comments(text, keep_strings=False):
     return "".join(out)
 
 
+# Common-level sources (docs/common_level_c.md) may use GCC inline assembly
+# statements inside their function, the way the original code used VU0 macro
+# mode and MMI instructions. Markers that make retail assembly the source, and
+# assembler directives (the `.extern` hints included), stay forbidden.
+LEVEL_ASM_MARKER_RE = re.compile(r"\b(?:INCLUDE_ASM|INCLUDE_RODATA|ASM_FUNC|LINKER_REMNANT)\b")
+ASM_KEYWORD_RE = re.compile(r"\b(?:__asm__|__asm|asm)\b")
+ASM_QUALIFIER_RE = re.compile(r"\s*(?:__volatile__|__volatile|volatile|goto)\b")
+ASM_STRING_RE = re.compile(r'\s*"((?:[^"\\\n]|\\.)*)"')
+ASM_INSTRUCTION_RE = re.compile(r"[A-Za-z][\w.]*(?:\s|$)")
+# `.set` options only change how the assembler treats the instructions that
+# follow (no delay-slot filling, $at use); they emit nothing
+ASM_SET_RE = re.compile(r"\.set\s+(?:no)?(?:reorder|at|macro)|\.set\s+(?:push|pop)")
+ASM_ESCAPES = {"n": "\n", "t": "\t", '"': '"', "\\": "\\"}
+
+
+def inline_asm_statements(text):
+    """The instruction templates of a common-level source's inline assembly
+    statements, in source order ([] for plain C). Raises ValueError for
+    assembly the level gates refuse: INCLUDE_ASM, INCLUDE_RODATA, ASM_FUNC,
+    LINKER_REMNANT, an asm statement outside a function body, an assembler
+    directive such as `.extern` or `.word` (`.set noreorder` and the other
+    ASM_SET_RE options are allowed), an empty statement (a scheduling
+    barrier, no instruction) and an asm label (a register pin,
+    `register int x asm("$16")`, or a symbol alias, `extern void f()
+    asm("func_X")`). A statement must start a statement (after `;`, `{`, `}`
+    or a label's `:`). A statement of only `.set` options has no instruction
+    and is refused like an empty one."""
+    code = strip_comments(text)                      # strings blanked
+    full = strip_comments(text, keep_strings=True)   # same offsets, strings kept
+    m = LEVEL_ASM_MARKER_RE.search(code)
+    if m:
+        raise ValueError("%s makes retail assembly the source" % m.group(0))
+    depth, at = 0, []
+    for c in code:
+        at.append(depth)
+        depth += (c == "{") - (c == "}")
+    out = []
+    for m in ASM_KEYWORD_RE.finditer(code):
+        if at[m.start()] == 0:
+            raise ValueError("%s outside a function body" % m.group(0))
+        before = code[:m.start()].rstrip()[-1:]
+        if before not in (";", "{", "}", ":"):
+            # after a declarator it is an asm label: a register pin or a symbol alias
+            raise ValueError("%s after %r is an asm label (register pin or symbol alias), not a statement"
+                             % (m.group(0), code[:m.start()].rstrip()[-20:].split()[-1]))
+        i = m.end()
+        while True:
+            q = ASM_QUALIFIER_RE.match(code, i)
+            if not q:
+                break
+            i = q.end()
+        while i < len(code) and code[i].isspace():
+            i += 1
+        if i >= len(code) or code[i] != "(":
+            raise ValueError("%s without a statement" % m.group(0))
+        i, parts = i + 1, []
+        while True:
+            s = ASM_STRING_RE.match(full, i)
+            if not s:
+                break
+            parts.append(s.group(1))
+            i = s.end()
+        template = re.sub(r"\\(.)", lambda e: ASM_ESCAPES.get(e.group(1), "\\" + e.group(1)), "".join(parts))
+        lines = [l.strip() for l in re.split(r"[\n;]", template) if l.strip()]
+        if all(ASM_SET_RE.fullmatch(l) for l in lines):
+            raise ValueError("empty %s statement: a scheduling barrier, not an instruction" % m.group(0))
+        for line in lines:
+            if ASM_SET_RE.fullmatch(line):
+                continue
+            if line.startswith("."):
+                raise ValueError("assembler directive %r in %s" % (line, m.group(0)))
+            if not ASM_INSTRUCTION_RE.match(line):
+                raise ValueError("%s(%r) is not an instruction (register pins are not allowed)" % (m.group(0), line))
+        out.append(template)
+    return out
+
+
 def top_level_statements(code):
     """Yield (start_offset, text) for each statement at brace depth 0.
     Function bodies and struct bodies are collapsed to '{}'."""

@@ -120,14 +120,16 @@ that is already C, apart from addresses. `tools/seed_levels.py` copies those:
 3. The frontbin block becomes a standalone source: the declarations it needs
    (followed through typedefs and prototypes), then the block, with every
    `func_`/`D_`/`jtbl_` name renamed. `.extern` size hints are dropped, since
-   the gates allow no assembly; a function that needed them fails the byte
-   gates.
+   the gates allow no assembler directives; a function that needed them fails
+   the byte gates. Inline asm statements in the function (VU0, MMI) stay, and
+   the entry gets `"inline_asm": true` ([Inline assembly](#inline-assembly)).
 4. Every candidate goes through `build_common_c.py`'s gates. The first build
    uses the profile `tools/asm_profile.py` reads off the owner's retail bytes,
    with the donor's mode or assembler wherever retail shows nothing; if that
    differs from the donor's flags and fails, the donor's flags are tried too.
    Only passing ones are kept and added to `tools/common_c.json` (with
    the profile that passed); `--report FILE` lists the rest with the reason.
+   `--inline-asm-only` tries only the blocks with inline asm.
 
 A donor in `tools/sq_ra_funcs.txt` or `tools/divs_nops.txt` passes its entry on
 to `tools/common_c_sq_ra_funcs.txt` / `tools/common_c_divs_nops.txt`, which
@@ -141,6 +143,76 @@ again whenever frontbin gains matches. The usual reasons a copy fails: the
 donor accesses globals as `D_X` plus a field offset, which the raw-encoding
 gate rejects because the target names each address; the donor needs Ps2EeAs's
 `.extern` hints; or a jump table or float constant needs a data section.
+
+## Inline assembly
+
+Since 2026-10-20 a common-level source may use GCC inline asm statements
+inside its function, and the function counts as C. Insomniac wrote VU0
+macro-mode math and MMI instructions (`plzcw`, `pextlw`, `qmtc2`, ...) as
+inline asm in C functions, and ee-gcc 2.95 can't emit them any other way;
+kfiv-decomp, God Hand and DOTR count such functions as matched C too, and so
+do this project's frontbin and boot_elf. Every other gate is unchanged:
+complete size, resolved retail bytes, raw object body equal to the split
+common target, no data sections.
+
+`pr_check.inline_asm_statements` decides what is allowed; `build_common_c.py`,
+`try_level.py`, `seed_levels.py` and localdecomp's level editor all use it:
+
+| Allowed | Refused |
+|---|---|
+| `__asm__`/`asm` statements with instructions, inside the function body, volatile or not, with or without operands | `INCLUDE_ASM`, `INCLUDE_RODATA`, `ASM_FUNC`, `LINKER_REMNANT` |
+| `.set noreorder`/`reorder`, `noat`/`at`, `nomacro`/`macro`, `push`/`pop` inside a statement | every other directive: `.extern` size hints, `.word`, `.section`, ... |
+| | file-scope `__asm__` (outside a function body) |
+| | an empty statement (`__asm__ volatile("" ::: "memory")`, a scheduling barrier) |
+| | asm labels: register pins (`register int x asm("$16")`) and symbol aliases (`extern void f() __asm__("func_X")`) |
+
+Each catalogue entry records it: `"inline_asm": true` when the source has
+inline asm statements, absent otherwise. `build_common_c.py` refuses an entry
+whose field disagrees with its source, so the field can't drift. The proof
+file has `inline_asm` per function and `inline_asm_functions` /
+`inline_asm_bytes` in total, and the summary line reports them separately:
+
+    MATCH common C: 3155 functions, 507568 source bytes (74 functions, 22144 bytes with inline asm); zero masks, canonical owners
+
+`tools/link_common_sources.py` links these sources into Veldin like any other
+(the build compiles them with the catalogue's flags, exactly as the gates did).
+
+### The single-statement VU0 form
+
+Write each contiguous VU0 sequence as **one** `__asm__ __volatile__`
+statement, in retail's order, with retail's `$vf` registers and `nop`s:
+
+```c
+void func_0040BE30(void *o, void *a, void *b) {
+    __asm__ __volatile__(
+        "lqc2 $vf1, 0(%1)\n"
+        "lqc2 $vf2, 0(%2)\n"
+        "vmini.xyzw $vf1, $vf1, $vf2\n"
+        "nop\n"
+        "sqc2 $vf1, 0(%0)\n"
+        : : "r"(o), "r"(a), "r"(b) : "memory");
+}
+```
+
+gcc treats a volatile statement as one unit, so its scheduler can't
+interleave other code into the sequence, and no `do {} while (0)` barriers or
+empty asm statements are needed around it (God Hand removed 40 such barriers
+in 25 functions this way with every function still byte-identical). One
+statement per instruction lets the scheduler move ordinary instructions
+between them; use that, the [j-form](wiki/Matching-Patterns.md#vu0-j-form-one-asm-statement-per-instruction),
+only where retail really interleaves (argument moves or `lq`/`sq` copies
+between VU0 instructions). MMI instructions that produce an ordinary value
+are a single statement with operands, `__asm__("plzcw %0, %1" : "=r"(n) : "r"(x));`.
+
+The first 74 entries (all Veldin-owned, seeded from frontbin's matched C by
+`python tools/seed_levels.py --inline-asm-only`) are VU0 leaves and VU0 code
+inside C (`lqc2`/`vadd`/`vsub`/`sqc2`, `vcallms`), MMI (`plzcw`, `pextlh`,
+`psraw`, `sq`), and a few FPU (`abs.s`, `sqrt.s`, `cvt`) and COP0/`sync.p`
+statements carried over from their frontbin donors. Two further candidates
+were refused because they call through an asm-label alias. 33 of the 74 are
+linked into Veldin's build (`make check-veldin` MATCH), 20 of them VU0/MMI
+functions of up to 600 bytes; the other 41 are followed by padding and stay
+INCLUDE_ASM there, like other padded entries.
 
 ## Which levels a function is in
 
@@ -242,7 +314,9 @@ No global toolchain, Makefile or CI configuration is changed by this command.
 The builder refuses a function unless all of these pass:
 
 1. The standalone source defines the catalogued function and contains no
-   assembly tokens. The compiler creates no unexpected data sections.
+   assembly except inline asm statements inside it ([Inline assembly](#inline-assembly)),
+   and its catalogue entry's `inline_asm` field says whether it has them. The
+   compiler creates no unexpected data sections.
 2. Its address and complete size agree with both the personal ELF and the
    original reference object's function symbol.
 3. Fresh ownership from all 51 objects chooses this level and symbol as the

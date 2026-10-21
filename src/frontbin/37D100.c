@@ -735,7 +735,7 @@ s32 func_0037DFD8(fallback)
 s32 fallback;
 {
     s32 index = func_0037DF28(fallback);
-    register s32 value __asm__("$4") = *(s16 *)((u8 *)D_001D9A20 + (index * 0x10) + 0xC);
+    s32 value = *(s16 *)((u8 *)D_001D9A20 + (index * 0x10) + 0xC);
     register s32 result __asm__("$2") = fallback;
     if (value > 0) {
         register u8 flag __asm__("$3");

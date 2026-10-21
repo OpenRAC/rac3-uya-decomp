@@ -5,7 +5,7 @@
 
 /* localdecomp:start func_00389468 */
 float func_00389468(float first, float second) {
-    register float difference __asm__("$f0");
+    float difference;
     register float pi __asm__("$f14");
     register float doubled __asm__("$f1");
 

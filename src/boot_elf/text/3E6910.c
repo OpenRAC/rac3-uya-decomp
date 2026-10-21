@@ -132,7 +132,6 @@ s32 func_003E6B90(s32 idx) {
         do {
             func_003F2400((void **)p);
             i--;
-            __asm__ volatile("nop");
             p++;
         } while (i != -1);
         D_001DA9B0_003E6B90 = 1;
@@ -185,7 +184,7 @@ void func_003E6C68(void *argument) {
     int index;
     Root_003E14A8 *root = argument;
     Entry_003E14A8 *entry;
-    register CallbackVtable_003E14A8 *vtable __asm__("$3");
+    CallbackVtable_003E14A8 *vtable;
     register void (*callback)(void *) __asm__("$2");
 
     for (index = 0; index < 12; index++) {

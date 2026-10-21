@@ -258,7 +258,7 @@ extern void func_003B69D0(void);
 extern void func_003B6A88(void);
 
 void func_003B6BF0(void) {
-    register int flag __asm__("$2");
+    int flag;
     flag = D_001D5BDC;
     if (flag != 0) {
         func_0039C088((int)func_003B6980, D_001D8AE4, (int)func_003B69D0);

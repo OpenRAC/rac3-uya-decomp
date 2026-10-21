@@ -258,8 +258,7 @@ s32 func_003B08C0(s32 a0, s32 a1, s32 a2, s32 a3) {
     if (a3 <= 0) return 0;
     func_0011F0A0(0);
     s[0] = a2; s[1] = a1; s[2] = a3; s[3] = 0;
-    do { r = func_0011F1E0(s, 1); __asm__ volatile("nop
-	nop"); } while (r == 0);
+    do { r = func_0011F1E0(s, 1); } while (r == 0);
     return a3;
 }
 /* localdecomp:end func_003B08C0 */

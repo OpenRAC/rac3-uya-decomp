@@ -8,7 +8,8 @@ toolchain through wibo (https://github.com/decompals/wibo):
   1. assemble the raw header blobs and the data segments (bin/ee-as.exe):
      every build/.../*.s.o object the target's linker script names
   2. build each code section's sources with tools/build_text.py (per-file,
-     per-function flags)
+     per-function flags); for a level overlay, tools/split_data.py then
+     writes its .lit and .data with the sources' own data placed in them
   3. link with the target's linker script, objcopy to a flat binary
   4. tools/check_match.py: prints MATCH or the first differing offsets
 
@@ -83,6 +84,12 @@ def main():
         run([sys.executable, "tools/build_text.py", "--target", t.name, "--unit", u.name,
              "--cc", wrappers["cc"], "--ld", wrappers["ld"], "--cflags", cflags, "--runner", runner]
             + (["--ee29", args.ee29] if args.ee29 else []) + ["-o", t.obj(u)])
+
+    # 2b. a level overlay's data segments, with each source file's own data
+    #     placed in them; the linker script INCLUDEs what this writes
+    if getattr(t, "data_segments", None):
+        run([sys.executable, "tools/split_data.py", "--target", t.name,
+             "--as", os.path.join(tc, "bin", "ee-as.exe"), "--runner", runner])
 
     # 3. link, flatten, compare
     elf = os.path.join(t.build_dir, t.name + ".elf")

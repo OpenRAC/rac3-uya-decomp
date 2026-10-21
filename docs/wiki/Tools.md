@@ -225,6 +225,10 @@ Called by the build; you don't run it yourself. It compiles each file in `tools/
 
 Its `function_context` function is what gives localdecomp, `try_func.py` and `permuter_setup.py` the same declarations as the real build.
 
+### split_data.py
+
+Called by the build for a level overlay (`make check-veldin`, `build.py --target veldin`), after `build_text.py`. A level's `.lit` and `.data` hold each source file's data at that file's place in link order, so a file that emits data (a `switch`'s jump table, a variable it reaches through `$gp`) has a row in `targets/veldin/data_split.txt` (`.rodata 0x002BF270 src/veldin/3DF888.c`): `build_text.py` renames that section in the file's object (`.split.rodata.3DF888`), and `split_data.py` links it at that address in place of the segment's retail bytes (`build/veldin/data/*.ld`, INCLUDEd by `linker_scripts/veldin.ld`). It stops on misaligned or overlapping rows and on data no row places. See `docs/veldin.md`, "Per-file data".
+
 ### build_common_c.py
 
 The opt-in build for the level-code C in `src/levels/common/` (listed in `tools/common_c.json`). It compiles each function with its frontbin donor's flags, compares it byte for byte with the retail common-level object made from your own overlays, and writes `build/objdiff/base/common.o`, the base of the `levels/common` unit. `make objdiff` runs it through `tools/common_c_base.py`, which takes the inputs from `C:\decomp-refs` (or `UYA_REFS`) and writes an empty base when they aren't there. Usage and the checks it applies: `docs/common_level_c.md`.

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00447748 */
 extern void func_00447748();
 extern f32 func_0040C3C8(f32);
 extern f32 func_0040C3E0(f32);
@@ -38,3 +39,4 @@ void func_00447748(f32 *p, f32 *out) {
         else out[0] = 3.14159274f - r;
     }
 }
+/* localdecomp:end func_00447748 */

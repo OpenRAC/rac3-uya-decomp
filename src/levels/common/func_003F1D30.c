@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F1D30 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_37F228;
 typedef int Q_37F228 __attribute__((mode(TI)));
 extern f32 func_0040BEF8(void *, void *);
@@ -45,3 +46,4 @@ void func_003F1D30(f32 *out, V_37F228 *a, V_37F228 *b, V_37F228 *c, V_37F228 *d4
     out[1] = ang;
     out[2] = func_0040BF38(&d);
 }
+/* localdecomp:end func_003F1D30 */

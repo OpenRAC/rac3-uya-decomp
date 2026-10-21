@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D4EE0 */
 extern void func_004D4EE0();
 
 typedef int Q_3B9098 __attribute__((mode(TI)));
@@ -39,3 +40,4 @@ void func_004D4EE0(S_3B9098 *p) {
     p->b8 += s->b15;
     p->fC += s->f10;
 }
+/* localdecomp:end func_004D4EE0 */

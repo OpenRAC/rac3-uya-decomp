@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C79E0 */
 typedef struct { u8 p0[0x16]; s16 h16; } F_3A4860;
 typedef struct { u8 p0[4]; s16 n; u8 p6[2]; s16 nframes; s16 stride; u8 pC[0x14]; u8 *data; } A_3A4860;
 typedef struct { f32 m[16]; } M_3A4860;
@@ -35,3 +36,4 @@ void func_004C79E0(A_3A4860 *a, M_3A4860 *out, f32 t) {
         }
     }
 }
+/* localdecomp:end func_004C79E0 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004431B0 */
 extern void func_0040BE90(f32 *, void *, f32);
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3BE7F0;
 extern V_3BE7F0 D_001EAAA0;
@@ -26,3 +27,4 @@ s32 func_004431B0(V_3BE7F0 *out, void *obj, s32 flags, s32 c, f32 scale) {
     *out = a;
     return 0;
 }
+/* localdecomp:end func_004431B0 */

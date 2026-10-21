@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00447338 */
 typedef struct { s32 v[3]; } N3_3BF058;
 extern N3_3BF058 D_001D7BE8;
 void func_00447338(void *qv, void *mv) {
@@ -41,3 +42,4 @@ void func_00447338(void *qv, void *mv) {
         q[k] = (mm[k][i] + mm[i][k]) * s;
     }
 }
+/* localdecomp:end func_00447338 */

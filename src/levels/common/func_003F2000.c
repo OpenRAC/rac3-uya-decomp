@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F2000 */
 typedef int u128_37F4F8 __attribute__((mode(TI)));
 typedef struct { u8 p0[2]; u8 b2; u8 b3; u8 p4[0x50 - 4]; u128_37F4F8 q50; u128_37F4F8 q60; u8 p70[0xC0 - 0x70]; u128_37F4F8 qC0; u128_37F4F8 qD0; u8 pE0[0x460 - 0xE0]; } E_37F4F8;
 extern E_37F4F8 D_001E2D60_0037F4F8[];
@@ -17,3 +18,4 @@ void func_003F2000(s32 idx) {
         e->qD0 = e->q60;
     }
 }
+/* localdecomp:end func_003F2000 */

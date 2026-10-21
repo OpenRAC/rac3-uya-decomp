@@ -2202,7 +2202,32 @@ void func_0013AB10(u8 *t)
 }
 /* localdecomp:end func_0013AB10 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013ABC8);
+/* localdecomp:start func_0013ABC8 */
+void func_0013ABC8(u8 *t)
+{
+    Days_13AB10 days;
+    s32 y;
+
+    y = t[7];
+    days = D_00152280;
+    t[5]--;
+    if ((y & 3) == 0) {
+        days.d[1] = 29;
+    }
+    if (t[5] == 0) {
+        t[6]--;
+        if (t[6] == 0) {
+            if (t[7] == 0) {
+                t[7] = 99;
+            } else {
+                t[7]--;
+            }
+            t[6] = 12;
+        }
+        t[5] = days.d[t[6] - 1];
+    }
+}
+/* localdecomp:end func_0013ABC8 */
 
 /* localdecomp:start func_0013AC70 */
 void func_0013AC70(u8 *t) {

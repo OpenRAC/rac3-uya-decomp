@@ -199,9 +199,20 @@ def sq_rewrite(lines):
     if not regs or len(regs) != len(offs):
         return lines
     new_off = dict(zip(regs, offs))
+    # lines inside .set noreorder (a branch delay slot): Ps2EeAs doesn't count a
+    # .word as the slot's instruction, so these keep the mnemonic (same encoding)
+    noreorder, state = set(), False
+    for i, l in enumerate(lines):
+        s = l.strip()
+        if s.startswith(".set"):
+            state = {"noreorder": True, "reorder": False}.get(s.split()[-1], state)
+        elif state:
+            noreorder.add(i)
     for i, store, reg, off, ind, nl in saves:
         o = new_off[reg]
-        if reg == 31:
+        if reg == 31 and i in noreorder:
+            lines[i] = f"{ind}{'sq' if store else 'lq'} $31,{o}($sp){nl}"
+        elif reg == 31:
             w = (0x7FBF0000 if store else 0x7BBF0000) | o
             lines[i] = f"{ind}.word 0x{w:08X}  # {'sq' if store else 'lq'} $31,{o}($sp){nl}"
         else:

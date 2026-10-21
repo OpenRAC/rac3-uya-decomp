@@ -397,8 +397,19 @@ def resolve_relocations(elf, text):
             resolved[off] = (ins & 0xFFFF0000) | (rel & 0xFFFF)
         else:
             mask[off] = 0
-    for hoff, _, _ in pending_hi:  # HI16 without a LO16: fall back to masking
-        mask[hoff] = 0xFFFF0000
+    # A HI16 with no LO16 after it: gcc's reorg can copy a `lui` into a loop's
+    # delay slot after the `addiu`/load that uses it, so its LO16 comes earlier.
+    # Pair it with the nearest earlier LO16 of the same symbol; without one, mask it.
+    for hoff, hname, hins in pending_hi:
+        earlier = [r for r in relocs if r["r_info_type"] == 6 and r["r_offset"] < hoff
+                   and symtab[r["r_info_sym"]].name == hname]
+        addr = symbol_address(hname) if hname else None
+        if earlier and addr is not None:
+            lo = sext16(word(earlier[-1]["r_offset"]) & 0xFFFF)
+            full = addr + ((hins & 0xFFFF) << 16) + lo
+            resolved[hoff] = (hins & 0xFFFF0000) | (((full + 0x8000) >> 16) & 0xFFFF)
+        else:
+            mask[hoff] = 0xFFFF0000
     return resolved, mask
 
 

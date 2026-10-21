@@ -3,8 +3,6 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00469EF8);
-
 LINKER_REMNANT("asm/veldin/remnants", func_0046A198);
 
 INCLUDE_ASM("asm/veldin/nonmatchings/text", func_0046A1A0);

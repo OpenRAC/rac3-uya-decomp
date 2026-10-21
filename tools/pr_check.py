@@ -22,7 +22,12 @@ reasons it fails, in terms of the line you need to fix:
              defines function X
   duplicates a function is not both INCLUDE_ASM and C
   variables  no variable is *defined* in a source file (only `extern`); a definition
-             creates .data/.sdata/.bss and breaks the layout or the link
+             creates .data/.sdata/.bss and breaks the layout or the link. A file
+             with rows in the target's per-file data table (a level overlay's
+             config/<target>/data_split.txt, tools/split_data.py) may define
+             the variables of its own data
+  data       every row of that table names a source file of the target and an
+             address inside one of its data segments
   typedefs   a typedef name is not defined twice with different bodies
   aliases    every per-function alias (D_XXXXXXXX_suffix) has an address in
              symbol_addrs_resolved.txt, or the link fails with "undefined"
@@ -39,7 +44,8 @@ reasons it fails, in terms of the line you need to fix:
              compiles as the build compiles it (under a minute; this is
              what catches a declaration that clashes with a later block or a
              later file, which try_func.py can't see)
-  --obj      the built text.c.o has no data sections
+  --obj      the built text.c.o has no data sections (other than the placed
+             .split.* ones)
 
 Exit status 1 if any error was found. Warnings don't fail.
 """
@@ -48,10 +54,12 @@ import shutil, os, re, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
+import split_data  # noqa: E402
 import srcfiles as sf  # noqa: E402
 import targets  # noqa: E402
 FILES = None   # the target's source files, set in main() (--target boot_elf)
 T = None
+PLACED = {}    # {source file: [sections]} of the per-file data table (tools/split_data.py)
 
 
 def all_text():
@@ -326,12 +334,14 @@ def check_file(raw, label):
         if t:
             prev = t
 
-    # variable definitions
+    # variable definitions: only in a file whose data is placed per file
     for pos, stmt in top_level_statements(code):
-        if is_variable_definition(stmt):
+        if is_variable_definition(stmt) and label.replace(os.sep, "/") not in PLACED:
             one = re.sub(r"\s+", " ", stmt)[:90]
             err(f"{label}:{lineno(raw, pos)}: defines a variable: `{one};` "
-                "declare it `extern` instead (retail data lives in the data segments)")
+                "declare it `extern` instead (retail data lives in the data segments)"
+                + (f", or place this file's data with a row in {T.data_split}"
+                   if getattr(T, "data_split", None) else ""))
 
     # typedefs
     bodies = {}
@@ -473,6 +483,22 @@ def check_sq_ra(defined):
              "'Functions that save $ra with sq') or asm_filter leaves a 2-instruction diff")
 
 
+def check_data():
+    """The per-file data table: each row names one of the target's source
+    files and an address inside one of its data segments (tools/split_data.py
+    checks sizes, alignment and overlaps when it builds)."""
+    if not getattr(T, "data_split", None):
+        return
+    names = {rel for rel, _ in FILES}
+    segs = getattr(T, "data_segments", {})
+    for sec, addr, rel in split_data.read_table(T):
+        if rel not in names:
+            err(f"{T.data_split}: {rel} is not a source file of {T.name} ({T.files})")
+        if not any(vram <= addr < vram + end - rom for rom, end, vram in segs.values()):
+            err(f"{T.data_split}: {sec} of {rel} at 0x{addr:08X} is in no data segment "
+                f"({', '.join(segs)})")
+
+
 def check_git():
     try:
         out = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True, timeout=30)
@@ -500,7 +526,8 @@ def check_obj(path):
     elf = ELFFile(open(path, "rb"))
     bad = [(s.name, s["sh_size"]) for s in elf.iter_sections()
            if s["sh_type"] in ("SHT_PROGBITS", "SHT_NOBITS")
-           and s.name not in (".text", ".reginfo", ".mdebug", ".comment", ".pdr") and s["sh_size"] > 0]
+           and s.name not in (".text", ".reginfo", ".mdebug", ".comment", ".pdr") and s["sh_size"] > 0
+           and not s.name.startswith(".split.")]  # placed per file (tools/split_data.py)
     for name, size in bad:
         err(f"{path}: section {name} has 0x{size:X} bytes; the sources must only produce .text "
             "(a variable was defined, or a string/float constant went to .rodata/.lit4)")
@@ -538,9 +565,10 @@ def check_compile(toolchain, runner):
 
 
 def main():
-    global FILES, T
+    global FILES, T, PLACED
     T = targets.from_argv(allow_all=True)   # --target boot_elf
     FILES = sf.read_file_list()
+    PLACED = split_data.sections_by_file(T)
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--obj", help="built object to check, e.g. build/src/text.c.o")
     ap.add_argument("--no-git", action="store_true", help="skip the git tracked-file check")
@@ -552,6 +580,7 @@ def main():
     args = ap.parse_args()
 
     asm, defined = check_sources()
+    check_data()
     check_parts(asm, defined)
     check_status(defined, asm)
     check_sq_ra(defined)

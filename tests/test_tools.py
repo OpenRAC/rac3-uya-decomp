@@ -24,6 +24,7 @@ SHA1 = {
     "frontbin": "3bc94ee895e4b4af9b5602a229af599c1103b542",
     "boot_elf": "487975305f8a263c750dfede50391b575ed07835",
     "i5bootn": "71f3ecfc54c3d24d1475ef9efe8228fbfe59d65f",
+    "veldin": "63ac546a87a15766052360cc9e2361ebd1600da0",
 }
 
 

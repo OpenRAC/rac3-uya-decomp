@@ -490,7 +490,8 @@ def main():
     for e in errors:
         print("error:", e)
     total = len(asm) + len(defined)
-    counts = {m: len(re.findall(r"^%s\(" % m, all_text(), re.M))
+    text = all_text()  # read once: a level target has thousands of files
+    counts = {m: len(re.findall(r"^%s\(" % m, text, re.M))
               for m in ("ASM_FUNC", "LINKER_REMNANT")}
     if any(counts.values()):
         print(f"{counts['ASM_FUNC']} hand-written asm functions (ASM_FUNC), "
@@ -498,8 +499,8 @@ def main():
         done = len(defined) + sum(counts.values())
         total_entries = len(defined) + len(asm)
         print(f"done: {done} of {total_entries} entries ({100.0 * done / total_entries:.1f}%): C plus assembly sources")
-    asm = {k: v for k, v in asm.items()
-           if re.search(r'INCLUDE_ASM\("[^"]+",\s*%s\)' % k, all_text())}
+    included = set(re.findall(r'INCLUDE_ASM\("[^"]+",\s*(func_[0-9A-Fa-f]{8})\)', text))
+    asm = {k: v for k, v in asm.items() if k in included}
     print(f"{len(defined)} functions in C, {len(asm)} INCLUDE_ASM"
           + (f" ({100.0 * len(defined) / total:.1f}% in C)" if total else ""))
     print("OK" if not errors else f"{len(errors)} error(s)")

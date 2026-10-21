@@ -427,27 +427,26 @@ extern u8 D_001DAA95;
 extern void *func_003EA560(void *, u32);
 
 s32 func_003EB6C0(Table_003E5F00 *input_table, u32 input_key, void *input_value) {
-    register Table_003E5F00 *table __asm__("$17") = input_table;
+    Table_003E5F00 *table = input_table;
     register u32 key __asm__("$16") = input_key;
-    register void *value __asm__("$18") = input_value;
+    void *value = input_value;
 
     if (table->count < 3 && func_003EA560(table, key) == 0) {
-        register s32 iteration __asm__("$8") = 0;
-        register s32 divisor __asm__("$6") = 3;
-        register s32 parity __asm__("$11") = key & 1;
-        register u8 *value_base __asm__("$9") = (u8 *)table + 0xC;
-        register void *sentinel __asm__("$12") = &D_001DAA95;
-        register u8 *key_base __asm__("$10") = (u8 *)table + 8;
-        register s32 offset __asm__("$7") = 0;
+        s32 iteration = 0;
+        s32 divisor = 3;
+        s32 parity = key & 1;
+        u8 *value_base = (u8 *)table + 0xC;
+        void *sentinel = &D_001DAA95;
+        u8 *key_base = (u8 *)table + 8;
+        s32 offset = 0;
 
         do {
-            register s32 slot __asm__("$3") = ((key % divisor) + offset) % divisor;
-            register s32 byte_offset __asm__("$2") = slot << 3;
-            register void **selected __asm__("$5") = (void **)(value_base + byte_offset);
-            register void *current __asm__("$4") = *selected;
-            register s32 next_offset __asm__("$3");
+            s32 slot = ((key % divisor) + offset) % divisor;
+            s32 byte_offset = slot << 3;
+            void **selected = (void **)(value_base + byte_offset);
+            void *current = *selected;
+            s32 next_offset;
 
-            __asm__ volatile("" : "+r"(selected));
             if (current == 0) {
                 goto found;
             }
@@ -665,27 +664,26 @@ extern u8 D_001DAA8B;
 extern void *func_003EA050(void *, u32);
 
 s32 func_003EBE40(Table_003E6680 *input_table, u32 input_key, void *input_value) {
-    register Table_003E6680 *table __asm__("$17") = input_table;
+    Table_003E6680 *table = input_table;
     register u32 key __asm__("$16") = input_key;
-    register void *value __asm__("$18") = input_value;
+    void *value = input_value;
 
     if (table->count < 3 && func_003EA050(table, key) == 0) {
-        register s32 iteration __asm__("$8") = 0;
-        register s32 divisor __asm__("$6") = 3;
-        register s32 parity __asm__("$11") = key & 1;
-        register u8 *value_base __asm__("$9") = (u8 *)table + 0xC;
-        register void *sentinel __asm__("$12") = &D_001DAA8B;
-        register u8 *key_base __asm__("$10") = (u8 *)table + 8;
-        register s32 offset __asm__("$7") = 0;
+        s32 iteration = 0;
+        s32 divisor = 3;
+        s32 parity = key & 1;
+        u8 *value_base = (u8 *)table + 0xC;
+        void *sentinel = &D_001DAA8B;
+        u8 *key_base = (u8 *)table + 8;
+        s32 offset = 0;
 
         do {
-            register s32 slot __asm__("$3") = ((key % divisor) + offset) % divisor;
-            register s32 byte_offset __asm__("$2") = slot << 3;
-            register void **selected __asm__("$5") = (void **)(value_base + byte_offset);
-            register void *current __asm__("$4") = *selected;
-            register s32 next_offset __asm__("$3");
+            s32 slot = ((key % divisor) + offset) % divisor;
+            s32 byte_offset = slot << 3;
+            void **selected = (void **)(value_base + byte_offset);
+            void *current = *selected;
+            s32 next_offset;
 
-            __asm__ volatile("" : "+r"(selected));
             if (current == 0) goto found;
             if (current != sentinel) goto next;
 found:
@@ -2014,11 +2012,11 @@ extern void func_003EDBE0(void);
 extern unsigned char D_001D9778[];
 
 void *func_003EE9B8(unsigned char *object) {
-    register float half __asm__("$f0");
+    float half;
     register float small __asm__("$f1");
-    register void *vtable __asm__("$4");
-    register void *result __asm__("$2");
-    register int color __asm__("$3");
+    void *vtable;
+    void *result;
+    int color;
 
     func_003EDBE0();
     half = 0.5f;
@@ -2954,11 +2952,11 @@ s32 func_003F0DE0(u8 *arg0, s32 arg1, s32 arg2) {
 /* localdecomp:start func_003F0E70 */
 extern void func_003EDDC0(void *, f32, f32);
 void func_003F0E70(u8 *object, f32 *bounds) {
-    register f32 x __asm__("$f12") = bounds[0];
-    register f32 half __asm__("$f2") = 0.5f;
+    f32 x = bounds[0];
+    f32 half = 0.5f;
     register f32 temp __asm__("$f1") = bounds[2];
-    register f32 y __asm__("$f13") = bounds[1];
-    register f32 other __asm__("$f0") = bounds[3];
+    f32 y = bounds[1];
+    f32 other = bounds[3];
     temp -= x;
     other -= y;
     temp *= half;

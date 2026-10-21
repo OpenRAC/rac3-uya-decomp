@@ -131,42 +131,36 @@ __asm__(".extern D_001D55C8, 16");
 __asm__(".extern D_0031CFD0, 16");
 __asm__(".extern D_0031D050, 16");
 void func_0038E478(s32 index) {
-    register s32 offset __asm__("$2") = index << 2;
+    s32 offset = index << 2;
     register s32 *table0 __asm__("$7");
-    register s32 *table2 __asm__("$8");
-    register s32 *table1 __asm__("$3");
-    register s32 *ptr1 __asm__("$2");
-    register s32 offset64 __asm__("$5");
+    s32 *table2;
+    s32 *table1;
+    s32 *ptr1;
+    s32 offset64;
     register u8 *out1 __asm__("$3");
-    register u8 *out0 __asm__("$6");
-    register s32 value1 __asm__("$10");
-    register s32 value0 __asm__("$9");
+    u8 *out0;
+    s32 value1;
+    s32 value0;
     register s32 value2 __asm__("$2");
-    __asm__ volatile("" : "+r"(offset));
     table0 = D_001D55D0;
     __asm__ volatile("" : "+r"(table0));
     table2 = D_001D55E0;
-    __asm__ volatile("" : "+r"(table2));
     table1 = D_001D55D8;
-    __asm__ volatile("" : "+r"(table1));
     table0 = (s32 *)(offset + (s32)table0);
     __asm__ volatile("" : "+r"(table0));
     table2 = (s32 *)(offset + (s32)table2);
     __asm__ volatile("" : "+r"(table2));
     ptr1 = (s32 *)(offset + (s32)table1);
-    __asm__ volatile("" : "+r"(ptr1));
     offset64 = index << 6;
     __asm__ volatile("" : "+r"(offset64));
     out1 = (u8 *)0x320000;
     __asm__ volatile("" : "+r"(out1));
     value1 = *ptr1;
-    __asm__ volatile("" : "+r"(value1));
     out0 = (u8 *)0x320000;
     __asm__ volatile("" : "+r"(out0));
     out1 -= 0x2FB0;
     value0 = *table0;
     out1 = (u8 *)(offset64 + (s32)out1);
-    __asm__ volatile("" : "+r"(out1));
     value2 = *table2;
     __asm__ volatile("" : "+r"(value2));
     out0 -= 0x3030;
@@ -1649,7 +1643,7 @@ extern s32 func_003A1180(s32, s32, s32, s32, u8 *);
 extern void func_00392EB8(s32 *);
 
 s32 func_00392F98(Object_0038E440 *object) {
-    register s32 result __asm__("$17");
+    s32 result;
     s32 values[2];
     s32 mode;
 
@@ -1688,10 +1682,10 @@ extern s32 func_0039F1F0();
 
 void func_00393060(s32 *input_ptr) {
     s32 *value_ptr = input_ptr;
-    register u8 *page_temp __asm__("$2") = (u8 *)0x140000;
+    u8 *page_temp = (u8 *)0x140000;
     register u8 *page __asm__("$17");
     register u8 *late_base __asm__("$3");
-    register s32 output __asm__("$2");
+    s32 output;
     u8 *base;
     u8 flags;
     s32 value;
@@ -1788,10 +1782,10 @@ extern s32 D_001DA0D8;
 __asm__(".extern D_0022760C, 16");
 __asm__(".extern D_001DA0D8, 16");
 s32 func_00393228(u32 value, s32 *result) {
-    register u32 amount __asm__("$6") = value;
+    u32 amount = value;
     register s32 page __asm__("$2");
-    register s32 base __asm__("$4");
-    register s32 total __asm__("$3");
+    s32 base;
+    s32 total;
     if (amount > 0x40000) {
         *result = 0;
         return -1;
@@ -1950,8 +1944,8 @@ void func_003935B0(void) {
 __asm__(".extern D_001D9F18, 16");
 __asm__(".extern D_001D9F1C, 16");
 s32 func_003935E0(s32 size) {
-    register s32 amount __asm__("$16") = size;
-    register s32 current __asm__("$4");
+    s32 amount = size;
+    s32 current;
     register s32 result __asm__("$2");
     if (D_001D9F18 == 0) {
         func_003935B0();
@@ -1962,7 +1956,7 @@ s32 func_003935E0(s32 size) {
         goto failure;
     }
     {
-        register u32 mask __asm__("$3") = 0xfffffff0U;
+        u32 mask = 0xfffffff0U;
         register s32 rounded __asm__("$5") = amount + 0xF;
         result = current;
         amount = rounded & mask;
@@ -1973,7 +1967,6 @@ s32 func_003935E0(s32 size) {
     goto done;
 failure:
     result = 0;
-    __asm__ volatile("");
 done:
     return result;
 }

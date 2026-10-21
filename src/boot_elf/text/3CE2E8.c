@@ -88,9 +88,9 @@ extern int D_001D9C7C;
 __asm__(".extern D_001D9C7C, 4");
 
 void func_003CE4A0(void) {
-    register int old __asm__("$2");
-    register int index __asm__("$5");
-    register Config_003C8CE0 *config __asm__("$6");
+    int old;
+    int index;
+    Config_003C8CE0 *config;
     register int saved __asm__("$3");
     register int count __asm__("$4");
 
@@ -110,7 +110,6 @@ void func_003CE4A0(void) {
             saved = index * 0x10;
             index++;
             saved += old;
-            __asm__ volatile("" : "+r"(saved));
             *(unsigned long *)saved = 0;
             old = config->count;
         } while (index < old);

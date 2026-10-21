@@ -8,7 +8,6 @@ import hashlib
 import io
 import json
 import os
-import re
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -63,6 +62,16 @@ def inventory(targets):
     return {identity: owner for identity, owner in owners.items() if occurrences[identity] > 1}
 
 
+def uses_inline_asm(source_bytes):
+    """True if a common-level source uses GCC inline assembly statements (VU0
+    macro mode, MMI), which count as C, as they did in the original; ValueError
+    for every other kind of assembly (pr_check.inline_asm_statements)."""
+    try:
+        return bool(pr_check.inline_asm_statements(source_bytes.decode("utf-8")))
+    except ValueError as error:
+        raise ValueError("assembly source cannot receive C credit: %s" % error) from None
+
+
 def compile_entry(entry, levels_dir, targets_dir, owners, common, options):
     name = entry["name"]
     require(name.startswith("func_") and int(name[5:], 16) == int(entry["address"], 16), "name/address mismatch")
@@ -73,7 +82,9 @@ def compile_entry(entry, levels_dir, targets_dir, owners, common, options):
     source_bytes = source.read_bytes()
     code = pr_check.strip_comments(source_bytes.decode("utf-8"))
     require({match.group(1) for match in pr_check.DEF_RE.finditer(code)} == {name}, "source must define only the catalogued function")
-    require(not re.search(r"\b(?:__asm__|__asm|asm|INCLUDE_ASM|INCLUDE_RODATA|ASM_FUNC|LINKER_REMNANT)\b", code), "assembly source cannot receive C credit")
+    inline_asm = uses_inline_asm(source_bytes)
+    require(bool(entry.get("inline_asm", False)) == inline_asm,
+            "catalogue field inline_asm must be %s: the source %s inline assembly" % (str(inline_asm).lower(), "uses" if inline_asm else "has no"))
     overlay_path = (levels_dir / entry["overlay"] / "overlay.elf").resolve()
     require(overlay_path.is_relative_to(levels_dir.resolve()), "overlay escapes the supplied level directory")
     member_path = targets_dir / (Path(entry["overlay"]).name + ".o")
@@ -135,7 +146,7 @@ def compile_entry(entry, levels_dir, targets_dir, owners, common, options):
         "source_sha256": digest(source_bytes), "retail_sha256": digest(overlay_path.read_bytes()),
         "owner_object_sha256": digest(member_bytes_full),
         "resolved_body_sha256": digest(linked), "object_body_sha256": digest(raw),
-        "strict_equal": True, "masked_words": 0, "canonical_owner": True,
+        "strict_equal": True, "masked_words": 0, "canonical_owner": True, "inline_asm": inline_asm,
         "relocations": relocations,
     }
     return raw, proof
@@ -215,9 +226,13 @@ def main():
     temporary = output.with_suffix(".o.tmp")
     temporary.write_bytes(blob)
     temporary.replace(output)
-    report = {"pure_c_bytes": sum(proof["size"] for proof in proofs), "pure_c_functions": len(proofs), "base_sha256": digest(blob), "common_target_sha256": digest(common_bytes_full), "functions": proofs}
+    asm = [proof for proof in proofs if proof["inline_asm"]]
+    report = {"pure_c_bytes": sum(proof["size"] for proof in proofs), "pure_c_functions": len(proofs),
+              "inline_asm_bytes": sum(proof["size"] for proof in asm), "inline_asm_functions": len(asm),
+              "base_sha256": digest(blob), "common_target_sha256": digest(common_bytes_full), "functions": proofs}
     output.with_suffix(".proof.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
-    print(f"MATCH common C: {report['pure_c_functions']} functions, {report['pure_c_bytes']} source bytes; zero masks, canonical owners")
+    print(f"MATCH common C: {report['pure_c_functions']} functions, {report['pure_c_bytes']} source bytes "
+          f"({report['inline_asm_functions']} functions, {report['inline_asm_bytes']} bytes with inline asm); zero masks, canonical owners")
 
 
 if __name__ == "__main__":

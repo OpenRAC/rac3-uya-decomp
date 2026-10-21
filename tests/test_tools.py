@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / "tests"))
 import build_text  # noqa: E402
 import check_repository  # noqa: E402
 import ee29  # noqa: E402
+import pr_check  # noqa: E402
 import srcfiles  # noqa: E402
 import targets  # noqa: E402
 
@@ -148,6 +149,51 @@ class EntryPointTest(unittest.TestCase):
         text = (ROOT / "README.md").read_text()
         self.assertIn(progress.BEGIN, text)
         self.assertIn(progress.END, text)
+
+
+class LevelInlineAsmTest(unittest.TestCase):
+    """pr_check.inline_asm_statements: the common-level inline asm policy."""
+
+    def refused(self, body, why):
+        with self.assertRaises(ValueError) as e:
+            pr_check.inline_asm_statements('#include "common.h"\n' + body)
+        self.assertIn(why, str(e.exception))
+
+    def test_plain_c_has_none(self):
+        self.assertEqual(pr_check.inline_asm_statements("int func_00100000(int a) { return a + 1; }\n"), [])
+
+    def test_vu0_block_and_mmi_statements_are_allowed(self):
+        src = (
+            "void func_00100000(void *o, void *a) {\n"
+            "    /* asm(\"$16\") in a comment is ignored */\n"
+            "    __asm__ __volatile__(\n"
+            "        \"lqc2 $vf1, 0(%1)\\n\"\n"
+            "        \"vadd.xyz $vf1, $vf1, $vf1\\n\"\n"
+            "        \"sqc2 $vf1, 0(%0)\\n\"\n"
+            "        : : \"r\"(o), \"r\"(a) : \"memory\");\n"
+            "}\n"
+            "int func_00100100(int x) { int n; if (x) { __asm__(\"plzcw %0, %1\" : \"=r\"(n) : \"r\"(x)); } return n; }\n")
+        got = pr_check.inline_asm_statements(src)
+        self.assertEqual(len(got), 2)
+        self.assertIn("vadd.xyz $vf1, $vf1, $vf1", got[0])
+        self.assertEqual(got[1], "plzcw %0, %1")
+
+    def test_set_options_are_allowed_inside_a_statement(self):
+        src = 'void f(void) { asm volatile(".set noreorder\\nvcallms 0xC80\\n.set reorder"); }\n'
+        self.assertEqual(len(pr_check.inline_asm_statements(src)), 1)
+
+    def test_markers_directives_barriers_and_labels_are_refused(self):
+        self.refused('INCLUDE_ASM("asm/nonmatchings/text", func_00100000);\n', "INCLUDE_ASM")
+        self.refused('ASM_FUNC("asm/handwritten", func_00100000);\n', "ASM_FUNC")
+        self.refused('LINKER_REMNANT("asm/remnants", func_00100000);\n', "LINKER_REMNANT")
+        self.refused('INCLUDE_RODATA("asm/nonmatchings/text", jtbl_00100000);\n', "INCLUDE_RODATA")
+        self.refused('__asm__(".extern D_001D9504, 4");\nvoid f(void) {}\n', "outside a function body")
+        self.refused('void f(void) { __asm__(".extern D_001D9504, 4"); }\n', "directive")
+        self.refused('void f(void) { __asm__(".word 0"); }\n', "directive")
+        self.refused('void f(void) { __asm__ volatile("" ::: "memory"); }\n', "barrier")
+        self.refused('void f(void) { __asm__ volatile(".set noreorder"); }\n', "barrier")
+        self.refused('int f(void) { register int x asm("$16"); return x; }\n', "asm label")
+        self.refused('void f(void) { extern void g(int) __asm__("func_00100000"); g(1); }\n', "asm label")
 
 
 class RepositoryCheckTest(unittest.TestCase):

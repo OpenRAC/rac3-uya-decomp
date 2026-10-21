@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0051C288 */
 void func_0051C288(u8 *p) {
     u8 *q;
     s32 v;
@@ -11,3 +12,4 @@ void func_0051C288(u8 *p) {
     (*(u8 **)(p + 0x2C))[0x5A] = 0;
     *(s32 *)(*(u8 **)(p + 0x2C) + 0x40) = 0;
 }
+/* localdecomp:end func_0051C288 */

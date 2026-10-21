@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F29F0 */
 typedef int u128_t __attribute__((mode(TI)));
 
 extern u8 D_001E2D60[];
@@ -26,3 +27,4 @@ void func_003F29F0(u8 *o) {
         *(volatile u16 *)e = 0;
     }
 }
+/* localdecomp:end func_003F29F0 */

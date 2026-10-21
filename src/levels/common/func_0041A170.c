@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0041A170 */
 typedef struct { s32 f0; s32 f4; u8 p8[0x18]; s32 f20; s32 f24; s32 f28; s32 f2C; s32 f30; s32 f34; s32 f38; u8 p3C[0x28]; s32 f64; s32 f68; u8 p6C[4]; s32 f70; u8 p74[8]; s32 f7C; u8 p80[0x10]; } S_EB;
 extern S_EB D_002E6110_0038EB10[];
 extern s32 D_001D6694_0038EB10;
@@ -25,3 +26,4 @@ s32 func_0041A170(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g) {
     }
     return s->f64;
 }
+/* localdecomp:end func_0041A170 */

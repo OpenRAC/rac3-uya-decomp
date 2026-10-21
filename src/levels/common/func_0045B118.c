@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045B118 */
 typedef struct {
     u8 data[36];
 } Ent45B118;
@@ -20,3 +21,4 @@ Ent45B118 *func_0045B118(s32 id) {
     }
     return &D_002F73B4[D_001FD980[idx]];
 }
+/* localdecomp:end func_0045B118 */

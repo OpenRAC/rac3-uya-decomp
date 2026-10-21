@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CF578 */
 typedef struct { s32 f0; s32 f4; u8 pad8[0x28]; s32 f30; s32 f34; s32 f38; s32 f3C; s32 f40; } Buffer_004CF578;
 
 void func_004CF578(Buffer_004CF578 *buffer, s32 *o1, s32 *o2, s32 *o3, s32 *o4) {
@@ -34,3 +35,4 @@ void func_004CF578(Buffer_004CF578 *buffer, s32 *o1, s32 *o2, s32 *o3, s32 *o4) 
         }
     }
 }
+/* localdecomp:end func_004CF578 */

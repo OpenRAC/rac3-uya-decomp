@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00418028 */
 typedef struct {
     s32 active;
     s32 unk4;
@@ -61,3 +62,4 @@ void func_00418028(void) {
     D_002E5F70[0].index = -1;
     D_002E5F70[0].unk4 = 0;
 }
+/* localdecomp:end func_00418028 */

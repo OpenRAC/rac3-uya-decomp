@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00437350 */
 void func_00437350(u8 *a0, s32 a1, u8 *a2) {
     s32 *t;
     u8 *p;
@@ -18,3 +20,4 @@ void func_00437350(u8 *a0, s32 a1, u8 *a2) {
         }
     }
 }
+/* localdecomp:end func_00437350 */

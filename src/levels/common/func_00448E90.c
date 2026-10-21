@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00448E90 */
 typedef struct {
     s32 cur;
     u8 pad4[8];
@@ -23,3 +24,4 @@ s32 func_00448E90(s32 a0)
     }
     return r == D_001F3FC0.cur;
 }
+/* localdecomp:end func_00448E90 */

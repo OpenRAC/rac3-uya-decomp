@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0051C2C0 */
 extern void func_0051C2C0();
 
 typedef struct { u8 pad[0x10]; s32 w10; u8 p2[0x48-0x14]; u16 h48; } Q_3EB440;
@@ -14,3 +15,4 @@ void func_0051C2C0(S_3EB440 *p, s32 b) {
     }
     p->q->w10 = b;
 }
+/* localdecomp:end func_0051C2C0 */

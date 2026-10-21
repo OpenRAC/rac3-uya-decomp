@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00423E10 */
 extern void func_00423700();
 extern void func_004239F8();
 void func_00423E10(s32 *a0, u8 *b, u8 *c, s32 n) {
@@ -25,3 +26,4 @@ void func_00423E10(s32 *a0, u8 *b, u8 *c, s32 n) {
         p = nx;
     }
 }
+/* localdecomp:end func_00423E10 */

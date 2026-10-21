@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00328FE0 */
 extern s32 func_00328AA8(u8 *);
 void func_00328FE0(void *a0, u8 *a1) {
     s32 n = 0;
@@ -10,3 +12,4 @@ void func_00328FE0(void *a0, u8 *a1) {
     *(u8 **)(a1 + 8) = p;
     *(s32 *)(a1 + 12) = n;
 }
+/* localdecomp:end func_00328FE0 */

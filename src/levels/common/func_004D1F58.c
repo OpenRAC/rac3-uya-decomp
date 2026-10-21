@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D1F58 */
 extern void func_004D1F58();
 
 typedef struct {
@@ -27,3 +28,4 @@ void func_004D1F58(volatile Queue_003AD650 *queue, s32 stream, u8 *entries, s32 
         } while (index < capacity);
     }
 }
+/* localdecomp:end func_004D1F58 */

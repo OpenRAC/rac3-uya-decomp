@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003A5430 */
 typedef struct {
     u8 pad0[104];
     u8 *vars;
@@ -29,3 +30,4 @@ void func_003A5430(Moby_003A5430 *self) {
         }
     }
 }
+/* localdecomp:end func_003A5430 */

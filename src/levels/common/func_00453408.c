@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00453408 */
 typedef struct {
     u8 pad0[0x10];
     f32 x;
@@ -63,3 +64,4 @@ f32 func_00453408(M_453408 *a, M_453408 *b, s32 c, s32 d, s32 e, s32 g, f32 scal
     }
     return dist;
 }
+/* localdecomp:end func_00453408 */

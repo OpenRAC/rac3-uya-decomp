@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003B0540 */
 extern void func_0032FE90(s32, s32, s32, s32, s32, s32, s32, s32,
                           float, float, float, float,
                           s32, s32, s32, s32, s32, s32, s32, s32, s32,
@@ -9,3 +11,4 @@ void func_003B0540(s32 a, s32 b, s32 c) {
                   0, 0, 0, 0, 0, 0, 0x10000, 0, c,
                   c, c, c, c, c, c, c, 0x3064FF, 0);
 }
+/* localdecomp:end func_003B0540 */

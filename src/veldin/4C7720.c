@@ -1,0 +1,15 @@
+#include "common.h"
+
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+/* --- end of declarations from other files --- */
+
+INCLUDE_ASM("asm/veldin/nonmatchings/text", func_004C7720);
+
+INCLUDE_ASM("asm/veldin/nonmatchings/text", func_004C78D8);
+
+INCLUDE_ASM("asm/veldin/nonmatchings/text", func_004C78E0);
+
+INCLUDE_ASM("asm/veldin/nonmatchings/text", func_004C78E8);
+
+INCLUDE_ASM("asm/veldin/nonmatchings/text", func_004C79E0);
+

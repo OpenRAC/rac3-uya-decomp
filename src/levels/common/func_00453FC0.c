@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00453FC0 */
 typedef struct E_453FC0 {
     void (*fn)(struct E_453FC0 *);
     s32 id;
@@ -39,3 +40,4 @@ s32 func_00453FC0(O_453FC0 *obj, void (*fn)(E_453FC0 *), s32 *out) {
         return j;
     }
 }
+/* localdecomp:end func_00453FC0 */

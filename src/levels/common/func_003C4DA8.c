@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003C4DA8 */
 int func_003C4DA8(char *m)
 {
     char *p = *(char **)(m + 104);
@@ -13,3 +15,4 @@ int func_003C4DA8(char *m)
     }
     return 0;
 }
+/* localdecomp:end func_003C4DA8 */

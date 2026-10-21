@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004E6868 */
 typedef struct {
     u8 pad0[3704];
     u8 *arr3704[2];
@@ -73,3 +74,4 @@ void func_004E6868(s32 a0, s32 a1) {
         }
     } while (i != 1 || D_001A4BE0.b9708 == 2);
 }
+/* localdecomp:end func_004E6868 */

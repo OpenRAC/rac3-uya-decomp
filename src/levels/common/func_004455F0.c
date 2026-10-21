@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004455F0 */
 extern f32 func_004454A8(f32 target, f32 pos, s32 mode);
 extern void func_00445010(f32 *vel, f32 d, f32 a, f32 b, f32 c);
 extern f32 func_0040CEC8(f32 a, f32 b);
@@ -26,3 +28,4 @@ f32 func_004455F0(f32 *pos, f32 *vel, s32 mode, f32 target, f32 a, f32 b, f32 c)
     }
     return d;
 }
+/* localdecomp:end func_004455F0 */

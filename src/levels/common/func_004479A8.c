@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004479A8 */
 typedef struct {
     s16 cur;
     s16 flag;
@@ -38,3 +39,4 @@ void func_004479A8(void *obj, Fade004479A8 *p) {
     }
     func_00438908(obj, r, g, b);
 }
+/* localdecomp:end func_004479A8 */

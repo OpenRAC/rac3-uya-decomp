@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00402248 */
 extern void func_0040BCB8();
 extern s32 D_001D4BB0;
 
@@ -40,3 +41,4 @@ s32 func_00402248(s32 a, s32 p, s32 q, s32 type) {
     func_004C21C0();
     return r;
 }
+/* localdecomp:end func_00402248 */

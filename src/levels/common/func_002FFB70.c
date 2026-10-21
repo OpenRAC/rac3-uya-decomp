@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_002FFB70 */
 typedef int s128 __attribute__((mode(TI)));
 
 extern u8 *func_00435E70(s32, s32);
@@ -32,3 +33,4 @@ u8 *func_002FFB70(u8 *a0, f32 f) {
     }
     return m;
 }
+/* localdecomp:end func_002FFB70 */

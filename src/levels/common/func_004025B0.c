@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004025B0 */
 extern void func_004025B0(void);
 extern s32 D_001E8A00[];
 
@@ -10,3 +11,4 @@ void func_004025B0(void) {
     s32 i;
     for (i = 0; i < D_001DFA10_00385890; i++) D_001E8900[i](D_001E8A00[i]);
 }
+/* localdecomp:end func_004025B0 */

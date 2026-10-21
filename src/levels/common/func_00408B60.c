@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00408B60 */
 extern void func_0040BE68(f32 *, f32 *, f32 *, f32);
 extern void func_0040BE90(f32 *, f32 *, f32);
 extern f32 D_001DFAE0[];
@@ -21,3 +22,4 @@ void func_00408B60(f32 *dir, f32 *a, f32 *b, f32 *p, f32 lo, f32 hi) {
         D_001DFAE8[i * 3] = va[2] + vb[2];
     }
 }
+/* localdecomp:end func_00408B60 */

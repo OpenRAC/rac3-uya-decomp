@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004035F8 */
 extern void func_004C1FE8(s32, unsigned long);
 extern void func_004035F8(s32, s32, s32, s32);
 extern s32 D_001A1ED0[];
@@ -16,3 +17,4 @@ void func_004035F8(s32 a0, s32 a1, s32 a2, s32 a3) {
     D_001E10E8_003866E8 += 4;
     func_004C1FE8(0x4E, 0x31000000 | (D_001A1ED0[2] >> 13));
 }
+/* localdecomp:end func_004035F8 */

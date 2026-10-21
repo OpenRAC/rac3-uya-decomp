@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003378A0 */
 typedef struct {
     u8 pad[0x1E];
     u16 flags;
@@ -13,3 +14,4 @@ s32 func_003378A0(void) {
     if (p != 0 && (p->flags & 2)) return 1;
     return 0;
 }
+/* localdecomp:end func_003378A0 */

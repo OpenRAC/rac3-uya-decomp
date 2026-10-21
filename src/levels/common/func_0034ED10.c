@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0034ED10 */
 typedef int s128 __attribute__((mode(TI)));
 extern s32 D_001E2F44[];
 extern f32 D_001E2F48[];
@@ -44,3 +46,4 @@ void func_0034ED10(u8 *m) {
         break;
     }
 }
+/* localdecomp:end func_0034ED10 */

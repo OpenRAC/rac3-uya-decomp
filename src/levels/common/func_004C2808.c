@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C2808 */
 extern void func_004C2808(void);
 
 extern s32 D_001E1100;
@@ -19,3 +20,4 @@ void func_004C2808(void) {
         func_0011F9A8(1);
     }
 }
+/* localdecomp:end func_004C2808 */

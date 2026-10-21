@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004478E0 */
 typedef struct {
     s16 current;
     s16 pending;
@@ -28,3 +30,4 @@ void func_004478E0(void *object, State_004478E0 *state) {
         state->blue = blue;
     }
 }
+/* localdecomp:end func_004478E0 */

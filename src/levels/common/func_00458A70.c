@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00458A70 */
 extern u8 *func_00458650(u8 *a0);
 
 void func_00458A70(u8 *a0, f32 a, f32 b, f32 c, f32 d)
@@ -15,3 +16,4 @@ void func_00458A70(u8 *a0, f32 a, f32 b, f32 c, f32 d)
         *(f32 *)(p + 28) = d;
     }
 }
+/* localdecomp:end func_00458A70 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045CDE0 */
 extern void func_0045CDE0(s32, long);
 
 void func_0045CDE0(s32 a0, long a1) {
@@ -9,3 +10,4 @@ void func_0045CDE0(s32 a0, long a1) {
         p[5] = a0;
     }
 }
+/* localdecomp:end func_0045CDE0 */

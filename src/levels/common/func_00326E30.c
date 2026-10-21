@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00326E30 */
 typedef struct {
     char pad[8];
     int (*func)(void *);
@@ -30,3 +31,4 @@ int func_00326E30(void) {
     }
     return 0;
 }
+/* localdecomp:end func_00326E30 */

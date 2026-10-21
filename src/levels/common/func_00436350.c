@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00436350 */
 extern void func_00436350();
 
 typedef struct { u8 p0[0x48]; u8 *tbl[1]; } C_3BD490;
@@ -24,3 +25,4 @@ void func_00436350(S_3BD490 *s)
   }
   s->f5C = *((s32 *) ((s->f24->tbl[s->b43] + (new_var = s->b41 * 4)) + 0x1C));
 }
+/* localdecomp:end func_00436350 */

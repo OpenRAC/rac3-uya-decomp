@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00429D28 */
 typedef struct { s32 k; u8 pad[0x10]; } E_395BC0;
 typedef struct { u8 pad[0x4590]; E_395BC0 e[0x30]; } S_395BC0;
 typedef struct { u8 d[0xC800]; } B_395BC0;
@@ -15,3 +16,4 @@ void func_00429D28(s32 a, s32 b) {
     if (D_0016C690_00395BC0.f34[b] == i) return;
     func_00429C30(i, b, &D_0016C690_00395BC0.blk[b], 0);
 }
+/* localdecomp:end func_00429D28 */

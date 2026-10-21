@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0044C0E8 */
 typedef int s128_44C0E8 __attribute__((mode(TI)));
 typedef struct { u8 pad[0x40]; void *p40; u8 pad44[0x4C - 0x44]; u8 b4C; } M_44C0E8;
 extern void func_0040C960(void *, void *, void *);
@@ -26,3 +28,4 @@ void func_0044C0E8(M_44C0E8 *m, void *a, void *out) {
         break;
     }
 }
+/* localdecomp:end func_0044C0E8 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0035D178 */
 typedef int u128_35D178 __attribute__((mode(TI)));
 typedef struct { u8 p0[0x24]; f32 f24; } C_35D178;
 typedef struct { u128_35D178 v0; u8 p10[0x10]; s32 w20; s32 w24; s32 w28; s32 w2C; s32 w30; } V_35D178;
@@ -40,3 +41,4 @@ M_35D178 *func_0035D178(u128_35D178 *a, u128_35D178 *b) {
     }
     return m;
 }
+/* localdecomp:end func_0035D178 */

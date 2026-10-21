@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00450FE0 */
 typedef struct { u8 padding[0x48]; void *entries[1]; } List_00450FE0;
 void func_00450FE0(void *object, s32 index, f32 *first, f32 *second, f32 *third, f32 *fourth, f32 *fifth, f32 *sixth, f32 *seventh, u8 *flag) {
     u8 value;
@@ -20,3 +22,4 @@ void func_00450FE0(void *object, s32 index, f32 *first, f32 *second, f32 *third,
         }
     }
 }
+/* localdecomp:end func_00450FE0 */

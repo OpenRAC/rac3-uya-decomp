@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0044FB80 */
 typedef int s128_44FB80 __attribute__((mode(TI)));
 
 typedef union {
@@ -33,3 +34,4 @@ void func_0044FB80(u8 *m, u8 *o) {
         *(s16 *)(o + 58) = func_003FC730();
     }
 }
+/* localdecomp:end func_0044FB80 */

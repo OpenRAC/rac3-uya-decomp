@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004DAA88 */
 extern s32 D_001A1ED0[];
 void func_004DAA88(unsigned long **pp, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7) {
     *(*pp)++ = 0x7000000000000001UL;
@@ -33,3 +34,4 @@ void func_004DAA88(unsigned long **pp, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s
     *(*pp)++ = 0;
     *(*pp)++ = 0x3F;
 }
+/* localdecomp:end func_004DAA88 */

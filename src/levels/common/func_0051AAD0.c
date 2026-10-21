@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0051AAD0 */
 typedef struct Object_0051AAD0 Object_0051AAD0;
 typedef struct {
     u8 padding[8];
@@ -35,3 +37,4 @@ void func_0051AAD0(State_0051AAD0 *state, s32 value) {
         }
     }
 }
+/* localdecomp:end func_0051AAD0 */

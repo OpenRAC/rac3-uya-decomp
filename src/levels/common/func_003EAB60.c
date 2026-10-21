@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003EAB60 */
 extern char *D_001DF884;
 int func_003EAB60(int i) {
     unsigned char *p = *(unsigned char **)(D_001DF884 + i * 32 + 28);
@@ -8,3 +10,4 @@ int func_003EAB60(int i) {
     }
     return r;
 }
+/* localdecomp:end func_003EAB60 */

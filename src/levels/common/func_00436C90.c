@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00436C90 */
 typedef struct N436C90 {
     u8 pad[28];
     struct N436C90 *next;
@@ -32,3 +33,4 @@ void func_00436C90(L436C90 *l, N436C90 **pp) {
     func_0040BBA8(*pp, 0, 64);
     *pp = 0;
 }
+/* localdecomp:end func_00436C90 */

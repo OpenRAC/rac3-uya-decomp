@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00348B90 */
 typedef struct {
     char pad0[0x10];
     char pos[0x2];
@@ -49,3 +50,4 @@ s32 func_00348B90(Moby *m) {
     }
     return count;
 }
+/* localdecomp:end func_00348B90 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00477268 */
 extern s32 func_00513548(s32, f32, f32);
 
 typedef struct { u8 pad[0x28B4]; s32 a; s32 b; } S_003DEEF0;
@@ -25,3 +26,4 @@ s32 func_00477268(void) {
     t = (den <= 0.0f) ? 0.0f : num / den;
     return func_00513548(0x90007, t * 0.1285f, 0.008f);
 }
+/* localdecomp:end func_00477268 */

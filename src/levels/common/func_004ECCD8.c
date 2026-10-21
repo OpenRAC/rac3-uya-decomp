@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004ECCD8 */
 typedef int s128_004ECCD8 __attribute__((mode(TI)));
 
 typedef struct {
@@ -28,3 +29,4 @@ void func_004ECCD8(void) {
         D_001A4BE0.out = D_001A6C20[D_001A4BE0.idx];
     }
 }
+/* localdecomp:end func_004ECCD8 */

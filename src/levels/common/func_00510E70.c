@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00510E70 */
 extern void func_00510E70();
 
 typedef struct { u8 b[16]; } B16_003E0930;
@@ -19,3 +20,4 @@ void func_00510E70(u8 **o) {
     *(B16_003E0930 *)*o = tmp;
     *(s32 *)(*o + 0x1BC) = -1;
 }
+/* localdecomp:end func_00510E70 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003C9350 */
 typedef struct Moby Moby;
 
 typedef struct {
@@ -30,3 +31,4 @@ void func_003C9350(Moby *m, int anim, int a2, int a3, float speed) {
         }
     }
 }
+/* localdecomp:end func_003C9350 */

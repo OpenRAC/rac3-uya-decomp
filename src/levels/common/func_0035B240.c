@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0035B240 */
 typedef int u128_35B240 __attribute__((mode(TI)));
 typedef struct {
     u128_35B240 v0;
@@ -53,3 +54,4 @@ M_35B240 *func_0035B240(s32 a0, u128_35B240 *a1, u128_35B240 *a2, f32 f12, s32 a
     }
     return m;
 }
+/* localdecomp:end func_0035B240 */

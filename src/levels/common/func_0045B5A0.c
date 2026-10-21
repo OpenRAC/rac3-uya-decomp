@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045B5A0 */
 typedef struct { s32 a; s32 b; } P_45B5A0;
 typedef struct { P_45B5A0 p[41]; u8 pad[4]; } E_45B5A0;
 typedef struct {
@@ -88,3 +89,4 @@ void func_0045B5A0(s32 id, s32 *out1, s32 *out2) {
         if (w) *out2 = D_00160C40_0045B5A0.f37404 + w;
     }
 }
+/* localdecomp:end func_0045B5A0 */

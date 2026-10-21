@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003FED80 */
 extern s32 func_003FECA8();
 void func_003FED80(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, f32 fparg0) {
     s32 var_4;
@@ -21,3 +22,4 @@ block_5:
         ((s32 (*)())func_003FECA8)(var_4, var_5, var_6);
     }
 }
+/* localdecomp:end func_003FED80 */

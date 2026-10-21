@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00417AD0 */
 typedef struct { s32 a, b; } E_38E;
 typedef struct { u8 pad[8]; E_38E e[10]; s32 f58, f5C, f60, f64, f68; u8 f6C; } S_38E;
 
@@ -15,3 +16,4 @@ s32 func_00417AD0(S_38E *p, s32 v) {
     p->f58 = i;
     return 1;
 }
+/* localdecomp:end func_00417AD0 */

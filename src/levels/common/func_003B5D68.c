@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003B5D68 */
 typedef struct O_003B5D68 O_003B5D68;
 
 typedef struct {
@@ -117,3 +118,4 @@ void func_003B5D68(s32 a0, S_003B5D68 *s, s32 n, f32 f) {
         }
     }
 }
+/* localdecomp:end func_003B5D68 */

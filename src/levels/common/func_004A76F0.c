@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004A76F0 */
 typedef struct Ent144 {
     s32 a;
     void (*fn)(struct Ent144 *);
@@ -35,3 +36,4 @@ void func_004A76F0(void) {
         }
     }
 }
+/* localdecomp:end func_004A76F0 */

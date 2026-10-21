@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0049A988 */
 typedef struct O_49A988 O_49A988;
 typedef struct { u8 p0[0xC]; void (*fn)(O_49A988 *); } VT_49A988;
 struct O_49A988 { s32 w0; VT_49A988 *vt; };
@@ -12,3 +14,4 @@ void func_0049A988(void) {
     func_0047B7B8(D_001D950C);
     func_0047B7B8(D_001D9510);
 }
+/* localdecomp:end func_0049A988 */

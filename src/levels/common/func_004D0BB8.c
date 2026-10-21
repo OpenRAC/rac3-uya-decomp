@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004D0BB8 */
 typedef struct {
     s32 base;
     s32 pad4;
@@ -33,3 +35,4 @@ void func_004D0BB8(Ring_004D0BB8 *r, s32 *p1, s32 *p2, s32 *p3, s32 *p4) {
     }
     func_0011EE40(r->sema);
 }
+/* localdecomp:end func_004D0BB8 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00490890 */
 extern u8 D_001D54B0[];
 
 int func_00490890(void) {
@@ -12,3 +13,4 @@ int func_00490890(void) {
     }
     return n;
 }
+/* localdecomp:end func_00490890 */

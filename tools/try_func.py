@@ -377,7 +377,14 @@ def resolve_relocations(elf, text):
             pending_hi = [h for h in pending_hi if h[1] != sym.name]
             resolved[off] = (ins & 0xFFFF0000) | ((addr + lo) & 0xFFFF)
         elif t == 7:  # R_MIPS_GPREL16
-            resolved[off] = (ins & 0xFFFF0000) | ((addr + sext16(ins & 0xFFFF) - targets.get().gp) & 0xFFFF)
+            rel = addr + sext16(ins & 0xFFFF) - targets.get().gp
+            if not -0x8000 <= rel < 0x8000:
+                # out of $gp's reach: the linker rejects it ("relocation
+                # truncated to fit"), so it must not pass as a match by its
+                # low 16 bits (build_common_c.py fails a masked relocation)
+                mask[off] = 0xFFFF0000
+                continue
+            resolved[off] = (ins & 0xFFFF0000) | (rel & 0xFFFF)
         else:
             mask[off] = 0
     for hoff, _, _ in pending_hi:  # HI16 without a LO16: fall back to masking

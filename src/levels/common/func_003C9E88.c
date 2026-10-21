@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003C9E88 */
 typedef int u128_3C9E88 __attribute__((mode(TI)));
 typedef struct { u8 pad[0x10]; u128_3C9E88 pos; u8 pad20[0xE0]; } M_3C9E88;
 typedef struct { u8 pad[0x30]; u128_3C9E88 x30; u8 pad40[0x40]; } E_3C9E88;
@@ -30,3 +32,4 @@ s32 func_003C9E88(O_3C9E88 *a0, s32 a1, s32 a2) {
     }
     return a0->x20 != old;
 }
+/* localdecomp:end func_003C9E88 */

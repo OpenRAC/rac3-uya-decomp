@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00432968 */
 extern s32 func_00432810();
 extern void func_00432968();
 
@@ -20,3 +21,4 @@ void func_00432968(u8 *a, s32 i, s32 j) {
     D_00142430_00399948[i].e[j].fC = *(s32 *)a;
     *(V8_399948 *)((u8 *)D_00142430_00399948 + 0x40 + j * 0x1C + i * 0xA0) = *(V8_399948 *)(a + 0xC);
 }
+/* localdecomp:end func_00432968 */

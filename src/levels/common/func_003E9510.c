@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003E9510 */
 typedef int u128_003E9510 __attribute__((mode(TI)));
 typedef struct { u8 pad[80]; u8 *o; u8 pad2[1036]; } Slot_003E9510;
 extern Slot_003E9510 D_001E2AC0[];
@@ -13,3 +15,4 @@ void func_003E9510(s32 a0, u128_003E9510 *a1) {
     }
     *(u128_003E9510 *)(*(u8 **)(r + 112) + 144) = *a1;
 }
+/* localdecomp:end func_003E9510 */

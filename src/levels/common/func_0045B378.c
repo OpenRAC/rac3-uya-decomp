@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045B378 */
 extern void func_0045B378(void);
 
 extern s32 func_0045B360_0039C170();
@@ -12,3 +13,4 @@ void func_0045B378(void) {
     D_001A30B0_0039C170[0].f90 = 0xFFFFFFFF;
     func_0013BAB8(D_00160C40[0].f79B8 + D_00160C40[0].f79A4, 0, &func_0045B360_0039C170, (unsigned long) ((long) &D_001A30B0_0039C170[0].f90 << 0x20) >> 0x20, D_00160C40[0].f79A4);
 }
+/* localdecomp:end func_0045B378 */

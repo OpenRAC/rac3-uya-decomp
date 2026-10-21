@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003EBE48 */
 typedef struct {
     u8 pad0[80];
     u8 *unk50;
@@ -82,3 +83,4 @@ fail:
     *(s16 *)(s + 38) = 1;
     return 0;
 }
+/* localdecomp:end func_003EBE48 */

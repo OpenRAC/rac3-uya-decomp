@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0033FA68 */
 extern s16 D_001E1950[];
 extern s16 D_001E1960[];
 extern s16 D_001E1968[];
@@ -18,3 +20,4 @@ void func_0033FA68(void) {
     D_001E1974[0] = D_001DD19C;
     D_001E1978 = 1.0f;
 }
+/* localdecomp:end func_0033FA68 */

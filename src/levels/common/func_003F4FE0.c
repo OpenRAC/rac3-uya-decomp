@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F4FE0 */
 typedef struct { u8 p0[0x20]; u8 b20; } H_3F4FE0;
 typedef struct { u8 p0[0x10]; f32 f10; u8 p14[0xC]; H_3F4FE0 *f20; u8 b24; u8 b25; u8 p26[0xA]; f32 f30, f34; u8 p38[8]; } E_3F4FE0;
 typedef struct { E_3F4FE0 e[14]; s32 n; } T_3F4FE0;
@@ -37,3 +38,4 @@ void func_003F4FE0(s32 a) {
     }
     if (D_001D6698 == 0) D_001E5200.n = 0;
 }
+/* localdecomp:end func_003F4FE0 */

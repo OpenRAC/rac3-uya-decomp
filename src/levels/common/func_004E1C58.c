@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004E1C58 */
 typedef struct {
     u8 pad0[128];
     f32 f128;
@@ -50,3 +51,4 @@ void func_004E1C58(s32 a, s32 n) {
         D_001A4BE0.h2502 = func_00440848(a);
     }
 }
+/* localdecomp:end func_004E1C58 */

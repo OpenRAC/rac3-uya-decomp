@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004E5118 */
 typedef int s128 __attribute__((mode(TI)));
 
 extern u8 D_00142CAE[];
@@ -71,3 +72,4 @@ go:
     *(s32 *)(e + 1524) = w60;
     *(s32 *)(e + 1500) = 1;
 }
+/* localdecomp:end func_004E5118 */

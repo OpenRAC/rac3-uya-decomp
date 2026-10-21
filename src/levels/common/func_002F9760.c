@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_002F9760 */
 typedef struct {
     u8 pad0[20];
     s32 total;
@@ -40,3 +42,4 @@ void func_002F9760(Obj_002F9760 *o) {
         o->f23 = (s->timer * s->f1E) / half;
     }
 }
+/* localdecomp:end func_002F9760 */

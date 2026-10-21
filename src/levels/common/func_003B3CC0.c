@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003B3CC0 */
 typedef struct {
     u8 pad[0x34];
     u16 h34;
@@ -14,3 +15,4 @@ void func_003B3CC0(Moby_003B3CC0 *m, s32 value) {
     func_00441FB8(m, 2, -1);
     m->h34 &= ~2;
 }
+/* localdecomp:end func_003B3CC0 */

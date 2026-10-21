@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0049FC48 */
 extern void func_00457288(s32, s32, s32, s32, s32);
 extern void func_00412C70(s32, s32, s32);
 extern s32 D_001D9764;
@@ -21,3 +22,4 @@ void func_0049FC48(s32 a0, s32 a1) {
         *(u16 *)(p + 52) |= 0x80;
     }
 }
+/* localdecomp:end func_0049FC48 */

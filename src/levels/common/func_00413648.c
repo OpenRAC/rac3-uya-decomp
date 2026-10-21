@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00413648 */
 extern int D_001EA740[];
 
 void func_00413648(int a0, int a1)
@@ -11,3 +12,4 @@ void func_00413648(int a0, int a1)
     D_001EA740[35] = x;
     D_001EA740[36] = y;
 }
+/* localdecomp:end func_00413648 */

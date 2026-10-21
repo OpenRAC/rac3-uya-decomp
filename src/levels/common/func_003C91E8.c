@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003C91E8 */
 extern u8 D_001E2AC0[];
 extern s32 func_0044FCD0(u8 *, u8 *, s32, s32, s32);
 extern void func_0044CB08(u8 *, u8 *, s32, s32);
@@ -42,3 +44,4 @@ void func_003C91E8(u8 *moby) {
         func_0044B5C8(moby, vars + 1232, 0, 0.03f, 0.3f);
     }
 }
+/* localdecomp:end func_003C91E8 */

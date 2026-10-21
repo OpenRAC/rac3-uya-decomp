@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00516260 */
 typedef struct {
     u32 key;
     void *val;
@@ -38,3 +39,4 @@ s32 func_00516260(Tbl_00516260 *t, u32 key, void *val) {
     }
     return 0;
 }
+/* localdecomp:end func_00516260 */

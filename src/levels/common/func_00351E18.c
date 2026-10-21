@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00351E18 */
 typedef struct S_351E18o {
     u8 pad0[0x10];
     s32 x10;
@@ -147,3 +149,4 @@ s32 func_00351E18(S_351E18m *m) {
     }
     return 0;
 }
+/* localdecomp:end func_00351E18 */

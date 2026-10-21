@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003D1188 */
 typedef struct { u8 pad[208]; f32 arr[6]; } S_003D1188;
 
 extern s16 *D_0021DEA0[];
@@ -87,3 +88,4 @@ check:
         *(s32 *)(s + 236) = 80;
     }
 }
+/* localdecomp:end func_003D1188 */

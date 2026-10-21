@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00494E68 */
 void func_00494E68(s32 *a0, s32 a1) {
     if (a1 < a0[3]) {
         a0[2] = a0[4] / 2 - 1;
@@ -12,3 +14,4 @@ void func_00494E68(s32 *a0, s32 a1) {
         a0[2] = a1 - a0[1];
     }
 }
+/* localdecomp:end func_00494E68 */

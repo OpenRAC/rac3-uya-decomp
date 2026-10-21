@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0042B8F0 */
 void func_0042B8F0(u8 *dst, u8 *a, u8 *b, u8 *mask)
 {
     s32 i;
@@ -22,3 +23,4 @@ void func_0042B8F0(u8 *dst, u8 *a, u8 *b, u8 *mask)
         mask++;
     }
 }
+/* localdecomp:end func_0042B8F0 */

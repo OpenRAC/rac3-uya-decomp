@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D1DE0 */
 extern s32 func_004D1DE0();
 extern u8 *D_001E1264[];
 
@@ -13,3 +14,4 @@ s32 func_004D1DE0(s32 unused, u8 *out) {
     *(unsigned long *)(out + 0x10) = t.b;
     return 1;
 }
+/* localdecomp:end func_004D1DE0 */

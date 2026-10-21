@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003B1158 */
 extern u8 *D_001E009C;
 extern void func_003B1B70(u8 *a0);
 extern u8 *func_003B1C38(u8 *a0);
@@ -16,3 +17,4 @@ void func_003B1158(u8 *moby) {
         }
     }
 }
+/* localdecomp:end func_003B1158 */

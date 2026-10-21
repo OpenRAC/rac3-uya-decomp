@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004A0270 */
 typedef struct {
     s32 offset;
     s32 data;
@@ -33,3 +34,4 @@ void func_004A0270(Table_4A0270 *table) {
         }
     }
 }
+/* localdecomp:end func_004A0270 */

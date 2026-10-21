@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0042B978 */
 typedef struct {
     u8 pad0[36];
     s32 flag;
@@ -22,3 +24,4 @@ s32 func_0042B978(void) {
     }
     return D_001F4020.flag != 0;
 }
+/* localdecomp:end func_0042B978 */

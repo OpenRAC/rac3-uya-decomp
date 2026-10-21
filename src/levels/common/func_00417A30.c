@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00417A30 */
 typedef struct { s32 first; s32 second; } Entry_00417A30;
 typedef struct {
     u8 pad[8];
@@ -21,3 +22,4 @@ s32 func_00417A30(Queue_00417A30 *queue, s32 *first_output, s32 *second_output) 
     queue->f5C = next_index;
     return 1;
 }
+/* localdecomp:end func_00417A30 */

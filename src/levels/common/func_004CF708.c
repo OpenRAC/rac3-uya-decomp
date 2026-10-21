@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CF708 */
 extern s32 func_004CF708();
 
 s32 func_004CF708(u8 *p) {
@@ -13,3 +14,4 @@ s32 func_004CF708(u8 *p) {
         return 1;
     }
 }
+/* localdecomp:end func_004CF708 */

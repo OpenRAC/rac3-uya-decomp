@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00432730 */
 extern s32 func_00432730();
 
 s32 func_00432730(s32 *p) {
@@ -14,3 +15,4 @@ s32 func_00432730(s32 *p) {
     }
     return n + 8;
 }
+/* localdecomp:end func_00432730 */

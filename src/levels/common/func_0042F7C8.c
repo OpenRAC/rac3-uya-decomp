@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0042F7C8 */
 extern s32 D_00142438[];
 extern u8 D_001D672C;
 
@@ -18,3 +19,4 @@ void func_0042F7C8(void) {
     }
     if (f & 0x2000) { D_001D4CE8_003967C0 = 0x10; }
 }
+/* localdecomp:end func_0042F7C8 */

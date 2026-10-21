@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003B1D10 */
 typedef struct { char pad[48]; char data[80]; } S_003B1D10;
 extern char *D_001DE670;
 extern S_003B1D10 *D_001E0180;
@@ -14,3 +16,4 @@ char *func_003B1D10(void)
     }
     return D_001E0180[i].data;
 }
+/* localdecomp:end func_003B1D10 */

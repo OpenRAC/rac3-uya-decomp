@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0049AB20 */
 typedef struct {
     s32 f0;
     s32 f4;
@@ -23,3 +24,4 @@ void func_0049AB20(void)
         func_00512D70(D_001D94FC, 1);
     }
 }
+/* localdecomp:end func_0049AB20 */

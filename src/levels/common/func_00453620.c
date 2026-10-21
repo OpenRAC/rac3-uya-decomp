@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00453620 */
 typedef struct {
     void *obj;
     u8 count;
@@ -98,3 +99,4 @@ void *func_00453620(void *self, s32 idx, s32 *outTeam, s32 team, s32 a4, s32 a5,
     }
     return best;
 }
+/* localdecomp:end func_00453620 */

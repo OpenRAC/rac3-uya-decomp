@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003DE3A8 */
 typedef int u128_3DE3A8 __attribute__((mode(TI)));
 typedef struct { u8 p0[0x24]; f32 f24; } C_3DE3A8;
 typedef struct { u128_3DE3A8 v0; u128_3DE3A8 v10; s16 h20; u8 p22[6]; s32 w28; } V_3DE3A8;
@@ -56,3 +57,4 @@ M_3DE3A8 *func_003DE3A8(u128_3DE3A8 *pos, u128_3DE3A8 *vel) {
     }
     return m;
 }
+/* localdecomp:end func_003DE3A8 */

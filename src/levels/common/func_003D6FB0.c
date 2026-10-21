@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003D6FB0 */
 typedef int u128_3D6FB0 __attribute__((mode(TI)));
 struct M_3D6FB0;
 typedef struct { struct M_3D6FB0 *arr[15]; s16 h3C; u8 p3E[2]; f32 f40; f32 f44; u8 b48; u8 b49; u8 b4A; u8 b4B; } V_3D6FB0;
@@ -38,3 +39,4 @@ M_3D6FB0 *func_003D6FB0(s32 n, M_3D6FB0 **list, s32 chance, s32 a, s32 b, f32 x,
     func_00441FB8(m, 0, -1);
     return m;
 }
+/* localdecomp:end func_003D6FB0 */

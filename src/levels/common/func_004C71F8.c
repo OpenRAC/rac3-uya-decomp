@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C71F8 */
 typedef struct { s32 a[64]; s32 b[72]; s32 count; s32 flag; } S_4C71F8;
 
 void func_004C71F8(S_4C71F8 *s, s32 i) {
@@ -9,3 +10,4 @@ void func_004C71F8(S_4C71F8 *s, s32 i) {
         s->flag = 0;
     }
 }
+/* localdecomp:end func_004C71F8 */

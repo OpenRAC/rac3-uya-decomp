@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CF890 */
 extern s32 func_004CFA08();
 s32 func_004CF890(void *ctx, s32 p, s32 a, s32 q, s32 d, s32 r, s32 b, s32 s, s32 c) {
     s32 over;
@@ -27,3 +28,4 @@ s32 func_004CF890(void *ctx, s32 p, s32 a, s32 q, s32 d, s32 r, s32 b, s32 s, s3
     }
     return b + c;
 }
+/* localdecomp:end func_004CF890 */

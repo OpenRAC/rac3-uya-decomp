@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0039CB90 */
 typedef struct {
     float x, y, z, w;
 } Vec4;
@@ -30,3 +31,4 @@ void func_0039CB90(Obj *obj) {
         func_0040C0F0(&D_001E2100[i], &D_001E2100[i], D_001DE168);
     }
 }
+/* localdecomp:end func_0039CB90 */

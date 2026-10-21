@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00419D98 */
 typedef struct {
     u8 pad[0x14];
     int a[8];
@@ -37,3 +38,4 @@ void func_00419D98(int n) {
     }
     ((S_419D98 *)D_001DFD98[0])->c[n] = 0;
 }
+/* localdecomp:end func_00419D98 */

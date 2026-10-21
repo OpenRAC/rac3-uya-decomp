@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0041D430 */
 extern void func_0041A278();
 
 // near miss: 17 diff, N mode default flags; only regalloc: retail s3=end,s4=-6,s5=10 and lui/addiu of D_002E6110 after the jal; mine s3=10,s4=-6,s5=end and base before jal
@@ -59,3 +60,4 @@ skip:
     }
     return cnt;
 }
+/* localdecomp:end func_0041D430 */

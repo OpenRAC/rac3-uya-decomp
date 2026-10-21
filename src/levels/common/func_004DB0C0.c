@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004DB0C0 */
 typedef struct { s32 f0; s32 f4; s32 f8; } T_3D3780;
 extern T_3D3780 D_001A1ED0_003D3780;
 s32 func_004DB0C0(long **pp, s32 w, s32 h, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 c) {
@@ -35,3 +36,4 @@ s32 func_004DB0C0(long **pp, s32 w, s32 h, s32 a3, s32 a4, s32 a5, s32 a6, s32 a
     *(*pp)++ = 0;
     *(*pp)++ = 0x3F;
 }
+/* localdecomp:end func_004DB0C0 */

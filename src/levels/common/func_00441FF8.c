@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00441FF8 */
 void func_00441FF8(u8 *p, s32 a1, s32 a2) {
     if (p[32] != a1) {
         u8 f = p[190];
@@ -14,3 +15,4 @@ void func_00441FF8(u8 *p, s32 a1, s32 a2) {
         }
     }
 }
+/* localdecomp:end func_00441FF8 */

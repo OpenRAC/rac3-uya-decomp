@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00513D28 */
 typedef struct UnkObj513D28 UnkObj513D28;
 
 typedef struct {
@@ -47,3 +48,4 @@ int func_00513D28(int id) {
     }
     return ret;
 }
+/* localdecomp:end func_00513D28 */

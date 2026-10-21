@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0046E408 */
 typedef struct {
     f32 *p;
     f32 radius;
@@ -39,3 +40,4 @@ void func_0046E408(Obj_0046E408 *m) {
         func_0045E580(m);
     }
 }
+/* localdecomp:end func_0046E408 */

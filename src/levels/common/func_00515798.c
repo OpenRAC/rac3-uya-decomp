@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00515798 */
 typedef struct { u32 key; void *val; } HE_003E4890;
 typedef struct { s32 f0; s32 n; HE_003E4890 e[3]; } HT_003E4890;
 extern u8 D_001E24CC;
@@ -25,3 +26,4 @@ void *func_00515798(HT_003E4890 *t, u32 key) {
     }
     return 0;
 }
+/* localdecomp:end func_00515798 */

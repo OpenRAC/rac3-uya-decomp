@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004DC1C0 */
 typedef struct {
     u8 p0[9700];
     u8 b9700;
@@ -60,3 +61,4 @@ void func_004DC1C0(s32 amount) {
     if (D_001A4BE0.f10320 < 0) D_001A4BE0.f10320 = 0;
     func_00477B38(360);
 }
+/* localdecomp:end func_004DC1C0 */

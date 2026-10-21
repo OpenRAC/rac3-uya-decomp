@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045B3D0 */
 extern void func_0045B3D0(s32);
 extern void func_0045B360();
 
@@ -24,3 +25,4 @@ void func_0045B3D0(s32 idx) {
         D_001A30B0_0039C210->a[idx + 1] = 0;
     }
 }
+/* localdecomp:end func_0045B3D0 */

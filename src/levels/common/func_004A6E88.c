@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004A6E88 */
 extern u8 D_001A30B0[];
 void func_004A6E88(u32 i) {
     if (i < 52) {
@@ -14,3 +15,4 @@ void func_004A6E88(u32 i) {
         if (s != 0 && s != 6) e[0xD0] = 4;
     }
 }
+/* localdecomp:end func_004A6E88 */

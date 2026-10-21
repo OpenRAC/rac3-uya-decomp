@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004CB610 */
 typedef struct {
     u8 padding[0x18];
     f32 f18;
@@ -33,3 +35,4 @@ void func_004CB610(State_004CB610 *state) {
     state->f20 = 0;
     state->f1C = 1;
 }
+/* localdecomp:end func_004CB610 */

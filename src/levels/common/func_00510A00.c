@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00510A00 */
 typedef struct { u8 b[16]; } B16_003E0550;
 typedef struct { B16_003E0550 hdr; s32 a[16]; s32 b[16]; u8 p90[0x4C]; s32 c[16]; s32 d[16]; s32 e[16]; u8 f[16]; u8 g[16]; s32 f1BC; u32 f1C0; u8 p1C4[0x41D4 - 0x1C4]; s32 f41D4; s32 f41D8; } O_003E0550;
 extern void func_00510E70();
@@ -28,3 +29,4 @@ s32 func_00510A00(O_003E0550 **o, u32 mode) {
     }
     return 0;
 }
+/* localdecomp:end func_00510A00 */

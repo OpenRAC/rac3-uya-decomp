@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0035C9F0 */
 typedef struct S_35C9F0vec {
     f32 x;
     f32 y;
@@ -151,3 +152,4 @@ void func_0035C9F0(S_35C9F0m *m) {
     }
     func_004026A0(func_0035CDA0, m);
 }
+/* localdecomp:end func_0035C9F0 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D4658 */
 extern s8 D_001E1349[];
 
 void func_004D4658(void) {
@@ -14,3 +15,4 @@ void func_004D4658(void) {
         var_v0 -= 1;
     } while (var_v1 >= 0);
 }
+/* localdecomp:end func_004D4658 */

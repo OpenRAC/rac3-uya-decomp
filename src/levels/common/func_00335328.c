@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00335328 */
 typedef void (*Fn_00335328)(s32, s32, s32);
 
 extern s32 *D_0021F740[];
@@ -47,3 +48,4 @@ s32 func_00335328(u8 *a0, u8 *a1, s32 a2, u8 *a3, s32 t0, u8 *t1, u8 *t2) {
     }
     return 0;
 }
+/* localdecomp:end func_00335328 */

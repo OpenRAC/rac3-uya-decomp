@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00456320 */
 extern s32 func_004A7200();
 
 typedef struct { u16 id; u16 t; } E_C1950;
@@ -21,3 +22,4 @@ void func_00456320(O_C1950 *o, s32 idx, u16 t) {
         }
     }
 }
+/* localdecomp:end func_00456320 */

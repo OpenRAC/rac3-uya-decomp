@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00437AB8 */
 typedef struct {
     f32 v[4];
 } __attribute__((aligned(16))) Vec4;
@@ -22,3 +23,4 @@ void func_00437AB8(void)
     D_001E00F0[1] = func_0040C3E0(angle) * 0.14f;
     D_001E00F0[2] = -0.99f;
 }
+/* localdecomp:end func_00437AB8 */

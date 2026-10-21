@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003FE7B0 */
 extern void func_0040BE90(f32 *, void *, f32);
 extern void func_003FE7B0(f32 *, void *);
 
@@ -32,3 +33,4 @@ void func_003FE7B0(f32 *out, void *arg1) {
     out[1] = w[1] * 16.0f;
     out[0] = w[0] * 16.0f;
 }
+/* localdecomp:end func_003FE7B0 */

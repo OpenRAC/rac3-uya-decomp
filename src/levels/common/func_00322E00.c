@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00322E00 */
 typedef struct { u8 pad[80]; s32 idx; } Sub_00322E00;
 typedef struct { u8 pad[104]; Sub_00322E00 *sub; } Moby_00322E00;
 extern u8 D_001A30B0[];
@@ -12,3 +14,4 @@ void func_00322E00(Moby_00322E00 *m) {
     }
     s->idx = -1;
 }
+/* localdecomp:end func_00322E00 */

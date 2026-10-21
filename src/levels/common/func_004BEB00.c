@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004BEB00 */
 typedef struct VObj_4BEB00 VObj_4BEB00;
 typedef struct { u8 p0[12]; void (*f)(VObj_4BEB00 *); } VT_4BEB00;
 struct VObj_4BEB00 { s32 p0; VT_4BEB00 *vt; };
@@ -17,3 +19,4 @@ void func_004BEB00(void) {
     o->vt->f(o);
     func_0045CA60(1);
 }
+/* localdecomp:end func_004BEB00 */

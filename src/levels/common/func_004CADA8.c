@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CADA8 */
 extern s32 func_004CAB30(void *);
 
 void func_004CADA8(void *arg0) {
@@ -18,3 +19,4 @@ void func_004CADA8(void *arg0) {
         func_004CAB28(arg0);
     }
 }
+/* localdecomp:end func_004CADA8 */

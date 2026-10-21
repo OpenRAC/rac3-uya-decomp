@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00458EC8 */
 extern s32 D_001D7DD8;
 extern s32 D_001D7DDC;
 extern f32 D_001D7DD4;
@@ -19,3 +21,4 @@ void func_00458EC8(void) {
     *(volatile s32 *)0x10000010 = 129;
     *(volatile s32 *)0x10000000 = 0;
 }
+/* localdecomp:end func_00458EC8 */

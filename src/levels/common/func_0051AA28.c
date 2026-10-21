@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0051AA28 */
 extern void *func_0051AA28();
 extern void func_0051ABA0();
 extern void func_0051AAD0();
@@ -34,3 +35,4 @@ void *func_0051AA28(void *arg0)
   *((s8 *) (((u8 *) (*new_var)) + 0x4D)) = 0;
   return *new_var;
 }
+/* localdecomp:end func_0051AA28 */

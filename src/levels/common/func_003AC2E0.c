@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003AC2E0 */
 typedef int (*F_3AC2E0)(int);
 
 typedef struct {
@@ -37,3 +38,4 @@ int func_003AC2E0(void *a0, S_3AC2E0 *a1) {
     }
     return 0;
 }
+/* localdecomp:end func_003AC2E0 */

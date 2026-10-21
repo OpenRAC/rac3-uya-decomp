@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0050BE30 */
 typedef struct {
     char pad0[0x10];
     u8 count;
@@ -50,3 +51,4 @@ void func_0050BE30(s32 a, s32 b) {
     m->unk58 = func_004DBFE8(m, m->unk42, m->unk40, &D_00252900[0]);
     m->unk5C = func_004DBFE8(m, m->unk43, m->unk41, &D_00252900[1]);
 }
+/* localdecomp:end func_0050BE30 */

@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004EA9A8 */
 extern u8 D_001A4BE0[];
 extern f32 func_0040BF38(void *);
 f32 func_004EA9A8(void) {
@@ -13,3 +15,4 @@ f32 func_004EA9A8(void) {
     if (1.0f < r) r = 1.0f;
     return r;
 }
+/* localdecomp:end func_004EA9A8 */

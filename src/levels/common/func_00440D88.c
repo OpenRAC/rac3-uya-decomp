@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00440D88 */
 typedef struct {
     u8 pad0[10];
     u8 bA;
@@ -34,3 +36,4 @@ void func_00440D88(s32 a0, s32 a1) {
         dst->a48[i] = src->a48[i];
     }
 }
+/* localdecomp:end func_00440D88 */

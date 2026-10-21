@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D7F38 */
 typedef struct {
     char s0[16];
     char s16[16];
@@ -62,3 +63,4 @@ s32 func_004D7F38(s32 a, s32 b) {
     }
     return 1;
 }
+/* localdecomp:end func_004D7F38 */

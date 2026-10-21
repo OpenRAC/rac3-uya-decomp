@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004C7180 */
 s32 func_004C7180(s32 *a0, s32 a1) {
     s32 ret = -1;
     s32 i;
@@ -14,3 +16,4 @@ s32 func_004C7180(s32 *a0, s32 a1) {
     }
     return ret;
 }
+/* localdecomp:end func_004C7180 */

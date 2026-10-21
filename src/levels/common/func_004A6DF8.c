@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004A6DF8 */
 typedef struct {
     u8 pad0[28];
     u8 *owner;
@@ -29,3 +30,4 @@ void func_004A6DF8(u8 *obj, s32 check)
     }
     obj[109] = 255;
 }
+/* localdecomp:end func_004A6DF8 */

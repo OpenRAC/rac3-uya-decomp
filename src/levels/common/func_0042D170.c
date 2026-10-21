@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0042D170 */
 void func_0042D170(u8 *dst, s32 idx, u8 *base, s16 *tbl) {
     u8 *src;
     s32 count;
@@ -55,3 +56,4 @@ void func_0042D170(u8 *dst, s32 idx, u8 *base, s16 *tbl) {
         }
     }
 }
+/* localdecomp:end func_0042D170 */

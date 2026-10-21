@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00308180 */
 extern f32 func_0040CEC8(f32, f32);
 extern f32 func_0040C3C8(f32);
 extern f32 func_0040C3E0(f32);
@@ -25,3 +26,4 @@ void func_00308180(s32 a0, f32 *e, s32 n)
         p[26] = -func_0040C3E0(p[11]) * p[17];
     }
 }
+/* localdecomp:end func_00308180 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_005149B8 */
 extern s32 func_005148E8(s32, s32, s32, f32, f32, f32, f32);
 extern s32 func_00512AB0(s32, s32, s32);
 extern s32 func_005149B8(s32, s32, s32, f32, f32, f32, f32, f32, f32);
@@ -19,3 +20,4 @@ s32 func_005149B8(s32 a, s32 b, s32 c, f32 d, f32 e, f32 f, f32 g, f32 h, f32 i)
     t = ((s32 (*)(s32, s32, s32))func_00512AB0)(a, 0x40, 1) != 0;
     return r & t;
 }
+/* localdecomp:end func_005149B8 */

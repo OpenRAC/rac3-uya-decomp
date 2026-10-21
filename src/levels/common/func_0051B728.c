@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0051B728 */
 s32 func_0051B728(void *arg0, s32 arg1) {
     s32 (*temp_v0)(s32);
     s32 temp_v1;
@@ -17,3 +18,4 @@ s32 func_0051B728(void *arg0, s32 arg1) {
     }
     return 0;
 }
+/* localdecomp:end func_0051B728 */

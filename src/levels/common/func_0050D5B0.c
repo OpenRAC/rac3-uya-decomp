@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0050D5B0 */
 typedef struct {
     f32 m0[4][4];
     f32 m1[4][4];
@@ -24,3 +25,4 @@ void func_0050D5B0(f32 *dst, f32 *src, f32 scale) {
         break;
     }
 }
+/* localdecomp:end func_0050D5B0 */

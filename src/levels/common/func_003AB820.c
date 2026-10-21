@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003AB820 */
 void func_003AB820(void *a0, void *a1, f32 *a2, f32 *a3) {
     *(s32 *)a3 = 0;
     if (a3[1] > a2[3]) {
@@ -12,3 +14,4 @@ void func_003AB820(void *a0, void *a1, f32 *a2, f32 *a3) {
         a3[2] = a2[4];
     }
 }
+/* localdecomp:end func_003AB820 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C45F8 */
 typedef struct {
     u8 pad[64];
     s32 handle;
@@ -18,3 +19,4 @@ void func_004C45F8(u32 i) {
         e->handle = 0;
     }
 }
+/* localdecomp:end func_004C45F8 */

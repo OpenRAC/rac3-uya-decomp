@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_005121D8 */
 extern s32 func_005121D8();
 
 // Define the context structure passing through $a0
@@ -22,3 +23,4 @@ s32 func_005121D8(CounterContext* ctx) {
     // 14: lw $v0, 0($a0) (Scheduled cleanly into the jr $ra delay slot)
     return ctx->counter;
 }
+/* localdecomp:end func_005121D8 */

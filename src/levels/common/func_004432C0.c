@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004432C0 */
 typedef struct {
     f32 x;
     f32 y;
@@ -25,3 +26,4 @@ s32 func_004432C0(Vec_004432C0 *p, Vec_004432C0 *v, s32 n) {
     }
     return inside;
 }
+/* localdecomp:end func_004432C0 */

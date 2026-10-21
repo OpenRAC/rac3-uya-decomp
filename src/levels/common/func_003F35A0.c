@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003F35A0 */
 typedef int u128_t __attribute__((mode(TI)));
 
 void func_0040BD58(void *, void *, s32);
@@ -24,3 +26,4 @@ void func_003F35A0(s32 idx) {
     D_001E2A40[1] = D_001E2AC0_003809F0[idx].q1;
     func_0040BD58(&D_001E2A40[2], D_001E2AC0_003809F0[idx].f380, 0x30);
 }
+/* localdecomp:end func_003F35A0 */

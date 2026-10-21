@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00490CF8 */
 extern void func_00433EA0(u8 *, u32);
 void func_00433EA0(u8 *, u32);
 
@@ -14,3 +15,4 @@ s32 func_00490CF8(s32 *p) {
     p[0] = v;
     return 1;
 }
+/* localdecomp:end func_00490CF8 */

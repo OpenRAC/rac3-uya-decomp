@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00495A48 */
 void func_00495A48(void *arg0) {
     f32 temp_f0;
     f32 temp_f1;
@@ -33,3 +34,4 @@ void func_00495A48(void *arg0) {
         *((s32 *) (((u8 *) arg0) + 4)) = (s32) ((temp_5 < temp_4) ? (temp_5) : (temp_4 - 1));
     }
 }
+/* localdecomp:end func_00495A48 */

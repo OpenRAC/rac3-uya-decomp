@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003C2480 */
 extern s32 D_002BB460[];
 s32 *func_003C2480(s32 a0, s32 a1, s32 *a2) {
     if (a1 == 0) {
@@ -7,3 +9,4 @@ s32 *func_003C2480(s32 a0, s32 a1, s32 *a2) {
     }
     return 0;
 }
+/* localdecomp:end func_003C2480 */

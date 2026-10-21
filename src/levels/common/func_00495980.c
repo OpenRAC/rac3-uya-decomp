@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00495980 */
 void func_00495980(void *arg0) {
     f32 var_f0;
     f32 var_f1;
@@ -28,3 +29,4 @@ void func_00495980(void *arg0) {
     }
     (*(f32 *)((u8 *)(arg0) + 0x58)) = (f32) ((*(f32 *)((u8 *)(arg0) + 0x58)) + (var_f1 * var_f0));
 }
+/* localdecomp:end func_00495980 */

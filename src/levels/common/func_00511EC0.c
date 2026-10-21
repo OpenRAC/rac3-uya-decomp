@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00511EC0 */
 extern s32 *func_00511EC0();
 
 s32 *func_00511EC0(s32 *p, s32 a, s32 b, s32 c, s32 d) {
@@ -10,3 +11,4 @@ s32 *func_00511EC0(s32 *p, s32 a, s32 b, s32 c, s32 d) {
     p[0] = 0;
     return p;
 }
+/* localdecomp:end func_00511EC0 */

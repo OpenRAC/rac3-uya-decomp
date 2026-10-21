@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0049CF28 */
 typedef struct { char *c0; char *c1; char *c2; } R_49CF28;
 extern R_49CF28 D_00236B38[];
 extern R_49CF28 D_00236B80[];
@@ -69,3 +70,4 @@ void func_0049CF28(void) {
     D_00236B80[10].c2 = func_004181A0(6175);
     D_00236B80[11].c2 = func_004181A0(2278);
 }
+/* localdecomp:end func_0049CF28 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_005192A0 */
 extern void func_005193E8(void *, s32, s32);
 extern void func_00519420(void *, s32, s32);
 extern void func_00519480(void *, f32, f32);
@@ -42,3 +43,4 @@ O_3E8420 *func_005192A0(O_3E8420 *p) {
     p->f24 = 0.005f;
     return p;
 }
+/* localdecomp:end func_005192A0 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0050DA08 */
 typedef struct {
     u8 pad0[0x8A];
     u16 h8A;
@@ -28,3 +29,4 @@ s32 func_0050DA08(s32 i) {
     }
     return D_001427F0.arr[i];
 }
+/* localdecomp:end func_0050DA08 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0049AD60 */
 typedef struct {
     s32 f0;
     s32 f4;
@@ -32,3 +33,4 @@ void func_0049AD60(void) {
         }
     } while (cont);
 }
+/* localdecomp:end func_0049AD60 */

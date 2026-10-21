@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003AB348 */
 typedef void (*F_3AB348)(void *);
 
 typedef struct {
@@ -68,3 +69,4 @@ void func_003AB348(M_3AB348 *a0, int a1) {
         func_00436220(a0);
     }
 }
+/* localdecomp:end func_003AB348 */

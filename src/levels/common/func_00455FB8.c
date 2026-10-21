@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00455FB8 */
 extern f32 func_0040BFE8(void *, void *);
 
 u8 *func_00455FB8(u8 *me, u8 **list, s32 n, s32 *out) {
@@ -29,3 +30,4 @@ u8 *func_00455FB8(u8 *me, u8 **list, s32 n, s32 *out) {
     }
     return best;
 }
+/* localdecomp:end func_00455FB8 */

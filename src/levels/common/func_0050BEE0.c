@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0050BEE0 */
 typedef struct {
     u8 pad[16];
     u8 max;
@@ -38,3 +39,4 @@ void func_0050BEE0(s32 a, s32 b) {
         }
     }
 }
+/* localdecomp:end func_0050BEE0 */

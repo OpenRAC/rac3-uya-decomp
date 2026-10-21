@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003AD948 */
 typedef struct {
     int f0;
     f32 f4;
@@ -45,3 +46,4 @@ void func_003AD948(u8 *m) {
         break;
     }
 }
+/* localdecomp:end func_003AD948 */

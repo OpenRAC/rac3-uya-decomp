@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004A6D20 */
 extern u8 D_001A30B0[];
 
 int func_004A6D20(int a0, int a1)
@@ -15,3 +16,4 @@ int func_004A6D20(int a0, int a1)
     }
     return 0;
 }
+/* localdecomp:end func_004A6D20 */

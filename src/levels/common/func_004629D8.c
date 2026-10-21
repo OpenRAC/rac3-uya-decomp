@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004629D8 */
 typedef struct {
     f32 f0;
     f32 f4;
@@ -44,3 +45,4 @@ void func_004629D8(P_4629D8 *p) {
     p->b8 = (s32)(q->f8 * 255.0f);
     p->f18 -= 0.02f;
 }
+/* localdecomp:end func_004629D8 */

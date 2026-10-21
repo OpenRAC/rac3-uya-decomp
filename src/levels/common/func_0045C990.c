@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045C990 */
 extern s32 func_0045C990();
 
 typedef struct { u8 b[4]; } B4_0039D5F8;
@@ -21,3 +22,4 @@ s32 func_0045C990(s32 a, s32 b, s32 c) {
     func_0013B620();
     return 1;
 }
+/* localdecomp:end func_0045C990 */

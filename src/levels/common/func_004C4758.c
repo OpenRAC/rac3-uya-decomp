@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C4758 */
 extern s32 func_004C4710(void *, s32);
 
 s32 func_004C4758(void *ctx, s32 *list, s32 n, s32 type) {
@@ -19,3 +20,4 @@ s32 func_004C4758(void *ctx, s32 *list, s32 n, s32 type) {
     }
     return best;
 }
+/* localdecomp:end func_004C4758 */

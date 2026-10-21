@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00511F58 */
 extern s32 func_00511F58();
 typedef struct O { struct VT *vt; u8 pad[0x18]; } O;
 struct VT { u8 pad[0x10]; void (*fn)(O *, s32); };
@@ -20,3 +21,4 @@ s32 func_00511F58(S_E19C8 *s, s32 n) {
     }
     return r;
 }
+/* localdecomp:end func_00511F58 */

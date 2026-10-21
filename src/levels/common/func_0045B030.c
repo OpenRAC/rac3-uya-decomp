@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0045B030 */
 typedef struct { u8 p[0x24]; } T36_45B030;
 typedef struct { s32 k; s32 f4; T36_45B030 *f8; } E12_45B030;
 extern E12_45B030 D_002F6880[];
@@ -20,3 +22,4 @@ void func_0045B030(s32 key, s32 flag) {
         D_001FD980[D_001E0080] = D_002F6880[i].f8 - D_002F73B4;
     }
 }
+/* localdecomp:end func_0045B030 */

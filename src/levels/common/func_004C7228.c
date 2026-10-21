@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C7228 */
 typedef struct {
     int a[64];
     int b[64];
@@ -46,3 +47,4 @@ void func_004C7228(S_4C7228 *s) {
         s->b[bi] = 1;
     }
 }
+/* localdecomp:end func_004C7228 */

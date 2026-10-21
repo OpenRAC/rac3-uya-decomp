@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0050F828 */
 typedef struct {
     u8 pad0[52];
     s32 x34;
@@ -30,3 +31,4 @@ void func_0050F828(s32 *out, s32 *total, s32 *acc) {
     }
     *total = sum;
 }
+/* localdecomp:end func_0050F828 */

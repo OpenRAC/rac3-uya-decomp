@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004071B0 */
 typedef s32 (*Fn004071B0)(s32, s32, s32, s32, s32);
 extern Fn004071B0 *func_00438488(s32, s32, s32);
 s32 func_004071B0(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0) {
@@ -8,3 +10,4 @@ s32 func_004071B0(s32 a0, s32 a1, s32 a2, s32 a3, s32 t0) {
     }
     return (*f)(a0, a1, a2, a3, t0);
 }
+/* localdecomp:end func_004071B0 */

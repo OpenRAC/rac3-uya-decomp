@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004BD808 */
 typedef struct {
     s32 id;
     s32 f4;
@@ -24,3 +25,4 @@ void func_004BD808(s32 alpha, Ent4BD808 *list) {
         }
     }
 }
+/* localdecomp:end func_004BD808 */

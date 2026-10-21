@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D0538 */
 extern void *func_0011A0B0(void *destination, const void *source, u32 count);
 
 s32 func_004D0538(u8 *first_output, s32 first_size, u8 *second_output, s32 offset, u8 *first_input, s32 first_length, u8 *second_input, s32 second_length) {
@@ -23,3 +24,4 @@ s32 func_004D0538(u8 *first_output, s32 first_size, u8 *second_output, s32 offse
     }
     return first_length + second_length;
 }
+/* localdecomp:end func_004D0538 */

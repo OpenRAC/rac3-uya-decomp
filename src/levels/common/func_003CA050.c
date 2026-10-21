@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003CA050 */
 typedef struct {
     char pad0[1360];
     void *other;
@@ -28,3 +29,4 @@ void func_003CA050(Moby003CA050 *m)
         func_00407180(d->other, v, m->col, 0, 2, 3, 45, 45, 0xFF8040, 0x8F1010);
     }
 }
+/* localdecomp:end func_003CA050 */

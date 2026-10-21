@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004DF808 */
 typedef int u128_t __attribute__((mode(TI)));
 
 typedef struct {
@@ -26,3 +27,4 @@ void func_004DF808(u128_t *v, s32 n, f32 x, f32 y) {
         s->count++;
     }
 }
+/* localdecomp:end func_004DF808 */

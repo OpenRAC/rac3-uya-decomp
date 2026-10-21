@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CF768 */
 extern void func_004CF768(s32 *);
 
 extern s32 func_004CFF10(void);
@@ -13,3 +14,4 @@ void func_004CF768(s32 *p) {
         else if (t == 3) func_004CFCB0(p);
     }
 }
+/* localdecomp:end func_004CF768 */

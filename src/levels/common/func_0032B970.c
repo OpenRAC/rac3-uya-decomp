@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0032B970 */
 typedef struct {
     f32 x, y, z, w;
 } Vec4;
@@ -29,3 +30,4 @@ void func_0032B970(Moby *m) {
     func_0040BE90(&v, vars, 0.25f);
     func_00465020(&m->pos, &v, 0x88A0A0A0, func_004408C0(0.05f, 0.1f) * 210000.0f, d);
 }
+/* localdecomp:end func_0032B970 */

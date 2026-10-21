@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0044EBF8 */
 extern u8 D_001A4C60[];
 extern u32 D_001D545C;
 extern s32 D_002BBDE0[];
@@ -22,3 +23,4 @@ void func_0044EBF8(u8 *a0, s32 a1, f32 f) {
     n = (D_002BBDE0[lvl] * a1 - 1) * ((D_001426BA[0] + 1) << g[10312]);
     func_0044A0E8(a0, n, n, k, -1, 0, f);
 }
+/* localdecomp:end func_0044EBF8 */

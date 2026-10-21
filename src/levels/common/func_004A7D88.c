@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004A7D88 */
 extern s32 D_0023ACF0[];
 
 typedef struct O2_3A02D8 { u8 pad[8]; void *f8; } O2_3A02D8;
@@ -46,3 +47,4 @@ void func_004A7D88(O_3A02D8 *o) {
     o->f34 |= 0x20;
     o->f68->f8 = (u8 *)o->f68 + 0x30;
 }
+/* localdecomp:end func_004A7D88 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003BA8B0 */
 typedef struct {
     u8 pad0[28];
     f32 phase;
@@ -69,3 +70,4 @@ void func_003BA8B0(Moby_003BA8B0 *self) {
         }
     }
 }
+/* localdecomp:end func_003BA8B0 */

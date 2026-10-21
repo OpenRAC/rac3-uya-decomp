@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045C030 */
 typedef struct { u32 f0; s16 f4; s16 f6; s16 f8; s16 fA; s16 fC; u8 fE[2]; } S_39CC98;
 extern void func_0013C118(s32);
 extern void func_0013CC10(s32);
@@ -55,3 +56,4 @@ void func_0045C030(S_39CC98 *s) {
     }
     if (s->fA == 0) s->f4 = -1;
 }
+/* localdecomp:end func_0045C030 */

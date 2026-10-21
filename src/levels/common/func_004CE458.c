@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CE458 */
 typedef struct Obj_004CE458 Obj_004CE458;
 typedef struct {
     u8 pad[8];
@@ -26,3 +27,4 @@ void func_004CE458(Obj_004CE458 (*base)[26], s32 i, s32 j, s32 x, s32 y, s32 z) 
     func_004C99C8(o, z << 24);
     o->vt->fn8(o);
 }
+/* localdecomp:end func_004CE458 */

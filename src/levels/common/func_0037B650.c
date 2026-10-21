@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0037B650 */
 extern int D_001E1150[];
 int func_0037B650(int a)
 {
@@ -11,3 +13,4 @@ int func_0037B650(int a)
     }
     return 0;
 }
+/* localdecomp:end func_0037B650 */

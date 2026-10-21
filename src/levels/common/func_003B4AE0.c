@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003B4AE0 */
 typedef struct {
     int oClass;
     char pad4[0x6C - 0x4];
@@ -41,3 +42,4 @@ void func_003B4AE0(Obj *obj, Obj *other) {
         v->w192--;
     }
 }
+/* localdecomp:end func_003B4AE0 */

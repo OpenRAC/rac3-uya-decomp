@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00487740 */
 typedef struct {
     s32 obj;
     u8 pad[81];
@@ -41,3 +42,4 @@ void func_00487740(s32 i) {
     }
     D_00233E58[i].name[0] = 0;
 }
+/* localdecomp:end func_00487740 */

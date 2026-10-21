@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0033A5A0 */
 extern s32 D_001DCFF8;
 s32 *func_0033A5A0(s32 a0, s32 a1, s32 *a2) {
     if (a1 == 1) {
@@ -7,3 +9,4 @@ s32 *func_0033A5A0(s32 a0, s32 a1, s32 *a2) {
     }
     return 0;
 }
+/* localdecomp:end func_0033A5A0 */

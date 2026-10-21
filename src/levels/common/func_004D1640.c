@@ -1,8 +1,8 @@
 #include "common.h"
 
+/* localdecomp:start func_004D1640 */
 extern s32 func_0011EE60(s32);
 extern void func_0011EE40(s32);
-s32 n;
 
 typedef struct { long f0; long f8; s32 f10; s32 f14; } E_3ACD38;
 typedef struct { u8 *f0; u8 p4[4]; s32 f8; u8 pC[0x2C]; s32 f38; u8 p3C[4]; s32 f40; u8 p44[0xC]; E_3ACD38 *f50; s32 f54; s32 f58; s32 f5C; } S_3ACD38;
@@ -42,3 +42,4 @@ s32 func_004D1640(S_3ACD38 *p, R_3ACD38 *out) {
     func_0011EE40(p->f40);
     return 1;
 }
+/* localdecomp:end func_004D1640 */

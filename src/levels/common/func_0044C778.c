@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0044C778 */
 typedef struct {
     u8 pad0[72];
     s16 index;
@@ -58,3 +59,4 @@ void func_0044C778(E_0044C778 *e, s32 val, s32 force) {
         }
     } while ((e++)->last != 1);
 }
+/* localdecomp:end func_0044C778 */

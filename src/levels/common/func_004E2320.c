@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004E2320 */
 typedef int s128 __attribute__((mode(TI)));
 
 extern u8 D_001A50CE[];
@@ -82,3 +83,4 @@ void func_004E2320(void) {
         D_001A4BE0.h1260 = func_00440878(3, 7);
     }
 }
+/* localdecomp:end func_004E2320 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00519950 */
 extern s32 func_0051DC38();
 extern void func_005197F0();
 extern s32 *func_00511BF8();
@@ -54,3 +55,4 @@ void func_00519950(T_3E8AD0 *p, s32 flags) {
     p->f8 = &D_001DC100_003E8AD0;
     if (flags & 1) func_0051DC38(p);
 }
+/* localdecomp:end func_00519950 */

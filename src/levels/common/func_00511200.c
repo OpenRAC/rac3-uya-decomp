@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00511200 */
 typedef struct {
     u8 padding[0xDC];
     s32 first[16];
@@ -19,3 +21,4 @@ s32 func_00511200(Object_00511200 **owner, s32 address) {
     }
     return result;
 }
+/* localdecomp:end func_00511200 */

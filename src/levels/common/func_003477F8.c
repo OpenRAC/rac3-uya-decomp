@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003477F8 */
 typedef struct {
     char pad0[0x20];
     unsigned char b32;
@@ -25,3 +26,4 @@ void func_003477F8(Obj *obj) {
         func_004026A0(func_00347888, obj);
     }
 }
+/* localdecomp:end func_003477F8 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0041A6C0 */
 typedef struct { u8 p0[8]; s32 f8; s32 *fC; u8 p1[0x48]; s32 f58; s32 f5C; s32 f60; u8 p2[0x10]; s32 f74; s32 f78; } S;
 void func_0041A6C0(void *arg) {
     S *s = (S *)arg;
@@ -29,3 +30,4 @@ void func_0041A6C0(void *arg) {
         s->f58 = s->f58 + (n + 1) * 14;
     }
 }
+/* localdecomp:end func_0041A6C0 */

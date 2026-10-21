@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003CEDD0 */
 typedef struct {
     u8 pad0[44];
     s32 w2C;
@@ -70,3 +71,4 @@ s32 func_003CEDD0(s32 a0, Obj3CEDD0 *obj) {
     }
     return 1;
 }
+/* localdecomp:end func_003CEDD0 */

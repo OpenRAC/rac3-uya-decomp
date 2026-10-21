@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004B4AF0 */
 extern void func_004B4AF0();
 extern u8 D_00160C40_003A3368[];
 extern u8 D_00142BA0[];
@@ -40,3 +41,4 @@ void func_004B4AF0(s32 arg) {
     f = idx == 0x1F;
     func_004B4BB8(v + *(s32 *)(q + 4), *(s32 *)(D_00160C40_003A3368 + x + 0xC), (idx << 4) + arr, d, f);
 }
+/* localdecomp:end func_004B4AF0 */

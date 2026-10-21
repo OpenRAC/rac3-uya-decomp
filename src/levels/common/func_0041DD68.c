@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0041DD68 */
 extern s32 D_001DFD8C;
 typedef struct { s16 a; s16 b; } P_392108;
 typedef struct { s32 w; s32 pad; } W_392108;
@@ -49,3 +50,4 @@ void func_0041DD68(s32 idx, s32 x, s32 y, s32 w, s32 h, s32 *uv) {
     *(unsigned long *)(q + 0x68) = (unsigned long)(((x + w) << 4) + D_001D4BD0 - 8) | ((unsigned long)(((y + h) << 4) + D_001D4BD4 - 8) << 16) | ((unsigned long)D_001DFD8C << 32);
     D_001E10E8_003925F0 = D_001E10E8_003925F0 + 0x70;
 }
+/* localdecomp:end func_0041DD68 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003A2A38 */
 typedef int s128 __attribute__((mode(TI)));
 
 typedef struct S_3A2A38q { u8 pad0[0x20]; s128 x20; } S_3A2A38q;
@@ -70,3 +71,4 @@ void func_003A2A38(S_3A2A38m *m) {
     }
     func_0044EB78(m, v->x250, 5, 1, 2.5f);
 }
+/* localdecomp:end func_003A2A38 */

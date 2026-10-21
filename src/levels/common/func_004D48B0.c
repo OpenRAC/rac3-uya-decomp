@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D48B0 */
 extern f32 D_001DB920;
 
 extern f32 D_001DB920;
@@ -16,3 +17,4 @@ void func_004D48B0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
   }
   D_001DB920 = 1.0f - D_001DB920;
 }
+/* localdecomp:end func_004D48B0 */

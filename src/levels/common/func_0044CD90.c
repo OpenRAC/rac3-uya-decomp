@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0044CD90 */
 typedef int s128 __attribute__((mode(TI)));
 typedef struct {
     u8 pad0[0x20];
@@ -57,3 +59,4 @@ O_44CD90 *func_0044CD90(s128 *v, s32 flag, f32 a, f32 b, f32 c, f32 d) {
     }
     return best;
 }
+/* localdecomp:end func_0044CD90 */

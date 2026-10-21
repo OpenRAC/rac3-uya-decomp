@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00429998 */
 typedef struct {
     s32 w0;
     s32 w4;
@@ -49,3 +50,4 @@ void func_00429998(s32 idx, s32 a1) {
         D_001E6E00.arr90[i] = (u32)((u8 *)D_001E6E00.p6C + (p->w0 + 0x800));
     }
 }
+/* localdecomp:end func_00429998 */

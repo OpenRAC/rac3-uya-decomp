@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003E7068 */
 typedef struct {
     u8 pad[80];
     u8 *obj;
@@ -15,3 +16,4 @@ void func_003E7068(s32 i, s32 v) {
         *(s32 *)(*(u8 **)(o + 112) + 600) = v;
     }
 }
+/* localdecomp:end func_003E7068 */

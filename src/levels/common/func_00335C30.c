@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00335C30 */
 extern s32 D_001DCF48;
 extern s32 D_001DCF58;
 
@@ -14,3 +15,4 @@ void *func_00335C30(void *self, s32 index, s32 *count) {
     }
     return 0;
 }
+/* localdecomp:end func_00335C30 */

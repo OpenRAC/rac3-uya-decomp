@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0040D940 */
 extern s32 D_001D55C8;
 extern s32 *D_001D55C4[];
 
@@ -65,3 +66,4 @@ s32 func_0040D940(u8 *str, s32 len, f32 scale) {
     }
     return (s32)(x - first);
 }
+/* localdecomp:end func_0040D940 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003B1B70 */
 typedef struct {
     u8 pad[12];
     s32 id;
@@ -29,3 +30,4 @@ void func_003B1B70(u8 *obj) {
         p++;
     }
 }
+/* localdecomp:end func_003B1B70 */

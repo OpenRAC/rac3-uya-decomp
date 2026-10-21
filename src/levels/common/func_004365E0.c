@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004365E0 */
 f32 func_004365E0(u8 *a0) {
     f32 t = *(f32 *)(a0 + 36);
     u8 *a = *(u8 **)(a0 + 56);
@@ -13,3 +14,4 @@ f32 func_004365E0(u8 *a0) {
     b = *(u8 **)(a0 + 60);
     return (*(s16 *)(a + 4) * (1.0f - t) + *(s16 *)(b + 4) * t) * 0.0625f;
 }
+/* localdecomp:end func_004365E0 */

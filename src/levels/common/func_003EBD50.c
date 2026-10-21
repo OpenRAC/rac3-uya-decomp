@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003EBD50 */
 typedef struct {
     u8 pad0[56];
     u8 f38;
@@ -51,3 +53,4 @@ s32 func_003EBD50(Obj_003EBD50 *a, Obj_003EBD50 *b) {
     }
     return 1;
 }
+/* localdecomp:end func_003EBD50 */

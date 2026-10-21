@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_003FE190 */
 typedef struct {
     s32 pad0;
     s32 pad4;
@@ -15,3 +17,4 @@ void func_003FE190(void) {
         *(u32 *)((u8 *)D_001E6540.base + i * 16) += (u32)D_001E6540.base;
     }
 }
+/* localdecomp:end func_003FE190 */

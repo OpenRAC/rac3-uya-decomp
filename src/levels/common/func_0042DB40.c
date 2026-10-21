@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0042DB40 */
 extern void func_0040BBA8(void *, s32, s32);
 extern void func_0042DB40();
 extern u32 D_001D545C;
@@ -24,3 +25,4 @@ void func_0042DB40(void *arg0) {
         if (D_00143140[D_001D545C] < r) D_00143140[D_001D545C] = r;
     }
 }
+/* localdecomp:end func_0042DB40 */

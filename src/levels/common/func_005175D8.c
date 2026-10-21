@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_005175D8 */
 extern s32 func_005175D8(u8 *p, f32 a);
 typedef struct { u8 pad[0x10]; s32 (*isA)(void *, s32); } VT_E;
 extern s32 D_001DC250[];
@@ -14,3 +15,4 @@ s32 func_005175D8(u8 *p, f32 a) {
     }
     return 0;
 }
+/* localdecomp:end func_005175D8 */

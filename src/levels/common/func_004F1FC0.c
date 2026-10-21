@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004F1FC0 */
 typedef int s128_4F1FC0 __attribute__((mode(TI)));
 typedef int s64_4F1FC0 __attribute__((mode(DI)));
 
@@ -40,3 +41,4 @@ void func_004F1FC0(void) {
         func_004E9628(3, 81, D_001A4BE0[0].unkBFC);
     }
 }
+/* localdecomp:end func_004F1FC0 */

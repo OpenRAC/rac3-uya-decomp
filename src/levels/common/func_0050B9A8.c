@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0050B9A8 */
 typedef struct {
     u8 pad0[0x1C];
     s32 entries[1];
@@ -64,3 +65,4 @@ void func_0050B9A8(void) {
     o->w58 = (*h1)->entries[o->b40];
     o->w5C = (*h2)->entries[o->b41];
 }
+/* localdecomp:end func_0050B9A8 */

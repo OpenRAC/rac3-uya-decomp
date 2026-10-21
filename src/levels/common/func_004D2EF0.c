@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D2EF0 */
 extern void func_00433EA0(u8 *, u32);
 void func_00433EA0(u8 *, u32);
 extern void func_00433EA0();
@@ -25,3 +26,4 @@ void func_004D2EF0(s32 a, s32 *out, s32 c) {
     *out = ((s32 (*)(u8 *, u32))func_00433EA0)(base + tbl[D_002F4188[a]], c);
     func_0011F0A0(0);
 }
+/* localdecomp:end func_004D2EF0 */

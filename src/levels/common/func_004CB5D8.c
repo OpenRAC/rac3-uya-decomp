@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CB5D8 */
 void *func_004CB5D8(u8 *p) {
     s32 i;
     s32 *q = (s32 *)(p + 0x30);
@@ -12,3 +13,4 @@ void *func_004CB5D8(u8 *p) {
     }
     return p;
 }
+/* localdecomp:end func_004CB5D8 */

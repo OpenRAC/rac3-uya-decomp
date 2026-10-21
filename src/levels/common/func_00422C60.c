@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00422C60 */
 typedef int s128_422C60 __attribute__((mode(TI)));
 
 extern u8 D_001FFB8A[];
@@ -30,3 +31,4 @@ void func_00422C60(s32 restore) {
     }
     D_001FD200[0][9] = D_001FD200[0][8];
 }
+/* localdecomp:end func_00422C60 */

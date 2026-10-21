@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045CCB8 */
 extern s16 D_001CCFFC[];
 void func_0045CCB8(s32 a0, long a1) {
     u8 *p = (u8 *)(s32)a1;
@@ -17,3 +18,4 @@ void func_0045CCB8(s32 a0, long a1) {
         }
     }
 }
+/* localdecomp:end func_0045CCB8 */

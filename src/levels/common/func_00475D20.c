@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00475D20 */
 typedef struct {
     s32 a[4];
 } Blob_00475D20;
@@ -42,3 +43,4 @@ s32 func_00475D20(s32 idx) {
     tmp = D_001D8090;
     return tmp.a[idx];
 }
+/* localdecomp:end func_00475D20 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0045CB98 */
 extern void func_0045CB98(s32, long);
 
 void func_0045CB98(s32 a, long l) {
@@ -8,3 +9,4 @@ void func_0045CB98(s32 a, long l) {
         p[5] = 3;
     }
 }
+/* localdecomp:end func_0045CB98 */

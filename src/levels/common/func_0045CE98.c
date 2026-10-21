@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_0045CE98 */
 extern s32 D_001D7E20;
 s32 func_0045CE98(void) {
     if (D_001D7E20 == 0) {
@@ -7,3 +9,4 @@ s32 func_0045CE98(void) {
     }
     return 0;
 }
+/* localdecomp:end func_0045CE98 */

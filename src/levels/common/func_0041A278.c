@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0041A278 */
 extern void func_0041A278();
 
 typedef struct S_38EC18 {
@@ -25,3 +26,4 @@ void func_0041A278(S_38EC18 *p) {
     if (p->f10) p->f10(p);
     p->x68 = 0;
 }
+/* localdecomp:end func_0041A278 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D4E78 */
 extern s32 func_004D4ED8();
 extern void func_004D56C8();
 void func_004D4E78(u8 *p) {
@@ -17,3 +18,4 @@ void func_004D4E78(u8 *p) {
     if (ok) *(u16 *)(p + 0x34) &= ~2;
     else *(u16 *)(p + 0x34) |= 2;
 }
+/* localdecomp:end func_004D4E78 */

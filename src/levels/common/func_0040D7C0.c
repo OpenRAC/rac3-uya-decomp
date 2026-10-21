@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_0040D7C0 */
 extern s32 *D_001D55C4[];
 
 typedef struct { u32 w0; u32 w4; } E_389B98;
@@ -22,3 +23,4 @@ s32 func_0040D7C0(u8 *str, s32 len, f32 scale) {
     }
     return (s32)max;
 }
+/* localdecomp:end func_0040D7C0 */

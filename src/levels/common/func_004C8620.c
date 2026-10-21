@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004C8620 */
 typedef struct K_3A54A0 { struct K_3A54A0 *next; u8 p4[4]; f32 t; f32 v[4]; } K_3A54A0;
 typedef struct { u8 p0[0xC]; K_3A54A0 *k; u32 n; s32 mode; } H_3A54A0;
 typedef struct { u8 p0[8]; H_3A54A0 *h; } O_3A54A0;
@@ -43,3 +44,4 @@ void func_004C8620(O_3A54A0 *o, f32 *out, f32 t) {
         break;
     }
 }
+/* localdecomp:end func_004C8620 */

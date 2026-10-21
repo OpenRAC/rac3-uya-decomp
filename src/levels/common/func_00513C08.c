@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00513C08 */
 typedef struct S_513C08o S_513C08o;
 typedef struct {
     u8 pad0[0x10];
@@ -49,3 +50,4 @@ s32 func_00513C08(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5) {
     }
     return ret;
 }
+/* localdecomp:end func_00513C08 */

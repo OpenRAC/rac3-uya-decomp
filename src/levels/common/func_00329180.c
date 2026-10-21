@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00329180 */
 typedef struct { u8 pad[0x30]; s32 x30; } O_329180;
 extern s32 func_00328B90(s32);
 extern s32 func_00328C78(s32);
@@ -8,3 +10,4 @@ void func_00329180(s32 x, O_329180 *o) {
         func_003290D8(x, o);
     }
 }
+/* localdecomp:end func_00329180 */

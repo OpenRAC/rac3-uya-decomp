@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004CF648 */
 void func_004CF648(void *arg0, s32 arg1) {
     s32 temp_2;
     s32 temp_2_2;
@@ -30,3 +31,4 @@ void func_004CF648(void *arg0, s32 arg1) {
     (*(s32 *)((u8 *)arg0 + 0x44)) = (*(s32 *)((u8 *)arg0 + 0x44)) + var_8;
     (*(s32 *)((u8 *)arg0 + 0x38)) = ((*(s32 *)((u8 *)arg0 + 0x38)) + var_8) % (*(s32 *)((u8 *)arg0 + 0x40));
 }
+/* localdecomp:end func_004CF648 */

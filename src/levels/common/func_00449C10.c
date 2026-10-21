@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00449C10 */
 typedef struct Moby_449C10 {
     u8 pad[170];
     s16 oClass;
@@ -132,3 +134,4 @@ s32 func_00449C10(Moby_449C10 *m) {
     }
     return 255;
 }
+/* localdecomp:end func_00449C10 */

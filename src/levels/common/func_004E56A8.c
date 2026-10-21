@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_004E56A8 */
 typedef struct S_4E56A8vec {
     f32 x;
     f32 y;
@@ -82,3 +84,4 @@ f32 func_004E56A8(S_4E56A8m *m, s32 *out, f32 a, f32 b, f32 c, f32 d) {
     }
     return res;
 }
+/* localdecomp:end func_004E56A8 */

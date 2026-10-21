@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00371CB8 */
 typedef struct {
     u8 b[8];
 } Pair_371CB8;
@@ -57,3 +58,4 @@ void func_00371CB8(u8 *moby) {
     func_004082B0(vec, 49, 0x0030FF7F, 1, 0.18f, 0.0f, o->f48 * -0.5f);
     func_004082B0(vec, 47, 0x607F7F7F, 1, 0.06f, 0.0f, func_00440978());
 }
+/* localdecomp:end func_00371CB8 */

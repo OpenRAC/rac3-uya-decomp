@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00326DA8 */
 extern u8 *func_003252E8(void);
 extern s32 func_00438850(s32 a0);
 u8 func_00326DA8(s32 a0) {
@@ -11,3 +13,4 @@ u8 func_00326DA8(s32 a0) {
     }
     return *p;
 }
+/* localdecomp:end func_00326DA8 */

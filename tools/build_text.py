@@ -350,6 +350,20 @@ def main():
         if subprocess.run([a.ld, '-r', '-o', opath] + sobjs).returncode != 0:
             sys.exit(f'build_text: ld -r of {rel} failed')
         objs.append(opath)
+    # A level target that links every shared source as its own file
+    # (tools/link_common_sources.py) has thousands of objects, too many for
+    # one Windows command line: link them in order in groups first.
+    BATCH = 200
+    if len(objs) > BATCH:
+        gdir = os.path.join(workdir, 'groups')
+        os.makedirs(gdir, exist_ok=True)
+        groups = []
+        for k in range(0, len(objs), BATCH):
+            gpath = os.path.join(gdir, 'group%03d.o' % (k // BATCH))
+            if subprocess.run([a.ld, '-r', '-o', gpath] + objs[k:k + BATCH]).returncode != 0:
+                sys.exit('build_text: ld -r of object group %d failed' % (k // BATCH))
+            groups.append(gpath)
+        objs = groups
     cmd = [a.ld, '-r', '-o', a.output] + objs
     print('%s -r -o %s (%d objects)' % (a.ld, a.output, len(objs)), flush=True)
     if subprocess.run(cmd).returncode != 0:

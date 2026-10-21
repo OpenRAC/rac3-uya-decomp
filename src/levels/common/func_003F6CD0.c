@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F6CD0 */
 typedef int s128 __attribute__((mode(TI)));
 
 extern f32 func_0040BF38(void *v);
@@ -26,3 +27,4 @@ void func_003F6CD0(s32 arg0, s128 *pos, s128 *vel) {
         func_00448FB8(pos, pos, b);
     }
 }
+/* localdecomp:end func_003F6CD0 */

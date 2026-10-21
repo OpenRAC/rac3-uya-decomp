@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00343088 */
 typedef struct S_343088vec {
     f32 x;
     f32 y;
@@ -99,3 +101,4 @@ void func_00343088(S_343088m *m) {
     }
     func_004026A0(func_003432F8, m);
 }
+/* localdecomp:end func_00343088 */

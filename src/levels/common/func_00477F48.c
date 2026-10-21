@@ -1,4 +1,6 @@
 #include "common.h"
+
+/* localdecomp:start func_00477F48 */
 typedef struct {
     s32 v[3];
 } Ids3;
@@ -15,3 +17,4 @@ void func_00477F48(s32 a0, s32 a1) {
         func_00512AB0(t.v[a1], 1, 1);
     }
 }
+/* localdecomp:end func_00477F48 */

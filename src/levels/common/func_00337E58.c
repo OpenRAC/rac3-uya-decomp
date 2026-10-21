@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00337E58 */
 typedef struct {
     u8 pad[0x25C0];
     int f25C0;
@@ -45,3 +46,4 @@ void func_00337E58(u8 *a0) {
         }
     } while ((p = *(u8 **)(p + 0x28)) != 0);
 }
+/* localdecomp:end func_00337E58 */

@@ -7,6 +7,6 @@
 # float literals), .data / .bss. The size comes from the file's object.
 #
 # section   address     source file
-.rodata     0x002BF270  src/veldin/3DF888.c
+.rodata     0x002BF270  src/veldin/3DFD90.c
 .sdata      0x001DC6E8  src/veldin/310248.c
 .sdata      0x001DE57C  src/veldin/3ADAC0.c

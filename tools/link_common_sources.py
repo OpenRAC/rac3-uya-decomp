@@ -140,9 +140,16 @@ def main():
 
     # every entry of the target in address order, and which file holds it
     entries = []  # (addr, name, rel)
-    for rel, _ in files:
-        for m in ENTRY_RE.finditer(sf.read_source(rel)):
+    for rel, start in files:
+        if rel.startswith(COMMON + "/"):
+            entries.append((start, os.path.basename(rel)[:-2], rel))
+            continue
+        text = sf.read_source(rel)
+        for m in ENTRY_RE.finditer(text):
             entries.append((int(m.group(2)[5:], 16), m.group(2), rel))
+        # functions already in C in the range file
+        for m in re.finditer(r"localdecomp:start (func_[0-9A-F]{8})", text):
+            entries.append((int(m.group(1)[5:], 16), m.group(1), rel))
     entries.sort()
     nxt = {entries[i][1]: entries[i + 1][0] for i in range(len(entries) - 1)}
 
@@ -152,6 +159,8 @@ def main():
         end8 = (addr + size + 7) & ~7
         if name not in nxt:
             skipped[name] = "last entry"
+        elif addr % 8:
+            skipped[name] = "starts off the 8-byte file alignment (0x%X)" % addr
         elif nxt[name] != end8:
             skipped[name] = "padding after it (next entry 0x%X, end 0x%X)" % (nxt[name], addr + size)
         else:
@@ -159,6 +168,7 @@ def main():
 
     parts = bt.read_parts(T.path("parts"))
     new_files, new_parts = [], {}
+    origin = {}  # range file -> the original range file it was cut from
     for rel, start in files:
         if rel.startswith(COMMON + "/"):
             new_files.append((rel, start, None, None))  # linked by an earlier run
@@ -170,6 +180,7 @@ def main():
             # a piece with no entry and no C left (only blank text after a cut) isn't a file
             if seg and any(ENTRY_RE.search(b) or "localdecomp:start" in b for b in seg[2]):
                 new_files.append((seg[0], seg[1], seg[3], seg[2]))
+                origin.setdefault(seg[0], rel)
         seg = [rel, start, [], prelude]
         for caddr, _, body in chunks:
             m = ENTRY_RE.search(body)
@@ -200,10 +211,20 @@ def main():
         keep.add(rel)
         out = prelude + "".join(bodies)
         open(os.path.join(ROOT, rel), "w", newline="").write(out.replace("\n", "\r\n"))
+    moved = {}
     for rel, _ in files:
         # a range file whose functions are all common sources now; never a common source itself
         if rel not in keep and not rel.startswith(COMMON + "/"):
             os.remove(os.path.join(ROOT, rel))
+            # its data placements go to the first piece of it that is still a file
+            pieces = [r for r, _, _, b in new_files if b is not None and origin.get(r) == rel]
+            if pieces:
+                moved[rel] = pieces[0]
+    if moved and getattr(T, "data_split", None):
+        split = open(T.path("data_split"), newline="").read()
+        for old, new in moved.items():
+            split = re.sub(r"(?<=\s)%s(?=\s)" % re.escape(old), new, split)
+        open(T.path("data_split"), "w", newline="").write(split)
     marked = sum(add_markers(os.path.join(ROOT, rel), os.path.basename(rel)[:-2])
                  for rel, _, _, b in new_files if b is None and os.path.basename(rel)[:-2] in standalone)
 

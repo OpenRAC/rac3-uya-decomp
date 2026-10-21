@@ -15,5 +15,3 @@ TEXT_PADDING(2);
 INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00442B00);
 TEXT_PADDING(2);
 
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00442B10);
-

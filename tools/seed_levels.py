@@ -18,8 +18,10 @@ the same C matches there once every address it names is translated:
      every func_/D_/jtbl_ name renamed through the table.
   4. Every candidate goes through build_common_c.py's gates (complete size,
      resolved retail bytes, raw object body equal to the split common target,
-     no data sections, no assembly). Only those that pass are kept and added to
-     config/levels/common_c.json; the rest are deleted again. The first build
+     no data sections, no assembly but inline asm statements). Only those that
+     pass are kept and added to config/levels/common_c.json (with
+     "inline_asm": true when the block uses VU0/MMI inline asm statements);
+     the rest are deleted again. The first build
      uses the profile tools/asm_profile.py reads off the level's retail bytes
      (each choice it cannot read is the donor's); if that profile differs from
      the donor's flags and does not pass, the donor's flags are tried too.
@@ -28,7 +30,7 @@ Needs a built frontbin (build/frontbin.elf, for function sizes) and the private
 level inputs (docs/common_level_c.md). Run it again whenever frontbin gains
 matches; functions already in the catalogue are left alone.
 
-    python tools/seed_levels.py [--refs C:/decomp-refs] [--jobs 8] [--limit N]
+    python tools/seed_levels.py [--refs C:/decomp-refs] [--jobs 8] [--limit N] [--inline-asm-only]
 """
 import argparse, collections, concurrent.futures as cf, glob, io, json, os, re, struct, sys
 from pathlib import Path
@@ -216,10 +218,14 @@ EXTERN_RE = re.compile(r'__asm__\s*\(\s*"\.extern[^"]*"\s*\)\s*;[ \t]*\n?')
 def make_source(prelude, block, table, local=()):
     """Standalone level source for a frontbin block, or None if unusable.
     `.extern` size hints (for Ps2EeAs) are dropped: the level gates allow no
-    assembly at all, and a function that needed them fails the byte gates."""
+    assembler directives, and a function that needed them fails the byte
+    gates. Inline asm statements in the function (VU0, MMI) stay; any other
+    assembly (pr_check.inline_asm_statements) makes the block unusable."""
     block = EXTERN_RE.sub("", block)
     body = pr_check.strip_comments(block, keep_strings=True)
-    if ASM_RE.search(body):
+    try:
+        pr_check.inline_asm_statements(block)
+    except ValueError:
         return None
     items = top_level_items(body)
     if sum(1 for _, d in items if d) != 1:
@@ -318,6 +324,7 @@ def main():
     ap.add_argument("--jobs", type=int, default=os.cpu_count() or 4)
     ap.add_argument("--limit", type=int, default=0, help="try at most N candidates (smallest first)")
     ap.add_argument("--report", type=Path, help="write each skipped candidate's donor, source and reason here (JSON)")
+    ap.add_argument("--inline-asm-only", action="store_true", help="try only candidates whose block uses inline asm statements")
     a = ap.parse_args()
     levels_dir, targets_dir = a.refs / "levels", a.refs / "level-targets"
     catalogue_path = ROOT / "config" / "levels" / "common_c.json"
@@ -396,6 +403,10 @@ def main():
                  "address": "0x%08X" % laddr, "size": size, "flags_from": donor,
                  "mode": guessed[0], "assembler": guessed[1],
                  "profiles": [guessed] + ([donor_profile] if donor_profile != guessed else [])}
+        if bcc.uses_inline_asm(src.encode("utf-8")):
+            entry["inline_asm"] = True
+        elif a.inline_asm_only:
+            continue
         jobs.append((entry, src))
     jobs.sort(key=lambda j: j[0]["size"])
     if a.limit:

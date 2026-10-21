@@ -16,6 +16,12 @@ profile tools/asm_profile.py reads off the retail bytes; the --flags-from
 function's own. When neither option is given and the first profile does not
 match, the other three combinations are tried too. Exit status 0 only on a
 full match.
+
+GCC inline asm statements inside the function (VU0 macro mode, MMI) are
+allowed and count as C, as in build_common_c.py; the printed catalogue entry
+then carries "inline_asm": true. INCLUDE_ASM, INCLUDE_RODATA, ASM_FUNC,
+LINKER_REMNANT, `.extern` and other directives, empty barrier statements and
+register pins are refused (docs/common_level_c.md).
 """
 import argparse, io, json, os, pickle, struct, subprocess, sys, tempfile
 from pathlib import Path
@@ -124,6 +130,11 @@ def main():
     opts = SimpleNamespace(no_context=True, toolchain=a.toolchain, runner=None)
     base = {"name": name, "source": src.relative_to(ROOT).as_posix(), "overlay": overlay, "address": name[5:] and "0x" + name[5:],
             "size": size, "flags_from": flags_from}
+    try:
+        if bcc.uses_inline_asm(src.read_bytes()):
+            base["inline_asm"] = True
+    except ValueError:
+        pass  # compile_entry reports it
     for m, s in profiles:
         e = dict(base, mode=m, assembler=s)
         try:

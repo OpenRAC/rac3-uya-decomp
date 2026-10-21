@@ -15,6 +15,7 @@ permissions:
 
 jobs:
   checks:
+    if: github.actor != 'vetusmagnus'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

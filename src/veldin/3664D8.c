@@ -13,5 +13,3 @@ LINKER_REMNANT("asm/veldin/remnants", func_003667F8);
 
 LINKER_REMNANT("asm/veldin/remnants", func_00366800);
 
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00366808);
-

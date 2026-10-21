@@ -15,8 +15,19 @@ from types import SimpleNamespace
 from elftools.elf.elffile import ELFFile
 from elftools.elf.relocation import RelocationSection
 
-import pr_check
-import split_shared_levels as shared
+import sys
+
+# A common-level function is proven with the default target's tools and the
+# common-level tables (tools/), as CI's levels/common base is. A
+# UYA_TARGET left set in the caller's environment (UYA_TARGET=veldin, say)
+# would make asm_filter read that target's divs_nops/sq_ra tables too, so a
+# source could pass here and fail in CI. try_level.py, seed_levels.py and
+# anything else that proves functions through this module gets the same rule.
+os.environ.pop("UYA_TARGET", None)
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "objdiff"))  # split_shared_levels.py
+import pr_check  # noqa: E402
+import split_shared_levels as shared  # noqa: E402
 import try_func as matching
 
 

@@ -14,7 +14,7 @@ For every catalogue entry the target owns (Target.level_overlay):
   * its source gets localdecomp:start/end markers around the function if it
     has none, so the tools see it as a one-function file like any other;
   * if the function can be a file of its own, its INCLUDE_ASM line goes, the
-    range file is cut there, and config/<t>/src_files.txt lists
+    range file is cut there, and targets/<t>/src_files.txt lists
     src/levels/common/<name>.c at its address, followed by a new range file
     for the rest. A function can stand alone when the next entry starts at its
     8-aligned end (objects are 8-aligned) and no TEXT_PADDING follows it;
@@ -134,7 +134,7 @@ def main():
     files = sf.read_file_list()
     already = {os.path.basename(rel)[:-2] for rel, _ in files if rel.startswith(COMMON + "/")}
 
-    cat = json.load(open(targets.levels_path("common_c"), encoding="utf-8"))
+    cat = json.load(open(os.path.join(targets.ROOT, "tools", "common_c.json"), encoding="utf-8"))
     own = {e["name"]: e for e in cat
            if e["overlay"] == overlay and e["name"] not in a.exclude and e["name"] not in already}
 

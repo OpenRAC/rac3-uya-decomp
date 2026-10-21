@@ -25,7 +25,6 @@ import sys
 # anything else that proves functions through this module gets the same rule.
 os.environ.pop("UYA_TARGET", None)
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "objdiff"))  # split_shared_levels.py
 import pr_check  # noqa: E402
 import split_shared_levels as shared  # noqa: E402
 import try_func as matching

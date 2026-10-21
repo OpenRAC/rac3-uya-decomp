@@ -36,7 +36,7 @@ unknown assembler is most often the default one).
     python tools/asm_profile.py --evaluate [--target frontbin|boot_elf|veldin|common|all] [--verify]
 
 --evaluate compares the guess with the flags every matched function is built
-with (config/<t>/text_parts.txt, tools/common_c.json); --verify also
+with (targets/<t>/text_parts.txt, tools/common_c.json); --verify also
 builds every disagreement with the guess, to count those whose bytes do not
 depend on that choice. tools/try_func.py, tools/try_level.py and
 tools/seed_levels.py use guess() / profile_of() for their first try.
@@ -454,12 +454,12 @@ def default_refs():
 def common_bytes(name, overlay=None, refs=None):
     refs = refs or default_refs()
     size = None
-    for e in json.load(open(targets.levels_path("common_c"), encoding="utf-8")):
+    for e in json.load(open(os.path.join(targets.ROOT, "tools", "common_c.json"), encoding="utf-8")):
         if e["name"] == name and (overlay is None or e["overlay"] == overlay):
             overlay, size = overlay or e["overlay"], e["size"]
             break
     if size is None:
-        with open(targets.levels_path("occurrences"), encoding="utf-8") as f:
+        with open(os.path.join(targets.ROOT, "targets", "levels", "common_occurrences.tsv"), encoding="utf-8") as f:
             for row in csv.reader((l for l in f if not l.startswith("#")), delimiter="\t"):
                 if row and row[0] == name:
                     size = int(row[2])
@@ -535,7 +535,7 @@ def collect(which, refs):
         sizes = target_sizes(t)
         common_names = set()
         if getattr(t, "level_overlay", None):
-            common_names = {e["name"] for e in json.load(open(targets.levels_path("common_c"), encoding="utf-8"))
+            common_names = {e["name"] for e in json.load(open(os.path.join(targets.ROOT, "tools", "common_c.json"), encoding="utf-8"))
                             if e["overlay"] == t.level_overlay}
         for n, (truth, block) in sorted(matched_functions(t).items()):
             if n in common_names or n not in sizes:
@@ -545,7 +545,7 @@ def collect(which, refs):
             plain = not STEERED_RE.search(re.sub(r"/\*.*?\*/", "", block, flags=re.S))
             rows.append(Row(tn, n, truth, ev, plain, block=block))
     if which in ("common", "all"):
-        for e in json.load(open(targets.levels_path("common_c"), encoding="utf-8")):
+        for e in json.load(open(os.path.join(targets.ROOT, "tools", "common_c.json"), encoding="utf-8")):
             try:
                 code = common_bytes(e["name"], e["overlay"], refs)
             except (KeyError, OSError) as err:
@@ -571,7 +571,7 @@ def _verify_target(job):
     import contextlib, io, tempfile
     from types import SimpleNamespace
     os.environ["UYA_TARGET"] = tn
-    import check
+    import try_func as check
     if _VERIFY.get("target") != tn:
         check._ADDRS = None
         _VERIFY["target"] = tn
@@ -597,7 +597,7 @@ def _verify_common(job):
     from pathlib import Path
     from types import SimpleNamespace
     import build_common_c as bcc
-    import check
+    import try_func as check
     import try_level
     refs = Path(_VERIFY["refs"])
     if "owners" not in _VERIFY:

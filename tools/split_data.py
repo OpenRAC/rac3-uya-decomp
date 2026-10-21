@@ -40,7 +40,7 @@ With an empty table each segment is one piece: the same bytes as before.
     python tools/split_data.py --target veldin --as C:/.../bin/ee-as.exe [--runner wibo]
 
 Run by `make check-veldin` and tools/build.py; it needs the retail ELF in
-baserom/ (the pieces are its bytes, as the asm/ files are).
+the retail ELF (the pieces are its bytes, as the asm/ files are).
 """
 import argparse, os, re, shlex, struct, subprocess, sys
 

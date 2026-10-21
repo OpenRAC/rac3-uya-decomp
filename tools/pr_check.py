@@ -24,7 +24,7 @@ reasons it fails, in terms of the line you need to fix:
   variables  no variable is *defined* in a source file (only `extern`); a definition
              creates .data/.sdata/.bss and breaks the layout or the link. A file
              with rows in the target's per-file data table (a level overlay's
-             config/<target>/data_split.txt, tools/split_data.py) may define
+             targets/<target>/data_split.txt, tools/split_data.py) may define
              the variables of its own data
   data       every row of that table names a source file of the target and an
              address inside one of its data segments

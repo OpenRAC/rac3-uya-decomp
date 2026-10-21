@@ -11,3 +11,4 @@ func_004D92B8
 func_004D9450
 func_004D9CB0
 func_004DB0C0
+func_0046F288

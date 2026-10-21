@@ -41,7 +41,3 @@ void func_003116F0(void) {
 }
 /* localdecomp:end func_003116F0 */
 
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00311700);
-
-INCLUDE_ASM("asm/veldin/nonmatchings/text", func_00311970);
-

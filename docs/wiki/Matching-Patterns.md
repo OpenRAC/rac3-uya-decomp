@@ -270,7 +270,7 @@ m2c (`--target mipsee-gcc-c --valid-syntax`) gets the logic right for many funct
   Separate `t` and `v` are needed here: retail keeps the tested object in `$a0`.
 - **Pointer-count loops over a table of function pointers** keep one outer struct pointer: `p->q->fn[i]` rather than caching `p->q` (`func_003E15D8`).
 
-- **Loop padding no assembler mode reproduces** (retail has `jal; nop; nop; nop; bnez`): `do { r = f(); __asm__ volatile("nop\n\tnop\n\tnop"); } while (r);` (`func_003B6488`, `func_003AB100`). This is an inline-asm hack. `tools/asm_filter.py` now counts `jal`/`jalr` when it pads short loops (see "Loop padding with a call in the body" below), so try the plain loop first; it may make the hack unnecessary.
+- **Loop padding no assembler mode reproduces** (retail has `jal; nop; nop; nop; bnez`): `do { r = f(); __asm__ volatile("nop\n\tnop\n\tnop"); } while (r);` (`func_003B6488`). This is an inline-asm hack. `tools/asm_filter.py` now counts `jal`/`jalr` when it pads short loops (see "Loop padding with a call in the body" below), so try the plain loop first; it may make the hack unnecessary. It did for `func_003AB100` and for the 4-nop polling loop in `func_003AD220` (the 2026-10-20 audit, at the end of this page); `func_003B6488` still needs it.
 - **64-bit constants and `lwu`:** declare the callee parameter and the struct field as `unsigned long` (`func_00386608`, needs `@ps2as`).
 - **Under `@ps2as`, a scalar `extern s32 X;` gets the non-gp form** (`lui; lw`, or `lui $at; sw`). Add `__asm__(".extern X, 4");` only for symbols retail reaches through `$gp` (`func_003A3220`, `func_003D3C80`).
 - **Check the raw words for `lq`/`sq`** (`.word 0x78..`/`0x7C..`) before rewriting a copy loop (`func_0037F550`).
@@ -290,7 +290,7 @@ Each of these fixed a real near miss.
 - **Chains of `!= 0` tests combined with `&`** (`func_003E34F0`, `func_003E3580`, `func_003E3630`): `r = f(a, b) != 0; t = f(a, c) != 0; r = r & t; ...`. A single expression gives conditional moves instead.
 - **A switch whose table starts at 0** needs `case 0:` sharing the `default:` body (`func_003AE368`); without it gcc subtracts 1 and builds a shorter table.
 - **A reload that retail really performs** after a store to the same global needs `volatile` on that global (`func_00395FF0`, `D_001D4CEC`); a second alias symbol is scheduled above the store instead.
-- **Object-array initialisers** (`if (flag == 0) { for (...) init(p++); flag = 1; } return &array[i];`): retail has one `nop` in the loop that neither `S` nor `@ps2as` reproduces, so they need `i--; __asm__ volatile("nop"); p++;` (`func_003E13D0`, `func_003AD820`, `func_003AEDF8`, as in `func_003B46F0`). That is an inline-asm hack.
+- **Object-array initialisers** (`if (flag == 0) { for (...) init(p++); flag = 1; } return &array[i];`): retail has one `nop` in the loop. They used to be written `i--; __asm__ volatile("nop"); p++;` (`func_003E13D0`, `func_003AD820`, `func_003AEDF8`, `func_003AED40`, `func_003B46F0`), but the plain loop matches: ee-as pads the short loop itself (the 2026-10-20 audit removed all five).
 - **Order of independent stores** can only be found by search. A statement-order hill climb on the store lines found `func_003AC0D8`. decomp-permuter finds the same kind of change; it also tends to introduce `do { ... } while (0)` and `new_var` temporaries, which are harmless, but check that it did not change what the code does (it once moved an assignment into an `if`).
 
 ### Functions that save `$ra` with `sq`
@@ -795,3 +795,84 @@ Wrapping one statement or a range in `do { ... } while (0)` (or `for (;;) { ...;
 - **Struct copies as statements, declared in slot order**, so other stores can sit between them (`func_003C1130`, near miss, 49 to 8).
 - **`__builtin_alloca` for a mid-function `$sp` adjustment.** When retail drops `$sp` again after the prologue (`addiu $sp, $sp, -0x40` with a `$fp` frame, then `daddu $sp, $fp, $0` in the epilogue), the source had a dynamic allocation: `buf = __builtin_alloca(15 * 4);` (`func_003B3558`).
 - **Start over.** A clean rewrite, or a copy of an already matched sibling, often beats tuning an old draft: `func_003A3FB0` went from 46 to 0 with a plain rewrite, `func_00392400` from 89 to 0 copied from `func_00392878`.
+
+## Matching workarounds audit (2026-10-20)
+
+Every empty asm fence (`__asm__("")` / `__asm__ __volatile__("")`, with or without `"+r"` operands or a `"memory"` clobber), register pin (`register T x __asm__("$N")`), `__asm__ volatile("nop")` statement and `do { } while (0)` barrier or wrap inside a localdecomp block of `src/frontbin/` and `src/boot_elf/` was removed on its own, the function checked with `tools/try_in_context.py` (and `tools/check.py`), and the removal kept only if the function still matched. A pin was replaced by a plain local (`register T x __asm__("$N") = v;` became `T x = v;`); a wrap `do { S } while (0);` by `{ S }`. The single pass was repeated until nothing changed, then each function that still had workarounds was tried with groups removed together (all of them; each pinned variable together with the fences that name it; all fences; all pins). The full build was MATCH for all three programs afterwards. `src/veldin/` has none of these forms (its only inline asm is two j-form `vadd` helpers), and `src/levels/common/` allows no asm at all.
+
+| | frontbin before | after | boot_elf before | after |
+|---|---|---|---|---|
+| register pins | 119 | 31 | 118 | 33 |
+| empty asm fences | 52 | 41 | 48 | 37 |
+| `nop` asm statements | 8 | 1 | 8 | 1 |
+| `do { } while (0)` wraps of statements | 17 | 15 | 20 | 17 |
+| empty `do { } while (0);` | 3 | 2 | 5 | 4 |
+| **total** | 199 | 90 | 199 | 92 |
+
+216 of 398 were not needed. Two more were not in the count: the `daddu` asm in `func_003A5608` / `func_003AADC8` is plain C once the function returns its argument (`*(u8 **)a0 = D_001D8178; return a0;`).
+
+What the audit showed:
+
+- **Most register pins were redundant** (173 of 237). They pinned the register the allocator picks anyway. 20 of them came out only in the group pass, together with another pin of the same function (`func_00389920`, `func_003B5EC8`, `func_003C9AE0`, `func_003E5F00`, `func_003E6680` and their boot_elf twins): removed one at a time, each was still needed while the other was pinned.
+- **`nop` asm in short loops is never needed.** `do { f(p); i--; __asm__ volatile("nop"); p++; } while (i != -1);` matched without it, and so did the 2- and 4-nop polling loops (`func_003AB100`, `func_003AD220`): ee-as with `-mcpu=5900` pads short loops itself (the R5900 short-loop workaround that `tools/fix_short_loops.py` undoes for `INCLUDE_ASM` code). The 3-nop loop in `func_003B6488` / `func_003BBC48` still needs its asm (10 diffs without it).
+- **God Hand's one-statement VU0 form.** In `func_003B9DA8` (boot_elf `func_003BF568`) one lone `lqc2` was volatile to keep the 0.0027f constant load after it. The contiguous run `lqc2 v; lqc2 v; sqc2 d; lqc2 a` is now one `__asm__ __volatile__` statement with `"=&j"` outputs, and the `vadd` and its `sqc2` stay separate j statements, so the constant still fills the `vadd` latency as in retail. Made non-volatile the block is 10 diffs; putting the `vadd` inside it as well, 11 (the `sqc2` then goes before the constant). In the other j-form functions with a barrier the barrier does not hold VU0 order, and merging did not help: `func_0037F7A8` (retail interleaves `mult`/`addiu`/`daddu` with its `lqc2`s; merged, 26 diffs with the fence and 93 without), `func_003DE560` (the fence orders FP code; merged helpers, 128 to 180 diffs), `func_003A04A0` (merged loop block, 2 diffs with its fence and 6 without).
+
+### Open items: workarounds still needed
+
+Each one below breaks the match when removed alone (the last column is the diff count `try_in_context.py` printed). They are open items: each needs another C form found by hand or with the permuter, or stays documented here. The two wraps in `func_0038BB50` / `func_003906A8` contain `break` and are real control flow rather than barriers.
+
+| frontbin | boot_elf | Remaining | Diffs when removed alone |
+|---|---|---|---|
+| `func_0037DF98` (37D100.c) | `func_003823F0` (381180.c) | 1 pin, 1 fence | 16, 5 |
+| `func_0037DFD8` (37D100.c) | `func_00382430` (381180.c) | 2 pins, 1 fence | 16, 7, 2 |
+| `func_0037F7A8` (37E0F0.c) | `func_00383E38` (382780.c) | 1 fence | 79 |
+| `func_00385908` (37E0F0.c) | `func_0038A368` (382780.c) | 1 pin, 1 fence | 10, 2 |
+| `func_00388E78` (388B40.c) | `func_0038D8D8` (38D5A0.c) | 1 pin | 1 |
+| `func_00389468` (389468.c) | `func_0038DEC8` (38DEC8.c) | 2 pins | 3, 2 |
+| `func_00389920` (3896E8.c) | `func_0038E478` (38E1F8.c) | 3 pins, 8 fences | 11, 12, 13, 6, 6, 9, 8, 6, 13, 8, 8 |
+| `func_0038BB50` (3896E8.c) | `func_003906A8` (38E1F8.c) | 1 do-while wrap | 485 |
+| `func_0038DC08` (3896E8.c) | `func_00392760` (38E1F8.c) | 1 fence | 6 |
+| `func_0038E508` (3896E8.c) | `func_00393060` (38E1F8.c) | 2 pins, 2 fences | 42, 2, 43, 13 |
+| `func_0038E6D0` (3896E8.c) | `func_00393228` (38E1F8.c) | 1 pin, 1 fence | 17, 22 |
+| `func_0038E930` (3896E8.c) | `func_00393488` (38E1F8.c) | 2 fences, 1 do-while wrap | 3, 5, 6 |
+| `func_0038EA88` (3896E8.c) | `func_003935E0` (38E1F8.c) | 2 pins, 1 fence | 13, 8, 7 |
+| `func_0038F3F8` (3896E8.c) | `func_00393F50` (38E1F8.c) | 1 do-while wrap | 4 |
+| `func_00391B70` (3896E8.c) | `func_003966C8` (38E1F8.c) | 1 do-while wrap | 32 |
+| `func_00391E78` (3896E8.c) | `func_003969D0` (38E1F8.c) | 1 fence | 18 |
+| `func_00399F40` (3958F0.c) | `func_0039F1A0` (39A9A8.c) | 1 do-while wrap | 9 |
+| `func_0039BEC0` (39BC00.c) | `func_003A1180` (3A0EC0.c) | 1 do-while wrap | 14 |
+| `func_003A04A0` (39FFC8.c) | - | 1 fence | 4 |
+| `func_003A2028` (39FFC8.c) | `func_003A7708` (3A56A8.c) | 2 do-while wrap | 14, 14 |
+| `func_003A4768` (3A4758.c) | `func_003A9F28` (3A9F18.c) | 1 pin | 1 |
+| `func_003A54A0` (3A5478.c) | `func_003AAC60` (3AAC38.c) | 1 do-while wrap | 68 |
+| `func_003A7F58` (3A7690.c) | `func_003AD718` (3ACE50.c) | 1 pin, 2 fences | 3, 5, 4 |
+| `func_003ACB00` (3ABA48.c) | `func_003B22C0` (3B1208.c) | 1 fence | 3 |
+| `func_003ADAE0` (3AD8A8.c) | `func_003B32A0` (3B3068.c) | 1 pin, 1 fence | 6, 20 |
+| `func_003B0A60` (3AD8A8.c) | `func_003B6220` (3B3068.c) | 1 fence, 2 do-while wrap | 3, 10, 10 |
+| `func_003B5EC8` (3B5BF8.c) | `func_003BB688` (3BB3B8.c) | 2 pins | 43, 10 |
+| `func_003B6410` (3B5BF8.c) | `func_003BBBD0` (3BB3B8.c) | 3 fences | 4, 4, 12 |
+| `func_003B6488` (3B5BF8.c) | `func_003BBC48` (3BB3B8.c) | 1 nop asm | 10 |
+| `func_003B9B60` (3B8F50.c) | `func_003BF320` (3BE710.c) | 1 pin, 3 fences (boot_elf: 1 pin, 1 fence) | 6, 6, 2, 2 (boot_elf: 6, 6) |
+| `func_003BD428` (3B8F50.c) | `func_003C2BE8` (3BE710.c) | 1 pin | 6 |
+| `func_003C1A40` (3C0E08.c) | `func_003C7200` (3C65C8.c) | 1 pin, 2 fences | 2, 2, 4 |
+| `func_003C8CE0` (3C8B28.c) | `func_003CE4A0` (3CE2E8.c) | 2 pins | 15, 12 |
+| `func_003CD710` (3CD710.c) | `func_003D2ED0` (3D2ED0.c) | 1 pin | 1 |
+| `func_003D4858` (3D14B0.c) | `func_003DA018` (3D6C70.c) | 1 pin, 2 fences | 21, 7, 3 |
+| `func_003DE560` (3DBDF0.c) | - | 1 fence | 10 |
+| `func_003E09D8` (3E0190.c) | `func_003E6198` (3E5950.c) | 1 fence | 23 |
+| `func_003E0B78` (3E0190.c) | `func_003E6338` (3E5950.c) | 1 fence, 1 empty do-while | 41, 20 |
+| `func_003E2118` (3E1E38.c) | `func_003E78D8` (3E75F8.c) | 1 empty do-while | 2 |
+| `func_003E29B8` (3E1E38.c) | `func_003E8178` (3E75F8.c) | 1 do-while wrap | 2 |
+| `func_003E5F00` (3E5378.c) | `func_003EB6C0` (3EAB38.c) | 1 pin | 53 |
+| `func_003E6680` (3E5378.c) | `func_003EBE40` (3EAB38.c) | 1 pin | 53 |
+| `func_003E91F8` (3E5378.c) | `func_003EE9B8` (3EAB38.c) | 1 pin, 2 fences | 6, 4, 13 |
+| `func_003E98B8` (3E5378.c) | `func_003EF078` (3EAB38.c) | 1 do-while wrap | 11 |
+| `func_003EA648` (3E5378.c) | `func_003EFE08` (3EAB38.c) | 1 do-while wrap | 11 |
+| `func_003EB6B0` (3E5378.c) | `func_003F0E70` (3EAB38.c) | 1 pin | 7 |
+| `func_003EC3D0` (3E5378.c) | `func_003F1B90` (3EAB38.c) | 1 do-while wrap | 11 |
+| - | `func_00121D70` (11FA10.c) | 1 empty do-while | 3 |
+| - | `func_00121DB0` (11FA10.c) | 1 empty do-while | 3 |
+| - | `func_0012AA78` (12A948.c) | 1 pin | 26 |
+| - | `func_0012FD50` (12A948.c) | 1 pin | 71 |
+| - | `func_00125878` (124988.c) | 1 do-while wrap | 2 |
+| - | `func_0013B3F8` (133BB8.c) | 1 do-while wrap | 10 |

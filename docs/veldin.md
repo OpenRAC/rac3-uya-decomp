@@ -52,6 +52,24 @@ split per source file.
 
 Most of Veldin's code is shared with the other levels (`src/levels/common/`,
 `docs/common_level_c.md`), and Veldin is the canonical owner of all of it, so
-the common sources already use Veldin's addresses. They aren't part of this
-build yet; how they come in (copied into `src/veldin/` or built from
-`src/levels/common/` directly) is the next step.
+the common sources already use Veldin's addresses. `tools/link_common_sources.py`
+builds Veldin from them directly: each catalogued function is its own source
+file in `targets/veldin/src_files.txt`, at its address, with the flags it was
+proved with (`# common source` lines in `targets/veldin/text_parts.txt`), and the
+range files in `src/veldin/` hold everything between them. There is one copy of
+each function, used by both `build_common_c.py` and `make check-veldin`.
+
+    python tools/link_common_sources.py --target veldin
+    python tools/split_text.py --refresh --target veldin
+    make check-veldin
+
+A function only stands alone when the next entry starts at its 8-aligned end
+(objects are 8-aligned); 17 are followed by padding and stay INCLUDE_ASM. The
+shared sources are standalone (`srcfiles.standalone`): `split_text --refresh`
+leaves them as they are and doesn't offer their declarations to other files.
+The linked functions' entries in Veldin's own `divs_nops.txt`/`sq_ra_funcs.txt`
+are dropped, since the common-level tables cover them.
+
+Run the tool on a tree with no common sources linked yet (it refuses
+otherwise). New matches in `tools/common_c.json` come in by resetting
+`src/veldin/` and `targets/veldin/` and running it again.

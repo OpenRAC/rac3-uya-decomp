@@ -160,6 +160,19 @@ About 20 canonical names belong to two different functions owned by
 different levels: the address is the same, the code isn't. The catalogue
 tells them apart by its `overlay` field.
 
+## Format of a source
+
+Each source is `#include "common.h"`, then the function's own declarations and
+the function between `/* localdecomp:start func_X */` and
+`/* localdecomp:end func_X */` markers, like every other source in the repo
+(level targets link these files directly, `docs/veldin.md`). The markers are
+comments, so the gates don't see them.
+
+A `$gp` reference must name an address within 16 bits of `$gp` (0x1DC8B0):
+`check.resolve_relocations` treats anything further away as unresolved, since
+the linker would reject it. Before that check, 13 sources passed with names
+off by 0x70000 or so, because only the low 16 bits were compared.
+
 ## Trying one function
 
 `tools/try_level.py` is the level counterpart of `try_func.py`. It runs the

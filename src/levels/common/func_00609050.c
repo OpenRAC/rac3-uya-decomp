@@ -5,8 +5,8 @@ typedef struct { u8 p0[0x10]; u32 f10; } S_25F840;
 typedef struct { u8 p0[0x90]; s32 f90[6]; } S_1FE1A0;
 extern s32 D_0024BC6C;
 extern s32 D_0024057C;
-extern s32 D_000F4CEC;
-extern s32 D_000F5BCC;
+extern s32 D_001D4CEC;
+extern s32 D_001D5BCC;
 extern s32 D_0024BC40;
 extern u8 D_0025F680[];
 extern S_25F840 D_0025F840;
@@ -60,14 +60,14 @@ void func_00609050(void) {
     }
     if (D_001A4560.f17C != 0) D_001A4560.f17C = 0;
     if (D_001A4560.f18 >= 0) D_001A4560.f18 = -1;
-    D_000F4CEC = D_0024057C & ~0x200;
+    D_001D4CEC = D_0024057C & ~0x200;
     func_00194C78(0);
     D_002257E0.f7 = 0;
     func_005C0AC8(1);
     while (func_00193680()) func_00195AE8();
     D_002257E0.f7 = 1;
     func_00589460(6);
-    D_000F5BCC = D_0024BC40;
+    D_001D5BCC = D_0024BC40;
     func_005A2130();
     func_00194B28(0);
     D_002257E0.f7 = 0;

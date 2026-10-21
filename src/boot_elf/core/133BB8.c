@@ -1449,6 +1449,8 @@ ASM_FUNC("asm/boot_elf/handwritten", func_00137370);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00137444);
 
+LINKER_REMNANT("asm/boot_elf/remnants", func_00137448);
+
 /* localdecomp:start func_00137450 */
 /* libmpeg: skip a PS system header (then its stream entries); 2.9-ee-991111 */
 typedef struct {
@@ -3348,6 +3350,6 @@ s32 func_0013D3C8(void) {
 }
 /* localdecomp:end func_0013D3C8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013D3D0);
+ASM_FUNC("asm/boot_elf/handwritten", func_0013D3D0);
 
 ASM_FUNC("asm/boot_elf/handwritten", func_0013D3E0);

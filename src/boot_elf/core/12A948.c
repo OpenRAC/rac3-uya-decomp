@@ -890,6 +890,8 @@ INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012C9A0);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012CB84);
 
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012CB88);
+
 /* localdecomp:start func_0012CCC8 */
 extern int func_00121760();
 extern char D_001516E0[];
@@ -934,6 +936,8 @@ kick:
 /* localdecomp:end func_0012CCC8 */
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012CE44);
+
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012CE48);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012D4D4);
 
@@ -2387,17 +2391,11 @@ s32 func_0012FD50(s32 en) {
 }
 /* localdecomp:end func_0012FD50 */
 
-/* localdecomp:start func_0012FE78 */
-void func_0012FE78(void) {
+LINKER_REMNANT("asm/boot_elf/remnants", func_0012FE78);
+
+/* localdecomp:start func_0012FE98 */
+void func_0012FE98(void) {
     __asm__ __volatile__(
-        "sqc2 $vf9, 0($4)\n"
-        "nop\n"
-        "nop\n"
-        "nop\n"
-        "sqc2 $vf6, 0($4)\n"
-        "nop\n"
-        "nop\n"
-        "nop\n"
         "lqc2 $vf4, 0($5)\n"
         "vmul.xyz $vf5, $vf4, $vf4\n"
         "vaddy.x $vf5, $vf5, $vf5y\n"
@@ -2414,30 +2412,26 @@ void func_0012FE78(void) {
         "sqc2 $vf6, 0($4)\n"
     );
 }
-/* localdecomp:end func_0012FE78 */
+/* localdecomp:end func_0012FE98 */
 
-/* localdecomp:start func_0012FED8 */
-void func_0012FED8(void *a, void *b, void *c) {
+LINKER_REMNANT("asm/boot_elf/remnants", func_0012FED8);
+
+/* localdecomp:start func_0012FEF0 */
+void func_0012FEF0(void *a, void *b, void *c) {
     __asm__ __volatile__(
-        "sq $11, 0x30($4)\n"
-        "nop\n"
-        "sqc2 $vf4, 0x30($4)\n"
-        "nop\n"
-        "sqc2 $vf6, 0($4)\n"
-        "nop\n"
         "lqc2 $vf4, 0($5)\n"
         "lqc2 $vf5, 0($6)\n"
         "vsub.xyzw $vf6, $vf4, $vf5\n"
         "sqc2 $vf6, 0($4)\n"
-        : : "r"(a), "r"(b), "r"(c) : "memory", "$11");
+        : : "r"(a), "r"(b), "r"(c) : "memory");
 }
-/* localdecomp:end func_0012FED8 */
+/* localdecomp:end func_0012FEF0 */
 
-/* localdecomp:start func_0012FF08 */
-void func_0012FF08(void *p, void *q, f32 f) {
+LINKER_REMNANT("asm/boot_elf/remnants", func_0012FF08);
+
+/* localdecomp:start func_0012FF10 */
+void func_0012FF10(void *p, void *q, f32 f) {
     __asm__ __volatile__(
-        "sqc2 $vf6, 0($4)\n"
-        "nop\n"
         "lqc2 $vf4, 0($5)\n"
         "mfc1 $8, $f12\n"
         "qmtc2.ni $8, $vf5\n"
@@ -2445,7 +2439,7 @@ void func_0012FF08(void *p, void *q, f32 f) {
         "sqc2 $vf6, 0($4)\n"
     );
 }
-/* localdecomp:end func_0012FF08 */
+/* localdecomp:end func_0012FF10 */
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_0012FF28);
 

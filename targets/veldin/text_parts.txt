@@ -897,7 +897,8 @@
 0x003F1218     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x003F12C0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x003F1368     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
-0x003F13A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x003F13A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x003F1438     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x003F1520     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x003F1550     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x003F15C8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
@@ -1023,6 +1024,8 @@
 0x004075A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x00407648     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x004076E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x004082B0     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # common source
+0x004084A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x00408B50     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x00408B60     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # common source
 0x00408CA0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
@@ -1040,8 +1043,19 @@
 0x0040BB60     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0040BB98     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0040BDE0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0040BE68     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x0040BE90     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x0040C188     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0040C2D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0040C5A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x0040C5D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x0040C600     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x0040C638     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x0040C658     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x0040CB80     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x0040CBA0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x0040CD88     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x0040CE20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x0040D088     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0040D300     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x0040D4E8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
@@ -1182,7 +1196,8 @@
 0x0041AAC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x0041AB20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x0041BE10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
-0x0041BE58     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x0041BE58     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x0041C340     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x0041D258     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x0041D288     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x0041D298     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # common source
@@ -1200,6 +1215,8 @@
 0x0041E198     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x0041E1B0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # common source
 0x0041E3B0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x0041E3B8     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # common source
+0x0041E750     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x0041EE90     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # common source
 0x0041F000     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x0041F008     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # common source
@@ -1235,9 +1252,15 @@
 0x00422328     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x004223F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x00422470     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x004224C8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x004225E8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00422698     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x00422838     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00422BD0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x00422C60     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x00422D70     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00423068     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x00423238     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004233F8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-rerun-loop-opt @ps2as   # common source
 0x00423698     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # common source
 0x00423700     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1275,6 +1298,8 @@
 0x0042A058     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0042A520     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x0042A590     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0042AA88     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem @ps2as   # common source
+0x0042ABB0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0042AC78     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem   # common source
 0x0042AD18     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x0042AD60     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
@@ -1394,8 +1419,8 @@
 0x004337F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x00433830     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00433A28     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x004343D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
-0x004343E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x004343D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x004343E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x00434480     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004344A0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem   # common source
 0x00434550     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -fno-force-mem   # common source
@@ -1448,9 +1473,12 @@
 0x00437470     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x004374C8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x00437500     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
-0x00437600     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00437600     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2   # common source
+0x00437698     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x00437720     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x00437780     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00437818     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2   # common source
+0x004378F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004379E0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x00437AB8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x00437B48     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1528,6 +1556,8 @@
 0x00443938     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x00443A90     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x00443AB8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00443C08     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # common source
+0x00443D00     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00443FD8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x00444070     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x00444188     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1535,6 +1565,10 @@
 0x00444F60     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x00444F70     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x00445008     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x004450C0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x00445110     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00445300     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x004454A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00445558     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x004455F0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x00445750     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1570,6 +1604,8 @@
 0x00448F20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00448F40     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x00448FA0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00448FB8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
+0x00449008     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00449518     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x004495F8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00449988     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
@@ -1579,6 +1615,8 @@
 0x0044A0E8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0044AC88     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x0044ADA8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0044ADB0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # common source
+0x0044AEB8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0044B010     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x0044B090     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x0044B0B8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
@@ -1613,9 +1651,12 @@
 0x0044DE28     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x0044DE78     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x0044DEA8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
-0x0044DED0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0044DED0     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 -mno-split-addresses @ps2as   # common source
+0x0044DF40     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x0044E010     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x0044E030     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x0044E088     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
+0x0044E108     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x0044E300     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x0044E358     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x0044E3A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
@@ -1653,7 +1694,8 @@
 0x00450D80     -mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as   # common source
 0x00450FE0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x00451078     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as   # common source
-0x004511D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x004511D0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x00451430     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00452E70     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x00452EC8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00452EF0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
@@ -1677,6 +1719,9 @@
 0x00454238     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00454268     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x00454298     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00454448     -mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as   # common source
+0x00454758     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x00454C10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004559A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x00455A60     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00455C88     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
@@ -2297,6 +2342,8 @@
 0x004A04B0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x004A0660     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
 0x004A0830     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+0x004A1228     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x004A1270     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x004A12A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004A16E8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
 0x004A1F88     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
@@ -2806,7 +2853,8 @@
 0x004D4E78     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x004D4ED8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D4FA8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
-0x004D5100     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x004D5100     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as   # common source
+0x004D5578     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D56C8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x004D5700     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D57E8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
@@ -2814,6 +2862,8 @@
 0x004D5980     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D5A30     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x004D5A98     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x004D5BF0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x004D5CE0     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D5F00     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x004D5F50     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D60C8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
@@ -2823,7 +2873,8 @@
 0x004D6210     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D6230     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x004D62D8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
-0x004D6400     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x004D6400     -mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as   # common source
+0x004D6590     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D6790     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses   # common source
 0x004D67E8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D7320     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
@@ -2851,7 +2902,9 @@
 0x004D92B8     -mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as   # common source
 0x004D9448     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D9450     -mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division @ps2as   # common source
-0x004D9680     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x004D9680     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
+0x004D97A8     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as   # common source
+0x004D9C18     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x004D9C20     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x004D9C48     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source
 0x004D9C70     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division   # common source

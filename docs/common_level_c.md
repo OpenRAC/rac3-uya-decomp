@@ -122,9 +122,12 @@ that is already C, apart from addresses. `tools/seed_levels.py` copies those:
    `func_`/`D_`/`jtbl_` name renamed. `.extern` size hints are dropped, since
    the gates allow no assembly; a function that needed them fails the byte
    gates.
-4. Every candidate goes through `build_common_c.py`'s gates. Only passing ones
-   are kept and added to `config/levels/common_c.json`; `--report FILE` lists the rest
-   with the reason.
+4. Every candidate goes through `build_common_c.py`'s gates. The first build
+   uses the profile `tools/asm_profile.py` reads off the owner's retail bytes,
+   with the donor's mode or assembler wherever retail shows nothing; if that
+   differs from the donor's flags and fails, the donor's flags are tried too.
+   Only passing ones are kept and added to `config/levels/common_c.json` (with
+   the profile that passed); `--report FILE` lists the rest with the reason.
 
 A donor in `config/frontbin/sq_ra_funcs.txt` or `config/frontbin/divs_nops.txt` passes its entry on
 to `config/levels/common_c_sq_ra_funcs.txt` / `config/levels/common_c_divs_nops.txt`, which
@@ -181,8 +184,32 @@ retail listings side by side:
 
     python tools/try_level.py src/levels/common/func_004D0538.c --flags-from func_003ABC30 --mode N --assembler default
 
-An entry already in the catalogue needs no options. An empty function body
-shows the retail listing. On a match it prints the catalogue entry to add.
+An entry already in the catalogue needs no options. A new source needs none
+either: `--flags-from` defaults to `func_003ABC30` (frontbin's plain base
+flags), and without `--mode`/`--assembler` the first build uses the profile
+read off the owner's retail bytes (below), then the `--flags-from` function's
+own, then the two other combinations, stopping at the first match. An empty
+function body shows the retail listing. On a match it prints the catalogue
+entry to add.
+
+## Reading the profile off retail
+
+Every shared function was built in N or S address mode and assembled by GNU as
+or Ps2EeAs (the catalogue's `mode` and `assembler`). `tools/asm_profile.py`
+reads both off the retail bytes and lists the evidence (the marks are in
+[Matching patterns](wiki/Matching-Patterns.md#reading-the-profile-off-retail)):
+
+    python tools/asm_profile.py func_00495980                     (owner overlay, from C:\decomp-refs)
+    python tools/asm_profile.py func_00495980 --overlay singleplayer/1_veldin
+    python tools/asm_profile.py --evaluate --target common --verify
+
+Against the 3081 catalogue entries (2026-10-21) it decides the mode for 1406
+and agrees on 97.4% of them (98.6% counting the ones that pass the gates with
+the guessed mode as well), and decides the assembler for 639, agreeing on
+95.0% (98.4%). It cannot tell the mode of a function that reaches no global
+in a mode-specific way; 89% of those pass the gates in either mode. Reading an
+undecided assembler as the default one agrees with 94.2% of the catalogue.
+`try_level.py` and `seed_levels.py` use it for their first build.
 
 ## Private inputs
 

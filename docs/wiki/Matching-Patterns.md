@@ -86,7 +86,7 @@ Retail was built from many source files, and some used `-mno-split-addresses` (N
 - **N:** the compiler emits `lw $v0, X` and the assembler expands it, so you see `lui $at` pairs and loads that fold the offset differently.
 - **A `lui` and `addiu` split by another instruction** (e.g. on either side of a prologue `sd $s0`) were two scheduled instructions, so that function is S mode even inside an N run: N mode emits the address as one `la`, which the assembler expands to an adjacent pair. Give it a single-function override without `-mno-split-addresses` rather than reproducing the split with asm (`func_003B9730`, `e = D_001D8D90;`).
 
-A function's mode only shows when it touches a global. If the diff is all about how addresses are formed, run `check.py --all-modes`. Known N-only shapes: constructors that return `p`, destructors that save `ra` with `sd`, and the "no-split global load" class.
+A function's mode only shows when it touches a global. `tools/asm_profile.py` reads it off retail ([below](#reading-the-profile-off-retail)). If the diff is all about how addresses are formed, run `check.py --all-modes`. Known N-only shapes: constructors that return `p`, destructors that save `ra` with `sd`, and the "no-split global load" class.
 
 ## Choosing the assembler
 
@@ -97,6 +97,44 @@ A function's mode only shows when it touches a global. If the diff is all about 
 | `ee/bin/as.exe` (May 2001) | `@newas` | Rare; try it when both of the others are one instruction off |
 
 Ps2EeAs can't read the GNU `macro.inc`, so a range assembled with it must not contain any `INCLUDE_ASM` stub. Give the function its own single-function range (the build then compiles it as a separate slice of its file) (see [Toolchain and build](Toolchain-and-Build#text_partstxt)).
+
+## Reading the profile off retail
+
+`tools/asm_profile.py` reads the mode and the assembler off a function's retail bytes and prints the evidence, instruction by instruction:
+
+```text
+python tools/asm_profile.py --target frontbin func_003B5128
+python tools/asm_profile.py --target veldin func_00495980
+python tools/asm_profile.py func_00495980          (a shared level function, from the private level inputs)
+```
+
+What it looks for (each mark has a weight; the side with more wins):
+
+| Mark | Says |
+|---|---|
+| a `lui` whose `%hi` feeds two accesses, sits apart from its use, or is in a register that is neither `$at` nor the load's destination (an address in RAM, not an EE register) | **S**: gcc split the address itself |
+| `lui $at` + access to an object outside small data, `lui $at; addu $at, $at, $r` + access, or a large immediate built in `$at` | **N**: the assembler expanded a macro that S mode would have split in gcc |
+| small data reached only through assembler macros, no split anywhere (weak) | **N** (most such functions are N; with any Ps2EeAs mark below it is a coin flip and is not counted) |
+| `lui $at; ori $at, $at, lo; mtc1 $at` (a float constant with a non-zero low half) | **Ps2EeAs** (GNU as puts it in `.lit4`, which retail never has) |
+| a 64-bit constant in Ps2EeAs's own `dli` expansion: a shift other than 16 or 32 between its parts (`ori 0xc800; dsll 22; ori 0x68`), or `addiu -1; dsll32 31` for `1 << 63` | **Ps2EeAs** |
+| a 64-bit constant that starts with `lui` or with a small immediate (`addiu 50; dsll32 0; ori 0x68`) | **GNU as** |
+| one small-data global reached through `$gp` and through `lui` | **Ps2EeAs** (single pass: `$gp` only where it already knew the size, or in a delay slot) |
+| `mfc1 $r` read by the next instruction; an FPU instruction right after `mtc1` that does not read its register, with no `nop` | **Ps2EeAs** (GNU as puts a `nop` after every `mtc1`); the `mtc1` one counts less in N mode |
+| in S mode, small data reached with an assembler macro (`lui $at` + store, `lui $r; lw $r, lo($r)`) | **Ps2EeAs** (GNU as knows every small symbol's size; in N mode the matched sources do this under either assembler, with unsized declarations, so it is not counted there) |
+
+A function that reaches no global and builds no constant shows neither choice; the tool then says `unknown`. `--evaluate` compares the guess with the flags every matched function is built with, and `--verify` also builds each disagreement with the guess. On 2026-10-21, for plain C (no inline asm, register pins or `.extern` hints, which steer some matches toward the other mode or assembler):
+
+| | mode decided | agrees | builds the same anyway | assembler decided | agrees | builds the same anyway |
+|---|---:|---:|---:|---:|---:|---:|
+| frontbin (1166) | 501 | 97.6% | 98.6% | 237 | 94.1% | 98.7% |
+| boot_elf (1293) | 530 | 97.7% | 98.7% | 241 | 93.4% | 98.8% |
+| shared level code (3081) | 1406 | 97.4% | 98.6% | 639 | 95.0% | 98.4% |
+
+With the hand-steered matches included, the mode agrees on 95.0% (frontbin) and 95.1% (boot_elf). When the mode is `unknown`, 93% of frontbin's and boot_elf's functions and 89% of the shared ones build the same bytes in the other mode. Reading an `unknown` assembler as the default one agrees with 94.2% to 94.8% of every program's functions (96.0% to 96.7% counting those that build the same either way).
+
+What it does not see yet: a constant offset folded into one `lui` that also serves as a value (`lui $v0, 5; addu $a0, $a0, $v0; sw $v0, 8($a0)` is S, N builds the address with `lui $at`), and the field offset an N-mode `la` folds into the address (`la $a0, D_X+0x25; lbu 0($a0)` against S's `lbu 0x25($v1)`); both look like an ordinary adjacent `lui` pair.
+
+`tools/check.py` uses it as the first guess: without `--mode`/`--as`, a function with no flags of its own (no single-function line in `text_parts.txt` or `localdecomp_flags.txt`, no `@ee29`/`@newas` range) is built first with the guessed profile and then, if that is not a match, with its range's flags; the closer result is shown in full (`--no-guess` turns it off). `tools/try_level.py` and `tools/seed_levels.py` do the same for the shared level code ([docs/common_level_c.md](https://github.com/OpenRAC/rac3-uya-decomp/blob/main/docs/common_level_c.md)).
 
 ## Floats
 

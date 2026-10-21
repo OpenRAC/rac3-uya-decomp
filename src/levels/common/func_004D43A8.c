@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_004D43A8 */
 /* PROVISIONAL, VU0 j-constraint form. */
 typedef int Q_3B8560 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3B8560;
@@ -61,3 +62,4 @@ void func_004D43A8(void) {
         }
     }
 }
+/* localdecomp:end func_004D43A8 */

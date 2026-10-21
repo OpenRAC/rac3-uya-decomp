@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00404740 */
 extern f32 func_0040C3C8(f32);
 extern f32 func_0040C3E0(f32);
 extern void func_0040BE90(f32 *, void *, f32);
@@ -118,3 +119,4 @@ void func_00404740(f32 px, f32 py, f32 sx, f32 sy, f32 ang, s32 w, s32 h, long t
     }
     D_001E10E8 += 0x70;
 }
+/* localdecomp:end func_00404740 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00423700 */
 #define TEX1(lcm, mxl, mmag, mmin, mtba, l, k) \
     ((unsigned long)(lcm) | ((unsigned long)(mxl) << 2) | ((unsigned long)(mmag) << 5) | ((unsigned long)(mmin) << 6) \
     | ((unsigned long)(mtba) << 9) | ((unsigned long)(l) << 19) | ((unsigned long)(k) << 32))
@@ -72,3 +73,4 @@ void func_00423700(unsigned long *p, T_394368 *t, s32 a, s32 b, s32 c, s32 d, s3
         p[2] = 0;
     }
 }
+/* localdecomp:end func_00423700 */

@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_003F1068 */
 extern f32 func_0040C3C8(f32);
 extern f32 func_0040C3E0(f32);
 
@@ -41,3 +42,4 @@ void func_003F1068(s32 idx) {
         func_003FFAC8();
     }
 }
+/* localdecomp:end func_003F1068 */

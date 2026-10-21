@@ -1,5 +1,6 @@
 #include "common.h"
 
+/* localdecomp:start func_00437698 */
 extern void func_0040BE90(f32 *, void *, f32);
 extern void func_0040C2D0(void *, void *, void *);
 extern void func_0043CE28();
@@ -26,3 +27,4 @@ void func_00437698(u8 *a, s32 b, f32 *out) {
     __asm__("sqc2 %1, %0" : "=m"(*(V4_3BDA38 *)out) : "j"(x));
 
 }
+/* localdecomp:end func_00437698 */

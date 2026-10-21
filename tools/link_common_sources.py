@@ -22,9 +22,11 @@ For every catalogue entry the target owns (Target.level_overlay):
     (flags_from's frontbin flags with its mode and assembler, exactly what
     build_common_c.py compiled) and a line restoring the range's flags after it.
 
-Functions that can't stand alone are listed and left INCLUDE_ASM. Run it on a
-tree that has no common sources linked yet (it refuses otherwise); run
-`python tools/split_text.py --refresh --target <t>` and the build afterwards.
+Functions that can't stand alone are listed and left INCLUDE_ASM. It is
+incremental: sources linked by an earlier run stay as they are, and only
+catalogue entries that are still INCLUDE_ASM are linked, so run it again
+after new matches. Run `python tools/split_text.py --refresh --target <t>`
+and the build afterwards.
 """
 import argparse, json, os, re, sys
 
@@ -130,11 +132,11 @@ def main():
     if not overlay:
         sys.exit("%s has no level_overlay in tools/targets.py" % T.name)
     files = sf.read_file_list()
-    if any(rel.startswith(COMMON + "/") for rel, _ in files):
-        sys.exit("%s already links common sources; start from a fresh tree" % T.files)
+    already = {os.path.basename(rel)[:-2] for rel, _ in files if rel.startswith(COMMON + "/")}
 
     cat = json.load(open(targets.levels_path("common_c"), encoding="utf-8"))
-    own = {e["name"]: e for e in cat if e["overlay"] == overlay and e["name"] not in a.exclude}
+    own = {e["name"]: e for e in cat
+           if e["overlay"] == overlay and e["name"] not in a.exclude and e["name"] not in already}
 
     # every entry of the target in address order, and which file holds it
     entries = []  # (addr, name, rel)
@@ -158,12 +160,15 @@ def main():
     parts = bt.read_parts(T.path("parts"))
     new_files, new_parts = [], {}
     for rel, start in files:
+        if rel.startswith(COMMON + "/"):
+            new_files.append((rel, start, None, None))  # linked by an earlier run
+            continue
         text = sf.read_source(rel)
         prelude, _, chunks = sf.split_file(text)
         seg = None  # (rel, start, [chunk bodies])
         def flush():
-            # a piece with no entry left (only blank text after a cut) isn't a file
-            if seg and any(ENTRY_RE.search(b) for b in seg[2]):
+            # a piece with no entry and no C left (only blank text after a cut) isn't a file
+            if seg and any(ENTRY_RE.search(b) or "localdecomp:start" in b for b in seg[2]):
                 new_files.append((seg[0], seg[1], seg[3], seg[2]))
         seg = [rel, start, [], prelude]
         for caddr, _, body in chunks:
@@ -196,10 +201,11 @@ def main():
         out = prelude + "".join(bodies)
         open(os.path.join(ROOT, rel), "w", newline="").write(out.replace("\n", "\r\n"))
     for rel, _ in files:
-        if rel not in keep:
-            os.remove(os.path.join(ROOT, rel))  # all of its functions are common sources now
+        # a range file whose functions are all common sources now; never a common source itself
+        if rel not in keep and not rel.startswith(COMMON + "/"):
+            os.remove(os.path.join(ROOT, rel))
     marked = sum(add_markers(os.path.join(ROOT, rel), os.path.basename(rel)[:-2])
-                 for rel, _, _, b in new_files if b is None)
+                 for rel, _, _, b in new_files if b is None and os.path.basename(rel)[:-2] in standalone)
 
     # file list
     hdr = [l.rstrip("\r\n") for l in open(T.path("files")) if l.startswith("#")]
@@ -217,7 +223,7 @@ def main():
         body[addr] = "0x%08X     %s%s" % (addr, " ".join(fl), tag)
     open(T.path("parts"), "w", newline="").write("\r\n".join(head + [body[k] for k in sorted(body)]) + "\r\n")
 
-    linked = [rel for rel, _, _, b in new_files if b is None]
+    linked = [rel for rel, _, _, b in new_files if b is None and os.path.basename(rel)[:-2] in standalone]
     nsym = add_symbols(T, linked, {os.path.basename(r)[:-2] for r in linked})
     ntab = drop_table_entries(T, {os.path.basename(r)[:-2] for r in linked})
 

@@ -1,6 +1,9 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_0040C2F8(void *, void *, void *);
+extern void func_0040C658(f32 *, u8 *);
+extern void func_0040CCA0(f32 *, f32 *, f32 *, f32);
 /* --- end of declarations from other files --- */
 
 INCLUDE_ASM("asm/veldin/nonmatchings/text", func_0040C2D0);

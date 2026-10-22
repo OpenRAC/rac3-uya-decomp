@@ -49,6 +49,7 @@ import try_func as matching  # noqa: E402
 GP = 0x1DC8B0
 NAME_RE = re.compile(r"\b(func|D|jtbl)_([0-9A-Fa-f]{5,8})((?:_\w+)?)\b")
 ASM_RE = re.compile(r"\b(?:__asm__|__asm|asm|INCLUDE_ASM|INCLUDE_RODATA|ASM_FUNC|LINKER_REMNANT)\b")
+ATTR_RE = re.compile(r"__attribute__\s*\(\((?:[^()]|\([^()]*\))*\)\)")
 BLOCK_RE = re.compile(r"/\* localdecomp:start (\w+) \*/\n(.*?)/\* localdecomp:end \1 \*/", re.S)
 
 
@@ -179,6 +180,8 @@ def _declared(decl):
     if decl.startswith("#define"):
         m = re.match(r"#define\s+(\w+)", decl)
         return {m.group(1)} if m else set()
+    # attributes: a trailing one would hide the name (typedef int u128_t __attribute__((mode(TI))))
+    decl = ATTR_RE.sub(" ", decl)
     names = set(re.findall(r"\(\s*\*\s*(\w+)", decl))
     flat = re.sub(r"\{.*\}", " ", decl, flags=re.S)  # struct bodies
     if flat.lstrip().startswith("typedef"):

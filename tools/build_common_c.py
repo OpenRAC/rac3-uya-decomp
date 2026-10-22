@@ -93,6 +93,11 @@ def compile_entry(entry, levels_dir, targets_dir, owners, common, options):
     inline_asm = uses_inline_asm(source_bytes)
     require(bool(entry.get("inline_asm", False)) == inline_asm,
             "catalogue field inline_asm must be %s: the source %s inline assembly" % (str(inline_asm).lower(), "uses" if inline_asm else "has no"))
+    gp_size = entry.get("gp_size")
+    require(gp_size is None or (type(gp_size) is int and gp_size >= 0), "catalogue field gp_size must be a non-negative integer")
+    early = entry.get("early_extern_sizes")
+    require(early is None or (isinstance(early, dict) and early and entry["assembler"] == "ps2as"),
+            "catalogue field early_extern_sizes must be a non-empty symbol-to-size object on a ps2as entry")
     overlay_path = (levels_dir / entry["overlay"] / "overlay.elf").resolve()
     require(overlay_path.is_relative_to(levels_dir.resolve()), "overlay escapes the supplied level directory")
     member_path = targets_dir / (Path(entry["overlay"]).name + ".o")
@@ -118,7 +123,11 @@ def compile_entry(entry, levels_dir, targets_dir, owners, common, options):
     require(Path(owner.path).name == member_path.name and owner_name == name and owner_offset == offset and owner_size == size, "catalogue does not select the canonical common owner")
     require(name in common and common[name] == member_bytes, "split common target differs from its canonical owner")
     donor_address = int(entry["flags_from"][5:], 16)
-    flags = matching.apply_overrides(matching.flags_for(donor_address), entry["mode"], entry["assembler"])
+    flags = matching.apply_overrides(matching.flags_for(donor_address), entry["mode"], entry["assembler"], gp_size)
+    if early:
+        # gcc's own end-of-file `.extern NAME, SIZE` lines, moved in front of
+        # the function (try_func.early_extern_metadata refuses any other size)
+        options = SimpleNamespace(**dict(vars(options), early_extern_sizes=early))
     object_path = matching.compile_c(str(source), flags, options, name)
     require(object_path is not None, "C compilation failed")
     with open(object_path, "rb") as stream:

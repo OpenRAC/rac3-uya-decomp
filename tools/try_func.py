@@ -88,7 +88,7 @@ def flags_for(addr):
     return best[1] if best else ["-O2", "-G8"]
 
 
-def apply_overrides(flags, mode, asm):
+def apply_overrides(flags, mode, asm, gp_size=None):
     fl = [f for f in flags if f != "-mno-split-addresses"] if mode else list(flags)
     if mode == "N":
         fl.append("-mno-split-addresses")
@@ -96,7 +96,27 @@ def apply_overrides(flags, mode, asm):
         fl = [f for f in fl if f not in ("@ps2as", "@newas")]
         if asm != "default":
             fl.append("@" + asm)
+    if gp_size is not None:
+        # the small-data threshold (-G): a common-level entry's "gp_size"
+        g = "-G%d" % int(gp_size)
+        fl = [g if re.fullmatch(r"-G\d+", f) else f for f in fl]
+        if g not in fl:
+            fl.append(g)
     return fl
+
+
+EXTERN_FLAG = "@extern:"
+
+
+def extern_flags(flags):
+    """{NAME: SIZE} from text_parts.txt's @extern:NAME=SIZE pseudo-flags
+    (a common source's early_extern_sizes, tools/link_common_sources.py)."""
+    out = {}
+    for f in flags:
+        if f.startswith(EXTERN_FLAG):
+            name, _, size = f[len(EXTERN_FLAG):].partition("=")
+            out[name] = int(size, 0)
+    return out
 
 
 def expand(flags, toolchain):
@@ -104,7 +124,7 @@ def expand(flags, toolchain):
     (gcc uses the last -B), after the default bin/ee- assembler."""
     out, bopts = [], ["-B" + os.path.join(toolchain, "bin", "ee-")]
     for f in flags:
-        if f == "@ee29":  # the compiler, not the assembler: see compile_c() and tools/ee29.py
+        if f == "@ee29" or f.startswith(EXTERN_FLAG):  # handled in compile_c(), not by gcc
             continue
         if f == "@ps2as":
             bopts.append("-B" + os.environ.get("UYA_PS2AS_PREFIX", os.path.join(toolchain, "ee", "bin", "Ps2Ee")))
@@ -301,7 +321,8 @@ def compile_c(src_path, flags, args, name=None):
         import asm_filter
         assembly = open(s_path, newline="").read()
         try:
-            assembly = early_extern_metadata(assembly, getattr(args, "early_extern_sizes", None))
+            sizes = dict(getattr(args, "early_extern_sizes", None) or {}, **extern_flags(flags))
+            assembly = early_extern_metadata(assembly, sizes or None)
         except ValueError as error:
             print("METADATA ERROR: " + str(error))
             return None
